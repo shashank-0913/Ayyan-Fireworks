@@ -18,15 +18,18 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isSafetyOpen, setIsSafetyOpen] = useState(false);
+  const [isExpandedDesc, setIsExpandedDesc] = useState(false);
+
+  const descriptionText = product.description || "Authentic Sivakasi festive pyrotechnic masterpiece crafted under strict statutory quality standards.";
+  const isLongDescription = descriptionText.length > 90;
 
   return (
-    <div className="group relative rounded-3xl glass-panel hover:glass-panel-gold border border-white/[0.09] hover:border-gold-500/40 p-5 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1.5 shadow-xl hover:shadow-glow-gold bg-obsidian-900/60 backdrop-blur-xl">
+    <div className="group relative rounded-3xl glass-panel hover:glass-panel-gold border border-white/[0.09] hover:border-gold-500/40 p-4 sm:p-5 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1.5 shadow-xl hover:shadow-glow-gold bg-obsidian-900/70 backdrop-blur-xl">
       <div className="space-y-4">
         {/* =================================================================== */}
-        {/* 1. [TOP] PRODUCT IMAGE                                              */}
-        {/*    - High-quality image container with category badge pinned        */}
+        {/* 1. [TOP] PRODUCT IMAGE (Full-width aspect ratio with rounded corners) */}
         {/* =================================================================== */}
-        <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-obsidian-950 border border-white/10 shadow-inner">
+        <div className="relative aspect-[4/3] sm:aspect-[4/3] w-full rounded-2xl overflow-hidden bg-obsidian-950 border border-white/10 shadow-inner">
           <img
             src={product.image_url || 'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=800&q=80'}
             alt={product.name}
@@ -50,19 +53,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
 
         {/* =================================================================== */}
-        {/* 2. [DOWN / MIDDLE] NAME & PRICING                                   */}
-        {/*    - Product Name (Bold, clean heading)                             */}
-        {/*    - Pack / Piece count (e.g. "Pack of 10")                         */}
-        {/*    - Prominent Price in ₹ INR (Highlighted in radiant gold text)    */}
+        {/* 2. [DOWN] NAME & BOLD ₹ INR PRICE BADGE                             */}
         {/* =================================================================== */}
         <div className="space-y-2.5 pt-1">
           {/* Product Name */}
-          <h3 className="font-display font-bold text-white text-lg sm:text-xl leading-snug group-hover:text-gold-300 transition-colors tracking-tight">
+          <h3 className="font-display font-bold text-white text-base sm:text-xl leading-snug group-hover:text-gold-300 transition-colors tracking-tight">
             {product.name}
           </h3>
 
           {/* Pack Count & Prominent Gold Price */}
-          <div className="flex items-baseline justify-between gap-2 p-3 rounded-2xl bg-obsidian-950/70 border border-white/[0.06]">
+          <div className="flex items-baseline justify-between gap-2 p-3 rounded-2xl bg-obsidian-950/80 border border-white/[0.06]">
             <div>
               <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-0.5">
                 Showroom Price
@@ -85,15 +85,25 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
 
         {/* =================================================================== */}
-        {/* 3. [BOTTOM] DETAILED DESCRIPTION                                    */}
-        {/*    - Clean typography displaying owner description                  */}
-        {/*    - Subtle collapsible "Safety Guide" text for precautions         */}
+        {/* 3. [BOTTOM] DESCRIPTION WITH "Read more..." TAP TOGGLE               */}
         {/* =================================================================== */}
         <div className="space-y-3 pt-1">
-          {/* Description */}
-          <p className="text-slate-300/90 text-xs sm:text-sm leading-relaxed font-normal">
-            {product.description || "Authentic Sivakasi festive pyrotechnic masterpiece crafted under strict statutory quality standards."}
-          </p>
+          {/* Description Text with Tap Toggle */}
+          <div className="text-slate-300/90 text-xs sm:text-sm leading-relaxed font-normal">
+            <p className={isExpandedDesc ? '' : 'line-clamp-3'}>
+              {descriptionText}
+            </p>
+            {isLongDescription && (
+              <button
+                type="button"
+                onClick={() => setIsExpandedDesc(prev => !prev)}
+                className="mt-1 text-gold-400 hover:text-gold-300 text-[11px] font-bold inline-flex items-center gap-1 min-h-[32px] focus:outline-none"
+              >
+                <span>{isExpandedDesc ? 'Show less' : 'Read more...'}</span>
+                {isExpandedDesc ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+              </button>
+            )}
+          </div>
 
           {/* Collapsible Safety Guide */}
           {product.safety_instructions && (
@@ -101,7 +111,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               <button
                 type="button"
                 onClick={() => setIsSafetyOpen(prev => !prev)}
-                className="w-full px-3 py-2 flex items-center justify-between text-[11px] font-bold text-slate-300 hover:text-gold-300 transition-colors"
+                className="w-full px-3 py-2.5 flex items-center justify-between text-[11px] font-bold text-slate-300 hover:text-gold-300 transition-colors min-h-[44px]"
               >
                 <span className="flex items-center gap-1.5 text-amber-400">
                   <ShieldAlert className="w-3.5 h-3.5" />
@@ -137,15 +147,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </div>
 
       {/* =================================================================== */}
-      {/* 4. [ACTION FOOTER]                                                  */}
-      {/*    - "Book Showroom Slot" button                                    */}
+      {/* 4. [ACTION FOOTER] Full-width Touch-Friendly Button (Min 44px)       */}
       {/* =================================================================== */}
       <div className="pt-4 mt-4 border-t border-white/[0.08]">
         <Link
           to="/book-slot"
-          className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-gold-500 via-amber-400 to-gold-500 hover:from-gold-400 hover:to-amber-300 text-obsidian-950 font-extrabold text-xs sm:text-sm tracking-wide uppercase flex items-center justify-center gap-2 transition-all shadow-glow-gold hover:shadow-[0_0_24px_rgba(245,158,11,0.5)] active:scale-[0.98]"
+          className="w-full min-h-[48px] py-3.5 px-4 rounded-2xl bg-gradient-to-r from-gold-500 via-amber-400 to-gold-500 hover:from-gold-400 hover:to-amber-300 text-obsidian-950 font-extrabold text-xs sm:text-sm tracking-wide uppercase flex items-center justify-center gap-2 transition-all shadow-glow-gold hover:shadow-[0_0_24px_rgba(245,158,11,0.5)] active:scale-[0.98]"
         >
-          <CalendarCheck className="w-4 h-4 text-obsidian-950" />
+          <CalendarCheck className="w-4 h-4 text-obsidian-950 shrink-0" />
           <span>Book Showroom Slot</span>
         </Link>
       </div>

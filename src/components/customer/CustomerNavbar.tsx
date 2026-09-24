@@ -1,17 +1,31 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Calendar, BookOpen, MapPin, Menu, X, UserCheck, Flame } from 'lucide-react';
+import { 
+  Calendar, 
+  BookOpen, 
+  MapPin, 
+  Menu, 
+  X, 
+  UserCheck, 
+  Flame, 
+  Phone, 
+  Clock, 
+  CalendarCheck,
+  ShieldCheck,
+  ChevronRight
+} from 'lucide-react';
 import { LegalComplianceBanner } from '../common/LegalComplianceBanner';
 import { VIPTicker } from '../common/VIPTicker';
+import { SHOWROOM_CONTACT } from '../../lib/utils';
 
 export const CustomerNavbar: React.FC = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const location = useLocation();
 
   const navLinks = [
     { name: 'Home', path: '/', icon: Flame },
     { name: '2026 Catalogue', path: '/catalogue', icon: BookOpen },
-    { name: 'Book VIP Slot', path: '/book-slot', icon: Calendar },
+    { name: 'Book VIP Slot', path: '/book-slot', icon: CalendarCheck },
     { name: 'Showroom Visit', path: '/showroom', icon: MapPin },
   ];
 
@@ -22,153 +36,275 @@ export const CustomerNavbar: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-obsidian-950/90 border-b border-white/[0.08] transition-all">
-      {/* Statutory Legal Strip */}
-      <LegalComplianceBanner compact />
+    <>
+      {/* ========================================================================= */}
+      {/* 1. TOP STICKY HEADER (DESKTOP & MOBILE COMPACT)                           */}
+      {/* ========================================================================= */}
+      <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-obsidian-950/90 border-b border-white/[0.08] transition-all">
+        {/* Statutory Legal Strip (Desktop & Mobile) */}
+        <LegalComplianceBanner compact />
 
-      {/* Dynamic VIP Slot Ticker */}
-      <VIPTicker />
+        {/* Dynamic VIP Slot Ticker */}
+        <VIPTicker />
 
-      {/* Main Navigation Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Official Company Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-gold-600 p-0.5 shadow-glow-gold transition-transform group-hover:scale-105 duration-300 flex items-center justify-center overflow-hidden">
-              <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center p-0.5">
-                <img
-                  src="/ayyan-emblem.png"
-                  alt="Bunny Brand"
-                  className="w-full h-full object-contain rounded-full"
-                />
+        {/* Top Bar Container */}
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 sm:h-20">
+            {/* Official Company Logo */}
+            <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group shrink-0 min-touch">
+              <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-gold-600 p-0.5 shadow-glow-gold transition-transform group-hover:scale-105 duration-300 flex items-center justify-center overflow-hidden">
+                <div className="w-full h-full bg-slate-950 rounded-[10px] sm:rounded-[14px] flex items-center justify-center p-0.5">
+                  <img
+                    src="/ayyan-emblem.png"
+                    alt="Bunny Brand"
+                    className="w-full h-full object-contain rounded-full"
+                    loading="eager"
+                  />
+                </div>
               </div>
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-display font-extrabold text-xl sm:text-2xl tracking-tight gold-gradient-text">
-                  AYYAN
-                </span>
-                <span className="font-display font-bold text-xs uppercase tracking-widest text-slate-300">
-                  Fireworks
-                </span>
+              <div>
+                <div className="flex items-center gap-1">
+                  <span className="font-display font-black text-lg sm:text-2xl tracking-tight gold-gradient-text">
+                    AYYAN
+                  </span>
+                  <span className="font-display font-bold text-[10px] sm:text-xs uppercase tracking-widest text-slate-300">
+                    Fireworks
+                  </span>
+                </div>
+                <p className="text-[9px] sm:text-[10px] text-amber-400 font-semibold tracking-wider uppercase flex items-center gap-1">
+                  <span>Bunny Brand</span>
+                  <span>•</span>
+                  <span>Since 1987</span>
+                  <span className="hidden sm:inline">• Visakhapatnam</span>
+                </p>
               </div>
-              <p className="text-[10px] text-amber-400 font-semibold tracking-wider uppercase flex items-center gap-1">
-                <span>Bunny Brand</span>
-                <span>•</span>
-                <span>Since 1987</span>
-                <span className="hidden sm:inline">• Visakhapatnam</span>
-              </p>
+            </Link>
+
+            {/* Desktop Nav Links (Hidden on Mobile) */}
+            <nav className="hidden md:flex items-center gap-1 bg-obsidian-900/80 p-1.5 rounded-full border border-white/10 backdrop-blur-md">
+              {navLinks.map((link) => {
+                const Icon = link.icon;
+                const active = isActive(link.path);
+                return (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 min-touch ${
+                      active
+                        ? 'bg-gold-500/20 text-gold-300 border border-gold-500/40 shadow-glow-gold font-bold'
+                        : 'text-slate-300 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    <Icon className={`w-3.5 h-3.5 ${active ? 'text-gold-400' : 'text-slate-400'}`} />
+                    <span>{link.name}</span>
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* Right Quick Actions */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              {/* Desktop Reserve Button */}
+              <Link
+                to="/book-slot"
+                className="hidden md:flex gold-gradient-btn px-5 py-2.5 rounded-xl text-xs font-bold items-center gap-2 min-touch"
+              >
+                <Calendar className="w-4 h-4" />
+                <span>Reserve Slot</span>
+              </Link>
+
+              {/* Staff Portal Doorway */}
+              <Link
+                to="/portal"
+                title="Staff & Management Portal"
+                className="p-2 sm:p-2.5 rounded-xl bg-obsidian-900/80 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-gold-400 transition-all flex items-center gap-1.5 text-xs font-medium min-touch justify-center"
+              >
+                <UserCheck className="w-4 h-4 text-amber-400" />
+                <span className="hidden sm:inline text-[11px]">Staff Portal</span>
+              </Link>
+
+              {/* Mobile Drawer Trigger (More Info / Helpline) */}
+              <button
+                type="button"
+                onClick={() => setMobileDrawerOpen(true)}
+                className="md:hidden p-2.5 rounded-xl bg-obsidian-900 border border-white/10 text-slate-200 hover:text-gold-400 min-touch flex items-center justify-center active:scale-95"
+                aria-label="Open Navigation Drawer"
+              >
+                <Menu className="w-5 h-5" />
+              </button>
             </div>
-          </Link>
-
-          {/* Desktop Nav Links */}
-          <nav className="hidden md:flex items-center gap-1 bg-obsidian-900/80 p-1.5 rounded-full border border-white/10 backdrop-blur-md">
-            {navLinks.map((link) => {
-              const Icon = link.icon;
-              const active = isActive(link.path);
-              return (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 ${
-                    active
-                      ? 'bg-gold-500/20 text-gold-300 border border-gold-500/40 shadow-glow-gold font-bold'
-                      : 'text-slate-300 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  <Icon className={`w-3.5 h-3.5 ${active ? 'text-gold-400' : 'text-slate-400'}`} />
-                  <span>{link.name}</span>
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* Right Action & Staff Portal Doorway */}
-          <div className="hidden md:flex items-center gap-3">
-            <Link
-              to="/book-slot"
-              className="gold-gradient-btn px-5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2"
-            >
-              <Calendar className="w-4 h-4" />
-              <span>Reserve Slot</span>
-            </Link>
-
-            <Link
-              to="/portal"
-              title="Staff & Management Portal"
-              className="p-2.5 rounded-xl bg-obsidian-900/80 hover:bg-slate-800 border border-slate-700/60 text-slate-400 hover:text-gold-400 transition-all flex items-center gap-1.5 text-xs font-medium"
-            >
-              <UserCheck className="w-4 h-4" />
-              <span className="text-[11px]">Staff Portal</span>
-            </Link>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="flex md:hidden items-center gap-2">
-            <Link
-              to="/portal"
-              className="p-2 rounded-xl bg-obsidian-900 border border-white/10 text-slate-400 text-xs"
-            >
-              <UserCheck className="w-4 h-4" />
-            </Link>
-
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2.5 rounded-xl bg-obsidian-900 border border-white/10 text-slate-200 hover:text-gold-400"
-              aria-label="Toggle Navigation Menu"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
           </div>
         </div>
+      </header>
+
+      {/* ========================================================================= */}
+      {/* 2. STICKY MOBILE BOTTOM NAVIGATION BAR (FIXED ON MOBILE < MD)             */}
+      {/* ========================================================================= */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-obsidian-950/95 backdrop-blur-2xl border-t border-white/10 pb-safe shadow-[0_-8px_30px_rgba(0,0,0,0.8)]">
+        <nav className="grid grid-cols-4 h-16 items-center px-1 max-w-md mx-auto">
+          {/* 1. Home */}
+          <Link
+            to="/"
+            className={`flex flex-col items-center justify-center h-full min-touch relative transition-colors ${
+              isActive('/') ? 'text-gold-300 font-bold' : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <Flame className={`w-5 h-5 ${isActive('/') ? 'text-gold-400 animate-pulse' : 'text-slate-400'}`} />
+            <span className="text-[10px] mt-1 tracking-tight">Home</span>
+            {isActive('/') && (
+              <span className="absolute top-1 w-6 h-0.5 rounded-full bg-gold-400 shadow-glow-gold" />
+            )}
+          </Link>
+
+          {/* 2. Catalogue */}
+          <Link
+            to="/catalogue"
+            className={`flex flex-col items-center justify-center h-full min-touch relative transition-colors ${
+              isActive('/catalogue') ? 'text-gold-300 font-bold' : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <BookOpen className={`w-5 h-5 ${isActive('/catalogue') ? 'text-gold-400' : 'text-slate-400'}`} />
+            <span className="text-[10px] mt-1 tracking-tight">Catalogue</span>
+            {isActive('/catalogue') && (
+              <span className="absolute top-1 w-6 h-0.5 rounded-full bg-gold-400 shadow-glow-gold" />
+            )}
+          </Link>
+
+          {/* 3. Book Slot (Highlighted Central Action) */}
+          <Link
+            to="/book-slot"
+            className={`flex flex-col items-center justify-center h-full min-touch relative transition-colors ${
+              isActive('/book-slot') ? 'text-gold-300 font-bold' : 'text-amber-400 hover:text-amber-300'
+            }`}
+          >
+            <div className={`p-1.5 rounded-xl transition-all ${
+              isActive('/book-slot') 
+                ? 'bg-gold-500 text-obsidian-950 shadow-glow-gold' 
+                : 'bg-gold-500/15 text-gold-400 border border-gold-500/30'
+            }`}>
+              <CalendarCheck className="w-4 h-4" />
+            </div>
+            <span className="text-[10px] mt-0.5 font-bold tracking-tight">Book Slot</span>
+          </Link>
+
+          {/* 4. Showroom */}
+          <Link
+            to="/showroom"
+            className={`flex flex-col items-center justify-center h-full min-touch relative transition-colors ${
+              isActive('/showroom') ? 'text-gold-300 font-bold' : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <MapPin className={`w-5 h-5 ${isActive('/showroom') ? 'text-gold-400' : 'text-slate-400'}`} />
+            <span className="text-[10px] mt-1 tracking-tight">Showroom</span>
+            {isActive('/showroom') && (
+              <span className="absolute top-1 w-6 h-0.5 rounded-full bg-gold-400 shadow-glow-gold" />
+            )}
+          </Link>
+        </nav>
       </div>
 
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="md:hidden border-b border-white/10 bg-obsidian-950/95 backdrop-blur-2xl px-4 pt-3 pb-6 space-y-3 animate-in fade-in duration-200">
-          <nav className="space-y-1">
-            {navLinks.map((link) => {
-              const Icon = link.icon;
-              const active = isActive(link.path);
-              return (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold ${
-                    active
-                      ? 'bg-gold-500/15 text-gold-300 border border-gold-500/30'
-                      : 'text-slate-300 hover:bg-white/5'
-                  }`}
+      {/* ========================================================================= */}
+      {/* 3. MOBILE SLIDE-OVER SHEET DRAWER                                         */}
+      {/* ========================================================================= */}
+      {mobileDrawerOpen && (
+        <div className="fixed inset-0 z-50 md:hidden animate-in fade-in duration-200">
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm"
+            onClick={() => setMobileDrawerOpen(false)}
+          />
+
+          {/* Slide-over Drawer Panel */}
+          <div className="fixed inset-y-0 right-0 w-full max-w-xs bg-obsidian-900 border-l border-white/10 p-6 flex flex-col justify-between shadow-2xl animate-in slide-in-from-right duration-300 overflow-y-auto">
+            <div className="space-y-6">
+              {/* Drawer Header */}
+              <div className="flex items-center justify-between pb-4 border-b border-white/10">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-gold-600 p-0.5 shadow-sm flex items-center justify-center">
+                    <img src="/ayyan-emblem.png" alt="Bunny Brand" className="w-full h-full object-contain rounded-lg" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-white text-sm">Ayyan Fireworks</h3>
+                    <p className="text-[10px] text-amber-400 font-semibold">Bunny Brand Since 1987</p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setMobileDrawerOpen(false)}
+                  className="p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white min-touch flex items-center justify-center"
                 >
-                  <Icon className="w-4 h-4 text-gold-400" />
-                  <span>{link.name}</span>
-                </Link>
-              );
-            })}
-          </nav>
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
 
-          <div className="pt-2 border-t border-white/10 flex flex-col gap-2">
-            <Link
-              to="/book-slot"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full gold-gradient-btn py-3 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-2"
-            >
-              <Calendar className="w-4 h-4" />
-              <span>Reserve Showroom Visiting Slot</span>
-            </Link>
+              {/* Navigation Links */}
+              <nav className="space-y-1.5">
+                {navLinks.map((link) => {
+                  const Icon = link.icon;
+                  const active = isActive(link.path);
+                  return (
+                    <Link
+                      key={link.path}
+                      to={link.path}
+                      onClick={() => setMobileDrawerOpen(false)}
+                      className={`flex items-center justify-between p-3.5 rounded-2xl text-sm font-bold transition-all min-touch ${
+                        active
+                          ? 'bg-gold-500/20 text-gold-300 border border-gold-500/40 shadow-sm'
+                          : 'text-slate-300 hover:bg-white/5'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Icon className={`w-4 h-4 ${active ? 'text-gold-400' : 'text-slate-400'}`} />
+                        <span>{link.name}</span>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-slate-500" />
+                    </Link>
+                  );
+                })}
+              </nav>
 
-            <Link
-              to="/portal"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full py-2.5 rounded-xl bg-slate-900 border border-slate-700/60 text-slate-300 text-xs font-semibold text-center flex items-center justify-center gap-2"
-            >
-              <UserCheck className="w-4 h-4 text-gold-400" />
-              <span>Staff & Operations Portal</span>
-            </Link>
+              {/* Showroom Quick Info */}
+              <div className="p-4 rounded-2xl bg-obsidian-950 border border-white/5 space-y-3 text-xs text-slate-300">
+                <span className="font-bold text-gold-400 uppercase tracking-wider text-[10px] block">
+                  Visakhapatnam Flagship
+                </span>
+                <p className="text-[11px] leading-relaxed text-slate-300">
+                  {SHOWROOM_CONTACT.shortAddress}
+                </p>
+                <div className="flex items-center gap-2 text-slate-400 text-[11px]">
+                  <Clock className="w-3.5 h-3.5 text-gold-400 shrink-0" />
+                  <span>09:00 AM – 09:30 PM (All 7 Days)</span>
+                </div>
+                <a
+                  href={`tel:${SHOWROOM_CONTACT.phone.replace(/[^0-9+]/g, '')}`}
+                  className="flex items-center gap-2 text-gold-300 font-bold text-xs pt-1"
+                >
+                  <Phone className="w-3.5 h-3.5" />
+                  <span>Call: {SHOWROOM_CONTACT.phone}</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Drawer Bottom Actions */}
+            <div className="pt-6 border-t border-white/10 space-y-2.5 pb-safe">
+              <Link
+                to="/portal"
+                onClick={() => setMobileDrawerOpen(false)}
+                className="w-full py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-bold flex items-center justify-center gap-2 min-touch shadow-sm"
+              >
+                <UserCheck className="w-4 h-4 text-amber-400" />
+                <span>Staff & Management Workstation</span>
+              </Link>
+
+              <div className="flex items-center justify-center gap-1.5 text-[10px] text-emerald-400 pt-1">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>PESO Licensed Showroom Facility</span>
+              </div>
+            </div>
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 };

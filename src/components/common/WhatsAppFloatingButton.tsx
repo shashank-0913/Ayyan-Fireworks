@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MessageCircle, X, Send, MapPin, FileText, Calendar } from 'lucide-react';
-import { getWhatsAppUrl } from '../../lib/utils';
+import { getWhatsAppUrl, SHOWROOM_CONTACT } from '../../lib/utils';
 
 export const WhatsAppFloatingButton: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +20,7 @@ export const WhatsAppFloatingButton: React.FC = () => {
     {
       icon: MapPin,
       label: "Showroom Directions & Parking",
-      text: "Hi, I am planning a visit to your Sivakasi showroom. Could you share directions and parking instructions?"
+      text: `Hi, I am planning a visit to your Visakhapatnam showroom (${SHOWROOM_CONTACT.address}). Could you share directions and parking instructions?`
     },
   ];
 
@@ -38,13 +38,13 @@ export const WhatsAppFloatingButton: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    <div className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col items-end mb-safe">
       {/* Pop-out Assistant Modal */}
       {isOpen && (
-        <div className="mb-3 w-80 sm:w-96 rounded-2xl glass-panel-gold border border-gold-500/30 p-4 shadow-glow-gold-lg backdrop-blur-2xl animate-float transition-all">
+        <div className="mb-3 w-[calc(100vw-2rem)] max-w-sm sm:w-96 rounded-2xl glass-panel-gold border border-gold-500/30 p-4 shadow-glow-gold-lg backdrop-blur-2xl animate-float transition-all">
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+              <div className="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
                 <MessageCircle className="w-5 h-5" />
               </div>
               <div>
@@ -57,25 +57,26 @@ export const WhatsAppFloatingButton: React.FC = () => {
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
+              aria-label="Close Concierge"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
           <div className="py-3 text-xs text-slate-300">
-            <p className="mb-2.5 text-slate-300/90">
+            <p className="mb-2.5 text-slate-300/90 leading-relaxed">
               Welcome to Ayyan Fireworks direct customer advisory. Select a quick inquiry below or type a custom message:
             </p>
 
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               {QUICK_PROMPTS.map((prompt, i) => {
                 const Icon = prompt.icon;
                 return (
                   <button
                     key={i}
                     onClick={() => handleSendPrompt(prompt.text)}
-                    className="w-full text-left p-2.5 rounded-xl bg-obsidian-900/80 hover:bg-gold-500/10 border border-white/5 hover:border-gold-500/30 text-xs text-slate-200 transition-all flex items-center gap-2.5 group"
+                    className="w-full text-left p-2.5 rounded-xl bg-obsidian-900/80 hover:bg-gold-500/10 border border-white/5 hover:border-gold-500/30 text-xs text-slate-200 transition-all flex items-center gap-2.5 group min-h-[44px]"
                   >
                     <Icon className="w-4 h-4 text-gold-400 group-hover:scale-110 transition-transform shrink-0" />
                     <span className="flex-1 font-medium group-hover:text-gold-300">{prompt.label}</span>
@@ -92,11 +93,11 @@ export const WhatsAppFloatingButton: React.FC = () => {
               value={customMsg}
               onChange={(e) => setCustomMsg(e.target.value)}
               placeholder="Ask showroom team..."
-              className="flex-1 bg-obsidian-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-gold-500"
+              className="flex-1 bg-obsidian-950 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-gold-500 min-h-[44px]"
             />
             <button
               type="submit"
-              className="p-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-md flex items-center justify-center shrink-0"
+              className="px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-md flex items-center justify-center shrink-0 min-h-[44px] min-w-[44px]"
               title="Send via WhatsApp"
             >
               <Send className="w-4 h-4" />
@@ -108,7 +109,7 @@ export const WhatsAppFloatingButton: React.FC = () => {
       {/* Floating Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="group relative flex items-center gap-3 px-4 py-3 rounded-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 text-white font-bold text-xs shadow-lg shadow-emerald-950/80 hover:shadow-emerald-500/40 hover:scale-105 active:scale-95 transition-all duration-300 border border-emerald-400/30 backdrop-blur-md"
+        className="group relative flex items-center gap-3 px-4 py-3 rounded-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 text-white font-bold text-xs shadow-lg shadow-emerald-950/80 hover:shadow-emerald-500/40 hover:scale-105 active:scale-95 transition-all duration-300 border border-emerald-400/30 backdrop-blur-md min-h-[48px]"
         aria-label="Ayyan Fireworks WhatsApp Showroom Concierge"
       >
         <span className="relative flex items-center justify-center">

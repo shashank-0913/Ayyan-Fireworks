@@ -178,10 +178,10 @@ export const SlotBookingFlow: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 pb-12">
       {/* Step Indicator Header */}
       <div className="relative">
-        <div className="flex items-center justify-between max-w-xl mx-auto">
+        <div className="flex items-center justify-between max-w-xl mx-auto px-2">
           {[
             { step: 1, title: 'Visiting Date' },
             { step: 2, title: 'Time & Guests' },
@@ -192,11 +192,12 @@ export const SlotBookingFlow: React.FC = () => {
             return (
               <div key={item.step} className="flex flex-col items-center relative z-10">
                 <button
+                  type="button"
                   onClick={() => {
                     if (item.step < currentStep) setCurrentStep(item.step as 1 | 2 | 3);
                   }}
                   disabled={item.step > currentStep}
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${
+                  className={`w-11 h-11 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 min-h-[44px] min-w-[44px] ${
                     isCurrent
                       ? 'bg-gradient-to-r from-gold-400 to-amber-500 text-obsidian-950 ring-4 ring-gold-500/20 shadow-glow-gold'
                       : isCompleted
@@ -206,7 +207,7 @@ export const SlotBookingFlow: React.FC = () => {
                 >
                   {isCompleted ? <CheckCircle2 className="w-5 h-5" /> : item.step}
                 </button>
-                <span className={`text-xs mt-2 font-semibold ${isCurrent ? 'text-gold-300' : 'text-slate-400'}`}>
+                <span className={`text-[11px] sm:text-xs mt-2 font-semibold text-center ${isCurrent ? 'text-gold-300' : 'text-slate-400'}`}>
                   {item.title}
                 </span>
               </div>
@@ -220,7 +221,7 @@ export const SlotBookingFlow: React.FC = () => {
 
       {/* Emergency Lockdown Notice */}
       {isEmergencyBlocked && (
-        <div className="p-4 rounded-2xl bg-red-950/40 border border-red-500/40 text-red-200 text-sm flex items-center gap-3">
+        <div className="p-4 rounded-2xl bg-red-950/40 border border-red-500/40 text-red-200 text-xs sm:text-sm flex items-center gap-3">
           <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
           <span>
             Visiting reservations are temporarily on hold due to high showroom density. Please contact the concierge directly.
@@ -230,18 +231,18 @@ export const SlotBookingFlow: React.FC = () => {
 
       {/* STEP 1: Date Picker */}
       {currentStep === 1 && (
-        <div className="glass-panel-gold rounded-3xl p-6 sm:p-8 space-y-6 animate-in fade-in duration-300">
+        <div className="glass-panel-gold rounded-3xl p-5 sm:p-8 space-y-6 animate-in fade-in duration-300">
           <div className="space-y-1">
-            <h3 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
-              <CalendarIcon className="w-6 h-6 text-gold-400" />
-              Step 1: Select Your Preferred Visiting Date
+            <h3 className="text-lg sm:text-2xl font-bold text-white flex items-center gap-2">
+              <CalendarIcon className="w-5 h-5 sm:w-6 sm:h-6 text-gold-400 shrink-0" />
+              <span>Step 1: Select Your Visiting Date</span>
             </h3>
             <p className="text-xs sm:text-sm text-slate-300">
-              Showroom visiting slots are open for the next 14 festive days in Sivakasi. Pick a date to view available time windows.
+              Showroom visiting slots are open for the next 14 festive days. Tap a date below to view available time windows:
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2.5 sm:gap-3">
             {availableDates.map((dateStr) => {
               const daySlots = slots.filter(s => s.slot_date === dateStr);
               const totalRem = daySlots.reduce((acc, s) => acc + (s.is_blocked ? 0 : s.total_capacity - s.booked_capacity), 0);
@@ -261,8 +262,9 @@ export const SlotBookingFlow: React.FC = () => {
               return (
                 <button
                   key={dateStr}
+                  type="button"
                   onClick={() => handleDateSelect(dateStr)}
-                  className={`p-3.5 rounded-2xl border text-center transition-all duration-200 flex flex-col items-center justify-between min-h-[110px] group ${
+                  className={`p-3 rounded-2xl border text-center transition-all duration-200 flex flex-col items-center justify-between min-h-[105px] group active:scale-95 ${
                     isSelected
                       ? 'bg-gold-500/20 border-gold-400 ring-2 ring-gold-400/30 shadow-glow-gold'
                       : 'bg-obsidian-900/80 border-white/10 hover:border-gold-500/40 hover:bg-white/5'
@@ -273,7 +275,7 @@ export const SlotBookingFlow: React.FC = () => {
                   </span>
                   
                   <div className="my-1">
-                    <span className="text-xl font-extrabold text-white block">
+                    <span className="text-xl sm:text-2xl font-extrabold text-white block">
                       {new Date(dateStr).getDate()}
                     </span>
                     <span className="text-[10px] text-slate-400 uppercase">
@@ -281,7 +283,7 @@ export const SlotBookingFlow: React.FC = () => {
                     </span>
                   </div>
 
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${badgeColor}`}>
+                  <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${badgeColor}`}>
                     {badgeText}
                   </span>
                 </button>
@@ -289,8 +291,8 @@ export const SlotBookingFlow: React.FC = () => {
             })}
           </div>
 
-          <div className="flex items-center justify-between pt-4 border-t border-white/10 text-xs text-slate-400">
-            <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center justify-between pt-4 border-t border-white/10 text-xs text-slate-400 gap-2">
+            <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
               <span className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
                 Available
@@ -310,12 +312,12 @@ export const SlotBookingFlow: React.FC = () => {
 
       {/* STEP 2: Time Slot & Guest Count */}
       {currentStep === 2 && (
-        <div className="glass-panel-gold rounded-3xl p-6 sm:p-8 space-y-6 animate-in fade-in duration-300">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/10 gap-2">
+        <div className="glass-panel-gold rounded-3xl p-5 sm:p-8 space-y-6 animate-in fade-in duration-300">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/10 gap-3">
             <div>
-              <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                <Clock className="w-5 h-5 text-gold-400" />
-                Step 2: Choose Time Window & Number of Visitors
+              <h3 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                <Clock className="w-5 h-5 text-gold-400 shrink-0" />
+                <span>Step 2: Choose Time Window & Guests</span>
               </h3>
               <p className="text-xs text-slate-300">
                 Selected Date: <strong className="text-gold-300">{formatDateReadable(selectedDate)}</strong>
@@ -323,8 +325,9 @@ export const SlotBookingFlow: React.FC = () => {
             </div>
 
             <button
+              type="button"
               onClick={() => setCurrentStep(1)}
-              className="text-xs text-slate-400 hover:text-gold-300 flex items-center gap-1 underline underline-offset-4"
+              className="text-xs text-slate-400 hover:text-gold-300 flex items-center gap-1.5 py-1 min-h-[36px] underline underline-offset-4"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Change Date</span>
@@ -332,10 +335,10 @@ export const SlotBookingFlow: React.FC = () => {
           </div>
 
           {/* Guest Count Selector */}
-          <div className="p-4 rounded-2xl bg-obsidian-900 border border-white/10 space-y-2">
+          <div className="p-4 rounded-2xl bg-obsidian-900 border border-white/10 space-y-2.5">
             <label className="text-xs font-bold text-gold-400 uppercase tracking-wider flex items-center gap-1.5">
               <Users className="w-4 h-4 text-gold-400" />
-              Number of Persons Visiting Together
+              <span>Number of Persons Visiting Together</span>
             </label>
             <div className="flex flex-wrap items-center gap-2">
               {[1, 2, 3, 4, 5, 6, 8, 10].map((num) => (
@@ -348,7 +351,7 @@ export const SlotBookingFlow: React.FC = () => {
                       setSelectedSlotId('');
                     }
                   }}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                  className={`px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all min-h-[44px] flex items-center justify-center ${
                     visitorCount === num
                       ? 'bg-gold-500 text-obsidian-950 shadow-glow-gold'
                       : 'bg-obsidian-950 border border-white/10 text-slate-300 hover:border-gold-500/40'
@@ -360,7 +363,7 @@ export const SlotBookingFlow: React.FC = () => {
             </div>
           </div>
 
-          {/* Time Slots Grid */}
+          {/* Time Slots Grid (2-column on mobile, 3-column on desktop) */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider">
               1-Hour Showroom Visiting Windows
@@ -379,7 +382,7 @@ export const SlotBookingFlow: React.FC = () => {
                     type="button"
                     disabled={!canAccommodate}
                     onClick={() => handleSlotSelect(slot)}
-                    className={`p-4 rounded-2xl border text-left transition-all duration-200 relative overflow-hidden ${
+                    className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all duration-200 relative overflow-hidden min-h-[88px] active:scale-[0.98] ${
                       isSelected
                         ? 'bg-gold-500/20 border-gold-400 ring-2 ring-gold-400/40 shadow-glow-gold'
                         : canAccommodate
@@ -439,18 +442,20 @@ export const SlotBookingFlow: React.FC = () => {
           </div>
 
           {/* Navigation Action */}
-          <div className="flex items-center justify-between pt-4 border-t border-white/10">
+          <div className="flex items-center justify-between pt-4 border-t border-white/10 gap-3">
             <button
+              type="button"
               onClick={() => setCurrentStep(1)}
-              className="px-4 py-2.5 rounded-xl border border-white/10 text-slate-300 hover:text-white text-xs font-semibold"
+              className="px-4 py-3 rounded-xl border border-white/10 text-slate-300 hover:text-white text-xs font-semibold min-h-[44px]"
             >
-              Back to Date Selection
+              Back to Dates
             </button>
 
             <button
+              type="button"
               onClick={handleProceedToDetails}
               disabled={!selectedSlotId}
-              className={`px-6 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 ${
+              className={`px-6 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 min-h-[44px] ${
                 selectedSlotId
                   ? 'gold-gradient-btn'
                   : 'bg-obsidian-900 border border-white/10 text-slate-500 cursor-not-allowed'
@@ -465,12 +470,12 @@ export const SlotBookingFlow: React.FC = () => {
 
       {/* STEP 3: Guest Details Form */}
       {currentStep === 3 && (
-        <form onSubmit={handleFormSubmit} className="glass-panel-gold rounded-3xl p-6 sm:p-8 space-y-6 animate-in fade-in duration-300">
-          <div className="flex items-center justify-between pb-4 border-b border-white/10">
+        <form onSubmit={handleFormSubmit} className="glass-panel-gold rounded-3xl p-5 sm:p-8 space-y-6 animate-in fade-in duration-300">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/10 gap-3">
             <div>
-              <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                <User className="w-5 h-5 text-gold-400" />
-                Step 3: Primary Visitor Information
+              <h3 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                <User className="w-5 h-5 text-gold-400 shrink-0" />
+                <span>Step 3: Primary Visitor Information</span>
               </h3>
               <p className="text-xs text-slate-300">
                 A digital VIP pass with QR code will be generated for in-store priority entry.
@@ -480,7 +485,7 @@ export const SlotBookingFlow: React.FC = () => {
             <button
               type="button"
               onClick={() => setCurrentStep(2)}
-              className="text-xs text-slate-400 hover:text-gold-300 flex items-center gap-1 underline underline-offset-4"
+              className="text-xs text-slate-400 hover:text-gold-300 flex items-center gap-1.5 py-1 min-h-[36px] underline underline-offset-4"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Change Slot</span>
@@ -489,31 +494,31 @@ export const SlotBookingFlow: React.FC = () => {
 
           {/* Selected Booking Summary Pill */}
           {selectedSlot && (
-            <div className="p-4 rounded-2xl bg-obsidian-900/90 border border-gold-500/30 flex flex-wrap items-center justify-between gap-4">
+            <div className="p-4 rounded-2xl bg-obsidian-900/90 border border-gold-500/30 flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400">
+                <div className="w-10 h-10 rounded-xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 shrink-0">
                   <Flame className="w-5 h-5" />
                 </div>
                 <div>
                   <span className="text-[10px] uppercase font-bold text-gold-400 tracking-wider">Reserved Visiting Window</span>
-                  <p className="text-sm font-bold text-white">
+                  <p className="text-xs sm:text-sm font-bold text-white">
                     {formatDateReadable(selectedSlot.slot_date)} • {formatTime(selectedSlot.start_time)} to {formatTime(selectedSlot.end_time)}
                   </p>
                 </div>
               </div>
 
-              <div className="px-3 py-1 rounded-xl bg-gold-500/15 border border-gold-500/30 text-gold-300 font-bold text-xs">
+              <div className="px-3 py-1.5 rounded-xl bg-gold-500/15 border border-gold-500/30 text-gold-300 font-bold text-xs">
                 {visitorCount} {visitorCount === 1 ? 'Person' : 'Persons'}
               </div>
             </div>
           )}
 
-          {/* Form Inputs */}
+          {/* Form Inputs (with text-base on mobile to avoid iOS Safari zoom) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                 <User className="w-3.5 h-3.5 text-gold-400" />
-                Full Name of Primary Visitor *
+                <span>Full Name of Primary Visitor *</span>
               </label>
               <input
                 type="text"
@@ -521,25 +526,27 @@ export const SlotBookingFlow: React.FC = () => {
                 value={guestName}
                 onChange={(e) => setGuestName(e.target.value)}
                 placeholder="e.g. Anand Ramanathan"
-                className="w-full bg-obsidian-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-gold-500 transition-colors"
+                className="w-full bg-obsidian-950 border border-white/10 rounded-xl px-4 py-3 text-base sm:text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-gold-500 transition-colors min-h-[48px]"
               />
             </div>
 
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                 <Phone className="w-3.5 h-3.5 text-gold-400" />
-                10-Digit Mobile Number (WhatsApp) *
+                <span>10-Digit Mobile Number (WhatsApp) *</span>
               </label>
               <div className="relative">
-                <span className="absolute left-3.5 top-3 text-sm text-slate-400 font-mono">+91</span>
+                <span className="absolute left-3.5 top-3.5 text-base sm:text-sm text-slate-400 font-mono">+91</span>
                 <input
                   type="tel"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   required
                   maxLength={10}
                   value={guestPhone}
                   onChange={(e) => setGuestPhone(e.target.value)}
                   placeholder="9840123456"
-                  className="w-full bg-obsidian-950 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-sm text-white font-mono placeholder:text-slate-500 focus:outline-none focus:border-gold-500 transition-colors"
+                  className="w-full bg-obsidian-950 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-base sm:text-sm text-white font-mono placeholder:text-slate-500 focus:outline-none focus:border-gold-500 transition-colors min-h-[48px]"
                 />
               </div>
             </div>
@@ -547,14 +554,14 @@ export const SlotBookingFlow: React.FC = () => {
             <div className="sm:col-span-2 space-y-1.5">
               <label className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                 <Info className="w-3.5 h-3.5 text-gold-400" />
-                Special Requirements or Celebration Inquiries (Optional)
+                <span>Special Requirements or Celebration Inquiries (Optional)</span>
               </label>
               <textarea
                 rows={2}
                 value={guestNotes}
                 onChange={(e) => setGuestNotes(e.target.value)}
                 placeholder="e.g. Visiting for Diwali family purchase, interested in 120-shot aerial cakes and gift hampers..."
-                className="w-full bg-obsidian-950 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-gold-500 transition-colors"
+                className="w-full bg-obsidian-950 border border-white/10 rounded-xl px-4 py-3 text-base sm:text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-gold-500 transition-colors"
               />
             </div>
           </div>
@@ -577,11 +584,11 @@ export const SlotBookingFlow: React.FC = () => {
           )}
 
           {/* Submit Actions */}
-          <div className="flex items-center justify-between pt-4 border-t border-white/10">
+          <div className="flex items-center justify-between pt-4 border-t border-white/10 gap-3">
             <button
               type="button"
               onClick={() => setCurrentStep(2)}
-              className="px-4 py-2.5 rounded-xl border border-white/10 text-slate-300 hover:text-white text-xs font-semibold"
+              className="px-4 py-3 rounded-xl border border-white/10 text-slate-300 hover:text-white text-xs font-semibold min-h-[44px]"
             >
               Back
             </button>
@@ -589,7 +596,7 @@ export const SlotBookingFlow: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="gold-gradient-btn px-8 py-3 rounded-xl text-xs font-bold flex items-center gap-2 disabled:opacity-50"
+              className="gold-gradient-btn px-6 sm:px-8 py-3.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 disabled:opacity-50 min-h-[48px]"
             >
               {isSubmitting ? (
                 <span>Locking Visiting Slot...</span>

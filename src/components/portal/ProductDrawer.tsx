@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Upload, Trash2, CheckCircle2, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { X, Trash2, CheckCircle2, Image as ImageIcon, Loader2, Camera, Tag, Package } from 'lucide-react';
 import { Product, ProductCategory, PRODUCT_CATEGORIES } from '../../types';
 import { useAyyanStore } from '../../context/AppContext';
 import { uploadProductImage } from '../../lib/supabase';
@@ -86,9 +86,9 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
           name: name.trim(),
           category,
           price: Number(price) || 0,
-          piece_count: pieceCount.trim(),
-          description: description.trim(),
-          safety_instructions: safetyInstructions.trim(),
+          piece_count: pieceCount.trim() || '1 Box',
+          description: description.trim() || 'Authentic Sivakasi fireworks creation.',
+          safety_instructions: safetyInstructions.trim() || 'Keep safe clearance. Place on hard flat ground.',
           image_url: imageUrl,
           is_active: isActive
         });
@@ -98,9 +98,9 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
           name: name.trim(),
           category,
           price: Number(price) || 0,
-          piece_count: pieceCount.trim(),
-          description: description.trim(),
-          safety_instructions: safetyInstructions.trim(),
+          piece_count: pieceCount.trim() || '1 Box',
+          description: description.trim() || 'Authentic Sivakasi fireworks creation.',
+          safety_instructions: safetyInstructions.trim() || 'Keep safe clearance. Place on hard flat ground.',
           image_url: imageUrl,
           is_active: isActive
         });
@@ -110,7 +110,7 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
       setTimeout(() => {
         setToastMessage(null);
         onClose();
-      }, 900);
+      }, 800);
     } catch (err) {
       console.error('Failed to save product:', err);
     } finally {
@@ -129,23 +129,24 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
   return (
     <div className="fixed inset-0 z-50 overflow-hidden bg-slate-950/80 backdrop-blur-md flex justify-end animate-in fade-in duration-200">
       <div 
-        className="w-full max-w-xl bg-slate-900 border-l border-slate-800 h-full flex flex-col shadow-2xl overflow-hidden animate-in slide-in-from-right duration-300"
+        className="w-full sm:max-w-xl bg-slate-900 border-l border-slate-800 h-full flex flex-col shadow-2xl overflow-hidden animate-in slide-in-from-right duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Drawer Header */}
-        <div className="p-6 border-b border-slate-800 flex items-center justify-between bg-slate-900/80">
+        <div className="p-4 sm:p-6 border-b border-slate-800 flex items-center justify-between bg-slate-900/90 sticky top-0 z-20">
           <div>
-            <h3 className="text-lg font-bold text-white">
-              {productToEdit ? 'Edit Product Details' : 'Owner: Add New Product'}
+            <h3 className="text-base sm:text-lg font-bold text-white">
+              {productToEdit ? 'Edit Product Details' : 'Owner: + Add New Product'}
             </h3>
-            <p className="text-xs text-slate-400">
-              Publish directly to Supabase storage and public 2026 catalogue.
+            <p className="text-[11px] text-slate-400">
+              Directly sync to Supabase storage and 2026 catalogue.
             </p>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
+            aria-label="Close form"
           >
             <X className="w-5 h-5" />
           </button>
@@ -153,65 +154,73 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
 
         {/* Toast alert */}
         {toastMessage && (
-          <div className="mx-6 mt-4 p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold flex items-center gap-2 animate-in fade-in">
+          <div className="mx-4 sm:mx-6 mt-3 p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold flex items-center gap-2 animate-in fade-in">
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
             <span>{toastMessage}</span>
           </div>
         )}
 
-        {/* Drawer Form */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-6 text-xs">
+        {/* Drawer Form Body */}
+        <form id="product-form" onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 text-xs">
           {/* ========================================================================= */}
           {/* SECTION 1: MEDIA & IDENTITY                                               */}
           {/* ========================================================================= */}
-          <div className="space-y-4 p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
+          <div className="space-y-3.5 p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
             <h4 className="font-bold text-amber-400 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
               <ImageIcon className="w-4 h-4" />
-              <span>1. Media & Identity</span>
+              <span>1. Product Image & Identity</span>
             </h4>
 
-            {/* Product Image Uploader */}
-            <div className="space-y-2">
-              <label className="font-bold text-slate-300 block">Product Image Uploader (Supabase Storage)</label>
-              <div className="flex items-center gap-4">
-                <div className="relative w-24 h-24 rounded-2xl overflow-hidden bg-slate-900 border border-slate-700 shrink-0 flex items-center justify-center">
+            {/* Product Image Uploader with Native Camera / Gallery Trigger */}
+            <div className="space-y-2.5">
+              <label className="font-bold text-slate-300 block">Product Photo (Camera / Gallery Upload)</label>
+              <div className="flex items-center gap-3.5">
+                <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-slate-900 border border-slate-700 shrink-0 flex items-center justify-center shadow-md">
                   <img src={imageUrl} alt="Preview" className="w-full h-full object-cover" />
                   {isUploadingImage && (
-                    <div className="absolute inset-0 bg-black/70 flex items-center justify-center text-amber-400">
+                    <div className="absolute inset-0 bg-black/75 flex items-center justify-center text-amber-400">
                       <Loader2 className="w-6 h-6 animate-spin" />
                     </div>
                   )}
                 </div>
 
                 <div className="flex-1 space-y-2">
-                  <label className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 cursor-pointer text-xs font-bold transition-colors">
-                    <Upload className="w-4 h-4" />
-                    <span>{isUploadingImage ? 'Uploading to Supabase...' : 'Upload Image File'}</span>
-                    <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" disabled={isUploadingImage} />
-                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    <label className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 cursor-pointer text-xs font-bold transition-colors min-h-[40px]">
+                      <Camera className="w-4 h-4" />
+                      <span>{isUploadingImage ? 'Uploading...' : 'Take Photo / Upload'}</span>
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={handleFileUpload} 
+                        className="hidden" 
+                        disabled={isUploadingImage} 
+                      />
+                    </label>
+                  </div>
 
                   <input
                     type="url"
                     value={imageUrl}
                     onChange={(e) => setImageUrl(e.target.value)}
-                    placeholder="Or enter direct image URL..."
-                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-300 font-mono focus:outline-none focus:border-amber-500"
+                    placeholder="Or paste direct image URL (https://...)"
+                    className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-300 font-mono focus:outline-none focus:border-amber-500 min-h-[38px]"
                   />
                 </div>
               </div>
 
               {/* Quick Preset Images */}
-              <div className="pt-2">
+              <div className="pt-1">
                 <span className="text-[10px] text-slate-500 uppercase font-semibold block mb-1">
                   Or select sample Sivakasi visual:
                 </span>
-                <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                <div className="flex gap-1.5 overflow-x-auto pb-1 no-scrollbar">
                   {PRESET_IMAGES.map((preset, idx) => (
                     <button
                       key={idx}
                       type="button"
                       onClick={() => setImageUrl(preset.url)}
-                      className={`px-2 py-1 rounded-md text-[10px] whitespace-nowrap border transition-all ${
+                      className={`px-2.5 py-1 rounded-lg text-[10px] whitespace-nowrap border transition-all min-h-[30px] ${
                         imageUrl === preset.url
                           ? 'bg-amber-500/20 text-amber-300 border-amber-500/50 font-bold'
                           : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
@@ -225,26 +234,26 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
             </div>
 
             {/* Product Name */}
-            <div className="space-y-1.5">
-              <label className="font-bold text-slate-300">Product Name *</label>
+            <div className="space-y-1.5 pt-1">
+              <label className="font-bold text-slate-300 block">Product Name *</label>
               <input
                 type="text"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. Standard 10cm Electric Sparklers"
-                className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
+                className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-base sm:text-sm text-white focus:outline-none focus:border-amber-500 min-h-[44px]"
               />
             </div>
 
             {/* Category & Pack Count */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <label className="font-bold text-slate-300">Category *</label>
+                <label className="font-bold text-slate-300 block">Category *</label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value as ProductCategory)}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2.5 text-slate-200 focus:outline-none focus:border-amber-500 font-medium"
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500 font-medium min-h-[44px]"
                 >
                   {PRODUCT_CATEGORIES.map(cat => (
                     <option key={cat} value={cat}>{cat}</option>
@@ -253,40 +262,43 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
               </div>
 
               <div className="space-y-1.5">
-                <label className="font-bold text-slate-300">Pack / Piece Quantity *</label>
+                <label className="font-bold text-slate-300 block">Pack / Piece Quantity *</label>
                 <input
                   type="text"
                   required
                   value={pieceCount}
                   onChange={(e) => setPieceCount(e.target.value)}
                   placeholder="e.g. Box of 10 Pieces"
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2.5 text-slate-200 focus:outline-none focus:border-amber-500"
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-base sm:text-xs text-slate-200 focus:outline-none focus:border-amber-500 min-h-[44px]"
                 />
               </div>
             </div>
           </div>
 
           {/* ========================================================================= */}
-          {/* SECTION 2: PRICING                                                        */}
+          {/* SECTION 2: PRICING (Numeric Keypad inputMode="numeric")                    */}
           {/* ========================================================================= */}
-          <div className="space-y-3 p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
-            <h4 className="font-bold text-amber-400 uppercase tracking-wider text-[11px]">
-              2. Pricing
+          <div className="space-y-3 p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
+            <h4 className="font-bold text-amber-400 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+              <Tag className="w-4 h-4" />
+              <span>2. Factory Direct Pricing</span>
             </h4>
 
             <div className="space-y-1.5">
-              <label className="font-bold text-slate-300">Price in ₹ INR *</label>
+              <label className="font-bold text-slate-300 block">Price in ₹ INR *</label>
               <div className="relative">
-                <span className="absolute left-4 top-2.5 text-base font-bold text-amber-400">₹</span>
+                <span className="absolute left-4 top-2.5 text-lg font-bold text-amber-400">₹</span>
                 <input
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   min="0"
                   step="1"
                   required
                   value={price}
                   onChange={(e) => setPrice(e.target.value === '' ? '' : Number(e.target.value))}
                   placeholder="250"
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-8 pr-4 py-2.5 text-lg text-white font-mono font-bold focus:outline-none focus:border-amber-500"
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-4 py-2.5 text-xl text-white font-mono font-bold focus:outline-none focus:border-amber-500 min-h-[48px]"
                 />
               </div>
             </div>
@@ -295,61 +307,62 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
           {/* ========================================================================= */}
           {/* SECTION 3: DESCRIPTION & DETAILS                                          */}
           {/* ========================================================================= */}
-          <div className="space-y-4 p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
-            <h4 className="font-bold text-amber-400 uppercase tracking-wider text-[11px]">
-              3. Description & Details
+          <div className="space-y-4 p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
+            <h4 className="font-bold text-amber-400 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+              <Package className="w-4 h-4" />
+              <span>3. Description & Details</span>
             </h4>
 
             {/* Description & Effects */}
             <div className="space-y-1.5">
-              <label className="font-bold text-slate-300">Full Description & Visual Effects</label>
+              <label className="font-bold text-slate-300 block">Full Description & Visual Effects</label>
               <textarea
                 rows={3}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Describe pyrotechnic performance, colors, sparkles, burn duration, and atmosphere..."
-                className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-amber-500 leading-relaxed"
+                placeholder="Describe pyrotechnic performance, colors, sparkles, burn duration..."
+                className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-base sm:text-xs text-slate-200 focus:outline-none focus:border-amber-500 leading-relaxed"
               />
             </div>
 
             {/* Safety Instructions */}
             <div className="space-y-1.5">
-              <label className="font-bold text-slate-300">Safety Instructions & Guidelines</label>
+              <label className="font-bold text-slate-300 block">Safety Instructions & Guidelines</label>
               <textarea
                 rows={2}
                 value={safetyInstructions}
                 onChange={(e) => setSafetyInstructions(e.target.value)}
-                placeholder="Lighting guidelines, safe clearance radius (e.g. 5m / 10m), ground placement instructions..."
-                className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-amber-500 leading-relaxed"
+                placeholder="Lighting guidelines, safe clearance radius (e.g. 5m / 10m), ground placement..."
+                className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-base sm:text-xs text-slate-200 focus:outline-none focus:border-amber-500 leading-relaxed"
               />
             </div>
 
             {/* Visibility Toggle */}
-            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-900 border border-slate-800">
               <div>
-                <span className="font-bold text-slate-200 block">Active Status</span>
-                <span className="text-[10px] text-slate-400">Make visible to customer catalogue</span>
+                <span className="font-bold text-slate-200 block text-xs">Catalogue Visibility</span>
+                <span className="text-[10px] text-slate-400">Make live to public visitors</span>
               </div>
               <button
                 type="button"
                 onClick={() => setIsActive(!isActive)}
-                className={`w-12 h-6 flex items-center rounded-full p-1 transition-colors ${
+                className={`w-14 h-7 flex items-center rounded-full p-1 transition-colors min-h-[28px] ${
                   isActive ? 'bg-emerald-500 justify-end' : 'bg-slate-800 justify-start'
                 }`}
               >
-                <div className="w-4 h-4 rounded-full bg-white shadow-md" />
+                <div className="w-5 h-5 rounded-full bg-white shadow-md" />
               </button>
             </div>
           </div>
         </form>
 
-        {/* Drawer Actions Footer */}
-        <div className="p-6 border-t border-slate-800 bg-slate-900/80 flex items-center justify-between gap-3">
+        {/* Drawer Actions Sticky Footer with pb-safe */}
+        <div className="p-4 sm:p-6 border-t border-slate-800 bg-slate-900/95 flex items-center justify-between gap-3 sticky bottom-0 z-20 pb-safe">
           {productToEdit ? (
             <button
               type="button"
               onClick={handleDelete}
-              className="px-4 py-2.5 rounded-xl bg-red-950/40 hover:bg-red-900/60 border border-red-500/30 text-red-400 font-bold text-xs flex items-center gap-1.5 transition-colors"
+              className="px-4 py-3 rounded-xl bg-red-950/40 hover:bg-red-900/60 border border-red-500/30 text-red-400 font-bold text-xs flex items-center gap-1.5 transition-colors min-h-[44px]"
             >
               <Trash2 className="w-4 h-4" />
               <span>Delete</span>
@@ -362,14 +375,15 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-xl border border-slate-700 text-slate-300 hover:text-white text-xs font-semibold"
+              className="px-4 py-3 rounded-xl border border-slate-700 text-slate-300 hover:text-white text-xs font-semibold min-h-[44px]"
             >
               Cancel
             </button>
             <button
-              onClick={handleSubmit}
+              form="product-form"
+              type="submit"
               disabled={isSaving || isUploadingImage}
-              className="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors shadow-md disabled:opacity-50"
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-extrabold text-xs transition-colors shadow-md disabled:opacity-50 min-h-[44px]"
             >
               {isSaving ? 'Publishing...' : productToEdit ? 'Update Product' : 'Publish to Catalogue'}
             </button>

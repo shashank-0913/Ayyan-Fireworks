@@ -5,12 +5,12 @@ import { Calendar, Clock, ShieldCheck, MapPin } from 'lucide-react';
 
 export const BookSlotPage: React.FC = () => {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 space-y-8 sm:space-y-10 pb-24 sm:pb-12">
       {/* Header Banner */}
       <div className="text-center max-w-2xl mx-auto space-y-3">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/30 text-gold-300 text-xs font-bold uppercase tracking-wider">
           <Calendar className="w-4 h-4 text-gold-400" />
-          <span>Sivakasi Flagship Visiting Reservation</span>
+          <span>Visakhapatnam Flagship Visiting Reservation</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-display font-extrabold text-white tracking-tight">
           Reserve VIP Showroom Slot

@@ -5,7 +5,7 @@ import { SHOWROOM_CONTACT } from '../../lib/utils';
 
 export const CustomerFooter: React.FC = () => {
   return (
-    <footer className="relative bg-obsidian-950 border-t border-white/[0.08] pt-16 pb-12 overflow-hidden text-slate-400 text-xs">
+    <footer className="relative bg-obsidian-950 border-t border-white/[0.08] pt-12 sm:pt-16 pb-28 sm:pb-12 overflow-hidden text-slate-400 text-xs">
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-gold-500/5 blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
