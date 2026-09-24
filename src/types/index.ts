@@ -1,10 +1,24 @@
 export type ProductCategory = 
   | 'Sparklers'
+  | 'Ground Chakkars'
   | 'Ground Spinners'
+  | 'Flower Pots'
   | 'Flower Pots & Fountains'
+  | 'Sky Rockets'
   | 'Sky Rockets & Missiles'
+  | 'Aerial Multi-Shots'
   | 'Aerial Multi-Shot Cakes'
+  | 'Gift Boxes'
   | 'Curated Family Gift Boxes';
+
+export const PRODUCT_CATEGORIES: ProductCategory[] = [
+  'Sparklers',
+  'Ground Chakkars',
+  'Flower Pots',
+  'Sky Rockets',
+  'Aerial Multi-Shots',
+  'Gift Boxes'
+];
 
 export type SoundLevel = 'Low / Silent' | 'Medium' | 'High Spectacle';
 
@@ -16,8 +30,8 @@ export interface Product {
   piece_count: string;
   description: string;
   safety_instructions: string;
-  safety_tags: string[];
-  sound_level: SoundLevel;
+  safety_tags?: string[];
+  sound_level?: SoundLevel;
   video_url?: string;
   image_url: string;
   is_active: boolean;

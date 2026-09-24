@@ -41,11 +41,11 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const LOCAL_STORAGE_KEYS = {
-  PRODUCTS: 'ayyan_products_v1',
-  SLOTS: 'ayyan_slots_v1',
-  BOOKINGS: 'ayyan_bookings_v1',
-  STAFF_USER: 'ayyan_staff_user_v1',
-  EMERGENCY_BLOCK: 'ayyan_emergency_block_v1',
+  PRODUCTS: 'ayyan_products_clean_v2',
+  SLOTS: 'ayyan_slots_clean_v2',
+  BOOKINGS: 'ayyan_bookings_clean_v2',
+  STAFF_USER: 'ayyan_staff_user_clean_v2',
+  EMERGENCY_BLOCK: 'ayyan_emergency_block_clean_v2',
 };
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -103,7 +103,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem(LOCAL_STORAGE_KEYS.EMERGENCY_BLOCK, JSON.stringify(isEmergencyBlocked));
   }, [isEmergencyBlocked]);
 
-  // Load from Supabase if configured
+  // Load live data from Supabase if configured
   useEffect(() => {
     if (!isSupabaseConfigured || !supabase) return;
     const client = supabase;
@@ -111,18 +111,30 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const fetchSupabaseData = async () => {
       try {
         setIsLoading(true);
-        const { data: dbProducts } = await client.from('products').select('*').order('created_at', { ascending: false });
-        if (dbProducts && dbProducts.length > 0) {
+        const { data: dbProducts, error: prodErr } = await client
+          .from('products')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (!prodErr && dbProducts !== null) {
           setProducts(dbProducts as Product[]);
         }
 
-        const { data: dbSlots } = await client.from('slots').select('*').order('slot_date', { ascending: true });
-        if (dbSlots && dbSlots.length > 0) {
+        const { data: dbSlots, error: slotErr } = await client
+          .from('slots')
+          .select('*')
+          .order('slot_date', { ascending: true });
+
+        if (!slotErr && dbSlots && dbSlots.length > 0) {
           setSlots(dbSlots as Slot[]);
         }
 
-        const { data: dbBookings } = await client.from('bookings').select('*').order('created_at', { ascending: false });
-        if (dbBookings && dbBookings.length > 0) {
+        const { data: dbBookings, error: bookErr } = await client
+          .from('bookings')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (!bookErr && dbBookings !== null) {
           setBookings(dbBookings as Booking[]);
         }
       } catch (err) {
@@ -257,7 +269,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     if (isSupabaseConfigured && supabase) {
       try {
-        await supabase.from('products').insert([newProduct]);
+        const { data, error } = await supabase.from('products').insert([{
+          name: newProduct.name,
+          category: newProduct.category,
+          price: newProduct.price,
+          piece_count: newProduct.piece_count,
+          description: newProduct.description,
+          safety_instructions: newProduct.safety_instructions,
+          safety_tags: newProduct.safety_tags || [],
+          sound_level: newProduct.sound_level || 'Medium',
+          image_url: newProduct.image_url,
+          is_active: newProduct.is_active
+        }]).select();
+
+        if (!error && data && data.length > 0) {
+          const createdFromDb = data[0] as Product;
+          setProducts(prev => [createdFromDb, ...prev]);
+          return createdFromDb;
+        }
       } catch (e) {
         console.warn('Supabase product insert fallback:', e);
       }
@@ -278,7 +307,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return p;
     }));
 
-    if (isSupabaseConfigured && supabase && updated) {
+    if (isSupabaseConfigured && supabase) {
       try {
         await supabase.from('products').update(updates).eq('id', id);
       } catch (e) {
@@ -366,7 +395,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         const endStr = `${String(h + 1).padStart(2, '0')}:00:00`;
         const slotId = `slot-${dateStr}-${String(h).padStart(2, '0')}00`;
 
-        // Check if slot already exists
         const exists = slots.some(s => s.slot_date === dateStr && s.start_time.startsWith(String(h).padStart(2, '0')));
         if (!exists) {
           newSlots.push({
@@ -423,12 +451,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Staff Auth
   const staffLogin = async (email: string, role: StaffUser['role'] = 'manager'): Promise<boolean> => {
-    // Generate staff session
     const staffName = email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
     const user: StaffUser = {
       id: `staff-${Date.now()}`,
       email: email.trim().toLowerCase(),
-      name: staffName || 'Ayyan Staff Member',
+      name: staffName || 'Ayyan Owner / Staff',
       role: role
     };
     setCurrentUser(user);
@@ -441,9 +468,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const resetToDefaultSeed = () => {
     const seedSlots = generateInitialSlots();
-    setProducts(INITIAL_PRODUCTS);
+    setProducts([]);
     setSlots(seedSlots);
-    setBookings(generateInitialBookings(seedSlots));
+    setBookings([]);
     setIsEmergencyBlocked(false);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.PRODUCTS);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.SLOTS);

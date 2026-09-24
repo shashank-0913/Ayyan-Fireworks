@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Sparkles, 
@@ -10,17 +10,17 @@ import {
   MapPin, 
   Award, 
   Users, 
-  ShieldAlert
+  ShieldAlert,
+  Clock,
+  CalendarCheck
 } from 'lucide-react';
 import { useAyyanStore } from '../context/AppContext';
 import { ProductCard } from '../components/customer/ProductCard';
-import { ProductSafetyModal } from '../components/customer/ProductSafetyModal';
 import { LegalComplianceBanner } from '../components/common/LegalComplianceBanner';
 import { Product } from '../types';
 
 export const HomePage: React.FC = () => {
   const { products } = useAyyanStore();
-  const [safetyModalProduct, setSafetyModalProduct] = useState<Product | null>(null);
 
   const featuredProducts = products.filter((p: Product) => p.is_active).slice(0, 6);
 
@@ -99,24 +99,23 @@ export const HomePage: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Link
               to="/catalogue"
-              className="w-full sm:w-auto gold-gradient-btn px-8 py-4 rounded-2xl text-sm font-extrabold flex items-center justify-center gap-2.5 group"
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-gold-500 via-amber-400 to-gold-500 hover:from-gold-400 hover:to-amber-300 text-obsidian-950 font-extrabold text-sm sm:text-base tracking-wide uppercase flex items-center justify-center gap-2.5 transition-all shadow-glow-gold hover:shadow-[0_0_30px_rgba(245,158,11,0.6)] transform hover:-translate-y-0.5"
             >
               <BookOpen className="w-5 h-5 text-obsidian-950" />
-              <span>Browse 2026 Festive Catalogue</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              <span>Explore 2026 Price List</span>
             </Link>
 
             <Link
               to="/book-slot"
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl glass-panel hover:glass-panel-gold border border-gold-500/30 text-gold-300 hover:text-white text-sm font-bold flex items-center justify-center gap-2.5 transition-all shadow-glass"
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-obsidian-900/90 hover:bg-slate-900 border border-gold-500/40 text-gold-300 hover:text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 transition-all hover:border-gold-500 shadow-glass"
             >
               <Calendar className="w-5 h-5 text-gold-400" />
-              <span>Reserve Showroom Slot</span>
+              <span>Reserve Showroom Visit</span>
             </Link>
           </div>
 
-          {/* Trust Strip */}
-          <div className="pt-10 max-w-4xl mx-auto">
+          {/* Trust Highlights Strip */}
+          <div className="pt-12 max-w-5xl mx-auto">
             <div className="glass-panel rounded-2xl p-4 border border-white/[0.08] grid grid-cols-2 md:grid-cols-4 gap-4 text-xs font-semibold text-slate-300">
               <div className="flex items-center justify-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-gold-400 shrink-0" />
@@ -160,7 +159,7 @@ export const HomePage: React.FC = () => {
               2026 Flagship Pyrotechnic Range
             </h2>
             <p className="text-xs sm:text-sm text-slate-400 max-w-xl">
-              From electric low-smoke sparklers to sovereign 120-shot grand aerial display cakes, explore authentic Sivakasi creations.
+              From electric low-smoke sparklers to sovereign grand aerial display cakes, explore authentic Sivakasi creations.
             </p>
           </div>
 
@@ -168,21 +167,49 @@ export const HomePage: React.FC = () => {
             to="/catalogue"
             className="flex items-center gap-2 text-xs font-bold text-gold-400 hover:text-gold-300 group shrink-0"
           >
-            <span>View Full Digital Catalogue ({products.length} Items)</span>
+            <span>View Full Digital Catalogue</span>
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
 
-        {/* Product Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredProducts.map((product: Product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onOpenSafety={(p: Product) => setSafetyModalProduct(p)}
-            />
-          ))}
-        </div>
+        {/* Product Cards Grid or Festive Update Card */}
+        {featuredProducts.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredProducts.map((product: Product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-3xl glass-panel-gold border border-gold-500/30 p-8 sm:p-12 text-center space-y-5 bg-gradient-to-b from-obsidian-900/90 to-obsidian-950">
+            <div className="w-16 h-16 rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center mx-auto text-gold-400 shadow-glow-gold">
+              <Sparkles className="w-8 h-8 animate-pulse" />
+            </div>
+            <div className="space-y-2 max-w-xl mx-auto">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold-500/10 text-gold-300 text-xs font-bold">
+                <Clock className="w-3.5 h-3.5" />
+                <span>2026 Festive Master Curation in Progress</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-bold text-white">
+                Official Season Pricing Updating Shortly
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Our master pyrotechnicians are finalizing the certified festive line-up. Book your priority showroom visit window to experience exclusive previews.
+              </p>
+            </div>
+            <div className="pt-2">
+              <Link
+                to="/book-slot"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gold-500 hover:bg-gold-400 text-obsidian-950 font-bold text-xs uppercase tracking-wider shadow-glow-gold transition-all"
+              >
+                <CalendarCheck className="w-4 h-4" />
+                <span>Reserve Showroom Visiting Slot</span>
+              </Link>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* ========================================================================= */}
@@ -198,23 +225,23 @@ export const HomePage: React.FC = () => {
               Why Celebrations Trust Ayyan Fireworks
             </h2>
             <p className="text-xs sm:text-sm text-slate-400">
-              Engineered with advanced green chemistry and verified quality controls in the fireworks capital of India.
+              Committed to responsible festive heritage and Supreme Court compliant green pyrotechnics.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {TRUST_PILLARS.map((item, i) => {
-              const Icon = item.icon;
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {TRUST_PILLARS.map((pillar, index) => {
+              const Icon = pillar.icon;
               return (
                 <div
-                  key={i}
-                  className="p-6 rounded-2xl bg-obsidian-950/80 border border-white/5 space-y-3 hover:border-gold-500/30 transition-all group"
+                  key={index}
+                  className="rounded-2xl bg-obsidian-950/70 border border-white/5 p-6 space-y-3 hover:border-gold-500/30 transition-colors"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400 group-hover:scale-110 transition-transform">
-                    <Icon className="w-6 h-6" />
+                  <div className="w-10 h-10 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400">
+                    <Icon className="w-5 h-5" />
                   </div>
-                  <h3 className="font-bold text-white text-base leading-snug">{item.title}</h3>
-                  <p className="text-xs text-slate-400 leading-relaxed">{item.description}</p>
+                  <h3 className="font-bold text-slate-100 text-sm">{pillar.title}</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">{pillar.description}</p>
                 </div>
               );
             })}
@@ -223,30 +250,32 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* ========================================================================= */}
-      {/* 5. SAFETY DISCOVERY & SAFE FIRING CIVICS HUB */}
+      {/* 5. SAFETY PROTOCOLS & GUIDELINES */}
       {/* ========================================================================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center max-w-2xl mx-auto space-y-2">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-emerald-400">
-            <ShieldCheck className="w-4 h-4" />
-            <span>Responsible Festive Celebrations</span>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-bold uppercase tracking-wider">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>PESO Standard Guidelines</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            The Ayyan Pyrotechnic Safety Charter
+            Certified Safety First Protocol
           </h2>
           <p className="text-xs sm:text-sm text-slate-400">
-            Every festive joy must be safe for family, neighbours, and community. Please follow these statutory safety protocols.
+            Pyrotechnics should only bring joy. Ensure adherence to essential statutory safety measures.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {SAFETY_RULES.map((rule, idx) => (
             <div
               key={idx}
-              className="p-5 rounded-2xl glass-panel border border-white/[0.08] space-y-2.5 relative overflow-hidden"
+              className="p-5 rounded-2xl bg-obsidian-900/60 border border-white/5 space-y-2 hover:border-emerald-500/30 transition-colors"
             >
-              <div className="text-xl font-black text-gold-400 font-mono">0{idx + 1}</div>
-              <h3 className="text-sm font-bold text-slate-100">{rule.title}</h3>
+              <div className="text-emerald-400 font-mono font-bold text-xs">
+                RULE 0{idx + 1}
+              </div>
+              <h3 className="font-bold text-slate-200 text-sm">{rule.title}</h3>
               <p className="text-xs text-slate-400 leading-relaxed">{rule.desc}</p>
             </div>
           ))}
@@ -254,52 +283,41 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* ========================================================================= */}
-      {/* 6. SHOWROOM VIP VISIT CTA BANNER */}
+      {/* 6. VISIT SIVAKASI SHOWROOM CTA */}
       {/* ========================================================================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-obsidian-900 via-amber-950/40 to-obsidian-900 border-2 border-gold-500/40 p-8 sm:p-12 backdrop-blur-2xl shadow-glow-gold-lg">
-          <div className="absolute -right-10 -bottom-10 w-96 h-96 bg-gold-500/10 rounded-full blur-3xl pointer-events-none" />
-
-          <div className="relative z-10 max-w-3xl space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/15 border border-gold-500/30 text-gold-300 text-xs font-bold">
-              <Sparkles className="w-4 h-4" />
-              <span>Sivakasi Flagship Visiting Experience</span>
+        <div className="relative rounded-3xl overflow-hidden glass-panel-gold p-8 sm:p-14 border border-gold-500/40 text-center space-y-6">
+          <div className="max-w-2xl mx-auto space-y-3">
+            <div className="inline-flex items-center gap-2 text-gold-400 font-bold text-xs uppercase tracking-widest">
+              <MapPin className="w-4 h-4" />
+              <span>Sivakasi Flagship Heritage Experience</span>
             </div>
-
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-              Skip The Crowds. Enjoy A Personalized Fireworks Selection Tour.
+            <h2 className="text-3xl sm:text-5xl font-display font-extrabold text-white tracking-tight">
+              Visit Our Air-Conditioned Showroom
             </h2>
-
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Reserve your free 1-hour VIP Visiting Slot at our Police Station Road Showroom in Sivakasi. Our pyrotechnic consultants will guide you through effect demonstrations, box breakdowns, and statutory vehicle loading.
+            <p className="text-xs sm:text-base text-slate-300 leading-relaxed">
+              Reserve your personalized consultation pass. View physical samples, sound demonstrations, and enjoy priority retail billing.
             </p>
+          </div>
 
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <Link
-                to="/book-slot"
-                className="gold-gradient-btn px-8 py-3.5 rounded-xl text-xs font-extrabold flex items-center gap-2"
-              >
-                <Calendar className="w-4 h-4 text-obsidian-950" />
-                <span>Reserve Free VIP Visiting Pass</span>
-              </Link>
-
-              <Link
-                to="/showroom"
-                className="px-6 py-3.5 rounded-xl bg-obsidian-950 hover:bg-slate-900 border border-white/10 text-slate-200 text-xs font-bold flex items-center gap-2 transition-colors"
-              >
-                <MapPin className="w-4 h-4 text-gold-400" />
-                <span>Showroom Location & Parking Guide</span>
-              </Link>
-            </div>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              to="/book-slot"
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gold-500 hover:bg-gold-400 text-obsidian-950 font-extrabold text-sm uppercase tracking-wide flex items-center justify-center gap-2 shadow-glow-gold transition-all"
+            >
+              <Calendar className="w-4 h-4 text-obsidian-950" />
+              <span>Reserve Visiting Window</span>
+            </Link>
+            <Link
+              to="/showroom"
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-obsidian-950 border border-white/10 text-slate-300 hover:text-white font-bold text-sm flex items-center justify-center gap-2 transition-all hover:border-gold-500/40"
+            >
+              <MapPin className="w-4 h-4 text-gold-400" />
+              <span>Showroom Directions & Hours</span>
+            </Link>
           </div>
         </div>
       </section>
-
-      {/* Safety Modal Drawer */}
-      <ProductSafetyModal
-        product={safetyModalProduct}
-        onClose={() => setSafetyModalProduct(null)}
-      />
     </div>
   );
 };

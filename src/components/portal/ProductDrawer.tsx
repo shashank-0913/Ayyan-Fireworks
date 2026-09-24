@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { X, Upload, Trash2 } from 'lucide-react';
-import { Product, ProductCategory, SoundLevel } from '../../types';
+import { X, Upload, Trash2, CheckCircle2, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { Product, ProductCategory, PRODUCT_CATEGORIES } from '../../types';
 import { useAyyanStore } from '../../context/AppContext';
+import { uploadProductImage } from '../../lib/supabase';
 
 interface ProductDrawerProps {
   isOpen: boolean;
@@ -9,30 +10,15 @@ interface ProductDrawerProps {
   productToEdit?: Product | null;
 }
 
-const CATEGORIES: ProductCategory[] = [
-  'Sparklers',
-  'Ground Spinners',
-  'Flower Pots & Fountains',
-  'Sky Rockets & Missiles',
-  'Aerial Multi-Shot Cakes',
-  'Curated Family Gift Boxes'
-];
-
-const SOUND_LEVELS: SoundLevel[] = ['Low / Silent', 'Medium', 'High Spectacle'];
-
 const PRESET_IMAGES = [
   { label: 'Sparklers', url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=800&q=80' },
-  { label: 'Emerald Sparks', url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?auto=format&fit=crop&w=800&q=80' },
-  { label: 'Chakkars', url: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800&q=80' },
+  { label: 'Emerald Sparklers', url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?auto=format&fit=crop&w=800&q=80' },
+  { label: 'Ground Chakkars', url: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800&q=80' },
   { label: 'Flower Pots', url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=80' },
-  { label: 'Fountains', url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?auto=format&fit=crop&w=800&q=80' },
-  { label: 'Rockets', url: 'https://images.unsplash.com/photo-1569317002804-ab77bcf1bce4?auto=format&fit=crop&w=800&q=80' },
-  { label: 'Missiles', url: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=80' },
-  { label: 'Aerial Cake 12s', url: 'https://images.unsplash.com/photo-1521478706270-f6e9b2d59e3a?auto=format&fit=crop&w=800&q=80' },
-  { label: 'Aerial 30s', url: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80' },
-  { label: 'Gala 120s', url: 'https://images.unsplash.com/photo-1467810563316-b5476525c0f9?auto=format&fit=crop&w=800&q=80' },
-  { label: 'Gift Hamper', url: 'https://images.unsplash.com/photo-1533230807127-716665511457?auto=format&fit=crop&w=800&q=80' },
-  { label: 'VIP Chest', url: 'https://images.unsplash.com/photo-1519751138087-5bf79df62d5b?auto=format&fit=crop&w=800&q=80' },
+  { label: 'Conical Fountains', url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?auto=format&fit=crop&w=800&q=80' },
+  { label: 'Sky Rockets', url: 'https://images.unsplash.com/photo-1569317002804-ab77bcf1bce4?auto=format&fit=crop&w=800&q=80' },
+  { label: 'Aerial Multi-Shots', url: 'https://images.unsplash.com/photo-1521478706270-f6e9b2d59e3a?auto=format&fit=crop&w=800&q=80' },
+  { label: 'Gift Boxes', url: 'https://images.unsplash.com/photo-1533230807127-716665511457?auto=format&fit=crop&w=800&q=80' },
 ];
 
 export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, productToEdit }) => {
@@ -40,15 +26,15 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
 
   const [name, setName] = useState('');
   const [category, setCategory] = useState<ProductCategory>('Sparklers');
-  const [price, setPrice] = useState<number>(250);
-  const [pieceCount, setPieceCount] = useState('10 Pieces / Box');
+  const [price, setPrice] = useState<number | string>(250);
+  const [pieceCount, setPieceCount] = useState('Box of 10 Pieces');
   const [description, setDescription] = useState('');
   const [safetyInstructions, setSafetyInstructions] = useState('');
-  const [safetyTagsStr, setSafetyTagsStr] = useState('Low Smoke, Family Safe, PESO Certified');
-  const [soundLevel, setSoundLevel] = useState<SoundLevel>('Medium');
   const [imageUrl, setImageUrl] = useState(PRESET_IMAGES[0].url);
   const [isActive, setIsActive] = useState(true);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (productToEdit) {
@@ -58,19 +44,15 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
       setPieceCount(productToEdit.piece_count);
       setDescription(productToEdit.description);
       setSafetyInstructions(productToEdit.safety_instructions);
-      setSafetyTagsStr(productToEdit.safety_tags?.join(', ') || '');
-      setSoundLevel(productToEdit.sound_level || 'Medium');
       setImageUrl(productToEdit.image_url);
       setIsActive(productToEdit.is_active);
     } else {
       setName('');
       setCategory('Sparklers');
       setPrice(250);
-      setPieceCount('10 Pieces / Box');
-      setDescription('Certified premium Sivakasi fireworks with vibrant colors and reliable fuse timing.');
-      setSafetyInstructions('Keep clear perimeter of 5 meters. Place on flat hard surface and ignite with agarbatti.');
-      setSafetyTagsStr('Low Smoke, Vibrant Colors, Green Pyrotechnics');
-      setSoundLevel('Low / Silent');
+      setPieceCount('Box of 10 Pieces');
+      setDescription('');
+      setSafetyInstructions('');
       setImageUrl(PRESET_IMAGES[0].url);
       setIsActive(true);
     }
@@ -78,16 +60,19 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
 
   if (!isOpen) return null;
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        setImageUrl(reader.result);
-      }
-    };
-    reader.readAsDataURL(file);
+
+    try {
+      setIsUploadingImage(true);
+      const publicUrl = await uploadProductImage(file);
+      setImageUrl(publicUrl);
+    } catch (err) {
+      console.error('Image upload failed:', err);
+    } finally {
+      setIsUploadingImage(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -95,40 +80,37 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
     if (!name.trim()) return;
 
     setIsSaving(true);
-    const tags = safetyTagsStr
-      .split(',')
-      .map(t => t.trim())
-      .filter(Boolean);
-
     try {
       if (productToEdit) {
         await updateProduct(productToEdit.id, {
           name: name.trim(),
           category,
-          price: Number(price),
+          price: Number(price) || 0,
           piece_count: pieceCount.trim(),
           description: description.trim(),
           safety_instructions: safetyInstructions.trim(),
-          safety_tags: tags,
-          sound_level: soundLevel,
           image_url: imageUrl,
           is_active: isActive
         });
+        setToastMessage('Product updated successfully!');
       } else {
         await addProduct({
           name: name.trim(),
           category,
-          price: Number(price),
+          price: Number(price) || 0,
           piece_count: pieceCount.trim(),
           description: description.trim(),
           safety_instructions: safetyInstructions.trim(),
-          safety_tags: tags,
-          sound_level: soundLevel,
           image_url: imageUrl,
           is_active: isActive
         });
+        setToastMessage('Product published to catalogue!');
       }
-      onClose();
+
+      setTimeout(() => {
+        setToastMessage(null);
+        onClose();
+      }, 900);
     } catch (err) {
       console.error('Failed to save product:', err);
     } finally {
@@ -151,13 +133,13 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
         onClick={(e) => e.stopPropagation()}
       >
         {/* Drawer Header */}
-        <div className="p-6 border-b border-slate-800 flex items-center justify-between bg-slate-900/50">
+        <div className="p-6 border-b border-slate-800 flex items-center justify-between bg-slate-900/80">
           <div>
             <h3 className="text-lg font-bold text-white">
-              {productToEdit ? 'Edit Catalogue Item' : 'Add New Fireworks Product'}
+              {productToEdit ? 'Edit Product Details' : 'Owner: Add New Product'}
             </h3>
             <p className="text-xs text-slate-400">
-              Manage product pricing, safety specifications, and showroom inventory.
+              Publish directly to Supabase storage and public 2026 catalogue.
             </p>
           </div>
 
@@ -169,187 +151,200 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
           </button>
         </div>
 
+        {/* Toast alert */}
+        {toastMessage && (
+          <div className="mx-6 mt-4 p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold flex items-center gap-2 animate-in fade-in">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <span>{toastMessage}</span>
+          </div>
+        )}
+
         {/* Drawer Form */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-5 text-xs">
-          {/* Name & Category */}
-          <div className="space-y-1.5">
-            <label className="font-bold text-slate-300 uppercase tracking-wider">Product Name *</label>
-            <input
-              type="text"
-              required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Royal Golden Palm 30-Shot Cake"
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-6 text-xs">
+          {/* ========================================================================= */}
+          {/* SECTION 1: MEDIA & IDENTITY                                               */}
+          {/* ========================================================================= */}
+          <div className="space-y-4 p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
+            <h4 className="font-bold text-amber-400 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+              <ImageIcon className="w-4 h-4" />
+              <span>1. Media & Identity</span>
+            </h4>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <label className="font-bold text-slate-300 uppercase tracking-wider">Category *</label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value as ProductCategory)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-slate-200 focus:outline-none focus:border-amber-500"
-              >
-                {CATEGORIES.map(cat => (
-                  <option key={cat} value={cat}>{cat}</option>
-                ))}
-              </select>
+            {/* Product Image Uploader */}
+            <div className="space-y-2">
+              <label className="font-bold text-slate-300 block">Product Image Uploader (Supabase Storage)</label>
+              <div className="flex items-center gap-4">
+                <div className="relative w-24 h-24 rounded-2xl overflow-hidden bg-slate-900 border border-slate-700 shrink-0 flex items-center justify-center">
+                  <img src={imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                  {isUploadingImage && (
+                    <div className="absolute inset-0 bg-black/70 flex items-center justify-center text-amber-400">
+                      <Loader2 className="w-6 h-6 animate-spin" />
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex-1 space-y-2">
+                  <label className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 cursor-pointer text-xs font-bold transition-colors">
+                    <Upload className="w-4 h-4" />
+                    <span>{isUploadingImage ? 'Uploading to Supabase...' : 'Upload Image File'}</span>
+                    <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" disabled={isUploadingImage} />
+                  </label>
+
+                  <input
+                    type="url"
+                    value={imageUrl}
+                    onChange={(e) => setImageUrl(e.target.value)}
+                    placeholder="Or enter direct image URL..."
+                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-300 font-mono focus:outline-none focus:border-amber-500"
+                  />
+                </div>
+              </div>
+
+              {/* Quick Preset Images */}
+              <div className="pt-2">
+                <span className="text-[10px] text-slate-500 uppercase font-semibold block mb-1">
+                  Or select sample Sivakasi visual:
+                </span>
+                <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                  {PRESET_IMAGES.map((preset, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setImageUrl(preset.url)}
+                      className={`px-2 py-1 rounded-md text-[10px] whitespace-nowrap border transition-all ${
+                        imageUrl === preset.url
+                          ? 'bg-amber-500/20 text-amber-300 border-amber-500/50 font-bold'
+                          : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
 
+            {/* Product Name */}
             <div className="space-y-1.5">
-              <label className="font-bold text-slate-300 uppercase tracking-wider">Direct Factory Price (₹) *</label>
-              <input
-                type="number"
-                min="0"
-                step="5"
-                required
-                value={price}
-                onChange={(e) => setPrice(Number(e.target.value))}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-200 font-mono font-bold focus:outline-none focus:border-amber-500"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <label className="font-bold text-slate-300 uppercase tracking-wider">Pack Breakdown / Pieces *</label>
+              <label className="font-bold text-slate-300">Product Name *</label>
               <input
                 type="text"
                 required
-                value={pieceCount}
-                onChange={(e) => setPieceCount(e.target.value)}
-                placeholder="e.g. 10 Pcs / Box or 1 Cake"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-slate-200 focus:outline-none focus:border-amber-500"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="e.g. Standard 10cm Electric Sparklers"
+                className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
               />
             </div>
 
-            <div className="space-y-1.5">
-              <label className="font-bold text-slate-300 uppercase tracking-wider">Sound & Smoke Classification</label>
-              <select
-                value={soundLevel}
-                onChange={(e) => setSoundLevel(e.target.value as SoundLevel)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-slate-200 focus:outline-none focus:border-amber-500"
-              >
-                {SOUND_LEVELS.map(lvl => (
-                  <option key={lvl} value={lvl}>{lvl}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Image Selection & Upload */}
-          <div className="space-y-2 p-4 rounded-2xl bg-slate-950 border border-slate-800">
-            <label className="font-bold text-amber-400 uppercase tracking-wider block">
-              Product Image Preview & Presets
-            </label>
-
-            <div className="flex items-center gap-4">
-              <div className="w-24 h-24 rounded-xl overflow-hidden bg-slate-900 border border-slate-700 shrink-0">
-                <img src={imageUrl} alt="Preview" className="w-full h-full object-cover" />
+            {/* Category & Pack Count */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <label className="font-bold text-slate-300">Category *</label>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value as ProductCategory)}
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2.5 text-slate-200 focus:outline-none focus:border-amber-500 font-medium"
+                >
+                  {PRODUCT_CATEGORIES.map(cat => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                </select>
               </div>
 
-              <div className="flex-1 space-y-2">
+              <div className="space-y-1.5">
+                <label className="font-bold text-slate-300">Pack / Piece Quantity *</label>
                 <input
-                  type="url"
-                  value={imageUrl}
-                  onChange={(e) => setImageUrl(e.target.value)}
-                  placeholder="Image URL..."
-                  className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-300 font-mono focus:outline-none focus:border-amber-500"
+                  type="text"
+                  required
+                  value={pieceCount}
+                  onChange={(e) => setPieceCount(e.target.value)}
+                  placeholder="e.g. Box of 10 Pieces"
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2.5 text-slate-200 focus:outline-none focus:border-amber-500"
                 />
-
-                <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 cursor-pointer text-xs font-semibold">
-                  <Upload className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Upload Local Image</span>
-                  <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
-                </label>
-              </div>
-            </div>
-
-            {/* Quick Presets Carousel */}
-            <div className="pt-2">
-              <span className="text-[10px] text-slate-500 uppercase font-semibold block mb-1.5">
-                Quick Sivakasi High-Res Pyrotechnic Presets:
-              </span>
-              <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-                {PRESET_IMAGES.map((preset, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setImageUrl(preset.url)}
-                    className={`px-2.5 py-1 rounded-md text-[11px] whitespace-nowrap border transition-all ${
-                      imageUrl === preset.url
-                        ? 'bg-amber-500/20 text-amber-300 border-amber-500/50 font-bold'
-                        : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
-                    }`}
-                  >
-                    {preset.label}
-                  </button>
-                ))}
               </div>
             </div>
           </div>
 
-          {/* Description */}
-          <div className="space-y-1.5">
-            <label className="font-bold text-slate-300 uppercase tracking-wider">Catalogue Description</label>
-            <textarea
-              rows={2}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Detailed description of effect, colors and fireworks performance..."
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 focus:outline-none focus:border-amber-500"
-            />
-          </div>
+          {/* ========================================================================= */}
+          {/* SECTION 2: PRICING                                                        */}
+          {/* ========================================================================= */}
+          <div className="space-y-3 p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
+            <h4 className="font-bold text-amber-400 uppercase tracking-wider text-[11px]">
+              2. Pricing
+            </h4>
 
-          {/* Safety Instructions & Tags */}
-          <div className="space-y-1.5">
-            <label className="font-bold text-slate-300 uppercase tracking-wider">
-              Safety Guidelines & Firing Distance
-            </label>
-            <textarea
-              rows={2}
-              value={safetyInstructions}
-              onChange={(e) => setSafetyInstructions(e.target.value)}
-              placeholder="Recommended clearance distance and lighting instructions..."
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 focus:outline-none focus:border-amber-500"
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="font-bold text-slate-300 uppercase tracking-wider">
-              Safety Tags (Comma Separated)
-            </label>
-            <input
-              type="text"
-              value={safetyTagsStr}
-              onChange={(e) => setSafetyTagsStr(e.target.value)}
-              placeholder="e.g. Low Smoke, Child Friendly, Green Chemistry"
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 focus:outline-none focus:border-amber-500"
-            />
-          </div>
-
-          {/* Active Status Switch */}
-          <div className="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
-            <div>
-              <span className="font-bold text-slate-200 block">Active in Public Catalogue</span>
-              <span className="text-[11px] text-slate-400">If toggled off, hidden from consumer portal.</span>
+            <div className="space-y-1.5">
+              <label className="font-bold text-slate-300">Price in ₹ INR *</label>
+              <div className="relative">
+                <span className="absolute left-4 top-2.5 text-base font-bold text-amber-400">₹</span>
+                <input
+                  type="number"
+                  min="0"
+                  step="1"
+                  required
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value === '' ? '' : Number(e.target.value))}
+                  placeholder="250"
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-8 pr-4 py-2.5 text-lg text-white font-mono font-bold focus:outline-none focus:border-amber-500"
+                />
+              </div>
             </div>
-            <button
-              type="button"
-              onClick={() => setIsActive(!isActive)}
-              className={`w-12 h-6 flex items-center rounded-full p-1 transition-colors ${
-                isActive ? 'bg-emerald-500 justify-end' : 'bg-slate-800 justify-start'
-              }`}
-            >
-              <div className="w-4 h-4 rounded-full bg-white shadow-md" />
-            </button>
+          </div>
+
+          {/* ========================================================================= */}
+          {/* SECTION 3: DESCRIPTION & DETAILS                                          */}
+          {/* ========================================================================= */}
+          <div className="space-y-4 p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
+            <h4 className="font-bold text-amber-400 uppercase tracking-wider text-[11px]">
+              3. Description & Details
+            </h4>
+
+            {/* Description & Effects */}
+            <div className="space-y-1.5">
+              <label className="font-bold text-slate-300">Full Description & Visual Effects</label>
+              <textarea
+                rows={3}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Describe pyrotechnic performance, colors, sparkles, burn duration, and atmosphere..."
+                className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-amber-500 leading-relaxed"
+              />
+            </div>
+
+            {/* Safety Instructions */}
+            <div className="space-y-1.5">
+              <label className="font-bold text-slate-300">Safety Instructions & Guidelines</label>
+              <textarea
+                rows={2}
+                value={safetyInstructions}
+                onChange={(e) => setSafetyInstructions(e.target.value)}
+                placeholder="Lighting guidelines, safe clearance radius (e.g. 5m / 10m), ground placement instructions..."
+                className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:outline-none focus:border-amber-500 leading-relaxed"
+              />
+            </div>
+
+            {/* Visibility Toggle */}
+            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800">
+              <div>
+                <span className="font-bold text-slate-200 block">Active Status</span>
+                <span className="text-[10px] text-slate-400">Make visible to customer catalogue</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsActive(!isActive)}
+                className={`w-12 h-6 flex items-center rounded-full p-1 transition-colors ${
+                  isActive ? 'bg-emerald-500 justify-end' : 'bg-slate-800 justify-start'
+                }`}
+              >
+                <div className="w-4 h-4 rounded-full bg-white shadow-md" />
+              </button>
+            </div>
           </div>
         </form>
 
         {/* Drawer Actions Footer */}
-        <div className="p-6 border-t border-slate-800 bg-slate-900/50 flex items-center justify-between gap-3">
+        <div className="p-6 border-t border-slate-800 bg-slate-900/80 flex items-center justify-between gap-3">
           {productToEdit ? (
             <button
               type="button"
@@ -373,10 +368,10 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
             </button>
             <button
               onClick={handleSubmit}
-              disabled={isSaving}
+              disabled={isSaving || isUploadingImage}
               className="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors shadow-md disabled:opacity-50"
             >
-              {isSaving ? 'Saving...' : productToEdit ? 'Update Item' : 'Add Item'}
+              {isSaving ? 'Publishing...' : productToEdit ? 'Update Product' : 'Publish to Catalogue'}
             </button>
           </div>
         </div>
