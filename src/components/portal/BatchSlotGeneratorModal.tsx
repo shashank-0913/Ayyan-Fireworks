@@ -15,7 +15,7 @@ export const BatchSlotGeneratorModal: React.FC<BatchSlotGeneratorModalProps> = (
   const [endDate, setEndDate] = useState(getFormattedDateOffset(7));
   const [startHour, setStartHour] = useState(9); // 09:00 AM
   const [endHour, setEndHour] = useState(21); // 09:00 PM
-  const [capacity, setCapacity] = useState(15);
+  const [capacity, setCapacity] = useState(120);
   const [isGenerating, setIsGenerating] = useState(false);
   const [resultCount, setResultCount] = useState<number | null>(null);
 
@@ -126,22 +126,22 @@ export const BatchSlotGeneratorModal: React.FC<BatchSlotGeneratorModalProps> = (
 
             <div className="space-y-1.5">
               <label className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center justify-between">
-                <span>Default Visitor Capacity Per Slot</span>
-                <span className="text-amber-600 dark:text-amber-400 font-mono text-sm">{capacity} Visitors</span>
+                <span>Default Capacity Per Slot</span>
+                <span className="text-amber-600 dark:text-amber-400 font-mono text-sm font-extrabold">{capacity} Max Bookings</span>
               </label>
               <input
                 type="range"
-                min="5"
-                max="50"
+                min="10"
+                max="300"
                 step="5"
                 value={capacity}
                 onChange={(e) => setCapacity(Number(e.target.value))}
                 className="w-full accent-amber-500"
               />
-              <div className="flex justify-between text-[10px] text-slate-500">
-                <span>5 (Intimate)</span>
-                <span>15 (Standard)</span>
-                <span>50 (High Festive Rush)</span>
+              <div className="flex justify-between text-[10px] text-slate-500 font-medium">
+                <span>10 (Intimate)</span>
+                <span className="text-amber-600 dark:text-amber-400 font-bold">120 (Standard Default)</span>
+                <span>300 (Mega Rush)</span>
               </div>
             </div>
 

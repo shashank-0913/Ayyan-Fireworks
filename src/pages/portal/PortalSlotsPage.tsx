@@ -17,7 +17,7 @@ export const PortalSlotsPage: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [isBatchModalOpen, setIsBatchModalOpen] = useState(false);
   const [editingCapacitySlotId, setEditingCapacitySlotId] = useState<string | null>(null);
-  const [tempCapacity, setTempCapacity] = useState<number>(15);
+  const [tempCapacity, setTempCapacity] = useState<number>(120);
 
   // Group slots by unique dates
   const availableDates = useMemo(() => {
@@ -42,7 +42,7 @@ export const PortalSlotsPage: React.FC = () => {
 
   const handleStartEditCapacity = (slot: Slot) => {
     setEditingCapacitySlotId(slot.id);
-    setTempCapacity(slot.total_capacity);
+    setTempCapacity(slot.total_capacity || 120);
   };
 
   const handleSaveCapacity = async (slotId: string) => {
@@ -60,7 +60,7 @@ export const PortalSlotsPage: React.FC = () => {
             Showroom Slot & Capacity Controller
           </h1>
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            Dynamically adjust visitor density, lock time windows, and generate batch schedules.
+            Dynamically adjust visitor density, lock time windows, and generate batch schedules (Default: 120 visitors/slot).
           </p>
         </div>
 
@@ -109,23 +109,23 @@ export const PortalSlotsPage: React.FC = () => {
 
       {/* Schedule Table */}
       <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm">
-        <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-950/60">
+        <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 bg-slate-50 dark:bg-slate-950/60">
           <div className="text-xs text-slate-700 dark:text-slate-300">
             Configured visiting windows for <strong className="text-slate-900 dark:text-white">{formatDateReadable(selectedDate)}</strong>
           </div>
 
           <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
             <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-              Available
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+              <span>Available (0–80)</span>
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-amber-500" />
-              Filling Fast
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+              <span>Filling Fast (81–119)</span>
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-red-500" />
-              Blocked
+              <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
+              <span>FULL (120)</span>
             </span>
           </div>
         </div>
@@ -135,17 +135,26 @@ export const PortalSlotsPage: React.FC = () => {
             <thead className="bg-slate-50 dark:bg-slate-950 text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800 uppercase tracking-wider font-semibold text-[11px]">
               <tr>
                 <th className="px-6 py-4">Time Window</th>
-                <th className="px-4 py-4">Current Bookings</th>
+                <th className="px-4 py-4">Bookings Counter</th>
                 <th className="px-4 py-4">Max Capacity</th>
                 <th className="px-4 py-4">Occupancy</th>
-                <th className="px-4 py-4">Status</th>
+                <th className="px-4 py-4">Status Threshold</th>
                 <th className="px-6 py-4 text-right">Quick Controls</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-800/60">
               {dateSlots.map((slot) => {
-                const remaining = slot.total_capacity - slot.booked_capacity;
-                const percentage = Math.min(100, Math.round((slot.booked_capacity / slot.total_capacity) * 100));
+                const booked = slot.booked_capacity || 0;
+                const total = slot.total_capacity || 120;
+                const remaining = Math.max(0, total - booked);
+                const percentage = Math.min(100, Math.round((booked / total) * 100));
+                
+                // Dynamic thresholds based on 120:
+                // Green ("Available"): 0 - 80 booked
+                // Orange ("Filling Fast"): 81 - 119 booked
+                // Red ("FULL"): 120 booked
+                const isFull = booked >= 120 || booked >= total || remaining <= 0;
+                const isFillingFast = !isFull && (booked >= 81 || (total > 0 && booked / total >= 0.675));
                 const isEditingThis = editingCapacitySlotId === slot.id;
 
                 return (
@@ -158,11 +167,16 @@ export const PortalSlotsPage: React.FC = () => {
                       </div>
                     </td>
 
-                    {/* Booked Guests */}
+                    {/* Bookings Counter: booked_capacity / 120 */}
                     <td className="px-4 py-4">
-                      <span className="font-mono font-bold text-slate-800 dark:text-slate-200">
-                        {slot.booked_capacity} Visitors
-                      </span>
+                      <div className="flex items-center gap-1.5 font-mono font-bold text-slate-900 dark:text-white text-sm">
+                        <span className={isFull ? 'text-red-600 dark:text-red-400' : isFillingFast ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}>
+                          {booked}
+                        </span>
+                        <span className="text-slate-400">/</span>
+                        <span className="text-slate-700 dark:text-slate-300">{total}</span>
+                        <span className="text-[10px] font-normal text-slate-500 ml-0.5">Booked</span>
+                      </div>
                     </td>
 
                     {/* Capacity Editor */}
@@ -172,7 +186,7 @@ export const PortalSlotsPage: React.FC = () => {
                           <input
                             type="number"
                             min={slot.booked_capacity}
-                            max="50"
+                            max="300"
                             value={tempCapacity}
                             onChange={(e) => setTempCapacity(Number(e.target.value))}
                             className="w-16 bg-white dark:bg-slate-950 border border-amber-500 rounded px-2 py-1 text-slate-900 dark:text-slate-200 font-mono text-xs"
@@ -186,7 +200,7 @@ export const PortalSlotsPage: React.FC = () => {
                         </div>
                       ) : (
                         <div className="flex items-center gap-2">
-                          <span className="font-mono text-slate-700 dark:text-slate-300">{slot.total_capacity} Slots</span>
+                          <span className="font-mono text-slate-700 dark:text-slate-300">{slot.total_capacity || 120} Max</span>
                           <button
                             onClick={() => handleStartEditCapacity(slot)}
                             className="text-[10px] text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 underline font-semibold"
@@ -202,31 +216,39 @@ export const PortalSlotsPage: React.FC = () => {
                       <div className="space-y-1">
                         <div className="w-full bg-slate-200 dark:bg-slate-950 h-2 rounded-full overflow-hidden">
                           <div
-                            className={`h-full rounded-full ${
-                              slot.is_blocked ? 'bg-red-500' : percentage >= 100 ? 'bg-slate-400 dark:bg-slate-500' : percentage > 70 ? 'bg-amber-500' : 'bg-emerald-500'
+                            className={`h-full rounded-full transition-all duration-300 ${
+                              slot.is_blocked || isFull 
+                                ? 'bg-red-500' 
+                                : isFillingFast 
+                                ? 'bg-amber-500' 
+                                : 'bg-emerald-500'
                             }`}
                             style={{ width: `${percentage}%` }}
                           />
                         </div>
                         <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">
-                          {percentage}% ({remaining} Remaining)
+                          {percentage}% ({remaining} slots left)
                         </span>
                       </div>
                     </td>
 
-                    {/* Status */}
+                    {/* Status Threshold Badge */}
                     <td className="px-4 py-4">
                       {slot.is_blocked ? (
                         <span className="px-2.5 py-1 rounded-md bg-red-100 dark:bg-red-950/60 border border-red-300 dark:border-red-500/30 text-red-700 dark:text-red-300 font-bold text-[10px]">
                           LOCKED / CLOSED
                         </span>
-                      ) : remaining <= 0 ? (
-                        <span className="px-2.5 py-1 rounded-md bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-400 font-bold text-[10px]">
-                          FULLY BOOKED
+                      ) : isFull ? (
+                        <span className="px-2.5 py-1 rounded-md bg-red-100 dark:bg-red-950/60 border border-red-300 dark:border-red-500/30 text-red-700 dark:text-red-300 font-bold text-[10px]">
+                          FULL (120 Booked)
+                        </span>
+                      ) : isFillingFast ? (
+                        <span className="px-2.5 py-1 rounded-md bg-amber-500/15 border border-amber-500/30 text-amber-800 dark:text-amber-300 font-bold text-[10px]">
+                          FILLING FAST ({booked}/120)
                         </span>
                       ) : (
                         <span className="px-2.5 py-1 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 dark:text-emerald-300 font-bold text-[10px]">
-                          AVAILABLE
+                          AVAILABLE ({booked}/120)
                         </span>
                       )}
                     </td>

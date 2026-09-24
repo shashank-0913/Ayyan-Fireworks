@@ -68,8 +68,10 @@ export const SlotBookingFlow: React.FC = () => {
   };
 
   const handleSlotSelect = (slot: Slot) => {
-    const rem = slot.total_capacity - slot.booked_capacity;
-    if (slot.is_blocked || rem <= 0) return;
+    const booked = slot.booked_capacity || 0;
+    const total = slot.total_capacity || 120;
+    const rem = total - booked;
+    if (slot.is_blocked || rem <= 0 || booked >= 120 || booked >= total) return;
     setSelectedSlotId(slot.id);
     setErrorMessage(null);
   };
@@ -271,10 +273,13 @@ export const SlotBookingFlow: React.FC = () => {
                 {dateSlots.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[440px] overflow-y-auto pr-1">
                     {dateSlots.map((slot) => {
-                      const remaining = slot.total_capacity - slot.booked_capacity;
+                      const booked = slot.booked_capacity || 0;
+                      const total = slot.total_capacity || 120;
+                      const remaining = Math.max(0, total - booked);
                       const status = getSlotStatus(slot);
                       const isSelected = selectedSlotId === slot.id;
-                      const isAvailable = !slot.is_blocked && remaining > 0;
+                      const isFull = booked >= 120 || booked >= total || remaining <= 0;
+                      const isAvailable = !slot.is_blocked && !isFull;
 
                       return (
                         <button
@@ -299,16 +304,16 @@ export const SlotBookingFlow: React.FC = () => {
                             )}
                           </div>
 
-                          {/* Slot Status Pill */}
+                          {/* Slot Status & Dynamic Remaining Capacity */}
                           <div className="pt-2 flex items-center justify-between text-xs">
                             <span className="font-semibold text-[11px] text-slate-600 dark:text-slate-400">
                               {slot.is_blocked ? (
                                 <span className="text-red-600 dark:text-red-400 font-bold">Slot Blocked</span>
-                              ) : remaining <= 0 ? (
-                                <span className="text-slate-500 dark:text-slate-500 font-bold">FULL</span>
+                              ) : isFull ? (
+                                <span className="text-red-600 dark:text-red-400 font-bold">FULL (0 slots left)</span>
                               ) : (
                                 <span className="text-slate-700 dark:text-slate-300 font-medium">
-                                  {remaining} of {slot.total_capacity} slots left
+                                  {remaining} slots left
                                 </span>
                               )}
                             </span>
@@ -317,14 +322,14 @@ export const SlotBookingFlow: React.FC = () => {
                               className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${
                                 slot.is_blocked
                                   ? 'bg-red-100 dark:bg-red-950/60 border-red-300 dark:border-red-500/30 text-red-700 dark:text-red-300'
-                                  : remaining <= 0
-                                  ? 'bg-slate-200 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400'
-                                  : status === 'available'
-                                  ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-800 dark:text-emerald-300'
-                                  : 'bg-amber-500/15 border-amber-500/30 text-amber-800 dark:text-amber-300'
+                                  : isFull
+                                  ? 'bg-red-100 dark:bg-red-950/60 border-red-300 dark:border-red-500/30 text-red-700 dark:text-red-300'
+                                  : status === 'filling_fast'
+                                  ? 'bg-amber-500/15 border-amber-500/30 text-amber-800 dark:text-amber-300'
+                                  : 'bg-emerald-500/15 border-emerald-500/30 text-emerald-800 dark:text-emerald-300'
                               }`}
                             >
-                              {slot.is_blocked ? 'Closed' : remaining <= 0 ? 'Full' : 'Available'}
+                              {slot.is_blocked ? 'Closed' : isFull ? 'FULL' : status === 'filling_fast' ? 'Filling Fast' : 'Available'}
                             </span>
                           </div>
                         </button>

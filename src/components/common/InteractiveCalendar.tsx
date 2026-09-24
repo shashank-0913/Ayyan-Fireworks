@@ -41,15 +41,19 @@ export const InteractiveCalendar: React.FC<InteractiveCalendarProps> = ({
 
   // Aggregate slots availability by date (YYYY-MM-DD)
   const slotAvailabilityByDate = useMemo(() => {
-    const map = new Map<string, { total: number; available: number; isBlocked: boolean }>();
+    const map = new Map<string, { total: number; available: number; isBlocked: boolean; bookedTotal: number; maxTotal: number }>();
     slots.forEach(s => {
-      const existing = map.get(s.slot_date) || { total: 0, available: 0, isBlocked: false };
-      const rem = s.total_capacity - s.booked_capacity;
-      const isAvail = !s.is_blocked && rem > 0;
+      const existing = map.get(s.slot_date) || { total: 0, available: 0, isBlocked: false, bookedTotal: 0, maxTotal: 0 };
+      const booked = s.booked_capacity || 0;
+      const total = s.total_capacity || 120;
+      const rem = total - booked;
+      const isAvail = !s.is_blocked && rem > 0 && booked < 120;
       map.set(s.slot_date, {
         total: existing.total + 1,
         available: existing.available + (isAvail ? rem : 0),
-        isBlocked: existing.isBlocked || s.is_blocked
+        isBlocked: existing.isBlocked || s.is_blocked,
+        bookedTotal: existing.bookedTotal + booked,
+        maxTotal: existing.maxTotal + total
       });
     });
     return map;
@@ -91,6 +95,7 @@ export const InteractiveCalendar: React.FC<InteractiveCalendarProps> = ({
       hasSlots: boolean;
       availableCount: number;
       isFullyBooked: boolean;
+      isFillingFast: boolean;
     }> = [];
 
     for (let day = 1; day <= daysInMonth; day++) {
@@ -109,6 +114,10 @@ export const InteractiveCalendar: React.FC<InteractiveCalendarProps> = ({
       const hasSlots = Boolean(slotInfo && slotInfo.total > 0);
       const availableCount = slotInfo?.available || 0;
       const isFullyBooked = hasSlots && availableCount <= 0;
+      const isFillingFast = hasSlots && !isFullyBooked && (
+        (slotInfo && slotInfo.maxTotal > 0 && slotInfo.bookedTotal / slotInfo.maxTotal >= 0.675) ||
+        availableCount < (slotInfo ? slotInfo.total * 40 : 40)
+      );
 
       cells.push({
         dayNumber: day,
@@ -118,7 +127,8 @@ export const InteractiveCalendar: React.FC<InteractiveCalendarProps> = ({
         isSelected,
         hasSlots,
         availableCount,
-        isFullyBooked
+        isFullyBooked,
+        isFillingFast
       });
     }
 
@@ -189,8 +199,8 @@ export const InteractiveCalendar: React.FC<InteractiveCalendarProps> = ({
             isToday,
             isSelected,
             hasSlots,
-            availableCount,
-            isFullyBooked
+            isFullyBooked,
+            isFillingFast
           } = cell;
 
           const isDisabled = isPast;
@@ -222,9 +232,9 @@ export const InteractiveCalendar: React.FC<InteractiveCalendarProps> = ({
                         ? 'bg-slate-950'
                         : isFullyBooked
                         ? 'bg-red-500'
-                        : availableCount > 10
-                        ? 'bg-emerald-500 dark:bg-emerald-400'
-                        : 'bg-amber-500'
+                        : isFillingFast
+                        ? 'bg-amber-500'
+                        : 'bg-emerald-500 dark:bg-emerald-400'
                     }`}
                   />
                 </span>

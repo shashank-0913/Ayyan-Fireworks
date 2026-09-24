@@ -132,8 +132,13 @@ export const PortalDashboardPage: React.FC = () => {
           <div className="space-y-3 max-h-[380px] overflow-y-auto pr-1">
             {todaySlots.length > 0 ? (
               todaySlots.map((slot) => {
-                const percentage = Math.min(100, Math.round((slot.booked_capacity / slot.total_capacity) * 100));
-                const isFull = percentage >= 100;
+                const booked = slot.booked_capacity || 0;
+                const total = slot.total_capacity || 120;
+                const remaining = Math.max(0, total - booked);
+                const percentage = Math.min(100, Math.round((booked / total) * 100));
+                const isFull = booked >= 120 || booked >= total || remaining <= 0;
+                const isFillingFast = !isFull && (booked >= 81 || (total > 0 && booked / total >= 0.675));
+
                 return (
                   <div
                     key={slot.id}
@@ -149,12 +154,16 @@ export const PortalDashboardPage: React.FC = () => {
                             BLOCKED
                           </span>
                         ) : isFull ? (
-                          <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 bg-slate-200 dark:bg-slate-800 px-2 py-0.5 rounded">
-                            FULL ({slot.booked_capacity}/{slot.total_capacity})
+                          <span className="text-[10px] font-bold text-red-700 dark:text-red-300 bg-red-100 dark:bg-red-950/60 px-2 py-0.5 rounded border border-red-300 dark:border-red-500/30">
+                            FULL ({booked}/{total})
+                          </span>
+                        ) : isFillingFast ? (
+                          <span className="text-[10px] font-bold text-amber-700 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/60 px-2 py-0.5 rounded border border-amber-300 dark:border-amber-500/30">
+                            FILLING FAST ({booked}/{total})
                           </span>
                         ) : (
                           <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-500/30">
-                            {slot.booked_capacity}/{slot.total_capacity} Booked
+                            {booked}/{total} Booked
                           </span>
                         )}
                       </div>
@@ -163,7 +172,11 @@ export const PortalDashboardPage: React.FC = () => {
                     <div className="w-full bg-slate-200 dark:bg-slate-900 h-2 rounded-full overflow-hidden">
                       <div
                         className={`h-full rounded-full transition-all duration-500 ${
-                          slot.is_blocked ? 'bg-red-500' : isFull ? 'bg-slate-400 dark:bg-slate-500' : percentage > 70 ? 'bg-amber-500' : 'bg-emerald-500'
+                          slot.is_blocked || isFull 
+                            ? 'bg-red-500' 
+                            : isFillingFast 
+                            ? 'bg-amber-500' 
+                            : 'bg-emerald-500'
                         }`}
                         style={{ width: `${percentage}%` }}
                       />

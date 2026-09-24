@@ -41,9 +41,12 @@ export type SlotAvailabilityStatus = 'available' | 'filling_fast' | 'fully_booke
 
 export function getSlotStatus(slot: Slot): SlotAvailabilityStatus {
   if (slot.is_blocked) return 'blocked';
-  const remaining = slot.total_capacity - slot.booked_capacity;
-  if (remaining <= 0) return 'fully_booked';
-  if (remaining <= 4) return 'filling_fast';
+  const booked = slot.booked_capacity || 0;
+  const total = slot.total_capacity || 120;
+  const remaining = total - booked;
+
+  if (remaining <= 0 || booked >= 120 || booked >= total) return 'fully_booked';
+  if (booked >= 81 || (total > 0 && booked / total >= 0.675)) return 'filling_fast';
   return 'available';
 }
 
