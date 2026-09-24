@@ -13,12 +13,14 @@ export const CustomerFooter: React.FC = () => {
           {/* Brand Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="h-14 w-auto bg-white/95 rounded-xl p-1 shadow-glow-gold border border-gold-400/40 flex items-center justify-center">
-                <img
-                  src="/ayyan-logo.png"
-                  alt="Ayyan Fireworks - Bunny Brand Since 1987"
-                  className="h-12 w-auto object-contain"
-                />
+              <div className="w-14 h-14 bg-gradient-to-br from-amber-400 via-amber-500 to-gold-600 rounded-2xl p-0.5 shadow-glow-gold border border-gold-400/40 flex items-center justify-center">
+                <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center p-1">
+                  <img
+                    src="/ayyan-emblem.png"
+                    alt="Bunny Brand"
+                    className="w-full h-full object-contain rounded-full"
+                  />
+                </div>
               </div>
               <div>
                 <span className="font-display font-black text-xl tracking-tight text-white block">

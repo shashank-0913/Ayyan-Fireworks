@@ -52,8 +52,10 @@ export const PortalLoginPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans selection:bg-amber-500/30 selection:text-amber-200">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-3">
-        <div className="h-16 w-auto bg-white/95 rounded-2xl p-1.5 border border-amber-500/40 inline-flex items-center justify-center mx-auto shadow-glow-gold">
-          <img src="/ayyan-logo.png" alt="Ayyan Fireworks" className="h-13 w-auto object-contain" />
+        <div className="w-18 h-18 bg-gradient-to-br from-amber-400 via-amber-500 to-gold-600 rounded-3xl p-1 border border-amber-500/40 inline-flex items-center justify-center mx-auto shadow-glow-gold">
+          <div className="w-full h-full bg-slate-950 rounded-[20px] flex items-center justify-center p-1">
+            <img src="/ayyan-emblem.png" alt="Bunny Brand" className="w-full h-full object-contain rounded-full" />
+          </div>
         </div>
 
         <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">

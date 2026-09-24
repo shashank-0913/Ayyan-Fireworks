@@ -64,8 +64,10 @@ export const PortalLayout: React.FC = () => {
           <div className="flex items-center justify-between h-16">
             {/* Logo & Portal Badge */}
             <div className="flex items-center gap-3">
-              <div className="h-10 w-auto bg-white/95 rounded-lg p-0.5 border border-amber-400/40 flex items-center justify-center">
-                <img src="/ayyan-logo.png" alt="Ayyan Fireworks" className="h-9 w-auto object-contain" />
+              <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-gold-600 rounded-xl p-0.5 border border-amber-400/40 flex items-center justify-center">
+                <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center p-0.5">
+                  <img src="/ayyan-emblem.png" alt="Bunny Brand" className="w-full h-full object-contain rounded-full" />
+                </div>
               </div>
               <div>
                 <div className="flex items-center gap-2">

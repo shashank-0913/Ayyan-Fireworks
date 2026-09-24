@@ -37,8 +37,10 @@ export const ShowroomPage: React.FC = () => {
         <div className="lg:col-span-5 space-y-6">
           <div className="glass-panel-gold rounded-3xl p-6 sm:p-8 space-y-6 border border-gold-500/25">
             <div className="flex items-center gap-3">
-              <div className="h-12 w-auto bg-white/95 rounded-xl p-1 shadow-sm border border-gold-400/40 flex items-center justify-center">
-                <img src="/ayyan-logo.png" alt="Ayyan Logo" className="h-10 w-auto object-contain" />
+              <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-gold-600 rounded-2xl p-0.5 shadow-sm border border-gold-400/40 flex items-center justify-center">
+                <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center p-0.5">
+                  <img src="/ayyan-emblem.png" alt="Bunny Brand" className="w-full h-full object-contain rounded-full" />
+                </div>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white leading-tight">

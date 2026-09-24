@@ -34,12 +34,14 @@ export const CustomerNavbar: React.FC = () => {
         <div className="flex items-center justify-between h-20">
           {/* Official Company Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="relative h-13 w-auto bg-white/95 rounded-xl p-1 shadow-glow-gold border border-gold-400/40 transition-transform group-hover:scale-105 duration-300 flex items-center justify-center overflow-hidden">
-              <img
-                src="/ayyan-logo.png"
-                alt="Ayyan Fireworks - Bunny Brand Since 1987"
-                className="h-11 w-auto object-contain"
-              />
+            <div className="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-gold-600 p-0.5 shadow-glow-gold transition-transform group-hover:scale-105 duration-300 flex items-center justify-center overflow-hidden">
+              <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center p-0.5">
+                <img
+                  src="/ayyan-emblem.png"
+                  alt="Bunny Brand"
+                  className="w-full h-full object-contain rounded-full"
+                />
+              </div>
             </div>
             <div>
               <div className="flex items-center gap-1.5">

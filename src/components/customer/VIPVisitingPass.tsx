@@ -76,11 +76,18 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
         ref={passRef}
         className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-obsidian-900 via-obsidian-850 to-obsidian-950 border-2 border-gold-500/40 p-6 sm:p-8 shadow-glow-gold-lg backdrop-blur-2xl"
       >
+        {/* Background Pass Watermark */}
+        <div className="absolute top-1/2 right-4 -translate-y-1/2 w-48 h-48 pointer-events-none opacity-[0.06] select-none">
+          <img src="/ayyan-emblem.png" alt="" className="w-full h-full object-contain" />
+        </div>
+
         {/* Ticket Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-gold-500/20 gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-gold-500/20 gap-4 relative z-10">
           <div className="flex items-center gap-3">
-            <div className="h-14 w-auto bg-white/95 rounded-xl p-1 shadow-md border border-gold-400/40 flex items-center justify-center">
-              <img src="/ayyan-logo.png" alt="Ayyan Fireworks Logo" className="h-12 w-auto object-contain" />
+            <div className="w-13 h-13 bg-gradient-to-br from-amber-400 via-amber-500 to-gold-600 rounded-2xl p-0.5 shadow-md border border-gold-400/40 flex items-center justify-center">
+              <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center p-0.5">
+                <img src="/ayyan-emblem.png" alt="Bunny Brand" className="w-full h-full object-contain rounded-full" />
+              </div>
             </div>
             <div>
               <span className="text-[10px] font-bold uppercase tracking-widest text-amber-400">

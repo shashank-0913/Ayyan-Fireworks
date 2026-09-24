@@ -24,8 +24,17 @@ import { PortalBookingsPage } from './pages/portal/PortalBookingsPage';
 // Customer Layout Wrapper
 const CustomerPortalLayout: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-obsidian-950 text-slate-100 relative">
-      <SparkleCanvas density={45} />
+    <div className="min-h-screen flex flex-col bg-obsidian-950 text-slate-100 relative overflow-x-hidden">
+      {/* Background Ambient Logo Watermark (Only Circular Emblem) */}
+      <div className="fixed inset-0 pointer-events-none flex items-center justify-center overflow-hidden z-0 opacity-[0.03] select-none">
+        <img
+          src="/ayyan-emblem.png"
+          alt=""
+          className="w-[650px] sm:w-[900px] max-w-none object-contain filter drop-shadow-[0_0_60px_rgba(245,158,11,0.3)]"
+        />
+      </div>
+
+      <SparkleCanvas density={40} />
       <CustomerNavbar />
       <main className="flex-1 relative z-10">
         <Outlet />

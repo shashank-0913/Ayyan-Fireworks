@@ -72,10 +72,17 @@ export const HomePage: React.FC = () => {
       {/* 1. HERO SECTION */}
       {/* ========================================================================= */}
       <section className="relative pt-12 pb-20 sm:pt-20 sm:pb-32 overflow-hidden">
-        {/* Glow Radial Embers Background */}
+        {/* Glow Radial Embers & Circular Logo Emblem Background */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[360px] sm:w-[540px] h-[360px] sm:h-[540px] pointer-events-none -z-10 flex items-center justify-center opacity-[0.14] select-none">
+          <img
+            src="/ayyan-emblem.png"
+            alt="Bunny Brand"
+            className="w-full h-full object-contain filter drop-shadow-[0_0_80px_rgba(245,158,11,0.6)]"
+          />
+        </div>
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[900px] h-[500px] bg-gradient-to-b from-amber-500/15 via-gold-500/5 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8 relative z-10">
           {/* Top Heritage Pill */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/30 text-gold-300 text-xs font-bold uppercase tracking-widest shadow-glow-gold animate-float">
             <Sparkles className="w-4 h-4 text-gold-400" />
