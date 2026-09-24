@@ -7,7 +7,6 @@ import {
   Users, 
   ShieldAlert, 
   LogOut, 
-  Flame, 
   ExternalLink, 
   Clock, 
   RefreshCw
@@ -65,17 +64,17 @@ export const PortalLayout: React.FC = () => {
           <div className="flex items-center justify-between h-16">
             {/* Logo & Portal Badge */}
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
-                <Flame className="w-5 h-5" />
+              <div className="h-10 w-auto bg-white/95 rounded-lg p-0.5 border border-amber-400/40 flex items-center justify-center">
+                <img src="/ayyan-logo.png" alt="Ayyan Fireworks" className="h-9 w-auto object-contain" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
                   <span className="font-extrabold text-base tracking-tight text-white">AYYAN OPS</span>
                   <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase tracking-wider">
-                    Staff Workstation
+                    Owner & Staff Portal
                   </span>
                 </div>
-                <p className="text-[10px] text-slate-400 font-mono">Sivakasi Operations Desk</p>
+                <p className="text-[10px] text-slate-400 font-mono">Visakhapatnam Operations Desk</p>
               </div>
             </div>
 
@@ -87,7 +86,7 @@ export const PortalLayout: React.FC = () => {
               </div>
               <div className="flex items-center gap-1.5 text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                <span>Showroom Floor Live</span>
+                <span>Visakhapatnam Floor Live</span>
               </div>
             </div>
 
@@ -120,28 +119,34 @@ export const PortalLayout: React.FC = () => {
                 <span className="hidden sm:inline">Customer Portal</span>
               </Link>
 
-              {/* Staff Profile & Logout */}
-              {currentUser && (
-                <div className="flex items-center gap-2 pl-2 border-l border-slate-800">
-                  <div className="hidden lg:block text-right">
-                    <span className="text-xs font-bold text-slate-200 block">{currentUser.name}</span>
-                    <span className="text-[10px] text-amber-400 uppercase font-mono">{currentUser.role}</span>
-                  </div>
-
-                  <button
-                    onClick={handleLogout}
-                    className="p-2 rounded-lg bg-slate-800 hover:bg-red-950/60 hover:text-red-400 text-slate-400 border border-slate-700 transition-colors"
-                    title="Sign Out"
-                  >
-                    <LogOut className="w-4 h-4" />
-                  </button>
+              {/* User Drop / Log out */}
+              <div className="flex items-center gap-2 pl-3 border-l border-slate-800">
+                <div className="hidden sm:block text-right">
+                  <span className="text-xs font-bold text-slate-200 block leading-tight">
+                    {currentUser?.name || 'Owner Staff'}
+                  </span>
+                  <span className="text-[10px] text-amber-400 font-mono capitalize">
+                    {currentUser?.role?.replace('_', ' ') || 'Manager'}
+                  </span>
                 </div>
-              )}
+
+                <button
+                  onClick={handleLogout}
+                  className="p-2 rounded-lg bg-slate-800 hover:bg-red-950 text-slate-400 hover:text-red-400 transition-colors border border-slate-700"
+                  title="Sign Out of Operations Console"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
+        </div>
+      </header>
 
-          {/* Sub Navigation Bar */}
-          <nav className="flex items-center gap-1 overflow-x-auto py-2 border-t border-slate-800 scrollbar-none">
+      {/* Primary Sub-Navigation Bar */}
+      <div className="bg-slate-900 border-b border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav className="flex space-x-2 overflow-x-auto py-2.5">
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
@@ -149,9 +154,9 @@ export const PortalLayout: React.FC = () => {
                   key={item.path}
                   to={item.path}
                   className={({ isActive }) =>
-                    `flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                    `px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-all ${
                       isActive
-                        ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30'
+                        ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
                         : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
                     }`
                   }
@@ -163,31 +168,35 @@ export const PortalLayout: React.FC = () => {
             })}
           </nav>
         </div>
-      </header>
+      </div>
 
-      {/* Main Workstation Workspace */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      {/* Main Content Body */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Outlet />
       </main>
 
       {/* Workstation Footer */}
-      <footer className="bg-slate-900 border-t border-slate-800 py-3 text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-[11px] text-slate-400">
-              Ayyan Portal v2.4 (Sivakasi Node)
-            </span>
-            <span>•</span>
-            <span className="text-emerald-400 text-[11px]">System Status: Operational</span>
+      <footer className="border-t border-slate-800/80 bg-slate-900/50 py-4 text-xs text-slate-500">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px]">
+          <div>
+            <span>Ayyan Fireworks • Bunny Brand Since 1987 (Visakhapatnam Showroom Ops)</span>
           </div>
 
-          <button
-            onClick={resetToDefaultSeed}
-            className="text-[11px] text-slate-500 hover:text-amber-400 flex items-center gap-1 transition-colors"
-          >
-            <RefreshCw className="w-3 h-3" />
-            <span>Reset Demo Data Seed</span>
-          </button>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => {
+                if (window.confirm('Reset local showroom database to clean state?')) {
+                  resetToDefaultSeed();
+                }
+              }}
+              className="text-slate-500 hover:text-slate-300 flex items-center gap-1"
+              title="Reset slots and database cache"
+            >
+              <RefreshCw className="w-3 h-3" />
+              <span>Reset State Cache</span>
+            </button>
+            <span>v2.6.0 Supabase Concurrency Protected</span>
+          </div>
         </div>
       </footer>
     </div>

@@ -92,22 +92,29 @@ export function generateGoogleCalendarUrl(
   const details = encodeURIComponent(
     `Official Showroom Visiting Slot for ${customerName} (${visitorCount} Guests).\nBooking Ref: ${bookingCode}\n\nStrictly In-Store Viewing & PESO Safety Compliance.\nPlease show this pass at the security reception upon arrival.`
   );
-  const location = encodeURIComponent('Ayyan Fireworks Flagship Showroom, Police Station Road, Sivakasi, Tamil Nadu 626123');
+  const location = encodeURIComponent('Ayyan Fireworks Flagship Showroom, Main Road / NH-16 (near Natayyapalem / Drivers Colony), Sheela Nagar, Visakhapatnam, Andhra Pradesh 530012');
 
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startIso}/${endIso}&details=${details}&location=${location}`;
 }
 
 export const SHOWROOM_CONTACT = {
+  brandName: 'Ayyan Fireworks',
+  subBrand: 'Bunny Brand Fancy Fireworks',
+  since: 'Since 1987',
   phone: '+91 94431 82400',
   whatsapp: '919443182400',
-  address: 'Ayyan Fireworks Tower, 42/B Police Station Road, Sivakasi, Tamil Nadu 626123',
-  googleMapsUrl: 'https://maps.google.com/?q=Sivakasi+Fireworks',
-  pesoLicense: 'E/HQ/TN/20/1982(E34982) - Class 7, Div 2',
-  operationalHours: 'Mon - Sun: 09:00 AM – 09:00 PM IST (All 7 Days during Festive Season)'
+  address: 'Main Road / NH-16 (near Natayyapalem / Drivers Colony), Sheela Nagar, Visakhapatnam, Andhra Pradesh 530012, India.',
+  shortAddress: 'NH-16, Sheela Nagar, Visakhapatnam 530012',
+  landmark: 'Near Natayyapalem / Drivers Colony, Sheela Nagar',
+  city: 'Visakhapatnam, Andhra Pradesh',
+  pincode: '530012',
+  googleMapsUrl: 'https://maps.google.com/?q=Main+Road+NH-16+Sheela+Nagar+Visakhapatnam+Andhra+Pradesh+530012',
+  pesoLicense: 'PESO Licensed Showroom - Class 7, Div 2 Compliant',
+  operationalHours: 'Mon - Sun: 09:00 AM – 09:30 PM IST (All 7 Days during Festive Season)'
 };
 
 export function getWhatsAppUrl(customMessage?: string): string {
-  const defaultMsg = 'Hello Ayyan Fireworks Concierge! I would like to inquire about showroom visiting slots and the 2026 festive catalogue.';
+  const defaultMsg = 'Hello Ayyan Fireworks Concierge! I would like to inquire about showroom visiting slots and the 2026 festive catalogue at Visakhapatnam.';
   const message = encodeURIComponent(customMessage || defaultMsg);
   return `https://wa.me/${SHOWROOM_CONTACT.whatsapp}?text=${message}`;
 }

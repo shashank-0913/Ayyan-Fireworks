@@ -22,7 +22,7 @@ export const CustomerNavbar: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-obsidian-950/85 border-b border-white/[0.08] transition-all">
+    <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-obsidian-950/90 border-b border-white/[0.08] transition-all">
       {/* Statutory Legal Strip */}
       <LegalComplianceBanner compact />
 
@@ -32,31 +32,35 @@ export const CustomerNavbar: React.FC = () => {
       {/* Main Navigation Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Branded Logo */}
+          {/* Official Company Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="relative w-11 h-11 rounded-2xl bg-gradient-to-br from-gold-400 via-amber-500 to-amber-700 p-0.5 shadow-glow-gold transition-transform group-hover:scale-105 duration-300">
-              <div className="w-full h-full bg-obsidian-950 rounded-[14px] flex items-center justify-center">
-                <Flame className="w-6 h-6 text-gold-400 group-hover:text-gold-300 transition-colors" />
-              </div>
-              <div className="absolute -inset-0.5 bg-gold-400/30 rounded-2xl blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="relative h-13 w-auto bg-white/95 rounded-xl p-1 shadow-glow-gold border border-gold-400/40 transition-transform group-hover:scale-105 duration-300 flex items-center justify-center overflow-hidden">
+              <img
+                src="/ayyan-logo.png"
+                alt="Ayyan Fireworks - Bunny Brand Since 1987"
+                className="h-11 w-auto object-contain"
+              />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="font-display font-extrabold text-xl sm:text-2xl tracking-tight gold-gradient-text">
                   AYYAN
                 </span>
-                <span className="font-display font-bold text-xs uppercase tracking-widest text-slate-400">
+                <span className="font-display font-bold text-xs uppercase tracking-widest text-slate-300">
                   Fireworks
                 </span>
               </div>
-              <p className="text-[10px] text-gold-400/80 font-medium tracking-wider uppercase">
-                Since 1923 • Sivakasi Legacy
+              <p className="text-[10px] text-amber-400 font-semibold tracking-wider uppercase flex items-center gap-1">
+                <span>Bunny Brand</span>
+                <span>•</span>
+                <span>Since 1987</span>
+                <span className="hidden sm:inline">• Visakhapatnam</span>
               </p>
             </div>
           </Link>
 
           {/* Desktop Nav Links */}
-          <nav className="hidden md:flex items-center gap-1 bg-obsidian-900/60 p-1.5 rounded-full border border-white/5 backdrop-blur-md">
+          <nav className="hidden md:flex items-center gap-1 bg-obsidian-900/80 p-1.5 rounded-full border border-white/10 backdrop-blur-md">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const active = isActive(link.path);
@@ -66,7 +70,7 @@ export const CustomerNavbar: React.FC = () => {
                   to={link.path}
                   className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 ${
                     active
-                      ? 'bg-gold-500/15 text-gold-300 border border-gold-500/30 shadow-glow-gold'
+                      ? 'bg-gold-500/20 text-gold-300 border border-gold-500/40 shadow-glow-gold font-bold'
                       : 'text-slate-300 hover:text-white hover:bg-white/5'
                   }`}
                 >

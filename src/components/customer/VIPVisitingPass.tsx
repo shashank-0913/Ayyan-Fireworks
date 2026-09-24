@@ -8,7 +8,6 @@ import {
   CheckCircle2, 
   Share2, 
   Printer, 
-  Sparkles, 
   ShieldCheck 
 } from 'lucide-react';
 import { Booking, Slot } from '../../types';
@@ -54,7 +53,7 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
     time: `${slot.start_time}-${slot.end_time}`,
     visitors: booking.visitor_count,
     verified: true,
-    issuedBy: 'Ayyan Fireworks Sivakasi'
+    issuedBy: 'Ayyan Fireworks (Bunny Brand Since 1987) Visakhapatnam'
   });
 
   return (
@@ -68,7 +67,7 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
           VIP Showroom Pass Confirmed!
         </h2>
         <p className="text-sm text-slate-300 max-w-md mx-auto">
-          Your visiting reservation is locked in our Sivakasi operations system. Present this digital pass at the showroom reception.
+          Your visiting reservation is locked in our Visakhapatnam showroom system. Present this digital pass at the reception desk.
         </p>
       </div>
 
@@ -80,16 +79,17 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
         {/* Ticket Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-gold-500/20 gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 shadow-glow-gold">
-              <Sparkles className="w-6 h-6" />
+            <div className="h-14 w-auto bg-white/95 rounded-xl p-1 shadow-md border border-gold-400/40 flex items-center justify-center">
+              <img src="/ayyan-logo.png" alt="Ayyan Fireworks Logo" className="h-12 w-auto object-contain" />
             </div>
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-widest text-gold-400">
-                Official Visitor Pass
+              <span className="text-[10px] font-bold uppercase tracking-widest text-amber-400">
+                Official Visitor Pass • Bunny Brand Since 1987
               </span>
               <h3 className="font-display font-black text-xl text-white tracking-tight">
                 AYYAN FIREWORKS SHOWROOM
               </h3>
+              <p className="text-[10px] text-slate-400">Visakhapatnam, Andhra Pradesh</p>
             </div>
           </div>
 
@@ -124,69 +124,58 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
             </p>
           </div>
 
-          {/* Visitors */}
+          {/* Visitor Name & Count */}
           <div className="space-y-1">
             <div className="flex items-center gap-1.5 text-xs text-gold-400 font-semibold uppercase tracking-wider">
               <Users className="w-4 h-4" />
-              <span>Guest Allocation</span>
+              <span>Registered Guest</span>
             </div>
             <p className="text-base font-bold text-white">
-              {booking.visitor_count} {booking.visitor_count === 1 ? 'Person' : 'Persons (Family)'}
+              {booking.customer_name} ({booking.visitor_count} {booking.visitor_count === 1 ? 'Guest' : 'Guests'})
             </p>
           </div>
         </div>
 
-        {/* Guest & QR Section */}
-        <div className="py-6 flex flex-col sm:flex-row items-center justify-between gap-6 border-b border-white/10">
-          <div className="space-y-3 flex-1">
-            <div>
-              <span className="text-[11px] uppercase tracking-wider text-slate-400 block">Primary Guest Name</span>
-              <span className="text-lg font-bold text-white">{booking.customer_name}</span>
+        {/* QR Code & Safety Verification Strip */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-6">
+          <div className="space-y-2 text-center sm:text-left">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
+              <ShieldCheck className="w-4 h-4" />
+              <span>Priority Consultation Reserved</span>
             </div>
-            <div>
-              <span className="text-[11px] uppercase tracking-wider text-slate-400 block">Registered Mobile</span>
-              <span className="font-mono text-sm text-slate-300">+91 {booking.customer_phone}</span>
-            </div>
-            <div className="flex items-center gap-2 text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-lg w-fit">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>PESO Fast-Track Security Verification</span>
-            </div>
+            <p className="text-xs text-slate-400 max-w-sm">
+              Please present this verified QR code at the Visakhapatnam showroom reception desk upon arrival.
+            </p>
           </div>
 
-          {/* QR Code Container */}
-          <div className="p-3 bg-white rounded-2xl shadow-xl flex flex-col items-center justify-center shrink-0">
+          {/* QR Container */}
+          <div className="p-3 bg-white rounded-2xl shadow-xl shrink-0">
             <QRCodeSVG
               value={qrData}
-              size={120}
+              size={110}
               level="H"
               includeMargin={false}
-              fgColor="#090b10"
-              bgColor="#ffffff"
             />
-            <span className="text-[10px] font-mono font-bold text-obsidian-950 mt-1">SCAN AT GATE</span>
           </div>
         </div>
 
-        {/* Location & Directions */}
-        <div className="pt-5 flex items-start gap-3 text-xs text-slate-400">
+        {/* Showroom Location Footer */}
+        <div className="mt-6 pt-4 border-t border-white/5 flex items-start gap-2 text-[11px] text-slate-400">
           <MapPin className="w-4 h-4 text-gold-400 shrink-0 mt-0.5" />
-          <div>
-            <strong className="text-slate-200">Showroom Address: </strong>
+          <p>
+            <strong className="text-slate-200">Visakhapatnam Showroom Address: </strong>
             {SHOWROOM_CONTACT.address}
-            <span className="block text-[11px] text-slate-500 mt-0.5">
-              Valet parking available. Please arrive 10 minutes prior to your time window.
-            </span>
-          </div>
+          </p>
         </div>
       </div>
 
-      {/* Action Buttons Bar */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      {/* Action Buttons */}
+      <div className="flex flex-col sm:flex-row gap-3 pt-2">
         <a
           href={calUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="py-3 px-4 rounded-xl bg-gold-500/15 hover:bg-gold-500/25 border border-gold-500/30 text-gold-300 font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-glow-gold"
+          className="flex-1 py-3 px-4 rounded-xl glass-panel hover:glass-panel-gold border border-gold-500/30 text-gold-300 hover:text-white text-xs font-bold flex items-center justify-center gap-2 transition-all text-center"
         >
           <Calendar className="w-4 h-4" />
           <span>Add to Google Calendar</span>
@@ -194,29 +183,28 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
 
         <button
           onClick={handleShareWhatsApp}
-          className="py-3 px-4 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-bold text-xs flex items-center justify-center gap-2 transition-all"
+          className="flex-1 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center justify-center gap-2 transition-all text-center shadow-md"
         >
-          <Share2 className="w-4 h-4 text-emerald-400" />
-          <span>Share Pass on WhatsApp</span>
+          <Share2 className="w-4 h-4" />
+          <span>Share via WhatsApp</span>
         </button>
 
         <button
           onClick={handlePrint}
-          className="py-3 px-4 rounded-xl bg-obsidian-900 hover:bg-slate-800 border border-white/10 text-slate-200 font-semibold text-xs flex items-center justify-center gap-2 transition-all"
+          className="py-3 px-5 rounded-xl bg-obsidian-900 hover:bg-slate-800 border border-white/10 text-slate-300 hover:text-white text-xs font-bold flex items-center justify-center gap-2 transition-all"
         >
-          <Printer className="w-4 h-4 text-gold-400" />
-          <span>Print / Save Pass</span>
+          <Printer className="w-4 h-4" />
+          <span>Print Pass</span>
         </button>
       </div>
 
-      {/* Book Another Option */}
       {onBookAnother && (
-        <div className="text-center pt-2">
+        <div className="text-center pt-4">
           <button
             onClick={onBookAnother}
-            className="text-xs text-slate-400 hover:text-gold-300 transition-colors underline underline-offset-4"
+            className="text-xs text-slate-400 hover:text-gold-300 underline underline-offset-4"
           >
-            Need to book an additional slot for friends or family?
+            ← Book another visiting slot
           </button>
         </div>
       )}

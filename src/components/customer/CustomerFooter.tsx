@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Flame, ShieldCheck, MapPin, Phone, Clock } from 'lucide-react';
+import { ShieldCheck, MapPin, Phone, Clock } from 'lucide-react';
 import { SHOWROOM_CONTACT } from '../../lib/utils';
 
 export const CustomerFooter: React.FC = () => {
@@ -13,21 +13,28 @@ export const CustomerFooter: React.FC = () => {
           {/* Brand Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400 to-amber-600 p-0.5 shadow-glow-gold">
-                <div className="w-full h-full bg-obsidian-950 rounded-[10px] flex items-center justify-center">
-                  <Flame className="w-5 h-5 text-gold-400" />
-                </div>
+              <div className="h-14 w-auto bg-white/95 rounded-xl p-1 shadow-glow-gold border border-gold-400/40 flex items-center justify-center">
+                <img
+                  src="/ayyan-logo.png"
+                  alt="Ayyan Fireworks - Bunny Brand Since 1987"
+                  className="h-12 w-auto object-contain"
+                />
               </div>
-              <span className="font-display font-black text-xl tracking-tight text-white">
-                AYYAN <span className="text-gold-400">FIREWORKS</span>
-              </span>
+              <div>
+                <span className="font-display font-black text-xl tracking-tight text-white block">
+                  AYYAN <span className="text-gold-400">FIREWORKS</span>
+                </span>
+                <span className="text-[10px] text-amber-400 font-semibold tracking-wider uppercase">
+                  Bunny Brand • Since 1987
+                </span>
+              </div>
             </div>
             <p className="text-slate-400 leading-relaxed">
-              India's premier certified fireworks house crafting memories since 1923. Dedicated to green pyrotechnic science, statutory compliance, and unmatched festive brilliance.
+              Andhra Pradesh and Visakhapatnam&apos;s trusted festive destination. Authentic Bunny Brand Fancy Fireworks, PESO certified green pyrotechnics, and direct showroom pricing.
             </p>
             <div className="flex items-center gap-2 text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg w-fit">
               <ShieldCheck className="w-4 h-4" />
-              <span className="font-semibold text-[11px]">PESO Reg. E/HQ/TN/20/1982</span>
+              <span className="font-semibold text-[11px]">{SHOWROOM_CONTACT.pesoLicense}</span>
             </div>
           </div>
 
@@ -54,12 +61,12 @@ export const CustomerFooter: React.FC = () => {
               </li>
               <li>
                 <Link to="/showroom" className="hover:text-gold-300 transition-colors flex items-center gap-2">
-                  <span>Showroom Directions & Parking</span>
+                  <span>Visakhapatnam Showroom & Directions</span>
                 </Link>
               </li>
               <li>
                 <Link to="/portal" className="hover:text-gold-300 transition-colors flex items-center gap-2 text-slate-300">
-                  <span>Staff & Management Portal</span>
+                  <span>Owner & Staff Management Portal</span>
                 </Link>
               </li>
             </ul>
@@ -68,12 +75,12 @@ export const CustomerFooter: React.FC = () => {
           {/* Showroom Logistics */}
           <div>
             <h4 className="font-bold text-white text-sm tracking-wider uppercase mb-4 text-gold-400">
-              Flagship Showroom
+              Visakhapatnam Flagship Showroom
             </h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-gold-400 shrink-0 mt-0.5" />
-                <span>{SHOWROOM_CONTACT.address}</span>
+                <span className="leading-relaxed">{SHOWROOM_CONTACT.address}</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Clock className="w-4 h-4 text-gold-400 shrink-0" />
@@ -93,18 +100,18 @@ export const CustomerFooter: React.FC = () => {
               Statutory Disclaimer
             </h4>
             <p className="text-[11px] text-slate-400 leading-normal">
-              Ayyan Fireworks strictly complies with Supreme Court orders (Civil Appeal No. 23517/2017) and Explosives Rules 2008. No ecommerce cart or remote delivery is enabled. Customers must personally collect verified orders at our licensed premises.
+              Ayyan Fireworks strictly complies with Supreme Court directives (Civil Appeal No. 23517/2017) and PESO Explosives Rules 2008. No online delivery is conducted. Customers can reserve consultation slots and personally collect certified items at our licensed Visakhapatnam showroom.
             </p>
           </div>
         </div>
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
-          <p>© {new Date().getFullYear()} Ayyan Fireworks Pvt. Ltd. All Rights Reserved. Sivakasi, Tamil Nadu.</p>
+          <p>© {new Date().getFullYear()} Ayyan Fireworks (Bunny Brand Since 1987). Visakhapatnam, Andhra Pradesh 530012.</p>
           <div className="flex items-center gap-4">
-            <span className="text-slate-400">Green Pyrotechnics Certified (CSIR-NEERI)</span>
+            <span className="text-slate-400">CSIR-NEERI Green Certified</span>
             <span>•</span>
-            <span className="text-slate-400">Zero Barium Formulation</span>
+            <span className="text-slate-400">Zero Barium Nitrate Formulation</span>
           </div>
         </div>
       </div>

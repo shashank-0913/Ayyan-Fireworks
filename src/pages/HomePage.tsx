@@ -79,7 +79,7 @@ export const HomePage: React.FC = () => {
           {/* Top Heritage Pill */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/30 text-gold-300 text-xs font-bold uppercase tracking-widest shadow-glow-gold animate-float">
             <Sparkles className="w-4 h-4 text-gold-400" />
-            <span>Ayyan Fireworks • Sivakasi 2026 Festive Showcase</span>
+            <span>Ayyan Fireworks • Bunny Brand Since 1987 • Visakhapatnam</span>
           </div>
 
           {/* Dynamic Headline */}
@@ -91,7 +91,7 @@ export const HomePage: React.FC = () => {
               </span>
             </h1>
             <p className="text-base sm:text-xl text-slate-300/90 font-normal max-w-2xl mx-auto leading-relaxed">
-              Explore our transparent 2026 digital price catalogue and reserve your exclusive in-store VIP visiting slot at our flagship Sivakasi showroom.
+              Explore our transparent 2026 digital price catalogue and reserve your exclusive in-store VIP visiting slot at our flagship Visakhapatnam showroom on NH-16.
             </p>
           </div>
 
@@ -290,13 +290,13 @@ export const HomePage: React.FC = () => {
           <div className="max-w-2xl mx-auto space-y-3">
             <div className="inline-flex items-center gap-2 text-gold-400 font-bold text-xs uppercase tracking-widest">
               <MapPin className="w-4 h-4" />
-              <span>Sivakasi Flagship Heritage Experience</span>
+              <span>Visakhapatnam Flagship Showroom Experience</span>
             </div>
             <h2 className="text-3xl sm:text-5xl font-display font-extrabold text-white tracking-tight">
               Visit Our Air-Conditioned Showroom
             </h2>
             <p className="text-xs sm:text-base text-slate-300 leading-relaxed">
-              Reserve your personalized consultation pass. View physical samples, sound demonstrations, and enjoy priority retail billing.
+              Main Road / NH-16 (near Natayyapalem / Drivers Colony), Sheela Nagar, Visakhapatnam. Reserve your personalized consultation pass for priority retail billing.
             </p>
           </div>
 

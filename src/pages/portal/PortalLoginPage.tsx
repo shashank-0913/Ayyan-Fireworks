@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Flame, Lock, Mail, ShieldCheck, KeyRound } from 'lucide-react';
+import { Lock, Mail, ShieldCheck, KeyRound } from 'lucide-react';
 import { useAyyanStore } from '../../context/AppContext';
 import { StaffUser } from '../../types';
 
@@ -52,15 +52,15 @@ export const PortalLoginPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans selection:bg-amber-500/30 selection:text-amber-200">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-3">
-        <div className="w-14 h-14 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 mx-auto shadow-lg">
-          <Flame className="w-8 h-8" />
+        <div className="h-16 w-auto bg-white/95 rounded-2xl p-1.5 border border-amber-500/40 inline-flex items-center justify-center mx-auto shadow-glow-gold">
+          <img src="/ayyan-logo.png" alt="Ayyan Fireworks" className="h-13 w-auto object-contain" />
         </div>
 
         <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
           Ayyan Staff & Ops Portal
         </h2>
-        <p className="text-xs text-slate-400">
-          Secure Sivakasi Showroom Management & Inventory Access
+        <p className="text-xs text-amber-400 font-semibold uppercase tracking-wider">
+          Bunny Brand Since 1987 • Visakhapatnam Showroom Management
         </p>
       </div>
 
