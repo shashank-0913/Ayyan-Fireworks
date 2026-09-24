@@ -1,11 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import confetti from 'canvas-confetti';
 import { 
-  Calendar as CalendarIcon, 
   Clock, 
   User, 
   Phone, 
-  Users, 
   CheckCircle2, 
   AlertCircle, 
   Sparkles, 
@@ -13,23 +11,34 @@ import {
   ArrowRight, 
   ArrowLeft, 
   Flame, 
-  Info 
+  Info,
+  CalendarCheck2
 } from 'lucide-react';
 import { useAyyanStore } from '../../context/AppContext';
 import { Slot, Booking } from '../../types';
 import { formatDateReadable, formatTime, getSlotStatus } from '../../lib/utils';
+import { InteractiveCalendar } from '../common/InteractiveCalendar';
 import { VIPVisitingPass } from './VIPVisitingPass';
 
 export const SlotBookingFlow: React.FC = () => {
   const { slots, bookSlot, isEmergencyBlocked } = useAyyanStore();
 
-  // Booking Flow Steps: 1: Select Date, 2: Select Time & Visitors, 3: Guest Details, 4: Confirmed Pass
-  const [currentStep, setCurrentStep] = useState<1 | 2 | 3 | 4>(1);
+  // Booking Flow Steps:
+  // Step 1: Select Date & Time Slot
+  // Step 2: Customer Contact Details
+  // Step 3 (Confirmed): VIP Visiting Pass
+  const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
 
   // Form State
-  const [selectedDate, setSelectedDate] = useState<string>('');
+  const [selectedDate, setSelectedDate] = useState<string>(() => {
+    // Default to today or first available date with slots
+    const today = new Date();
+    const y = today.getFullYear();
+    const m = String(today.getMonth() + 1).padStart(2, '0');
+    const d = String(today.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  });
   const [selectedSlotId, setSelectedSlotId] = useState<string>('');
-  const [visitorCount, setVisitorCount] = useState<number>(2);
   const [guestName, setGuestName] = useState<string>('');
   const [guestPhone, setGuestPhone] = useState<string>('');
   const [guestNotes, setGuestNotes] = useState<string>('');
@@ -39,29 +48,7 @@ export const SlotBookingFlow: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [confirmedBooking, setConfirmedBooking] = useState<{ booking: Booking; slot: Slot } | null>(null);
 
-  // Group slots by date
-  const availableDates = useMemo(() => {
-    const datesMap = new Map<string, { total: number; available: number }>();
-    slots.forEach(s => {
-      const existing = datesMap.get(s.slot_date) || { total: 0, available: 0 };
-      const rem = s.total_capacity - s.booked_capacity;
-      datesMap.set(s.slot_date, {
-        total: existing.total + 1,
-        available: existing.available + (rem > 0 && !s.is_blocked ? 1 : 0)
-      });
-    });
-
-    return Array.from(datesMap.keys()).sort().slice(0, 14);
-  }, [slots]);
-
-  // Set default selected date
-  React.useEffect(() => {
-    if (availableDates.length > 0 && !selectedDate) {
-      setSelectedDate(availableDates[0]);
-    }
-  }, [availableDates, selectedDate]);
-
-  // Filter slots for chosen date
+  // Slots for the chosen date
   const dateSlots = useMemo(() => {
     if (!selectedDate) return [];
     return slots
@@ -73,21 +60,27 @@ export const SlotBookingFlow: React.FC = () => {
     return slots.find(s => s.id === selectedSlotId);
   }, [slots, selectedSlotId]);
 
-  const handleDateSelect = (date: string) => {
-    setSelectedDate(date);
-    setSelectedSlotId(''); // reset slot selection
-    setCurrentStep(2);
+  // When date changes in calendar, reset active slot
+  const handleDateChange = (dateStr: string) => {
+    setSelectedDate(dateStr);
+    setSelectedSlotId('');
+    setErrorMessage(null);
   };
 
   const handleSlotSelect = (slot: Slot) => {
     const rem = slot.total_capacity - slot.booked_capacity;
-    if (slot.is_blocked || rem < visitorCount) return;
+    if (slot.is_blocked || rem <= 0) return;
     setSelectedSlotId(slot.id);
+    setErrorMessage(null);
   };
 
-  const handleProceedToDetails = () => {
-    if (!selectedSlotId) return;
-    setCurrentStep(3);
+  const handleProceedToStep2 = () => {
+    if (!selectedSlotId) {
+      setErrorMessage('Please pick an available visiting time slot.');
+      return;
+    }
+    setErrorMessage(null);
+    setCurrentStep(2);
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -113,7 +106,8 @@ export const SlotBookingFlow: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      const res = await bookSlot(selectedSlotId, guestName, cleanPhone, visitorCount, guestNotes);
+      // 1 booking = 1 slot reservation for family/group (visitor_count = 1)
+      const res = await bookSlot(selectedSlotId, guestName, cleanPhone, 1, guestNotes);
 
       if (!res.success) {
         setErrorMessage(res.error || 'Failed to reserve slot. Please try another time.');
@@ -121,12 +115,12 @@ export const SlotBookingFlow: React.FC = () => {
         return;
       }
 
-      // Trigger Confetti Celebration
+      // Confetti Celebration
       confetti({
-        particleCount: 120,
-        spread: 80,
+        particleCount: 130,
+        spread: 85,
         origin: { y: 0.6 },
-        colors: ['#fbbf24', '#f59e0b', '#ff4d00', '#ffffff']
+        colors: ['#fbbf24', '#f59e0b', '#ff4d00', '#ffffff', '#10b981']
       });
 
       const currentTargetSlot = slots.find(s => s.id === selectedSlotId);
@@ -137,7 +131,7 @@ export const SlotBookingFlow: React.FC = () => {
           slot_id: selectedSlotId,
           customer_name: guestName.trim(),
           customer_phone: cleanPhone,
-          visitor_count: visitorCount,
+          visitor_count: 1,
           status: 'confirmed',
           notes: guestNotes,
           created_at: new Date().toISOString()
@@ -147,7 +141,7 @@ export const SlotBookingFlow: React.FC = () => {
           booking: dummyBooking,
           slot: currentTargetSlot
         });
-        setCurrentStep(4);
+        setCurrentStep(3);
       }
     } catch (err: any) {
       setErrorMessage(err.message || 'An unexpected error occurred. Please try again.');
@@ -167,7 +161,7 @@ export const SlotBookingFlow: React.FC = () => {
   };
 
   // If Booking is confirmed, render VIP Visiting Pass
-  if (currentStep === 4 && confirmedBooking) {
+  if (currentStep === 3 && confirmedBooking) {
     return (
       <VIPVisitingPass
         booking={confirmedBooking.booking}
@@ -178,45 +172,43 @@ export const SlotBookingFlow: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 pb-12">
-      {/* Step Indicator Header */}
-      <div className="relative">
-        <div className="flex items-center justify-between max-w-xl mx-auto px-2">
-          {[
-            { step: 1, title: 'Visiting Date' },
-            { step: 2, title: 'Time & Guests' },
-            { step: 3, title: 'Guest Details' },
-          ].map((item) => {
-            const isCompleted = currentStep > item.step;
-            const isCurrent = currentStep === item.step;
-            return (
-              <div key={item.step} className="flex flex-col items-center relative z-10">
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (item.step < currentStep) setCurrentStep(item.step as 1 | 2 | 3);
-                  }}
-                  disabled={item.step > currentStep}
-                  className={`w-11 h-11 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 min-h-[44px] min-w-[44px] ${
-                    isCurrent
-                      ? 'bg-gradient-to-r from-amber-400 to-amber-500 dark:from-gold-400 dark:to-amber-500 text-obsidian-950 ring-4 ring-amber-500/20 dark:ring-gold-500/20 shadow-md dark:shadow-glow-gold'
-                      : isCompleted
-                      ? 'bg-emerald-500 text-white cursor-pointer shadow-sm'
-                      : 'bg-slate-100 dark:bg-obsidian-900 border border-slate-300 dark:border-white/10 text-slate-500 dark:text-slate-500'
-                  }`}
-                >
-                  {isCompleted ? <CheckCircle2 className="w-5 h-5" /> : item.step}
-                </button>
-                <span className={`text-[11px] sm:text-xs mt-2 font-semibold text-center ${isCurrent ? 'text-amber-700 dark:text-gold-300 font-bold' : 'text-slate-600 dark:text-slate-400'}`}>
-                  {item.title}
-                </span>
-              </div>
-            );
-          })}
-        </div>
+    <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8 pb-12">
+      {/* 2-Step Mini Indicator */}
+      <div className="flex items-center justify-center gap-3 sm:gap-6">
+        <button
+          type="button"
+          onClick={() => setCurrentStep(1)}
+          className={`flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold transition-all min-h-[44px] ${
+            currentStep === 1
+              ? 'bg-amber-500 text-slate-950 shadow-md ring-2 ring-amber-400/40'
+              : 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30'
+          }`}
+        >
+          <span className="w-5 h-5 rounded-full bg-slate-950 text-amber-400 dark:text-gold-400 flex items-center justify-center text-[11px]">
+            1
+          </span>
+          <span>1. Select Date & Time</span>
+        </button>
 
-        {/* Progress Bar Behind */}
-        <div className="absolute top-5 left-1/2 -translate-x-1/2 w-3/5 h-0.5 bg-slate-200 dark:bg-white/10 -z-0" />
+        <span className="text-slate-300 dark:text-slate-700 font-bold">→</span>
+
+        <button
+          type="button"
+          disabled={!selectedSlotId && currentStep === 1}
+          onClick={() => {
+            if (selectedSlotId) setCurrentStep(2);
+          }}
+          className={`flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold transition-all min-h-[44px] ${
+            currentStep === 2
+              ? 'bg-amber-500 text-slate-950 shadow-md ring-2 ring-amber-400/40'
+              : 'bg-slate-100 dark:bg-slate-900 text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-slate-800'
+          }`}
+        >
+          <span className="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center text-[11px]">
+            2
+          </span>
+          <span>2. Guest Details</span>
+        </button>
       </div>
 
       {/* Emergency Lockdown Notice */}
@@ -224,300 +216,211 @@ export const SlotBookingFlow: React.FC = () => {
         <div className="p-4 rounded-2xl bg-red-50 dark:bg-red-950/40 border border-red-300 dark:border-red-500/40 text-red-800 dark:text-red-200 text-xs sm:text-sm flex items-center gap-3">
           <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0" />
           <span>
-            Visiting reservations are temporarily on hold due to high showroom density. Please contact the concierge directly.
+            Visiting reservations are temporarily on hold due to maximum safety threshold. Please contact our concierge directly.
           </span>
         </div>
       )}
 
-      {/* STEP 1: Date Picker */}
+      {/* ========================================================================= */}
+      {/* STEP 1: Interactive Calendar on Left/Top + Time Slots on Right/Bottom    */}
+      {/* ========================================================================= */}
       {currentStep === 1 && (
-        <div className="rounded-3xl p-5 sm:p-8 space-y-6 animate-in fade-in duration-300 border border-amber-300/70 dark:border-gold-500/30 bg-white dark:bg-obsidian-900/80 shadow-sm dark:shadow-glass backdrop-blur-xl">
-          <div className="space-y-1">
-            <h3 className="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <CalendarIcon className="w-5 h-5 sm:w-6 sm:h-6 text-amber-600 dark:text-gold-400 shrink-0" />
-              <span>Step 1: Select Your Visiting Date</span>
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
-              Showroom visiting slots are open for the next 14 festive days. Tap a date below to view available time windows:
-            </p>
-          </div>
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
+            {/* Left Column: Interactive Calendar (5 cols on Desktop) */}
+            <div className="lg:col-span-5 space-y-3">
+              <div className="flex items-center justify-between px-1">
+                <span className="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <CalendarCheck2 className="w-4 h-4" />
+                  <span>Choose Visiting Day</span>
+                </span>
+                <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+                  {formatDateReadable(selectedDate)}
+                </span>
+              </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2.5 sm:gap-3">
-            {availableDates.map((dateStr) => {
-              const daySlots = slots.filter(s => s.slot_date === dateStr);
-              const totalRem = daySlots.reduce((acc, s) => acc + (s.is_blocked ? 0 : s.total_capacity - s.booked_capacity), 0);
-              const isSelected = selectedDate === dateStr;
+              <InteractiveCalendar
+                selectedDate={selectedDate}
+                onSelectDate={handleDateChange}
+                slots={slots}
+              />
+            </div>
 
-              let badgeColor = 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30';
-              let badgeText = `${totalRem} Available`;
-
-              if (totalRem <= 0) {
-                badgeColor = 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700';
-                badgeText = 'Full';
-              } else if (totalRem <= 25) {
-                badgeColor = 'bg-amber-500/15 text-amber-800 dark:text-amber-300 border-amber-500/30';
-                badgeText = 'Filling Fast';
-              }
-
-              return (
-                <button
-                  key={dateStr}
-                  type="button"
-                  onClick={() => handleDateSelect(dateStr)}
-                  className={`p-3 rounded-2xl border text-center transition-all duration-200 flex flex-col items-center justify-between min-h-[105px] group active:scale-95 ${
-                    isSelected
-                      ? 'bg-amber-500/20 dark:bg-gold-500/20 border-amber-500 dark:border-gold-400 ring-2 ring-amber-400/30 dark:ring-gold-400/30 shadow-md dark:shadow-glow-gold'
-                      : 'bg-slate-50 dark:bg-obsidian-900/80 border-slate-200 dark:border-white/10 hover:border-amber-400 dark:hover:border-gold-500/40 hover:bg-amber-50/40 dark:hover:bg-white/5'
-                  }`}
-                >
-                  <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider group-hover:text-amber-700 dark:group-hover:text-gold-300">
-                    {new Date(dateStr).toLocaleDateString('en-US', { weekday: 'short' })}
-                  </span>
-                  
-                  <div className="my-1">
-                    <span className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white block">
-                      {new Date(dateStr).getDate()}
-                    </span>
-                    <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase">
-                      {new Date(dateStr).toLocaleDateString('en-US', { month: 'short' })}
-                    </span>
+            {/* Right Column: Time Slots for Selected Date (7 cols on Desktop) */}
+            <div className="lg:col-span-7 space-y-4">
+              <div className="p-5 sm:p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-5">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800 gap-2">
+                  <div>
+                    <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                      <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                      <span>Available 1-Hour Visiting Windows</span>
+                    </h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      Showing showroom visiting slots for <strong className="text-slate-900 dark:text-white">{formatDateReadable(selectedDate)}</strong>
+                    </p>
                   </div>
 
-                  <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${badgeColor}`}>
-                    {badgeText}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+                  {selectedSlot && (
+                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/40 shrink-0">
+                      Slot Selected
+                    </span>
+                  )}
+                </div>
 
-          <div className="flex flex-wrap items-center justify-between pt-4 border-t border-slate-200 dark:border-white/10 text-xs text-slate-600 dark:text-slate-400 gap-2">
-            <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
-              <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                Available
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
-                Filling Fast
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-slate-400 dark:bg-slate-600" />
-                Fully Booked
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
+                {/* Time Slots List */}
+                {dateSlots.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[440px] overflow-y-auto pr-1">
+                    {dateSlots.map((slot) => {
+                      const remaining = slot.total_capacity - slot.booked_capacity;
+                      const status = getSlotStatus(slot);
+                      const isSelected = selectedSlotId === slot.id;
+                      const isAvailable = !slot.is_blocked && remaining > 0;
 
-      {/* STEP 2: Time Slot & Guest Count */}
-      {currentStep === 2 && (
-        <div className="rounded-3xl p-5 sm:p-8 space-y-6 animate-in fade-in duration-300 border border-amber-300/70 dark:border-gold-500/30 bg-white dark:bg-obsidian-900/80 shadow-sm dark:shadow-glass backdrop-blur-xl">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-slate-200 dark:border-white/10 gap-3">
-            <div>
-              <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <Clock className="w-5 h-5 text-amber-600 dark:text-gold-400 shrink-0" />
-                <span>Step 2: Choose Time Window & Guests</span>
-              </h3>
-              <p className="text-xs text-slate-600 dark:text-slate-300">
-                Selected Date: <strong className="text-amber-700 dark:text-gold-300">{formatDateReadable(selectedDate)}</strong>
-              </p>
-            </div>
+                      return (
+                        <button
+                          key={slot.id}
+                          type="button"
+                          disabled={!isAvailable}
+                          onClick={() => handleSlotSelect(slot)}
+                          className={`p-4 rounded-2xl border text-left transition-all duration-200 relative overflow-hidden min-h-[92px] flex flex-col justify-between active:scale-[0.98] ${
+                            isSelected
+                              ? 'bg-amber-500/20 dark:bg-amber-500/25 border-amber-500 dark:border-amber-400 ring-2 ring-amber-400/50 shadow-md'
+                              : isAvailable
+                              ? 'bg-slate-50 hover:bg-amber-50/50 dark:bg-slate-950/80 dark:hover:bg-slate-800/80 border-slate-200 dark:border-slate-800 hover:border-amber-400'
+                              : 'bg-slate-100 dark:bg-slate-950/40 border-slate-200 dark:border-slate-800/60 opacity-50 cursor-not-allowed'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white">
+                              {formatTime(slot.start_time)} – {formatTime(slot.end_time)}
+                            </span>
+                            {isSelected && (
+                              <CheckCircle2 className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
+                            )}
+                          </div>
 
-            <button
-              type="button"
-              onClick={() => setCurrentStep(1)}
-              className="text-xs text-slate-500 dark:text-slate-400 hover:text-amber-700 dark:hover:text-gold-300 flex items-center gap-1.5 py-1 min-h-[36px] underline underline-offset-4"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Change Date</span>
-            </button>
-          </div>
+                          {/* Slot Status Pill */}
+                          <div className="pt-2 flex items-center justify-between text-xs">
+                            <span className="font-semibold text-[11px] text-slate-600 dark:text-slate-400">
+                              {slot.is_blocked ? (
+                                <span className="text-red-600 dark:text-red-400 font-bold">Slot Blocked</span>
+                              ) : remaining <= 0 ? (
+                                <span className="text-slate-500 dark:text-slate-500 font-bold">FULL</span>
+                              ) : (
+                                <span className="text-slate-700 dark:text-slate-300 font-medium">
+                                  {remaining} of {slot.total_capacity} slots left
+                                </span>
+                              )}
+                            </span>
 
-          {/* Guest Count Selector */}
-          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-obsidian-900 border border-slate-200 dark:border-white/10 space-y-2.5">
-            <label className="text-xs font-bold text-amber-700 dark:text-gold-400 uppercase tracking-wider flex items-center gap-1.5">
-              <Users className="w-4 h-4 text-amber-600 dark:text-gold-400" />
-              <span>Number of Persons Visiting Together</span>
-            </label>
-            <div className="flex flex-wrap items-center gap-2">
-              {[1, 2, 3, 4, 5, 6, 8, 10].map((num) => (
-                <button
-                  key={num}
-                  type="button"
-                  onClick={() => {
-                    setVisitorCount(num);
-                    if (selectedSlot && (selectedSlot.total_capacity - selectedSlot.booked_capacity) < num) {
-                      setSelectedSlotId('');
-                    }
-                  }}
-                  className={`px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all min-h-[44px] flex items-center justify-center ${
-                    visitorCount === num
-                      ? 'bg-amber-500 dark:bg-gold-500 text-slate-950 shadow-md dark:shadow-glow-gold'
-                      : 'bg-white dark:bg-obsidian-950 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:border-amber-400 dark:hover:border-gold-500/40'
-                  }`}
-                >
-                  {num} {num === 1 ? 'Person' : 'Persons'}
-                </button>
-              ))}
-            </div>
-          </div>
+                            <span
+                              className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${
+                                slot.is_blocked
+                                  ? 'bg-red-100 dark:bg-red-950/60 border-red-300 dark:border-red-500/30 text-red-700 dark:text-red-300'
+                                  : remaining <= 0
+                                  ? 'bg-slate-200 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400'
+                                  : status === 'available'
+                                  ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-800 dark:text-emerald-300'
+                                  : 'bg-amber-500/15 border-amber-500/30 text-amber-800 dark:text-amber-300'
+                              }`}
+                            >
+                              {slot.is_blocked ? 'Closed' : remaining <= 0 ? 'Full' : 'Available'}
+                            </span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="p-8 text-center rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2">
+                    <Clock className="w-8 h-8 text-slate-400 dark:text-slate-600 mx-auto" />
+                    <p className="font-bold text-slate-900 dark:text-white text-sm">
+                      No visiting windows configured for this date
+                    </p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      Please pick another date on the calendar.
+                    </p>
+                  </div>
+                )}
 
-          {/* Time Slots Grid (2-column on mobile, 3-column on desktop) */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-              1-Hour Showroom Visiting Windows
-            </h4>
+                {/* Continue Action */}
+                <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+                  <div className="text-xs text-slate-500 dark:text-slate-400">
+                    {selectedSlot ? (
+                      <span>Selected: <strong className="text-slate-900 dark:text-white">{formatTime(selectedSlot.start_time)} to {formatTime(selectedSlot.end_time)}</strong></span>
+                    ) : (
+                      <span>Tap any available time slot above to proceed.</span>
+                    )}
+                  </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-              {dateSlots.map((slot) => {
-                const remaining = slot.total_capacity - slot.booked_capacity;
-                const status = getSlotStatus(slot);
-                const isSelected = selectedSlotId === slot.id;
-                const canAccommodate = !slot.is_blocked && remaining >= visitorCount;
-
-                return (
                   <button
-                    key={slot.id}
                     type="button"
-                    disabled={!canAccommodate}
-                    onClick={() => handleSlotSelect(slot)}
-                    className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all duration-200 relative overflow-hidden min-h-[88px] active:scale-[0.98] ${
-                      isSelected
-                        ? 'bg-amber-500/20 dark:bg-gold-500/20 border-amber-500 dark:border-gold-400 ring-2 ring-amber-400/40 dark:ring-gold-400/40 shadow-md dark:shadow-glow-gold'
-                        : canAccommodate
-                        ? 'bg-slate-50 dark:bg-obsidian-900/80 border-slate-200 dark:border-white/10 hover:border-amber-400 dark:hover:border-gold-500/40 hover:bg-amber-50/40 dark:hover:bg-white/5'
-                        : 'bg-slate-100 dark:bg-obsidian-950/60 border-slate-200 dark:border-white/5 opacity-50 cursor-not-allowed'
+                    onClick={handleProceedToStep2}
+                    disabled={!selectedSlotId}
+                    className={`w-full sm:w-auto px-6 py-3.5 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 min-h-[44px] transition-all shadow-md ${
+                      selectedSlotId
+                        ? 'bg-gradient-to-r from-amber-500 to-gold-400 hover:from-amber-400 hover:to-gold-300 text-slate-950 shadow-glow-gold active:scale-95'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-slate-700 cursor-not-allowed'
                     }`}
                   >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-bold text-slate-900 dark:text-white text-sm">
-                        {formatTime(slot.start_time)} – {formatTime(slot.end_time)}
-                      </span>
-                      {isSelected && (
-                        <CheckCircle2 className="w-4 h-4 text-amber-600 dark:text-gold-400 shrink-0" />
-                      )}
-                    </div>
-
-                    <div className="space-y-1.5">
-                      {/* Capacity progress bar */}
-                      <div className="w-full bg-slate-200 dark:bg-obsidian-950 rounded-full h-1.5 overflow-hidden">
-                        <div
-                          className={`h-full rounded-full ${
-                            status === 'available'
-                              ? 'bg-emerald-500'
-                              : status === 'filling_fast'
-                              ? 'bg-amber-500'
-                              : 'bg-red-500'
-                          }`}
-                          style={{
-                            width: `${Math.min(100, (slot.booked_capacity / slot.total_capacity) * 100)}%`
-                          }}
-                        />
-                      </div>
-
-                      <div className="flex items-center justify-between text-[11px]">
-                        <span className="text-slate-500 dark:text-slate-400">
-                          {slot.is_blocked ? (
-                            <span className="text-red-600 dark:text-red-400 font-semibold">Slot Closed</span>
-                          ) : remaining <= 0 ? (
-                            <span className="text-slate-500">Fully Booked</span>
-                          ) : (
-                            <span>{remaining} of {slot.total_capacity} slots left</span>
-                          )}
-                        </span>
-
-                        <span className={`font-semibold ${
-                          status === 'available' ? 'text-emerald-700 dark:text-emerald-400' :
-                          status === 'filling_fast' ? 'text-amber-700 dark:text-amber-400' : 'text-slate-500'
-                        }`}>
-                          {status === 'available' ? 'Available' : status === 'filling_fast' ? 'Filling Fast' : 'Closed'}
-                        </span>
-                      </div>
-                    </div>
+                    <span>Proceed to Guest Details</span>
+                    <ArrowRight className="w-4 h-4" />
                   </button>
-                );
-              })}
+                </div>
+              </div>
             </div>
-          </div>
-
-          {/* Navigation Action */}
-          <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-white/10 gap-3">
-            <button
-              type="button"
-              onClick={() => setCurrentStep(1)}
-              className="px-4 py-3 rounded-xl border border-slate-300 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-semibold min-h-[44px]"
-            >
-              Back to Dates
-            </button>
-
-            <button
-              type="button"
-              onClick={handleProceedToDetails}
-              disabled={!selectedSlotId}
-              className={`px-6 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 min-h-[44px] ${
-                selectedSlotId
-                  ? 'gold-gradient-btn'
-                  : 'bg-slate-100 dark:bg-obsidian-900 border border-slate-200 dark:border-white/10 text-slate-400 dark:text-slate-500 cursor-not-allowed'
-              }`}
-            >
-              <span>Continue to Guest Details</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
           </div>
         </div>
       )}
 
-      {/* STEP 3: Guest Details Form */}
-      {currentStep === 3 && (
-        <form onSubmit={handleFormSubmit} className="rounded-3xl p-5 sm:p-8 space-y-6 animate-in fade-in duration-300 border border-amber-300/70 dark:border-gold-500/30 bg-white dark:bg-obsidian-900/80 shadow-sm dark:shadow-glass backdrop-blur-xl">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-slate-200 dark:border-white/10 gap-3">
+      {/* ========================================================================= */}
+      {/* STEP 2: Streamlined Customer Details Form                                  */}
+      {/* ========================================================================= */}
+      {currentStep === 2 && (
+        <form onSubmit={handleFormSubmit} className="max-w-2xl mx-auto rounded-3xl p-6 sm:p-8 space-y-6 animate-in fade-in duration-300 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800 gap-3">
             <div>
               <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <User className="w-5 h-5 text-amber-600 dark:text-gold-400 shrink-0" />
-                <span>Step 3: Primary Visitor Information</span>
+                <User className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
+                <span>Step 2: Primary Visitor Details</span>
               </h3>
-              <p className="text-xs text-slate-600 dark:text-slate-300">
-                A digital VIP pass with QR code will be generated for in-store priority entry.
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                A verified digital VIP pass with QR barcode will be generated for fast in-store priority entry.
               </p>
             </div>
 
             <button
               type="button"
-              onClick={() => setCurrentStep(2)}
-              className="text-xs text-slate-500 dark:text-slate-400 hover:text-amber-700 dark:hover:text-gold-300 flex items-center gap-1.5 py-1 min-h-[36px] underline underline-offset-4"
+              onClick={() => setCurrentStep(1)}
+              className="text-xs text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 flex items-center gap-1.5 py-1 min-h-[36px] underline underline-offset-4 font-semibold"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Change Slot</span>
             </button>
           </div>
 
-          {/* Selected Booking Summary Pill */}
+          {/* Selected Booking Summary Banner */}
           {selectedSlot && (
-            <div className="p-4 rounded-2xl bg-amber-50/80 dark:bg-obsidian-900/90 border border-amber-300/80 dark:border-gold-500/30 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/15 dark:bg-gold-500/10 border border-amber-500/30 dark:border-gold-500/30 flex items-center justify-center text-amber-600 dark:text-gold-400 shrink-0">
-                  <Flame className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="text-[10px] uppercase font-bold text-amber-700 dark:text-gold-400 tracking-wider">Reserved Visiting Window</span>
-                  <p className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">
-                    {formatDateReadable(selectedSlot.slot_date)} • {formatTime(selectedSlot.start_time)} to {formatTime(selectedSlot.end_time)}
-                  </p>
-                </div>
+            <div className="p-4 rounded-2xl bg-amber-500/10 dark:bg-slate-950 border border-amber-500/30 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0">
+                <Flame className="w-5 h-5" />
               </div>
-
-              <div className="px-3 py-1.5 rounded-xl bg-amber-500/20 dark:bg-gold-500/15 border border-amber-500/40 dark:border-gold-500/30 text-amber-800 dark:text-gold-300 font-bold text-xs">
-                {visitorCount} {visitorCount === 1 ? 'Person' : 'Persons'}
+              <div className="space-y-0.5">
+                <span className="text-[10px] uppercase font-bold text-amber-700 dark:text-amber-400 tracking-wider">
+                  Reserved Visiting Window
+                </span>
+                <p className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">
+                  {formatDateReadable(selectedSlot.slot_date)} • {formatTime(selectedSlot.start_time)} to {formatTime(selectedSlot.end_time)}
+                </p>
               </div>
             </div>
           )}
 
           {/* Form Inputs (with text-base on mobile to avoid iOS Safari zoom) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="space-y-4">
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                <User className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400" />
+                <User className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                 <span>Full Name of Primary Visitor *</span>
               </label>
               <input
@@ -526,13 +429,13 @@ export const SlotBookingFlow: React.FC = () => {
                 value={guestName}
                 onChange={(e) => setGuestName(e.target.value)}
                 placeholder="e.g. Anand Ramanathan"
-                className="w-full bg-slate-50 dark:bg-obsidian-950 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-amber-500 transition-colors min-h-[48px]"
+                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-amber-500 min-h-[48px]"
               />
             </div>
 
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                <Phone className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400" />
+                <Phone className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                 <span>10-Digit Mobile Number (WhatsApp) *</span>
               </label>
               <div className="relative">
@@ -546,28 +449,28 @@ export const SlotBookingFlow: React.FC = () => {
                   value={guestPhone}
                   onChange={(e) => setGuestPhone(e.target.value)}
                   placeholder="9840123456"
-                  className="w-full bg-slate-50 dark:bg-obsidian-950 border border-slate-300 dark:border-white/10 rounded-xl pl-12 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white font-mono placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-amber-500 transition-colors min-h-[48px]"
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl pl-12 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white font-mono placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-amber-500 min-h-[48px]"
                 />
               </div>
             </div>
 
-            <div className="sm:col-span-2 space-y-1.5">
+            <div className="space-y-1.5">
               <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                <Info className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400" />
-                <span>Special Requirements or Celebration Inquiries (Optional)</span>
+                <Info className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                <span>Special Requirements or Fireworks Inquiries (Optional)</span>
               </label>
               <textarea
                 rows={2}
                 value={guestNotes}
                 onChange={(e) => setGuestNotes(e.target.value)}
-                placeholder="e.g. Visiting for Diwali family purchase, interested in 120-shot aerial cakes and gift hampers..."
-                className="w-full bg-slate-50 dark:bg-obsidian-950 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-base sm:text-xs text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-amber-500 transition-colors"
+                placeholder="e.g. Interested in 120-shot aerial cakes, gift boxes, and daytime sparklers for kids..."
+                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-4 py-2.5 text-base sm:text-xs text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-amber-500 leading-relaxed"
               />
             </div>
           </div>
 
-          {/* Statutory Verification Box */}
-          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-obsidian-950 border border-slate-200 dark:border-white/10 flex items-start gap-3 text-xs text-slate-600 dark:text-slate-400">
+          {/* Statutory Zero-Payment Verification Strip */}
+          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex items-start gap-3 text-xs text-slate-600 dark:text-slate-400">
             <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
             <div>
               <strong className="text-slate-900 dark:text-slate-200">Zero-Charge Statutory Reservation: </strong>
@@ -584,11 +487,11 @@ export const SlotBookingFlow: React.FC = () => {
           )}
 
           {/* Submit Actions */}
-          <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-white/10 gap-3">
+          <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800 gap-3">
             <button
               type="button"
-              onClick={() => setCurrentStep(2)}
-              className="px-4 py-3 rounded-xl border border-slate-300 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-semibold min-h-[44px]"
+              onClick={() => setCurrentStep(1)}
+              className="px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-semibold min-h-[44px]"
             >
               Back
             </button>
@@ -596,14 +499,14 @@ export const SlotBookingFlow: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="gold-gradient-btn px-6 sm:px-8 py-3.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 disabled:opacity-50 min-h-[48px]"
+              className="px-6 sm:px-8 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-gold-400 hover:from-amber-400 hover:to-gold-300 text-slate-950 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-glow-gold active:scale-95 disabled:opacity-50 min-h-[48px]"
             >
               {isSubmitting ? (
                 <span>Locking Visiting Slot...</span>
               ) : (
                 <>
                   <Sparkles className="w-4 h-4" />
-                  <span>Generate VIP Visiting Pass</span>
+                  <span>Confirm Slot Reservation</span>
                 </>
               )}
             </button>

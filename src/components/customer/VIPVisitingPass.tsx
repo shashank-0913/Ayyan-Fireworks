@@ -32,8 +32,7 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
     slot.start_time,
     slot.end_time,
     booking.booking_code,
-    booking.customer_name,
-    booking.visitor_count
+    booking.customer_name
   );
 
   const handlePrint = () => {
@@ -41,7 +40,7 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
   };
 
   const handleShareWhatsApp = () => {
-    const text = `🎉 Ayyan Fireworks Showroom VIP Pass Confirmed!\n\nBooking ID: ${booking.booking_code}\nName: ${booking.customer_name}\nDate: ${formatDateReadable(slot.slot_date)}\nTime Slot: ${formatTime(slot.start_time)} to ${formatTime(slot.end_time)}\nGuests: ${booking.visitor_count} Persons\n\nShowroom Address: ${SHOWROOM_CONTACT.address}`;
+    const text = `🎉 Ayyan Fireworks Showroom VIP Pass Confirmed!\n\nBooking ID: ${booking.booking_code}\nName: ${booking.customer_name}\nDate: ${formatDateReadable(slot.slot_date)}\nTime Slot: ${formatTime(slot.start_time)} to ${formatTime(slot.end_time)}\n\nShowroom Address: ${SHOWROOM_CONTACT.address}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   };
 
@@ -51,7 +50,7 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
     name: booking.customer_name,
     date: slot.slot_date,
     time: `${slot.start_time}-${slot.end_time}`,
-    visitors: booking.visitor_count,
+    reservationType: 'Showroom VIP Pass',
     verified: true,
     issuedBy: 'Ayyan Fireworks (Bunny Brand Since 1987) Visakhapatnam'
   });
@@ -131,14 +130,14 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
             </p>
           </div>
 
-          {/* Visitor Name & Count */}
+          {/* Visitor Name */}
           <div className="space-y-1">
             <div className="flex items-center gap-1.5 text-xs text-amber-700 dark:text-gold-400 font-semibold uppercase tracking-wider">
               <Users className="w-4 h-4" />
-              <span>Registered Guest</span>
+              <span>Registered Primary Visitor</span>
             </div>
             <p className="text-base font-bold text-slate-900 dark:text-white">
-              {booking.customer_name} ({booking.visitor_count} {booking.visitor_count === 1 ? 'Guest' : 'Guests'})
+              {booking.customer_name}
             </p>
           </div>
         </div>

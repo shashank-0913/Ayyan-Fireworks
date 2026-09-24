@@ -78,8 +78,7 @@ export function generateGoogleCalendarUrl(
   startTime: string,
   endTime: string,
   bookingCode: string,
-  customerName: string,
-  visitorCount: number
+  customerName: string
 ): string {
   const cleanStart = startTime.split(':').slice(0, 2).join('');
   const cleanEnd = endTime.split(':').slice(0, 2).join('');
@@ -90,7 +89,7 @@ export function generateGoogleCalendarUrl(
 
   const title = encodeURIComponent(`Ayyan Fireworks Showroom VIP Visit (${bookingCode})`);
   const details = encodeURIComponent(
-    `Official Showroom Visiting Slot for ${customerName} (${visitorCount} Guests).\nBooking Ref: ${bookingCode}\n\nStrictly In-Store Viewing & PESO Safety Compliance.\nPlease show this pass at the security reception upon arrival.`
+    `Official Showroom VIP Visiting Slot for ${customerName}.\nBooking Ref: ${bookingCode}\n\nStrictly In-Store Viewing & PESO Safety Compliance.\nPlease show this pass at the reception desk upon arrival.`
   );
   const location = encodeURIComponent('Ayyan Fireworks Flagship Showroom, Main Road / NH-16 (near Natayyapalem / Drivers Colony), Sheela Nagar, Visakhapatnam, Andhra Pradesh 530012');
 
