@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { SparkleCanvas } from './components/common/SparkleCanvas';
 import { WhatsAppFloatingButton } from './components/common/WhatsAppFloatingButton';
 import { CustomerNavbar } from './components/customer/CustomerNavbar';
@@ -24,9 +25,9 @@ import { PortalBookingsPage } from './pages/portal/PortalBookingsPage';
 // Customer Layout Wrapper
 const CustomerPortalLayout: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-obsidian-950 text-slate-100 relative overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-obsidian-950 text-slate-900 dark:text-slate-100 relative overflow-x-hidden transition-colors duration-200">
       {/* Background Ambient Logo Watermark (Only Circular Emblem) */}
-      <div className="fixed inset-0 pointer-events-none flex items-center justify-center overflow-hidden z-0 opacity-[0.03] select-none">
+      <div className="fixed inset-0 pointer-events-none flex items-center justify-center overflow-hidden z-0 opacity-[0.035] dark:opacity-[0.03] select-none">
         <img
           src="/ayyan-emblem.png"
           alt=""
@@ -34,7 +35,7 @@ const CustomerPortalLayout: React.FC = () => {
         />
       </div>
 
-      <SparkleCanvas density={40} />
+      <SparkleCanvas density={35} />
       <CustomerNavbar />
       <main className="flex-1 relative z-10">
         <Outlet />
@@ -47,44 +48,46 @@ const CustomerPortalLayout: React.FC = () => {
 
 export const App: React.FC = () => {
   return (
-    <AppProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* ================================================================= */}
-          {/* 1. PUBLIC CUSTOMER PORTAL */}
-          {/* ================================================================= */}
-          <Route element={<CustomerPortalLayout />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/catalogue" element={<CataloguePage />} />
-            <Route path="/book-slot" element={<BookSlotPage />} />
-            <Route path="/showroom" element={<ShowroomPage />} />
-          </Route>
+    <ThemeProvider>
+      <AppProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* ================================================================= */}
+            {/* 1. PUBLIC CUSTOMER PORTAL */}
+            {/* ================================================================= */}
+            <Route element={<CustomerPortalLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/catalogue" element={<CataloguePage />} />
+              <Route path="/book-slot" element={<BookSlotPage />} />
+              <Route path="/showroom" element={<ShowroomPage />} />
+            </Route>
 
-          {/* ================================================================= */}
-          {/* 2. STANDALONE STAFF & MANAGEMENT PORTAL */}
-          {/* ================================================================= */}
-          <Route path="/portal/login" element={<PortalLoginPage />} />
-          
-          <Route
-            path="/portal"
-            element={
-              <PortalAuthGate>
-                <PortalLayout />
-              </PortalAuthGate>
-            }
-          >
-            <Route index element={<Navigate to="/portal/dashboard" replace />} />
-            <Route path="dashboard" element={<PortalDashboardPage />} />
-            <Route path="products" element={<PortalProductsPage />} />
-            <Route path="slots" element={<PortalSlotsPage />} />
-            <Route path="bookings" element={<PortalBookingsPage />} />
-          </Route>
+            {/* ================================================================= */}
+            {/* 2. STANDALONE STAFF & MANAGEMENT PORTAL */}
+            {/* ================================================================= */}
+            <Route path="/portal/login" element={<PortalLoginPage />} />
+            
+            <Route
+              path="/portal"
+              element={
+                <PortalAuthGate>
+                  <PortalLayout />
+                </PortalAuthGate>
+              }
+            >
+              <Route index element={<Navigate to="/portal/dashboard" replace />} />
+              <Route path="dashboard" element={<PortalDashboardPage />} />
+              <Route path="products" element={<PortalProductsPage />} />
+              <Route path="slots" element={<PortalSlotsPage />} />
+              <Route path="bookings" element={<PortalBookingsPage />} />
+            </Route>
 
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </AppProvider>
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </AppProvider>
+    </ThemeProvider>
   );
 };
 

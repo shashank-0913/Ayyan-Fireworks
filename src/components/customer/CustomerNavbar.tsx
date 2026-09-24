@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { LegalComplianceBanner } from '../common/LegalComplianceBanner';
 import { VIPTicker } from '../common/VIPTicker';
+import { ThemeToggle } from '../common/ThemeToggle';
 import { SHOWROOM_CONTACT } from '../../lib/utils';
 
 export const CustomerNavbar: React.FC = () => {
@@ -40,7 +41,7 @@ export const CustomerNavbar: React.FC = () => {
       {/* ========================================================================= */}
       {/* 1. TOP STICKY HEADER (DESKTOP & MOBILE COMPACT)                           */}
       {/* ========================================================================= */}
-      <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-obsidian-950/90 border-b border-white/[0.08] transition-all">
+      <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-white/95 dark:bg-obsidian-950/90 border-b border-slate-200/80 dark:border-white/[0.08] transition-colors duration-200">
         {/* Statutory Legal Strip (Desktop & Mobile) */}
         <LegalComplianceBanner compact />
 
@@ -67,11 +68,11 @@ export const CustomerNavbar: React.FC = () => {
                   <span className="font-display font-black text-lg sm:text-2xl tracking-tight gold-gradient-text">
                     AYYAN
                   </span>
-                  <span className="font-display font-bold text-[10px] sm:text-xs uppercase tracking-widest text-slate-300">
+                  <span className="font-display font-bold text-[10px] sm:text-xs uppercase tracking-widest text-slate-700 dark:text-slate-300">
                     Fireworks
                   </span>
                 </div>
-                <p className="text-[9px] sm:text-[10px] text-amber-400 font-semibold tracking-wider uppercase flex items-center gap-1">
+                <p className="text-[9px] sm:text-[10px] text-amber-600 dark:text-amber-400 font-semibold tracking-wider uppercase flex items-center gap-1">
                   <span>Bunny Brand</span>
                   <span>•</span>
                   <span>Since 1987</span>
@@ -81,7 +82,7 @@ export const CustomerNavbar: React.FC = () => {
             </Link>
 
             {/* Desktop Nav Links (Hidden on Mobile) */}
-            <nav className="hidden md:flex items-center gap-1 bg-obsidian-900/80 p-1.5 rounded-full border border-white/10 backdrop-blur-md">
+            <nav className="hidden md:flex items-center gap-1 bg-slate-100 dark:bg-obsidian-900/80 p-1.5 rounded-full border border-slate-200 dark:border-white/10 backdrop-blur-md transition-colors">
               {navLinks.map((link) => {
                 const Icon = link.icon;
                 const active = isActive(link.path);
@@ -91,11 +92,11 @@ export const CustomerNavbar: React.FC = () => {
                     to={link.path}
                     className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 min-touch ${
                       active
-                        ? 'bg-gold-500/20 text-gold-300 border border-gold-500/40 shadow-glow-gold font-bold'
-                        : 'text-slate-300 hover:text-white hover:bg-white/5'
+                        ? 'bg-amber-500/15 dark:bg-gold-500/20 text-amber-700 dark:text-gold-300 border border-amber-500/40 dark:border-gold-500/40 shadow-sm dark:shadow-glow-gold font-bold'
+                        : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-white/60 dark:hover:bg-white/5'
                     }`}
                   >
-                    <Icon className={`w-3.5 h-3.5 ${active ? 'text-gold-400' : 'text-slate-400'}`} />
+                    <Icon className={`w-3.5 h-3.5 ${active ? 'text-amber-600 dark:text-gold-400' : 'text-slate-400'}`} />
                     <span>{link.name}</span>
                   </Link>
                 );
@@ -103,7 +104,10 @@ export const CustomerNavbar: React.FC = () => {
             </nav>
 
             {/* Right Quick Actions */}
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-2 sm:gap-2.5">
+              {/* Theme Toggle Button */}
+              <ThemeToggle />
+
               {/* Desktop Reserve Button */}
               <Link
                 to="/book-slot"
@@ -117,17 +121,17 @@ export const CustomerNavbar: React.FC = () => {
               <Link
                 to="/portal"
                 title="Staff & Management Portal"
-                className="p-2 sm:p-2.5 rounded-xl bg-obsidian-900/80 hover:bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-gold-400 transition-all flex items-center gap-1.5 text-xs font-medium min-touch justify-center"
+                className="p-2 sm:p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-obsidian-900/80 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/60 text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-gold-400 transition-all flex items-center gap-1.5 text-xs font-medium min-touch justify-center"
               >
-                <UserCheck className="w-4 h-4 text-amber-400" />
-                <span className="hidden sm:inline text-[11px]">Staff Portal</span>
+                <UserCheck className="w-4 h-4 text-amber-500 dark:text-amber-400" />
+                <span className="hidden sm:inline text-[11px] font-semibold">Staff Portal</span>
               </Link>
 
               {/* Mobile Drawer Trigger (More Info / Helpline) */}
               <button
                 type="button"
                 onClick={() => setMobileDrawerOpen(true)}
-                className="md:hidden p-2.5 rounded-xl bg-obsidian-900 border border-white/10 text-slate-200 hover:text-gold-400 min-touch flex items-center justify-center active:scale-95"
+                className="md:hidden p-2 rounded-xl bg-slate-100 dark:bg-obsidian-900 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200 hover:text-amber-600 dark:hover:text-gold-400 min-touch flex items-center justify-center active:scale-95"
                 aria-label="Open Navigation Drawer"
               >
                 <Menu className="w-5 h-5" />
@@ -140,19 +144,21 @@ export const CustomerNavbar: React.FC = () => {
       {/* ========================================================================= */}
       {/* 2. STICKY MOBILE BOTTOM NAVIGATION BAR (FIXED ON MOBILE < MD)             */}
       {/* ========================================================================= */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-obsidian-950/95 backdrop-blur-2xl border-t border-white/10 pb-safe shadow-[0_-8px_30px_rgba(0,0,0,0.8)]">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-obsidian-950/95 backdrop-blur-2xl border-t border-slate-200/90 dark:border-white/10 pb-safe shadow-[0_-8px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_-8px_30px_rgba(0,0,0,0.8)] transition-colors duration-200">
         <nav className="grid grid-cols-4 h-16 items-center px-1 max-w-md mx-auto">
           {/* 1. Home */}
           <Link
             to="/"
             className={`flex flex-col items-center justify-center h-full min-touch relative transition-colors ${
-              isActive('/') ? 'text-gold-300 font-bold' : 'text-slate-400 hover:text-slate-200'
+              isActive('/') 
+                ? 'text-amber-700 dark:text-gold-300 font-bold' 
+                : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
-            <Flame className={`w-5 h-5 ${isActive('/') ? 'text-gold-400 animate-pulse' : 'text-slate-400'}`} />
+            <Flame className={`w-5 h-5 ${isActive('/') ? 'text-amber-600 dark:text-gold-400 animate-pulse' : 'text-slate-400'}`} />
             <span className="text-[10px] mt-1 tracking-tight">Home</span>
             {isActive('/') && (
-              <span className="absolute top-1 w-6 h-0.5 rounded-full bg-gold-400 shadow-glow-gold" />
+              <span className="absolute top-1 w-6 h-0.5 rounded-full bg-amber-500 dark:bg-gold-400 shadow-sm dark:shadow-glow-gold" />
             )}
           </Link>
 
@@ -160,13 +166,15 @@ export const CustomerNavbar: React.FC = () => {
           <Link
             to="/catalogue"
             className={`flex flex-col items-center justify-center h-full min-touch relative transition-colors ${
-              isActive('/catalogue') ? 'text-gold-300 font-bold' : 'text-slate-400 hover:text-slate-200'
+              isActive('/catalogue') 
+                ? 'text-amber-700 dark:text-gold-300 font-bold' 
+                : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
-            <BookOpen className={`w-5 h-5 ${isActive('/catalogue') ? 'text-gold-400' : 'text-slate-400'}`} />
+            <BookOpen className={`w-5 h-5 ${isActive('/catalogue') ? 'text-amber-600 dark:text-gold-400' : 'text-slate-400'}`} />
             <span className="text-[10px] mt-1 tracking-tight">Catalogue</span>
             {isActive('/catalogue') && (
-              <span className="absolute top-1 w-6 h-0.5 rounded-full bg-gold-400 shadow-glow-gold" />
+              <span className="absolute top-1 w-6 h-0.5 rounded-full bg-amber-500 dark:bg-gold-400 shadow-sm dark:shadow-glow-gold" />
             )}
           </Link>
 
@@ -174,13 +182,15 @@ export const CustomerNavbar: React.FC = () => {
           <Link
             to="/book-slot"
             className={`flex flex-col items-center justify-center h-full min-touch relative transition-colors ${
-              isActive('/book-slot') ? 'text-gold-300 font-bold' : 'text-amber-400 hover:text-amber-300'
+              isActive('/book-slot') 
+                ? 'text-amber-700 dark:text-gold-300 font-bold' 
+                : 'text-amber-600 dark:text-amber-400 hover:text-amber-700'
             }`}
           >
             <div className={`p-1.5 rounded-xl transition-all ${
               isActive('/book-slot') 
-                ? 'bg-gold-500 text-obsidian-950 shadow-glow-gold' 
-                : 'bg-gold-500/15 text-gold-400 border border-gold-500/30'
+                ? 'bg-amber-500 dark:bg-gold-500 text-white dark:text-obsidian-950 shadow-md dark:shadow-glow-gold' 
+                : 'bg-amber-500/15 dark:bg-gold-500/15 text-amber-600 dark:text-gold-400 border border-amber-500/30 dark:border-gold-500/30'
             }`}>
               <CalendarCheck className="w-4 h-4" />
             </div>
@@ -191,13 +201,15 @@ export const CustomerNavbar: React.FC = () => {
           <Link
             to="/showroom"
             className={`flex flex-col items-center justify-center h-full min-touch relative transition-colors ${
-              isActive('/showroom') ? 'text-gold-300 font-bold' : 'text-slate-400 hover:text-slate-200'
+              isActive('/showroom') 
+                ? 'text-amber-700 dark:text-gold-300 font-bold' 
+                : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
-            <MapPin className={`w-5 h-5 ${isActive('/showroom') ? 'text-gold-400' : 'text-slate-400'}`} />
+            <MapPin className={`w-5 h-5 ${isActive('/showroom') ? 'text-amber-600 dark:text-gold-400' : 'text-slate-400'}`} />
             <span className="text-[10px] mt-1 tracking-tight">Showroom</span>
             {isActive('/showroom') && (
-              <span className="absolute top-1 w-6 h-0.5 rounded-full bg-gold-400 shadow-glow-gold" />
+              <span className="absolute top-1 w-6 h-0.5 rounded-full bg-amber-500 dark:bg-gold-400 shadow-sm dark:shadow-glow-gold" />
             )}
           </Link>
         </nav>
@@ -210,32 +222,35 @@ export const CustomerNavbar: React.FC = () => {
         <div className="fixed inset-0 z-50 md:hidden animate-in fade-in duration-200">
           {/* Backdrop */}
           <div 
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm"
             onClick={() => setMobileDrawerOpen(false)}
           />
 
           {/* Slide-over Drawer Panel */}
-          <div className="fixed inset-y-0 right-0 w-full max-w-xs bg-obsidian-900 border-l border-white/10 p-6 flex flex-col justify-between shadow-2xl animate-in slide-in-from-right duration-300 overflow-y-auto">
+          <div className="fixed inset-y-0 right-0 w-full max-w-xs bg-white dark:bg-obsidian-900 border-l border-slate-200 dark:border-white/10 p-6 flex flex-col justify-between shadow-2xl animate-in slide-in-from-right duration-300 overflow-y-auto">
             <div className="space-y-6">
               {/* Drawer Header */}
-              <div className="flex items-center justify-between pb-4 border-b border-white/10">
+              <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-white/10">
                 <div className="flex items-center gap-2.5">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-gold-600 p-0.5 shadow-sm flex items-center justify-center">
                     <img src="/ayyan-emblem.png" alt="Bunny Brand" className="w-full h-full object-contain rounded-lg" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white text-sm">Ayyan Fireworks</h3>
-                    <p className="text-[10px] text-amber-400 font-semibold">Bunny Brand Since 1987</p>
+                    <h3 className="font-bold text-slate-900 dark:text-white text-sm">Ayyan Fireworks</h3>
+                    <p className="text-[10px] text-amber-600 dark:text-amber-400 font-semibold">Bunny Brand Since 1987</p>
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => setMobileDrawerOpen(false)}
-                  className="p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white min-touch flex items-center justify-center"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+                <div className="flex items-center gap-1.5">
+                  <ThemeToggle />
+                  <button
+                    type="button"
+                    onClick={() => setMobileDrawerOpen(false)}
+                    className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white min-touch flex items-center justify-center"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
 
               {/* Navigation Links */}
@@ -250,35 +265,35 @@ export const CustomerNavbar: React.FC = () => {
                       onClick={() => setMobileDrawerOpen(false)}
                       className={`flex items-center justify-between p-3.5 rounded-2xl text-sm font-bold transition-all min-touch ${
                         active
-                          ? 'bg-gold-500/20 text-gold-300 border border-gold-500/40 shadow-sm'
-                          : 'text-slate-300 hover:bg-white/5'
+                          ? 'bg-amber-500/15 dark:bg-gold-500/20 text-amber-700 dark:text-gold-300 border border-amber-500/40 dark:border-gold-500/40 shadow-sm'
+                          : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5'
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <Icon className={`w-4 h-4 ${active ? 'text-gold-400' : 'text-slate-400'}`} />
+                        <Icon className={`w-4 h-4 ${active ? 'text-amber-600 dark:text-gold-400' : 'text-slate-400'}`} />
                         <span>{link.name}</span>
                       </div>
-                      <ChevronRight className="w-4 h-4 text-slate-500" />
+                      <ChevronRight className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                     </Link>
                   );
                 })}
               </nav>
 
               {/* Showroom Quick Info */}
-              <div className="p-4 rounded-2xl bg-obsidian-950 border border-white/5 space-y-3 text-xs text-slate-300">
-                <span className="font-bold text-gold-400 uppercase tracking-wider text-[10px] block">
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-obsidian-950 border border-slate-200 dark:border-white/5 space-y-3 text-xs text-slate-700 dark:text-slate-300">
+                <span className="font-bold text-amber-600 dark:text-gold-400 uppercase tracking-wider text-[10px] block">
                   Visakhapatnam Flagship
                 </span>
-                <p className="text-[11px] leading-relaxed text-slate-300">
+                <p className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-300">
                   {SHOWROOM_CONTACT.shortAddress}
                 </p>
-                <div className="flex items-center gap-2 text-slate-400 text-[11px]">
-                  <Clock className="w-3.5 h-3.5 text-gold-400 shrink-0" />
+                <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-[11px]">
+                  <Clock className="w-3.5 h-3.5 text-amber-500 dark:text-gold-400 shrink-0" />
                   <span>09:00 AM – 09:30 PM (All 7 Days)</span>
                 </div>
                 <a
                   href={`tel:${SHOWROOM_CONTACT.phone.replace(/[^0-9+]/g, '')}`}
-                  className="flex items-center gap-2 text-gold-300 font-bold text-xs pt-1"
+                  className="flex items-center gap-2 text-amber-700 dark:text-gold-300 font-bold text-xs pt-1"
                 >
                   <Phone className="w-3.5 h-3.5" />
                   <span>Call: {SHOWROOM_CONTACT.phone}</span>
@@ -287,17 +302,17 @@ export const CustomerNavbar: React.FC = () => {
             </div>
 
             {/* Drawer Bottom Actions */}
-            <div className="pt-6 border-t border-white/10 space-y-2.5 pb-safe">
+            <div className="pt-6 border-t border-slate-200 dark:border-white/10 space-y-2.5 pb-safe">
               <Link
                 to="/portal"
                 onClick={() => setMobileDrawerOpen(false)}
-                className="w-full py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-bold flex items-center justify-center gap-2 min-touch shadow-sm"
+                className="w-full py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold flex items-center justify-center gap-2 min-touch shadow-sm"
               >
-                <UserCheck className="w-4 h-4 text-amber-400" />
+                <UserCheck className="w-4 h-4 text-amber-500 dark:text-amber-400" />
                 <span>Staff & Management Workstation</span>
               </Link>
 
-              <div className="flex items-center justify-center gap-1.5 text-[10px] text-emerald-400 pt-1">
+              <div className="flex items-center justify-center gap-1.5 text-[10px] text-emerald-600 dark:text-emerald-400 pt-1 font-semibold">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 <span>PESO Licensed Showroom Facility</span>
               </div>

@@ -39,24 +39,24 @@ export const BatchSlotGeneratorModal: React.FC<BatchSlotGeneratorModalProps> = (
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 overflow-hidden bg-black/60 dark:bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
       <div 
-        className="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6"
+        className="w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
           <div>
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-amber-400" />
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <Calendar className="w-5 h-5 text-amber-600 dark:text-amber-400" />
               Batch Slot Schedule Generator
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Instantly create recurring 1-hour showroom visiting windows for a date range.
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -64,45 +64,45 @@ export const BatchSlotGeneratorModal: React.FC<BatchSlotGeneratorModalProps> = (
 
         {resultCount !== null ? (
           <div className="py-8 text-center space-y-2">
-            <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
+            <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
               <CheckCircle2 className="w-7 h-7" />
             </div>
-            <h4 className="text-base font-bold text-white">Slots Generated Successfully!</h4>
-            <p className="text-xs text-slate-400">{resultCount} new visiting windows added to the calendar.</p>
+            <h4 className="text-base font-bold text-slate-900 dark:text-white">Slots Generated Successfully!</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">{resultCount} new visiting windows added to the calendar.</p>
           </div>
         ) : (
           <form onSubmit={handleGenerate} className="space-y-4 text-xs">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="font-bold text-slate-300 uppercase tracking-wider">Start Date</label>
+                <label className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Start Date</label>
                 <input
                   type="date"
                   required
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-slate-200 focus:outline-none focus:border-amber-500"
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2.5 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-amber-500"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="font-bold text-slate-300 uppercase tracking-wider">End Date</label>
+                <label className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">End Date</label>
                 <input
                   type="date"
                   required
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-slate-200 focus:outline-none focus:border-amber-500"
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2.5 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-amber-500"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="font-bold text-slate-300 uppercase tracking-wider">Opening Hour</label>
+                <label className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Opening Hour</label>
                 <select
                   value={startHour}
                   onChange={(e) => setStartHour(Number(e.target.value))}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-slate-200 focus:outline-none focus:border-amber-500"
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2.5 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-amber-500"
                 >
                   {[8, 9, 10, 11, 12, 13, 14, 15].map(h => (
                     <option key={h} value={h}>{h > 12 ? `${h - 12}:00 PM` : `${h}:00 AM`}</option>
@@ -111,11 +111,11 @@ export const BatchSlotGeneratorModal: React.FC<BatchSlotGeneratorModalProps> = (
               </div>
 
               <div className="space-y-1.5">
-                <label className="font-bold text-slate-300 uppercase tracking-wider">Closing Hour</label>
+                <label className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Closing Hour</label>
                 <select
                   value={endHour}
                   onChange={(e) => setEndHour(Number(e.target.value))}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-slate-200 focus:outline-none focus:border-amber-500"
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2.5 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-amber-500"
                 >
                   {[17, 18, 19, 20, 21, 22].map(h => (
                     <option key={h} value={h}>{h > 12 ? `${h - 12}:00 PM` : `${h}:00 AM`}</option>
@@ -125,9 +125,9 @@ export const BatchSlotGeneratorModal: React.FC<BatchSlotGeneratorModalProps> = (
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-bold text-slate-300 uppercase tracking-wider flex items-center justify-between">
+              <label className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center justify-between">
                 <span>Default Visitor Capacity Per Slot</span>
-                <span className="text-amber-400 font-mono text-sm">{capacity} Visitors</span>
+                <span className="text-amber-600 dark:text-amber-400 font-mono text-sm">{capacity} Visitors</span>
               </label>
               <input
                 type="range"
@@ -145,15 +145,15 @@ export const BatchSlotGeneratorModal: React.FC<BatchSlotGeneratorModalProps> = (
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-[11px] text-slate-400">
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-400">
               ⚡ Existing slot configurations and bookings within this range will be preserved to prevent duplicate collisions.
             </div>
 
-            <div className="pt-4 border-t border-slate-800 flex items-center justify-end gap-3">
+            <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2.5 rounded-xl border border-slate-700 text-slate-300 hover:text-white text-xs font-semibold"
+                className="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-semibold"
               >
                 Cancel
               </button>

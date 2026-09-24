@@ -41,31 +41,31 @@ export const WhatsAppFloatingButton: React.FC = () => {
     <div className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col items-end mb-safe">
       {/* Pop-out Assistant Modal */}
       {isOpen && (
-        <div className="mb-3 w-[calc(100vw-2rem)] max-w-sm sm:w-96 rounded-2xl glass-panel-gold border border-gold-500/30 p-4 shadow-glow-gold-lg backdrop-blur-2xl animate-float transition-all">
-          <div className="flex items-center justify-between pb-3 border-b border-white/10">
+        <div className="mb-3 w-[calc(100vw-2rem)] max-w-sm sm:w-96 rounded-2xl bg-white/95 dark:bg-slate-900/95 border border-amber-500/30 p-4 shadow-xl dark:shadow-glow-gold-lg backdrop-blur-2xl animate-float transition-all">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-white/10">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
+              <div className="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0">
                 <MessageCircle className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-slate-100 flex items-center gap-1.5">
+                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
                   Ayyan VIP Concierge
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
                 </h4>
-                <p className="text-[11px] text-emerald-400 font-medium">Online • Instant Showroom Support</p>
+                <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">Online • Instant Showroom Support</p>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
               aria-label="Close Concierge"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="py-3 text-xs text-slate-300">
-            <p className="mb-2.5 text-slate-300/90 leading-relaxed">
+          <div className="py-3 text-xs text-slate-600 dark:text-slate-300">
+            <p className="mb-2.5 text-slate-600 dark:text-slate-300/90 leading-relaxed">
               Welcome to Ayyan Fireworks direct customer advisory. Select a quick inquiry below or type a custom message:
             </p>
 
@@ -76,24 +76,24 @@ export const WhatsAppFloatingButton: React.FC = () => {
                   <button
                     key={i}
                     onClick={() => handleSendPrompt(prompt.text)}
-                    className="w-full text-left p-2.5 rounded-xl bg-obsidian-900/80 hover:bg-gold-500/10 border border-white/5 hover:border-gold-500/30 text-xs text-slate-200 transition-all flex items-center gap-2.5 group min-h-[44px]"
+                    className="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-amber-50 dark:bg-slate-950/80 dark:hover:bg-gold-500/10 border border-slate-200 dark:border-white/5 hover:border-amber-500/40 dark:hover:border-gold-500/30 text-xs text-slate-800 dark:text-slate-200 transition-all flex items-center gap-2.5 group min-h-[44px]"
                   >
-                    <Icon className="w-4 h-4 text-gold-400 group-hover:scale-110 transition-transform shrink-0" />
-                    <span className="flex-1 font-medium group-hover:text-gold-300">{prompt.label}</span>
-                    <Send className="w-3 h-3 text-slate-500 group-hover:text-gold-400 transition-colors shrink-0" />
+                    <Icon className="w-4 h-4 text-amber-600 dark:text-gold-400 group-hover:scale-110 transition-transform shrink-0" />
+                    <span className="flex-1 font-medium group-hover:text-amber-700 dark:group-hover:text-gold-300">{prompt.label}</span>
+                    <Send className="w-3 h-3 text-slate-400 dark:text-slate-500 group-hover:text-amber-600 dark:group-hover:text-gold-400 transition-colors shrink-0" />
                   </button>
                 );
               })}
             </div>
           </div>
 
-          <form onSubmit={handleSendCustom} className="pt-2 border-t border-white/10 flex gap-2">
+          <form onSubmit={handleSendCustom} className="pt-2 border-t border-slate-200 dark:border-white/10 flex gap-2">
             <input
               type="text"
               value={customMsg}
               onChange={(e) => setCustomMsg(e.target.value)}
               placeholder="Ask showroom team..."
-              className="flex-1 bg-obsidian-950 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-gold-500 min-h-[44px]"
+              className="flex-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2.5 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-amber-500 min-h-[44px]"
             />
             <button
               type="submit"
