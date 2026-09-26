@@ -402,6 +402,6 @@ export const generateInitialSlots = (): Slot[] => {
   return slots;
 };
 
-export const generateInitialBookings = (_slots: Slot[]): Booking[] => {
+export const generateInitialBookings = (_slots?: Slot[]): Booking[] => {
   return [];
 };

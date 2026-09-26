@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { Product, Slot, Booking, StaffUser, BookingRpcResponse, BookingStatus } from '../types';
-import { INITIAL_PRODUCTS, generateInitialSlots, generateInitialBookings } from '../lib/initialData';
+import { INITIAL_PRODUCTS, generateInitialSlots } from '../lib/initialData';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 interface AppContextType {
@@ -41,11 +41,11 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const LOCAL_STORAGE_KEYS = {
-  PRODUCTS: 'ayyan_products_clean_v2',
-  SLOTS: 'ayyan_slots_clean_v2',
-  BOOKINGS: 'ayyan_bookings_clean_v2',
-  STAFF_USER: 'ayyan_staff_user_clean_v2',
-  EMERGENCY_BLOCK: 'ayyan_emergency_block_clean_v2',
+  PRODUCTS: 'ayyan_products_clean_v4',
+  SLOTS: 'ayyan_slots_clean_v4',
+  BOOKINGS: 'ayyan_bookings_clean_v4',
+  STAFF_USER: 'ayyan_staff_user_clean_v4',
+  EMERGENCY_BLOCK: 'ayyan_emergency_block_clean_v4',
 };
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -64,14 +64,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const [slots, setSlots] = useState<Slot[]>(() => {
     const saved = localStorage.getItem(LOCAL_STORAGE_KEYS.SLOTS);
-    return saved ? JSON.parse(saved) : generateInitialSlots();
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {
+        console.warn('Failed to parse saved slots:', e);
+      }
+    }
+    return generateInitialSlots();
   });
 
   const [bookings, setBookings] = useState<Booking[]>(() => {
     const saved = localStorage.getItem(LOCAL_STORAGE_KEYS.BOOKINGS);
-    if (saved) return JSON.parse(saved);
-    const initialSlots = generateInitialSlots();
-    return generateInitialBookings(initialSlots);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) return parsed;
+      } catch (e) {
+        console.warn('Failed to parse saved bookings:', e);
+      }
+    }
+    return [];
   });
 
   const [currentUser, setCurrentUser] = useState<StaffUser | null>(() => {
@@ -483,7 +497,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const resetToDefaultSeed = () => {
     const seedSlots = generateInitialSlots();
-    setProducts([]);
+    setProducts(INITIAL_PRODUCTS);
     setSlots(seedSlots);
     setBookings([]);
     setIsEmergencyBlocked(false);
