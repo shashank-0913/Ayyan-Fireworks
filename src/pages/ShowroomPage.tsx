@@ -7,9 +7,13 @@ import {
   ExternalLink, 
   Navigation, 
   CheckCircle2, 
-  Building
+  Building,
+  MapPin,
+  Clock,
+  Phone
 } from 'lucide-react';
-import { SHOWROOM_CONTACT } from '../lib/utils';
+import { SHOWROOM_CONTACT, WHATSAPP_CONTACT } from '../lib/utils';
+import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import { LegalComplianceBanner } from '../components/common/LegalComplianceBanner';
 
 export const ShowroomPage: React.FC = () => {
@@ -22,7 +26,7 @@ export const ShowroomPage: React.FC = () => {
           <span>Visakhapatnam Flagship Experience Center</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-display font-extrabold text-slate-900 dark:text-white tracking-tight">
-          Showroom & Visitor Protocol Guide
+          Showroom & Navigation Guide
         </h1>
         <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
           Plan your festive visit to our licensed premises in Visakhapatnam. Safe, air-conditioned viewing galleries with expert pyrotechnic guidance.
@@ -37,9 +41,9 @@ export const ShowroomPage: React.FC = () => {
         <div className="lg:col-span-5 space-y-6">
           <div className="rounded-3xl p-6 sm:p-8 space-y-6 border border-amber-300/70 dark:border-gold-500/25 bg-white dark:bg-obsidian-900/80 shadow-sm dark:shadow-glass backdrop-blur-xl">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-gold-600 rounded-2xl p-0.5 shadow-sm border border-gold-400/40 flex items-center justify-center">
-                <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center p-0.5">
-                  <img src="/ayyan-emblem.png" alt="Bunny Brand" className="w-full h-full object-contain rounded-full" />
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-gold-600 p-0.5 shadow-sm border border-gold-400/40 flex items-center justify-center shrink-0">
+                <div className="w-full h-full bg-slate-950 rounded-full flex items-center justify-center p-0.5 overflow-hidden">
+                  <img src="/ayyan-emblem.png" alt="Bunny Brand" className="w-full h-full object-contain" />
                 </div>
               </div>
               <div>
@@ -54,48 +58,91 @@ export const ShowroomPage: React.FC = () => {
 
             <div className="space-y-4 text-xs sm:text-sm">
               <div className="space-y-1">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Physical Address</span>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400" />
+                  <span>Physical Address</span>
+                </span>
                 <p className="text-slate-800 dark:text-slate-100 font-medium leading-relaxed">{SHOWROOM_CONTACT.address}</p>
               </div>
 
               <div className="space-y-1">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Landmark & Route</span>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                  <Navigation className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400" />
+                  <span>Landmark & Highway Route</span>
+                </span>
                 <p className="text-slate-700 dark:text-slate-200">Main Road / NH-16 (near Natayyapalem / Drivers Colony), Sheela Nagar</p>
               </div>
 
               <div className="space-y-1">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Operational Hours</span>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400" />
+                  <span>Operational Hours</span>
+                </span>
                 <p className="text-slate-800 dark:text-slate-100 font-medium">{SHOWROOM_CONTACT.operationalHours}</p>
               </div>
 
               <div className="space-y-1">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Direct Helpline</span>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                  <Phone className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400" />
+                  <span>Direct Helpline</span>
+                </span>
                 <p className="font-mono text-amber-700 dark:text-gold-300 font-bold text-base">{SHOWROOM_CONTACT.phone}</p>
               </div>
 
               <div className="space-y-1">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Statutory License</span>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                  <WhatsAppIcon className="w-3.5 h-3.5 text-[#25D366]" />
+                  <span>WhatsApp Support</span>
+                </span>
+                <a
+                  href={WHATSAPP_CONTACT.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-emerald-700 dark:text-[#25D366] font-bold text-base hover:underline block"
+                >
+                  {WHATSAPP_CONTACT.display}
+                </a>
+              </div>
+
+              <div className="space-y-1">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <span>Statutory License</span>
+                </span>
                 <p className="font-mono text-xs text-slate-600 dark:text-slate-300">{SHOWROOM_CONTACT.pesoLicense}</p>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-200 dark:border-white/10 flex flex-col sm:flex-row gap-3">
+            {/* Action Buttons */}
+            <div className="pt-4 border-t border-slate-200 dark:border-white/10 flex flex-col gap-3">
               <a
                 href={SHOWROOM_CONTACT.googleMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="gold-gradient-btn px-4 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 text-center"
+                className="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-gold-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-extrabold text-sm flex items-center justify-center gap-2.5 text-center shadow-md dark:shadow-glow-gold transition-all transform hover:-translate-y-0.5 active:scale-95"
               >
-                <Navigation className="w-4 h-4 text-obsidian-950" />
-                <span>Open Google Maps</span>
+                <Navigation className="w-5 h-5 text-slate-950" />
+                <span>Navigate via Google Maps</span>
+                <ExternalLink className="w-4 h-4 text-slate-950" />
+              </a>
+
+              <a
+                href={WHATSAPP_CONTACT.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 px-4 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-white text-xs font-bold flex items-center justify-center gap-2 text-center shadow-xs transition-all active:scale-95"
+              >
+                <WhatsAppIcon className="w-4 h-4 text-white" />
+                <span>Chat with Us on WhatsApp</span>
+                <ExternalLink className="w-3.5 h-3.5 text-white/80" />
               </a>
 
               <Link
                 to="/book-slot"
-                className="px-4 py-3 rounded-xl bg-slate-50 hover:bg-amber-50 dark:bg-obsidian-950 dark:hover:bg-slate-800 border border-amber-400/50 dark:border-gold-500/30 text-amber-700 dark:text-gold-300 text-xs font-bold flex items-center justify-center gap-2 text-center shadow-xs"
+                className="w-full py-3 px-4 rounded-xl bg-slate-50 hover:bg-amber-50 dark:bg-obsidian-950 dark:hover:bg-slate-800 border border-amber-400/50 dark:border-gold-500/30 text-amber-700 dark:text-gold-300 text-xs font-bold flex items-center justify-center gap-2 text-center shadow-xs"
               >
                 <Calendar className="w-4 h-4 text-amber-600 dark:text-gold-400" />
-                <span>Book Visiting Slot</span>
+                <span>Reserve Free VIP Visiting Slot</span>
               </Link>
             </div>
           </div>
@@ -104,7 +151,7 @@ export const ShowroomPage: React.FC = () => {
           <div className="rounded-3xl p-6 space-y-4 border border-slate-200 dark:border-white/10 bg-white dark:bg-obsidian-900/70 shadow-sm text-xs text-slate-700 dark:text-slate-300 backdrop-blur-xl">
             <h4 className="font-bold text-slate-900 dark:text-white text-sm flex items-center gap-2">
               <Car className="w-4 h-4 text-amber-600 dark:text-gold-400" />
-              Parking & Loading Instructions
+              <span>Parking & Loading Instructions</span>
             </h4>
             <ul className="space-y-2.5">
               <li className="flex items-start gap-2">
@@ -134,7 +181,7 @@ export const ShowroomPage: React.FC = () => {
               {/* Simulated NH-16 Highway Arterial Road */}
               <div className="absolute top-1/2 left-0 right-0 h-14 bg-slate-800/80 -translate-y-1/2 border-y border-white/10 flex items-center justify-center">
                 <span className="font-mono text-[11px] text-amber-300 font-bold uppercase tracking-widest flex items-center gap-2">
-                  <span>🚗 National Highway 16 (NH-16) — Sheela Nagar Arterial Corridor</span>
+                  <span>🚗 National Highway 16 (NH-16) — Sheela Nagar Corridor</span>
                 </span>
               </div>
               <div className="absolute top-0 bottom-0 left-1/3 w-12 bg-slate-800/80 border-x border-white/10 flex items-center justify-center">
@@ -165,15 +212,16 @@ export const ShowroomPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Direct Directions Overlay */}
+            {/* Direct Directions Overlay Button */}
             <div className="absolute bottom-4 right-4 z-20">
               <a
                 href={SHOWROOM_CONTACT.googleMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2 rounded-xl bg-amber-500 dark:bg-gold-500 text-obsidian-950 font-bold text-xs flex items-center gap-1.5 shadow-md dark:shadow-glow-gold hover:bg-amber-400 dark:hover:bg-gold-400 transition-colors"
+                className="px-4 py-2.5 rounded-xl bg-amber-500 dark:bg-gold-500 text-obsidian-950 font-bold text-xs flex items-center gap-2 shadow-md dark:shadow-glow-gold hover:bg-amber-400 dark:hover:bg-gold-400 transition-colors"
               >
-                <span>Navigate via GPS</span>
+                <Navigation className="w-4 h-4 text-obsidian-950" />
+                <span>Navigate via Google Maps</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </a>
             </div>
@@ -183,13 +231,13 @@ export const ShowroomPage: React.FC = () => {
           <div className="rounded-3xl p-6 sm:p-8 space-y-4 border border-slate-200 dark:border-white/10 bg-white dark:bg-obsidian-900/70 shadow-sm backdrop-blur-xl">
             <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-              In-Store Visitor Safety Protocols
+              <span>In-Store Visitor Safety Protocols</span>
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-700 dark:text-slate-300">
               <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-obsidian-950 border border-slate-200 dark:border-white/5 space-y-1">
-                <strong className="text-amber-700 dark:text-gold-300 block">1. Priority Entry with VIP Pass</strong>
-                <p className="text-slate-600 dark:text-slate-400">Present your digital QR pass at the security desk to bypass general waiting queues.</p>
+                <strong className="text-amber-700 dark:text-gold-300 block">1. Priority Entry with VIP Pass ID</strong>
+                <p className="text-slate-600 dark:text-slate-400">Present your Unique Pass Code at the security desk to bypass general waiting queues.</p>
               </div>
 
               <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-obsidian-950 border border-slate-200 dark:border-white/5 space-y-1">

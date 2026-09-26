@@ -4,6 +4,7 @@ import { AppProvider } from './context/AppContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { SparkleCanvas } from './components/common/SparkleCanvas';
 import { WhatsAppFloatingButton } from './components/common/WhatsAppFloatingButton';
+import { FireworkIntroSplash } from './components/common/FireworkIntroSplash';
 import { CustomerNavbar } from './components/customer/CustomerNavbar';
 import { CustomerFooter } from './components/customer/CustomerFooter';
 
@@ -26,6 +27,9 @@ import { PortalBookingsPage } from './pages/portal/PortalBookingsPage';
 const CustomerPortalLayout: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-obsidian-950 text-slate-900 dark:text-slate-100 relative overflow-x-hidden transition-colors duration-200">
+      {/* Cinematic Firework Intro Splash Screen (Runs on First Visit) */}
+      <FireworkIntroSplash />
+
       {/* Background Ambient Logo Watermark (Only Circular Emblem) */}
       <div className="fixed inset-0 pointer-events-none flex items-center justify-center overflow-hidden z-0 opacity-[0.035] dark:opacity-[0.03] select-none">
         <img

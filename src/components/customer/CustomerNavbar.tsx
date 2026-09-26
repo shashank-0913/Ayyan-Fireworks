@@ -17,7 +17,8 @@ import {
 import { LegalComplianceBanner } from '../common/LegalComplianceBanner';
 import { VIPTicker } from '../common/VIPTicker';
 import { ThemeToggle } from '../common/ThemeToggle';
-import { SHOWROOM_CONTACT } from '../../lib/utils';
+import { WhatsAppIcon } from '../common/WhatsAppIcon';
+import { SHOWROOM_CONTACT, WHATSAPP_CONTACT } from '../../lib/utils';
 
 export const CustomerNavbar: React.FC = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
@@ -53,12 +54,12 @@ export const CustomerNavbar: React.FC = () => {
           <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Official Company Logo */}
             <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group shrink-0 min-touch">
-              <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-gold-600 p-0.5 shadow-glow-gold transition-transform group-hover:scale-105 duration-300 flex items-center justify-center overflow-hidden">
-                <div className="w-full h-full bg-slate-950 rounded-[10px] sm:rounded-[14px] flex items-center justify-center p-0.5">
+              <div className="relative w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-gradient-to-br from-amber-400 via-amber-500 to-gold-600 p-0.5 shadow-md dark:shadow-glow-gold transition-transform group-hover:scale-105 duration-300 flex items-center justify-center shrink-0">
+                <div className="w-full h-full bg-slate-950 rounded-full flex items-center justify-center overflow-hidden">
                   <img
                     src="/ayyan-emblem.png"
-                    alt="Bunny Brand"
-                    className="w-full h-full object-contain rounded-full"
+                    alt="Bunny Brand Fancy Fireworks"
+                    className="w-full h-full object-contain"
                     loading="eager"
                   />
                 </div>
@@ -105,6 +106,20 @@ export const CustomerNavbar: React.FC = () => {
 
             {/* Right Quick Actions */}
             <div className="flex items-center gap-2 sm:gap-2.5">
+              {/* WhatsApp Header Action */}
+              <a
+                href={WHATSAPP_CONTACT.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 dark:bg-emerald-500/15 dark:hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold transition-all shadow-xs hover:shadow-sm transform hover:-translate-y-0.5 active:scale-95 min-touch"
+                aria-label="Chat on WhatsApp"
+                title="Chat with Showroom on WhatsApp (+1 555-171-5924)"
+              >
+                <WhatsAppIcon className="w-4 h-4 text-[#25D366]" />
+                <span className="hidden lg:inline">Chat on WhatsApp</span>
+                <span className="lg:hidden text-[11px]">WhatsApp</span>
+              </a>
+
               {/* Theme Toggle Button */}
               <ThemeToggle />
 
@@ -232,8 +247,8 @@ export const CustomerNavbar: React.FC = () => {
               {/* Drawer Header */}
               <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-white/10">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-gold-600 p-0.5 shadow-sm flex items-center justify-center">
-                    <img src="/ayyan-emblem.png" alt="Bunny Brand" className="w-full h-full object-contain rounded-lg" />
+                  <div className="w-11 h-11 rounded-full bg-gradient-to-br from-amber-400 to-gold-600 p-0.5 shadow-sm flex items-center justify-center shrink-0">
+                    <img src="/ayyan-emblem.png" alt="Bunny Brand" className="w-full h-full object-contain rounded-full bg-black" />
                   </div>
                   <div>
                     <h3 className="font-bold text-slate-900 dark:text-white text-sm">Ayyan Fireworks</h3>
@@ -291,18 +306,40 @@ export const CustomerNavbar: React.FC = () => {
                   <Clock className="w-3.5 h-3.5 text-amber-500 dark:text-gold-400 shrink-0" />
                   <span>09:00 AM – 09:30 PM (All 7 Days)</span>
                 </div>
-                <a
-                  href={`tel:${SHOWROOM_CONTACT.phone.replace(/[^0-9+]/g, '')}`}
-                  className="flex items-center gap-2 text-amber-700 dark:text-gold-300 font-bold text-xs pt-1"
-                >
-                  <Phone className="w-3.5 h-3.5" />
-                  <span>Call: {SHOWROOM_CONTACT.phone}</span>
-                </a>
+                <div className="flex flex-col sm:flex-row gap-2 pt-1">
+                  <a
+                    href={`tel:${SHOWROOM_CONTACT.phone.replace(/[^0-9+]/g, '')}`}
+                    className="flex-1 flex items-center justify-center gap-2 p-2.5 rounded-xl bg-slate-100 dark:bg-obsidian-900 border border-slate-200 dark:border-white/10 text-amber-700 dark:text-gold-300 font-bold text-xs"
+                  >
+                    <Phone className="w-3.5 h-3.5" />
+                    <span>Call Helpline</span>
+                  </a>
+
+                  <a
+                    href={WHATSAPP_CONTACT.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 flex items-center justify-center gap-2 p-2.5 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold text-xs shadow-xs"
+                  >
+                    <WhatsAppIcon className="w-3.5 h-3.5 text-white" />
+                    <span>WhatsApp</span>
+                  </a>
+                </div>
               </div>
             </div>
 
             {/* Drawer Bottom Actions */}
             <div className="pt-6 border-t border-slate-200 dark:border-white/10 space-y-2.5 pb-safe">
+              <a
+                href={WHATSAPP_CONTACT.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 px-4 rounded-2xl bg-[#25D366] hover:bg-[#20ba5a] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md shadow-[#25D366]/20 transition-all min-touch active:scale-95"
+              >
+                <WhatsAppIcon className="w-4 h-4 text-white" />
+                <span>Chat on WhatsApp (+1 555-171-5924)</span>
+              </a>
+
               <Link
                 to="/portal"
                 onClick={() => setMobileDrawerOpen(false)}

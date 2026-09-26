@@ -99,24 +99,34 @@ export function generateGoogleCalendarUrl(
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startIso}/${endIso}&details=${details}&location=${location}`;
 }
 
+export const WHATSAPP_CONTACT = {
+  number: '15551715924',
+  display: '+1 (555) 171-5924',
+  defaultMessage: 'Hi',
+  url: 'https://wa.me/15551715924?text=Hi'
+};
+
 export const SHOWROOM_CONTACT = {
   brandName: 'Ayyan Fireworks',
   subBrand: 'Bunny Brand Fancy Fireworks',
   since: 'Since 1987',
   phone: '+91 94431 82400',
-  whatsapp: '919443182400',
+  whatsapp: WHATSAPP_CONTACT.number,
+  whatsappDisplay: WHATSAPP_CONTACT.display,
+  whatsappUrl: WHATSAPP_CONTACT.url,
   address: 'Main Road / NH-16 (near Natayyapalem / Drivers Colony), Sheela Nagar, Visakhapatnam, Andhra Pradesh 530012, India.',
   shortAddress: 'NH-16, Sheela Nagar, Visakhapatnam 530012',
   landmark: 'Near Natayyapalem / Drivers Colony, Sheela Nagar',
   city: 'Visakhapatnam, Andhra Pradesh',
   pincode: '530012',
-  googleMapsUrl: 'https://maps.google.com/?q=Main+Road+NH-16+Sheela+Nagar+Visakhapatnam+Andhra+Pradesh+530012',
+  googleMapsUrl: 'https://maps.app.goo.gl/agWQFufKjWkwFbVs7',
   pesoLicense: 'PESO Licensed Showroom - Class 7, Div 2 Compliant',
   operationalHours: 'Mon - Sun: 09:00 AM – 09:30 PM IST (All 7 Days during Festive Season)'
 };
 
 export function getWhatsAppUrl(customMessage?: string): string {
-  const defaultMsg = 'Hello Ayyan Fireworks Concierge! I would like to inquire about showroom visiting slots and the 2026 festive catalogue at Visakhapatnam.';
-  const message = encodeURIComponent(customMessage || defaultMsg);
-  return `https://wa.me/${SHOWROOM_CONTACT.whatsapp}?text=${message}`;
+  if (!customMessage) return WHATSAPP_CONTACT.url;
+  const message = encodeURIComponent(customMessage);
+  return `https://wa.me/${WHATSAPP_CONTACT.number}?text=${message}`;
 }
+

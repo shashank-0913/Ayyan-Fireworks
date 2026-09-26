@@ -51,7 +51,15 @@ const LOCAL_STORAGE_KEYS = {
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [products, setProducts] = useState<Product[]>(() => {
     const saved = localStorage.getItem(LOCAL_STORAGE_KEYS.PRODUCTS);
-    return saved ? JSON.parse(saved) : INITIAL_PRODUCTS;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {
+        console.warn('Failed to parse saved products:', e);
+      }
+    }
+    return INITIAL_PRODUCTS;
   });
 
   const [slots, setSlots] = useState<Slot[]>(() => {
@@ -210,9 +218,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
     }
 
-    const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-    const bookingCode = `AYN-${randomSuffix}`;
-    const newBookingId = `book-${Date.now()}`;
+    // Guaranteed unique booking ID & high-entropy booking code for every person
+    let bookingCode = '';
+    do {
+      const year = new Date().getFullYear().toString().slice(-2);
+      const randNum = Math.floor(1000 + Math.random() * 9000);
+      const randAlpha = Math.random().toString(36).substring(2, 4).toUpperCase();
+      bookingCode = `AYN-${year}${randAlpha}-${randNum}`;
+    } while (bookings.some(b => b.booking_code === bookingCode));
+
+    const newBookingId = `book-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
 
     const newBooking: Booking = {
       id: newBookingId,

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, MapPin, Phone, Clock } from 'lucide-react';
-import { SHOWROOM_CONTACT } from '../../lib/utils';
+import { ShieldCheck, MapPin, Phone, Clock, Sparkles } from 'lucide-react';
+import { WhatsAppIcon } from '../common/WhatsAppIcon';
+import { SHOWROOM_CONTACT, WHATSAPP_CONTACT } from '../../lib/utils';
 
 export const CustomerFooter: React.FC = () => {
   return (
@@ -13,12 +14,12 @@ export const CustomerFooter: React.FC = () => {
           {/* Brand Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-14 h-14 bg-gradient-to-br from-amber-400 via-amber-500 to-gold-600 rounded-2xl p-0.5 shadow-md dark:shadow-glow-gold border border-amber-400/40 flex items-center justify-center">
-                <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center p-1">
+              <div className="w-14 h-14 bg-gradient-to-br from-amber-400 via-amber-500 to-gold-600 rounded-full p-0.5 shadow-md dark:shadow-glow-gold border border-amber-400/40 flex items-center justify-center shrink-0">
+                <div className="w-full h-full bg-slate-950 rounded-full flex items-center justify-center p-0.5 overflow-hidden">
                   <img
                     src="/ayyan-emblem.png"
                     alt="Bunny Brand"
-                    className="w-full h-full object-contain rounded-full"
+                    className="w-full h-full object-contain"
                   />
                 </div>
               </div>
@@ -71,6 +72,19 @@ export const CustomerFooter: React.FC = () => {
                   <span>Owner & Staff Management Portal</span>
                 </Link>
               </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => {
+                    sessionStorage.removeItem('hasSeenIntro');
+                    window.location.reload();
+                  }}
+                  className="hover:text-amber-700 dark:hover:text-gold-300 transition-colors flex items-center gap-2 text-slate-500 dark:text-slate-400 text-left cursor-pointer pt-1"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500 dark:text-gold-400" />
+                  <span>Replay Firework Intro</span>
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -91,6 +105,17 @@ export const CustomerFooter: React.FC = () => {
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-amber-600 dark:text-gold-400 shrink-0" />
                 <span>{SHOWROOM_CONTACT.phone}</span>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <WhatsAppIcon className="w-4 h-4 text-[#25D366] shrink-0" />
+                <a
+                  href={WHATSAPP_CONTACT.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-emerald-700 dark:text-[#25D366] hover:underline font-semibold flex items-center gap-1.5 transition-colors"
+                >
+                  <span>WhatsApp Support: {WHATSAPP_CONTACT.display}</span>
+                </a>
               </li>
             </ul>
           </div>

@@ -194,4 +194,53 @@
     min-height: 44px;
     min-width: 44px;
   }
+
+  /* VIP Ticket Notches & Perforation */
+  .ticket-perforation {
+    background-image: linear-gradient(to bottom, #d97706 40%, rgba(255, 255, 255, 0) 0%);
+    background-position: left;
+    background-size: 2px 10px;
+    background-repeat: repeat-y;
+  }
 }
+
+/* ========================================================================= */
+/* PRINT MEDIA STYLES FOR CRISP VIP PASS TICKETS                             */
+/* ========================================================================= */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  header, 
+  footer, 
+  nav, 
+  .no-print,
+  #whatsapp-floating-button,
+  .sparkle-canvas {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .print-only-pass {
+    border: 2px solid #000000 !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin: 0 auto !important;
+    max-width: 100% !important;
+  }
+
+  .print-only-pass * {
+    color: #000000 !important;
+    text-shadow: none !important;
+  }
+}
+
