@@ -121,7 +121,7 @@ export const SHOWROOM_CONTACT = {
   pincode: '530012',
   googleMapsUrl: 'https://maps.app.goo.gl/agWQFufKjWkwFbVs7',
   pesoLicense: 'PESO Licensed Showroom - Class 7, Div 2 Compliant',
-  operationalHours: 'Mon - Sun: 09:00 AM – 09:30 PM IST (All 7 Days during Festive Season)'
+  operationalHours: 'Mon - Sun: 05:00 AM – 10:00 PM IST (All 7 Days during Festive Season)'
 };
 
 export function getWhatsAppUrl(customMessage?: string): string {

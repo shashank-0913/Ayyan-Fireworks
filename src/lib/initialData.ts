@@ -369,6 +369,7 @@ export const generateInitialSlots = (): Slot[] => {
     const dateStr = slotDate.toISOString().split('T')[0];
 
     const hours = [
+      { start: '05:00:00', end: '06:00:00', cap: 120 },
       { start: '06:00:00', end: '07:00:00', cap: 120 },
       { start: '07:00:00', end: '08:00:00', cap: 120 },
       { start: '08:00:00', end: '09:00:00', cap: 120 },
@@ -382,7 +383,8 @@ export const generateInitialSlots = (): Slot[] => {
       { start: '17:00:00', end: '18:00:00', cap: 120 },
       { start: '18:00:00', end: '19:00:00', cap: 120 },
       { start: '19:00:00', end: '20:00:00', cap: 120 },
-      { start: '20:00:00', end: '21:00:00', cap: 120 }
+      { start: '20:00:00', end: '21:00:00', cap: 120 },
+      { start: '21:00:00', end: '22:00:00', cap: 120 }
     ];
 
     hours.forEach((h, index) => {

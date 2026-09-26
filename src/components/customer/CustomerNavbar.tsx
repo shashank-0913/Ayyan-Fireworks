@@ -304,7 +304,7 @@ export const CustomerNavbar: React.FC = () => {
                 </p>
                 <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-[11px]">
                   <Clock className="w-3.5 h-3.5 text-amber-500 dark:text-gold-400 shrink-0" />
-                  <span>09:00 AM – 09:30 PM (All 7 Days)</span>
+                  <span>05:00 AM – 10:00 PM (All 7 Days)</span>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-2 pt-1">
                   <a

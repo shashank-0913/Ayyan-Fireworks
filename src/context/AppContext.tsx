@@ -41,11 +41,11 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const LOCAL_STORAGE_KEYS = {
-  PRODUCTS: 'ayyan_products_clean_v4',
-  SLOTS: 'ayyan_slots_clean_v4',
-  BOOKINGS: 'ayyan_bookings_clean_v4',
-  STAFF_USER: 'ayyan_staff_user_clean_v4',
-  EMERGENCY_BLOCK: 'ayyan_emergency_block_clean_v4',
+  PRODUCTS: 'ayyan_products_clean_v5',
+  SLOTS: 'ayyan_slots_clean_v5',
+  BOOKINGS: 'ayyan_bookings_clean_v5',
+  STAFF_USER: 'ayyan_staff_user_clean_v5',
+  EMERGENCY_BLOCK: 'ayyan_emergency_block_clean_v5',
 };
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

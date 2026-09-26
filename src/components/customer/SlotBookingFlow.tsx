@@ -12,7 +12,8 @@ import {
   ArrowLeft, 
   Flame, 
   Info,
-  CalendarCheck2
+  CalendarCheck2,
+  Lock
 } from 'lucide-react';
 import { useAyyanStore } from '../../context/AppContext';
 import { Slot, Booking } from '../../types';
@@ -56,6 +57,17 @@ export const SlotBookingFlow: React.FC = () => {
       .sort((a, b) => a.start_time.localeCompare(b.start_time));
   }, [slots, selectedDate]);
 
+  // Check if every slot for the selected date is blocked or fully booked
+  const isAllDateSlotsBooked = useMemo(() => {
+    if (dateSlots.length === 0) return false;
+    return dateSlots.every(slot => {
+      const booked = slot.booked_capacity || 0;
+      const total = slot.total_capacity || 120;
+      const remaining = total - booked;
+      return slot.is_blocked || remaining <= 0 || booked >= total;
+    });
+  }, [dateSlots]);
+
   const selectedSlot = useMemo(() => {
     return slots.find(s => s.id === selectedSlotId);
   }, [slots, selectedSlotId]);
@@ -70,8 +82,11 @@ export const SlotBookingFlow: React.FC = () => {
   const handleSlotSelect = (slot: Slot) => {
     const booked = slot.booked_capacity || 0;
     const total = slot.total_capacity || 120;
-    const rem = total - booked;
-    if (slot.is_blocked || rem <= 0 || booked >= 120 || booked >= total) return;
+    const remaining = total - booked;
+    if (slot.is_blocked || remaining <= 0 || booked >= total) {
+      setErrorMessage('This visiting slot is fully booked or closed. Please choose an available time.');
+      return;
+    }
     setSelectedSlotId(slot.id);
     setErrorMessage(null);
   };
@@ -79,6 +94,12 @@ export const SlotBookingFlow: React.FC = () => {
   const handleProceedToStep2 = () => {
     if (!selectedSlotId) {
       setErrorMessage('Please pick an available visiting time slot.');
+      return;
+    }
+    const slot = slots.find(s => s.id === selectedSlotId);
+    if (!slot || slot.is_blocked || (slot.total_capacity - slot.booked_capacity) <= 0) {
+      setErrorMessage('The selected slot is fully booked or unavailable. Please choose another slot.');
+      setSelectedSlotId('');
       return;
     }
     setErrorMessage(null);
@@ -269,6 +290,21 @@ export const SlotBookingFlow: React.FC = () => {
                   )}
                 </div>
 
+                {/* Fully Booked Date Alert Notice */}
+                {isAllDateSlotsBooked && (
+                  <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-500/40 text-amber-950 dark:text-amber-200 text-xs sm:text-sm flex items-start gap-3 shadow-xs">
+                    <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                    <div className="space-y-1">
+                      <p className="font-bold text-amber-950 dark:text-amber-100 leading-snug">
+                        All slots are fully booked for this date. Please select another date or visit during general showroom hours.
+                      </p>
+                      <p className="text-[11px] text-amber-800 dark:text-amber-300/80">
+                        General showroom operating hours are 05:00 AM – 10:00 PM IST (All 7 Days during Festive Season).
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 {/* Time Slots List */}
                 {dateSlots.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[440px] overflow-y-auto pr-1">
@@ -278,39 +314,51 @@ export const SlotBookingFlow: React.FC = () => {
                       const remaining = Math.max(0, total - booked);
                       const status = getSlotStatus(slot);
                       const isSelected = selectedSlotId === slot.id;
-                      const isFull = booked >= 120 || booked >= total || remaining <= 0;
-                      const isAvailable = !slot.is_blocked && !isFull;
+                      const isFull = booked >= total || remaining <= 0;
+                      const isBlocked = Boolean(slot.is_blocked);
+                      const isAvailable = !isBlocked && !isFull;
 
                       return (
                         <button
                           key={slot.id}
                           type="button"
                           disabled={!isAvailable}
-                          onClick={() => handleSlotSelect(slot)}
-                          className={`p-4 rounded-2xl border text-left transition-all duration-200 relative overflow-hidden min-h-[92px] flex flex-col justify-between active:scale-[0.98] ${
-                            isSelected
+                          aria-disabled={!isAvailable}
+                          onClick={() => {
+                            if (isAvailable) {
+                              handleSlotSelect(slot);
+                            }
+                          }}
+                          className={`p-4 rounded-2xl border text-left transition-all duration-200 relative overflow-hidden min-h-[96px] flex flex-col justify-between ${
+                            !isAvailable
+                              ? 'bg-slate-100/90 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800/80 opacity-60 cursor-not-allowed select-none'
+                              : isSelected
                               ? 'bg-amber-500/20 dark:bg-amber-500/25 border-amber-500 dark:border-amber-400 ring-2 ring-amber-400/50 shadow-md'
-                              : isAvailable
-                              ? 'bg-slate-50 hover:bg-amber-50/50 dark:bg-slate-950/80 dark:hover:bg-slate-800/80 border-slate-200 dark:border-slate-800 hover:border-amber-400'
-                              : 'bg-slate-100 dark:bg-slate-950/40 border-slate-200 dark:border-slate-800/60 opacity-50 cursor-not-allowed'
+                              : 'bg-slate-50 hover:bg-amber-50/50 dark:bg-slate-950/80 dark:hover:bg-slate-800/80 border-slate-200 dark:border-slate-800 hover:border-amber-400 active:scale-[0.98]'
                           }`}
                         >
                           <div className="flex items-center justify-between">
-                            <span className="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white">
+                            <span className={`font-extrabold text-sm sm:text-base ${!isAvailable ? 'text-slate-500 dark:text-slate-400' : 'text-slate-900 dark:text-white'}`}>
                               {formatTime(slot.start_time)} – {formatTime(slot.end_time)}
                             </span>
-                            {isSelected && (
+                            {isSelected && isAvailable && (
                               <CheckCircle2 className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
+                            )}
+                            {!isAvailable && (
+                              <div className="flex items-center gap-1 text-red-600 dark:text-red-400 text-[11px] font-bold">
+                                <Lock className="w-3.5 h-3.5" />
+                                <span>{isBlocked ? 'Blocked' : 'Fully Booked'}</span>
+                              </div>
                             )}
                           </div>
 
                           {/* Slot Status & Dynamic Remaining Capacity */}
                           <div className="pt-2 flex items-center justify-between text-xs">
                             <span className="font-semibold text-[11px] text-slate-600 dark:text-slate-400">
-                              {slot.is_blocked ? (
+                              {isBlocked ? (
                                 <span className="text-red-600 dark:text-red-400 font-bold">Slot Blocked</span>
                               ) : isFull ? (
-                                <span className="text-red-600 dark:text-red-400 font-bold">FULL (0 slots left)</span>
+                                <span className="text-red-600 dark:text-red-400 font-bold">Blocked / Fully Booked (0 left)</span>
                               ) : (
                                 <span className="text-slate-700 dark:text-slate-300 font-medium">
                                   {remaining} slots left
@@ -320,16 +368,14 @@ export const SlotBookingFlow: React.FC = () => {
 
                             <span
                               className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${
-                                slot.is_blocked
-                                  ? 'bg-red-100 dark:bg-red-950/60 border-red-300 dark:border-red-500/30 text-red-700 dark:text-red-300'
-                                  : isFull
+                                !isAvailable
                                   ? 'bg-red-100 dark:bg-red-950/60 border-red-300 dark:border-red-500/30 text-red-700 dark:text-red-300'
                                   : status === 'filling_fast'
                                   ? 'bg-amber-500/15 border-amber-500/30 text-amber-800 dark:text-amber-300'
                                   : 'bg-emerald-500/15 border-emerald-500/30 text-emerald-800 dark:text-emerald-300'
                               }`}
                             >
-                              {slot.is_blocked ? 'Closed' : isFull ? 'FULL' : status === 'filling_fast' ? 'Filling Fast' : 'Available'}
+                              {isBlocked ? 'Blocked' : isFull ? 'Blocked / Fully Booked' : status === 'filling_fast' ? 'Filling Fast' : 'Available'}
                             </span>
                           </div>
                         </button>

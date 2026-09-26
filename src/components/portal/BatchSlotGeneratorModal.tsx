@@ -104,7 +104,7 @@ export const BatchSlotGeneratorModal: React.FC<BatchSlotGeneratorModalProps> = (
                   onChange={(e) => setStartHour(Number(e.target.value))}
                   className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2.5 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-amber-500"
                 >
-                  {[8, 9, 10, 11, 12, 13, 14, 15].map(h => (
+                  {[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(h => (
                     <option key={h} value={h}>{h > 12 ? `${h - 12}:00 PM` : `${h}:00 AM`}</option>
                   ))}
                 </select>
