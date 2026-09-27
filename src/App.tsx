@@ -22,6 +22,7 @@ import { PortalDashboardPage } from './pages/portal/PortalDashboardPage';
 import { PortalProductsPage } from './pages/portal/PortalProductsPage';
 import { PortalSlotsPage } from './pages/portal/PortalSlotsPage';
 import { PortalBookingsPage } from './pages/portal/PortalBookingsPage';
+import { PortalScannerPage } from './pages/portal/PortalScannerPage';
 
 // Customer Layout Wrapper
 const CustomerPortalLayout: React.FC = () => {
@@ -86,6 +87,7 @@ export const App: React.FC = () => {
               <Route path="products" element={<PortalProductsPage />} />
               <Route path="slots" element={<PortalSlotsPage />} />
               <Route path="bookings" element={<PortalBookingsPage />} />
+              <Route path="scanner" element={<PortalScannerPage />} />
             </Route>
 
             {/* Portal Routes (Alias) */}
@@ -102,6 +104,7 @@ export const App: React.FC = () => {
               <Route path="products" element={<PortalProductsPage />} />
               <Route path="slots" element={<PortalSlotsPage />} />
               <Route path="bookings" element={<PortalBookingsPage />} />
+              <Route path="scanner" element={<PortalScannerPage />} />
             </Route>
 
             {/* Fallback */}

@@ -226,7 +226,7 @@ export const PortalBookingsPage: React.FC = () => {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by Pass Code (AYN-...), Name, or Mobile..."
+            placeholder="Search by Pass Code (AYN-...), QR Token, Name, or Mobile..."
             className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl pl-10 pr-4 py-2 text-xs text-slate-900 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-amber-500 min-h-[38px]"
           />
         </div>
@@ -256,6 +256,7 @@ export const PortalBookingsPage: React.FC = () => {
           >
             <option value="all">All Statuses</option>
             <option value="confirmed">Confirmed</option>
+            <option value="completed">Completed (Gate Scanned)</option>
             <option value="checked_in">Checked-In</option>
             <option value="no_show">No-Show</option>
             <option value="cancelled">Cancelled</option>
@@ -350,6 +351,19 @@ export const PortalBookingsPage: React.FC = () => {
 
                       {/* Status */}
                       <td className="px-4 py-4">
+                        {b.status === 'completed' && (
+                          <div className="space-y-0.5">
+                            <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 flex items-center gap-1 w-fit">
+                              <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                              Entry Verified (Scanned)
+                            </span>
+                            {b.verified_at && (
+                              <span className="text-[9px] text-slate-500 dark:text-slate-400 font-mono block">
+                                {new Date(b.verified_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+                              </span>
+                            )}
+                          </div>
+                        )}
                         {b.status === 'checked_in' && (
                           <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 flex items-center gap-1 w-fit">
                             <CheckCircle2 className="w-3 h-3" />
@@ -358,7 +372,7 @@ export const PortalBookingsPage: React.FC = () => {
                         )}
                         {b.status === 'confirmed' && (
                           <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-500/30 flex items-center gap-1 w-fit">
-                            Confirmed
+                            Confirmed (Unscanned)
                           </span>
                         )}
                         {b.status === 'no_show' && (

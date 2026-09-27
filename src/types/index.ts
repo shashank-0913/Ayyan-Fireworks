@@ -49,16 +49,21 @@ export interface Slot {
   created_at?: string;
 }
 
-export type BookingStatus = 'confirmed' | 'checked_in' | 'cancelled' | 'no_show';
+export type BookingStatus = 'confirmed' | 'completed' | 'checked_in' | 'cancelled' | 'no_show';
 
 export interface Booking {
   id: string;
   booking_code: string;
-  slot_id: string;
+  qr_token: string;
+  slot_id?: string;
   customer_name: string;
   customer_phone: string;
-  visitor_count: number;
+  slot_date: string;
+  slot_time: string;
+  total_amount: number;
+  visitor_count?: number;
   status: BookingStatus;
+  verified_at?: string | null;
   notes?: string;
   created_at: string;
   slot?: Slot;
@@ -76,9 +81,12 @@ export interface BookingRpcResponse {
   success: boolean;
   booking_id?: string;
   booking_code?: string;
+  qr_token?: string;
   slot_date?: string;
+  slot_time?: string;
   start_time?: string;
   end_time?: string;
+  total_amount?: number;
   customer_name?: string;
   visitor_count?: number;
   error?: string;

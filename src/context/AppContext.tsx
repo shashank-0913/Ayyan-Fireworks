@@ -2,7 +2,14 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import { Product, Slot, Booking, StaffUser, BookingRpcResponse, BookingStatus } from '../types';
 import { INITIAL_PRODUCTS, generateInitialSlots } from '../lib/initialData';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
-import { isAuthorizedAdminEmail, ADMIN_EMAIL } from '../lib/utils';
+import { isAuthorizedAdminEmail, ADMIN_EMAIL, generateUUID, formatTime, formatDateReadable } from '../lib/utils';
+
+export interface GateScanResult {
+  status: 'confirmed' | 'completed' | 'invalid';
+  booking?: Booking;
+  message: string;
+  verified_at?: string;
+}
 
 interface AppContextType {
   products: Product[];
@@ -15,6 +22,7 @@ interface AppContextType {
   // Booking API
   bookSlot: (slotId: string, name: string, phone: string, visitors: number, notes?: string) => Promise<BookingRpcResponse>;
   getBookingByCode: (code: string) => Booking | undefined;
+  verifyGateTicket: (tokenOrCode: string) => Promise<GateScanResult>;
   
   // Products Management
   addProduct: (product: Omit<Product, 'id' | 'created_at'>) => Promise<Product>;
@@ -282,25 +290,29 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
     }
 
-    // Guaranteed unique booking ID & high-entropy booking code for every person
+    // Guaranteed unique booking ID & 6-digit booking code
     let bookingCode = '';
     do {
-      const year = new Date().getFullYear().toString().slice(-2);
-      const randNum = Math.floor(1000 + Math.random() * 9000);
-      const randAlpha = Math.random().toString(36).substring(2, 4).toUpperCase();
-      bookingCode = `AYN-${year}${randAlpha}-${randNum}`;
+      bookingCode = `AYN-${Math.floor(100000 + Math.random() * 900000)}`;
     } while (bookings.some(b => b.booking_code === bookingCode));
 
-    const newBookingId = `book-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+    const qrToken = generateUUID();
+    const newBookingId = generateUUID();
+    const slotTimeFormatted = `${formatTime(currentSlot.start_time)} – ${formatTime(currentSlot.end_time)}`;
 
     const newBooking: Booking = {
       id: newBookingId,
       booking_code: bookingCode,
+      qr_token: qrToken,
       slot_id: slotId,
       customer_name: name.trim(),
       customer_phone: phone.trim(),
+      slot_date: currentSlot.slot_date,
+      slot_time: slotTimeFormatted,
+      total_amount: 0,
       visitor_count: visitors,
       status: 'confirmed',
+      verified_at: null,
       notes: notes?.trim(),
       created_at: new Date().toISOString(),
       slot: {
@@ -308,6 +320,29 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         booked_capacity: currentSlot.booked_capacity + visitors
       }
     };
+
+    // Insert directly into Supabase 'bookings' table
+    if (isSupabaseConfigured && supabase) {
+      try {
+        await supabase.from('bookings').insert([{
+          id: newBookingId,
+          booking_code: bookingCode,
+          qr_token: qrToken,
+          customer_name: name.trim(),
+          customer_phone: phone.trim(),
+          slot_date: currentSlot.slot_date,
+          slot_time: slotTimeFormatted,
+          total_amount: 0,
+          status: 'confirmed',
+          verified_at: null,
+          slot_id: slotId,
+          visitor_count: visitors,
+          notes: notes?.trim()
+        }]);
+      } catch (e) {
+        console.warn('Supabase booking insert fallback:', e);
+      }
+    }
 
     // Atomic state update
     setSlots(prev => prev.map(s => {
@@ -326,16 +361,117 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       success: true,
       booking_id: newBookingId,
       booking_code: bookingCode,
+      qr_token: qrToken,
       slot_date: currentSlot.slot_date,
+      slot_time: slotTimeFormatted,
       start_time: currentSlot.start_time,
       end_time: currentSlot.end_time,
+      total_amount: 0,
       customer_name: name.trim(),
       visitor_count: visitors
     };
-  }, [slots, isEmergencyBlocked]);
+  }, [slots, bookings, isEmergencyBlocked]);
 
   const getBookingByCode = useCallback((code: string) => {
     return bookings.find(b => b.booking_code.toUpperCase() === code.trim().toUpperCase());
+  }, [bookings]);
+
+  // Gate Scanner Verification Engine
+  const verifyGateTicket = useCallback(async (tokenOrCode: string): Promise<GateScanResult> => {
+    const clean = tokenOrCode.trim();
+    if (!clean) {
+      return { status: 'invalid', message: 'Invalid or Fake Ticket!' };
+    }
+
+    let matchedBooking: Booking | null = null;
+
+    // a. Query Supabase: .from('bookings').select('*').eq('qr_token', decodedText).single()
+    if (isSupabaseConfigured && supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('bookings')
+          .select('*')
+          .eq('qr_token', clean)
+          .single();
+
+        if (!error && data) {
+          matchedBooking = data as Booking;
+        } else {
+          // Fallback check by booking_code if scanned or typed
+          const { data: codeData } = await supabase
+            .from('bookings')
+            .select('*')
+            .eq('booking_code', clean.toUpperCase())
+            .single();
+          if (codeData) {
+            matchedBooking = codeData as Booking;
+          }
+        }
+      } catch (err) {
+        console.warn('Supabase verifyGateTicket lookup error:', err);
+      }
+    }
+
+    // Local fallback check
+    if (!matchedBooking) {
+      matchedBooking = bookings.find(
+        b => b.qr_token === clean || b.booking_code.toUpperCase() === clean.toUpperCase()
+      ) || null;
+    }
+
+    // b. If not found: Display clear red warning
+    if (!matchedBooking) {
+      return {
+        status: 'invalid',
+        message: 'Invalid or Fake Ticket!'
+      };
+    }
+
+    // c. If found AND status === 'completed':
+    if (matchedBooking.status === 'completed') {
+      const verifiedAtDate = matchedBooking.verified_at
+        ? `${formatDateReadable(matchedBooking.verified_at.split('T')[0])} ${new Date(matchedBooking.verified_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })}`
+        : 'earlier today';
+
+      return {
+        status: 'completed',
+        booking: matchedBooking,
+        verified_at: matchedBooking.verified_at || undefined,
+        message: `RE-ENTRY REJECTED: Ticket already checked in on ${verifiedAtDate}`
+      };
+    }
+
+    // d. If found AND status === 'confirmed' (or active):
+    const nowIso = new Date().toISOString();
+
+    if (isSupabaseConfigured && supabase) {
+      try {
+        await supabase
+          .from('bookings')
+          .update({
+            status: 'completed',
+            verified_at: nowIso
+          })
+          .eq('id', matchedBooking.id);
+      } catch (err) {
+        console.warn('Supabase status update error:', err);
+      }
+    }
+
+    const completedBooking: Booking = {
+      ...matchedBooking,
+      status: 'completed',
+      verified_at: nowIso
+    };
+
+    setBookings(prev => prev.map(b => b.id === matchedBooking!.id ? completedBooking : b));
+
+    return {
+      status: 'confirmed',
+      booking: completedBooking,
+      verified_at: nowIso,
+      message: 'Entry Verified & Slot Closed!'
+    };
   }, [bookings]);
 
   // Product Actions
@@ -615,6 +751,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         isLoading,
         bookSlot,
         getBookingByCode,
+        verifyGateTicket,
         addProduct,
         updateProduct,
         deleteProduct,

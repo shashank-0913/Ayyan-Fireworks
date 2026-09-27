@@ -12,7 +12,8 @@ import {
   RefreshCw,
   Menu,
   X,
-  UserCheck
+  UserCheck,
+  QrCode
 } from 'lucide-react';
 import { useAyyanStore } from '../../context/AppContext';
 import { ThemeToggle } from '../common/ThemeToggle';
@@ -48,6 +49,7 @@ export const PortalLayout: React.FC = () => {
 
   const navItems = [
     { name: 'Command Center', path: `${basePath}/dashboard`, icon: LayoutDashboard },
+    { name: 'Gate QR Scanner', path: `${basePath}/scanner`, icon: QrCode },
     { name: 'Catalogue & Stock', path: `${basePath}/products`, icon: Package },
     { name: 'Slot & Capacity Controller', path: `${basePath}/slots`, icon: CalendarDays },
     { name: 'Live Guest Manifest', path: `${basePath}/bookings`, icon: Users },

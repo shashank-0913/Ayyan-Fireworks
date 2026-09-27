@@ -15,13 +15,13 @@ export const KPICards: React.FC = () => {
   const todayBookings = bookings.filter(b => {
     return b.slot?.slot_date === todayStr || (slots.find(s => s.id === b.slot_id)?.slot_date === todayStr);
   });
-  const todayVisitors = todayBookings.reduce((sum, b) => sum + b.visitor_count, 0);
+  const todayVisitors = todayBookings.reduce((sum, b) => sum + (b.visitor_count || 1), 0);
 
   const upcoming7DayBookings = bookings.filter(b => {
     const sDate = b.slot?.slot_date || slots.find(s => s.id === b.slot_id)?.slot_date || '';
     return sDate >= todayStr && sDate <= next7DaysStr;
   });
-  const upcoming7DayVisitors = upcoming7DayBookings.reduce((sum, b) => sum + b.visitor_count, 0);
+  const upcoming7DayVisitors = upcoming7DayBookings.reduce((sum, b) => sum + (b.visitor_count || 1), 0);
 
   // Peak slot calculation
   const todaySlots = slots.filter(s => s.slot_date === todayStr);

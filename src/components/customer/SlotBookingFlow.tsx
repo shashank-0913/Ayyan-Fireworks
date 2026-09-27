@@ -151,11 +151,16 @@ export const SlotBookingFlow: React.FC = () => {
         const dummyBooking: Booking = {
           id: res.booking_id || `book-${Date.now()}`,
           booking_code: res.booking_code,
+          qr_token: res.qr_token || `qr-${Date.now()}`,
           slot_id: selectedSlotId,
           customer_name: guestName.trim(),
           customer_phone: cleanPhone,
+          slot_date: res.slot_date || currentTargetSlot.slot_date,
+          slot_time: res.slot_time || `${formatTime(currentTargetSlot.start_time)} – ${formatTime(currentTargetSlot.end_time)}`,
+          total_amount: res.total_amount || 0,
           visitor_count: 1,
           status: 'confirmed',
+          verified_at: null,
           notes: guestNotes,
           created_at: new Date().toISOString()
         };
