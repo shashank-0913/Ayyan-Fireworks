@@ -8,8 +8,9 @@ import { ShieldAlert } from 'lucide-react';
 export const PortalAuthGate: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { currentUser, staffLogout } = useAyyanStore();
   const location = useLocation();
-  const [isVerifying, setIsVerifying] = useState<boolean>(true);
-  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
+  const hasValidSession = Boolean(currentUser && isAuthorizedAdminEmail(currentUser.email));
+  const [isVerifying, setIsVerifying] = useState<boolean>(!hasValidSession);
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(hasValidSession);
 
   useEffect(() => {
     let isMounted = true;

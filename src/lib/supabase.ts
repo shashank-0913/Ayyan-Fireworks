@@ -1,27 +1,15 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = 
-  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) ||
-  (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_SUPABASE_URL) ||
-  'https://bdvrcpisjatvbbqffswp.supabase.co';
-
-const supabaseAnonKey = 
-  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_ANON_KEY) ||
-  (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_SUPABASE_ANON_KEY) ||
-  '';
+const SUPABASE_URL = "https://bdvrcpisjatvbbqffswp.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJkdnJjcGlzamF0dmJicWZmc3dwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAyMzUxMDQsImV4cCI6MjEwNTgxMTEwNH0.amQFqHKdkcHNFFa-HNFSXL-uFvDkGzJA9NyPErSRKOI";
 
 export const isSupabaseConfigured = Boolean(
-  supabaseUrl && 
-  supabaseAnonKey && 
-  !supabaseUrl.includes('placeholder') &&
-  supabaseAnonKey !== 'your-supabase-anon-key-here'
+  SUPABASE_URL && 
+  SUPABASE_ANON_KEY && 
+  !SUPABASE_URL.includes('placeholder')
 );
 
-// Always instantiate Supabase client to trigger real network requests
-export const supabase = createClient(
-  supabaseUrl || 'https://bdvrcpisjatvbbqffswp.supabase.co',
-  supabaseAnonKey || ''
-);
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 /**
  * Upload product image to Supabase Storage bucket 'product-images'
