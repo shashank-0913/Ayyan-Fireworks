@@ -91,6 +91,7 @@ export const PortalLoginPage: React.FC = () => {
         email: 'prasadkolla1968@gmail.com',
         options: {
           shouldCreateUser: false,
+          emailRedirectTo: undefined, // ensure no redirect link overrides OTP behavior
         },
       });
 
@@ -146,6 +147,7 @@ export const PortalLoginPage: React.FC = () => {
         email: 'prasadkolla1968@gmail.com',
         options: {
           shouldCreateUser: false,
+          emailRedirectTo: undefined, // ensure no redirect link overrides OTP behavior
         },
       });
 
