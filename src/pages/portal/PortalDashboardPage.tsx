@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   Users, 
   Calendar, 
@@ -18,6 +18,8 @@ import { formatTime, formatDateReadable, exportToCSV } from '../../lib/utils';
 import { getFormattedDateOffset } from '../../lib/initialData';
 
 export const PortalDashboardPage: React.FC = () => {
+  const location = useLocation();
+  const basePath = location.pathname.startsWith('/admin') ? '/admin' : '/portal';
   const { 
     slots, 
     bookings, 
@@ -121,7 +123,7 @@ export const PortalDashboardPage: React.FC = () => {
             </div>
 
             <Link
-              to="/portal/slots"
+              to={`${basePath}/slots`}
               className="text-xs text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 font-semibold flex items-center gap-1"
             >
               <span>Manage All</span>
@@ -216,7 +218,7 @@ export const PortalDashboardPage: React.FC = () => {
               </button>
 
               <Link
-                to="/portal/bookings"
+                to={`${basePath}/bookings`}
                 className="text-xs text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 font-semibold flex items-center gap-1"
               >
                 <span>Full Manifest</span>

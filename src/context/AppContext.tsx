@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import { Product, Slot, Booking, StaffUser, BookingRpcResponse, BookingStatus } from '../types';
 import { INITIAL_PRODUCTS, generateInitialSlots } from '../lib/initialData';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { isAuthorizedAdminEmail, ADMIN_EMAIL } from '../lib/utils';
 
 interface AppContextType {
   products: Product[];
@@ -31,7 +32,7 @@ interface AppContextType {
   toggleEmergencyBlock: () => Promise<void>;
   
   // Staff Auth
-  staffLogin: (email: string, role?: StaffUser['role']) => Promise<boolean>;
+  staffLogin: (email: string, role?: StaffUser['role'], password?: string) => Promise<boolean>;
   staffLogout: () => void;
   
   // System Reset
@@ -90,7 +91,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const [currentUser, setCurrentUser] = useState<StaffUser | null>(() => {
     const saved = localStorage.getItem(LOCAL_STORAGE_KEYS.STAFF_USER);
-    return saved ? JSON.parse(saved) : null;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed && isAuthorizedAdminEmail(parsed.email)) {
+          return parsed;
+        }
+      } catch (e) {
+        console.warn('Failed to parse saved user:', e);
+      }
+    }
+    return null;
   });
 
   const [isEmergencyBlocked, setIsEmergencyBlocked] = useState<boolean>(() => {
@@ -114,7 +125,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [bookings]);
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser && isAuthorizedAdminEmail(currentUser.email)) {
       localStorage.setItem(LOCAL_STORAGE_KEYS.STAFF_USER, JSON.stringify(currentUser));
     } else {
       localStorage.removeItem(LOCAL_STORAGE_KEYS.STAFF_USER);
@@ -125,10 +136,45 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem(LOCAL_STORAGE_KEYS.EMERGENCY_BLOCK, JSON.stringify(isEmergencyBlocked));
   }, [isEmergencyBlocked]);
 
-  // Load live data from Supabase if configured
+  // Load live data and sync Auth from Supabase if configured
   useEffect(() => {
     if (!isSupabaseConfigured || !supabase) return;
     const client = supabase;
+
+    // Check active Supabase session
+    client.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        if (isAuthorizedAdminEmail(user.email)) {
+          setCurrentUser({
+            id: user.id,
+            email: user.email!,
+            name: 'Prasad Kolla (Admin)',
+            role: 'admin'
+          });
+        } else {
+          client.auth.signOut();
+          setCurrentUser(null);
+        }
+      }
+    }).catch(err => {
+      console.warn('Supabase auth getUser check error:', err);
+    });
+
+    const { data: authListener } = client.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        if (isAuthorizedAdminEmail(session.user.email)) {
+          setCurrentUser({
+            id: session.user.id,
+            email: session.user.email!,
+            name: 'Prasad Kolla (Admin)',
+            role: 'admin'
+          });
+        } else {
+          client.auth.signOut();
+          setCurrentUser(null);
+        }
+      }
+    });
 
     const fetchSupabaseData = async () => {
       try {
@@ -167,6 +213,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     fetchSupabaseData();
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
   }, []);
 
   // Atomic Slot Booking (Concurrency-safe implementation mirroring PostgreSQL RPC)
@@ -478,21 +528,68 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setIsEmergencyBlocked(prev => !prev);
   };
 
-  // Staff Auth
-  const staffLogin = async (email: string, role: StaffUser['role'] = 'manager'): Promise<boolean> => {
-    const staffName = email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  // Staff & Admin Auth (Single Authorized Email Enforcement)
+  const staffLogin = async (email: string, role: StaffUser['role'] = 'admin', password?: string): Promise<boolean> => {
+    const normalizedEmail = email.trim().toLowerCase();
+    
+    // Strict Single-Email Authorization Check
+    if (!isAuthorizedAdminEmail(normalizedEmail)) {
+      throw new Error('Access Denied: You are not authorized to access the Admin Portal.');
+    }
+
+    if (isSupabaseConfigured && supabase && password) {
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: normalizedEmail,
+          password: password.trim()
+        });
+        if (error) {
+          throw new Error(error.message || 'Supabase authentication failed');
+        }
+        if (data.user) {
+          if (!isAuthorizedAdminEmail(data.user.email)) {
+            await supabase.auth.signOut();
+            throw new Error('Access Denied: You are not authorized to access the Admin Portal.');
+          }
+          const user: StaffUser = {
+            id: data.user.id,
+            email: data.user.email!,
+            name: 'Prasad Kolla (Admin)',
+            role: 'admin'
+          };
+          setCurrentUser(user);
+          return true;
+        }
+      } catch (err: any) {
+        if (err.message && err.message.includes('Access Denied')) {
+          throw err;
+        }
+        // If Supabase credentials failed, throw explicit message
+        throw err;
+      }
+    }
+
+    const staffName = normalizedEmail === ADMIN_EMAIL ? 'Prasad Kolla (Admin)' : 'Authorized Admin';
     const user: StaffUser = {
-      id: `staff-${Date.now()}`,
-      email: email.trim().toLowerCase(),
-      name: staffName || 'Ayyan Owner / Staff',
-      role: role
+      id: `admin-${Date.now()}`,
+      email: normalizedEmail,
+      name: staffName,
+      role: role || 'admin'
     };
     setCurrentUser(user);
     return true;
   };
 
-  const staffLogout = () => {
+  const staffLogout = async () => {
+    if (isSupabaseConfigured && supabase) {
+      try {
+        await supabase.auth.signOut();
+      } catch (e) {
+        console.warn('Supabase signOut fallback:', e);
+      }
+    }
     setCurrentUser(null);
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.STAFF_USER);
   };
 
   const resetToDefaultSeed = () => {

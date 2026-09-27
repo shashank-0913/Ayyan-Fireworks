@@ -68,8 +68,8 @@ export const CustomerFooter: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/portal" className="hover:text-amber-700 dark:hover:text-gold-300 transition-colors flex items-center gap-2 text-slate-700 dark:text-slate-300 font-semibold">
-                  <span>Owner & Staff Management Portal</span>
+                <Link to="/admin" className="hover:text-amber-700 dark:hover:text-gold-300 transition-colors flex items-center gap-2 text-slate-700 dark:text-slate-300 font-semibold">
+                  <span>Owner & Admin Management Portal</span>
                 </Link>
               </li>
               <li>

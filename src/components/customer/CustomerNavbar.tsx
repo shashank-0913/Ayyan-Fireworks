@@ -132,14 +132,14 @@ export const CustomerNavbar: React.FC = () => {
                 <span>Reserve Slot</span>
               </Link>
 
-              {/* Staff Portal Doorway */}
+              {/* Admin Portal Doorway */}
               <Link
-                to="/portal"
-                title="Staff & Management Portal"
+                to="/admin"
+                title="Admin & Management Portal"
                 className="p-2 sm:p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-obsidian-900/80 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/60 text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-gold-400 transition-all flex items-center gap-1.5 text-xs font-medium min-touch justify-center"
               >
                 <UserCheck className="w-4 h-4 text-amber-500 dark:text-amber-400" />
-                <span className="hidden sm:inline text-[11px] font-semibold">Staff Portal</span>
+                <span className="hidden sm:inline text-[11px] font-semibold">Admin Portal</span>
               </Link>
 
               {/* Mobile Drawer Trigger (More Info / Helpline) */}
@@ -341,12 +341,12 @@ export const CustomerNavbar: React.FC = () => {
               </a>
 
               <Link
-                to="/portal"
+                to="/admin"
                 onClick={() => setMobileDrawerOpen(false)}
                 className="w-full py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold flex items-center justify-center gap-2 min-touch shadow-sm"
               >
                 <UserCheck className="w-4 h-4 text-amber-500 dark:text-amber-400" />
-                <span>Staff & Management Workstation</span>
+                <span>Admin & Management Workstation</span>
               </Link>
 
               <div className="flex items-center justify-center gap-1.5 text-[10px] text-emerald-600 dark:text-emerald-400 pt-1 font-semibold">

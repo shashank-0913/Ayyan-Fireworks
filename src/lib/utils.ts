@@ -146,4 +146,16 @@ export function getWhatsAppUrl(customMessage?: string): string {
   return `https://wa.me/${WHATSAPP_CONTACT.number}?text=${message}`;
 }
 
+const envAdminEmail = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_ADMIN_EMAIL) ||
+  (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_ADMIN_EMAIL) ||
+  'prasadkolla1968@gmail.com';
+
+export const ADMIN_EMAIL = String(envAdminEmail).trim().toLowerCase();
+
+export function isAuthorizedAdminEmail(email?: string | null): boolean {
+  if (!email) return false;
+  return email.trim().toLowerCase() === ADMIN_EMAIL;
+}
+
+
 

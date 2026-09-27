@@ -39,16 +39,18 @@ export const PortalLayout: React.FC = () => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
 
-  const handleLogout = () => {
-    staffLogout();
-    navigate('/portal/login');
+  const basePath = location.pathname.startsWith('/admin') ? '/admin' : '/portal';
+
+  const handleLogout = async () => {
+    await staffLogout();
+    navigate('/admin/login');
   };
 
   const navItems = [
-    { name: 'Command Center', path: '/portal/dashboard', icon: LayoutDashboard },
-    { name: 'Catalogue & Stock', path: '/portal/products', icon: Package },
-    { name: 'Slot & Capacity Controller', path: '/portal/slots', icon: CalendarDays },
-    { name: 'Live Guest Manifest', path: '/portal/bookings', icon: Users },
+    { name: 'Command Center', path: `${basePath}/dashboard`, icon: LayoutDashboard },
+    { name: 'Catalogue & Stock', path: `${basePath}/products`, icon: Package },
+    { name: 'Slot & Capacity Controller', path: `${basePath}/slots`, icon: CalendarDays },
+    { name: 'Live Guest Manifest', path: `${basePath}/bookings`, icon: Users },
   ];
 
   return (

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Lock, Mail, ShieldCheck, KeyRound } from 'lucide-react';
+import { Lock, Mail, ShieldCheck, KeyRound, ShieldAlert } from 'lucide-react';
 import { useAyyanStore } from '../../context/AppContext';
-import { StaffUser } from '../../types';
+import { ADMIN_EMAIL, isAuthorizedAdminEmail } from '../../lib/utils';
 import { ThemeToggle } from '../../components/common/ThemeToggle';
 
 export const PortalLoginPage: React.FC = () => {
@@ -10,16 +10,15 @@ export const PortalLoginPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [email, setEmail] = useState('manager@ayyanfireworks.com');
-  const [password, setPassword] = useState('ayyan2026ops');
-  const [role, setRole] = useState<StaffUser['role']>('manager');
-  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState<string>(ADMIN_EMAIL);
+  const [password, setPassword] = useState<string>('ayyan2026ops');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  // If already logged in, redirect immediately
-  React.useEffect(() => {
-    if (currentUser) {
-      const from = (location.state as any)?.from?.pathname || '/portal/dashboard';
+  // If already logged in with authorized email, redirect immediately
+  useEffect(() => {
+    if (currentUser && isAuthorizedAdminEmail(currentUser.email)) {
+      const from = (location.state as any)?.from?.pathname || '/admin/dashboard';
       navigate(from, { replace: true });
     }
   }, [currentUser, navigate, location]);
@@ -27,27 +26,36 @@ export const PortalLoginPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    if (!email.trim() || !password.trim()) {
-      setError('Please provide valid staff credentials.');
+
+    const cleanEmail = email.trim().toLowerCase();
+
+    // 1. Strict Client-Side Email Pre-validation before triggering any Supabase Auth / OTP call
+    if (!isAuthorizedAdminEmail(cleanEmail)) {
+      setError('Access Denied: You are not authorized to access the Admin Portal.');
+      return;
+    }
+
+    if (!password.trim()) {
+      setError('Please enter your passcode or access key.');
       return;
     }
 
     setIsLoading(true);
     try {
-      await staffLogin(email, role);
-      const from = (location.state as any)?.from?.pathname || '/portal/dashboard';
+      await staffLogin(cleanEmail, 'admin', password);
+      const from = (location.state as any)?.from?.pathname || '/admin/dashboard';
       navigate(from, { replace: true });
     } catch (err: any) {
-      setError(err.message || 'Authentication failed');
+      setError(err.message || 'Access Denied: You are not authorized to access the Admin Portal.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleQuickFill = (demoEmail: string, demoRole: StaffUser['role']) => {
-    setEmail(demoEmail);
+  const handleQuickFillAdmin = () => {
+    setEmail(ADMIN_EMAIL);
     setPassword('ayyan2026ops');
-    setRole(demoRole);
+    setError(null);
   };
 
   return (
@@ -65,33 +73,45 @@ export const PortalLoginPage: React.FC = () => {
         </div>
 
         <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-          Ayyan Staff & Ops Portal
+          Ayyan Admin Portal
         </h2>
         <p className="text-xs text-amber-700 dark:text-amber-400 font-semibold uppercase tracking-wider">
-          Bunny Brand Since 1987 • Visakhapatnam Showroom Management
+          Authorized Client & Management Access
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4 sm:px-0">
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 py-8 px-6 sm:px-10 rounded-3xl shadow-xl space-y-6">
+          {/* Security Notice */}
+          <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-900 dark:text-amber-300 text-[11px] flex items-start gap-2.5">
+            <ShieldCheck className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+            <div className="leading-relaxed">
+              <strong>Single-Admin Clearance: </strong>
+              Restricted exclusively to authorized administrator (<code>{ADMIN_EMAIL}</code>).
+            </div>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-4 text-xs">
             {/* Email */}
             <div className="space-y-1.5">
               <label className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                 <Mail className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                Staff Email Address
+                Admin Email Address
               </label>
               <input
                 type="email"
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="staff@ayyanfireworks.com"
-                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-4 py-3 text-slate-900 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-amber-500 text-sm"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (error) setError(null);
+                }}
+                placeholder={ADMIN_EMAIL}
+                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-4 py-3 text-slate-900 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-amber-500 text-sm font-medium"
               />
             </div>
 
-            {/* Password */}
+            {/* Password / Access Passcode */}
             <div className="space-y-1.5">
               <label className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                 <Lock className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
@@ -101,73 +121,48 @@ export const PortalLoginPage: React.FC = () => {
                 type="password"
                 required
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  if (error) setError(null);
+                }}
                 placeholder="••••••••••••"
                 className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-4 py-3 text-slate-900 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-amber-500 text-sm font-mono"
               />
             </div>
 
-            {/* Role Select */}
-            <div className="space-y-1.5">
-              <label className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                Workstation Clearance Role
-              </label>
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value as any)}
-                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-4 py-2.5 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-amber-500 text-xs font-semibold min-h-[40px]"
-              >
-                <option value="manager">Showroom Manager (Full Access)</option>
-                <option value="admin">Operations Admin</option>
-                <option value="floor_staff">Floor Reception & Security Staff</option>
-              </select>
-            </div>
-
+            {/* Error Message Box */}
             {error && (
-              <div className="p-3 rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-500/40 text-red-700 dark:text-red-300 text-xs">
-                {error}
+              <div className="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/60 border border-red-300 dark:border-red-500/40 text-red-700 dark:text-red-300 text-xs flex items-start gap-2 animate-in fade-in duration-200">
+                <ShieldAlert className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
+                <span className="font-semibold leading-relaxed">{error}</span>
               </div>
             )}
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-md disabled:opacity-50 mt-2 min-h-[44px]"
+              className="w-full py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-md disabled:opacity-50 mt-2 min-h-[44px] cursor-pointer"
             >
               <KeyRound className="w-4 h-4" />
-              <span>{isLoading ? 'Authenticating...' : 'Access Staff Workstation'}</span>
+              <span>{isLoading ? 'Verifying Authorization...' : 'Access Admin Portal'}</span>
             </button>
           </form>
 
-          {/* Quick Fill Fast Demo Logins */}
+          {/* Quick Fill Authorized Admin Profile */}
           <div className="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-2">
             <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block text-center">
-              Quick Demo Staff Profiles
+              Authorized Profile
             </span>
-            <div className="grid grid-cols-3 gap-2">
-              <button
-                type="button"
-                onClick={() => handleQuickFill('manager.selvan@ayyanfireworks.com', 'manager')}
-                className="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 dark:bg-slate-950 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:border-amber-500/40 text-[11px] text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-300 transition-colors text-center font-medium min-h-[36px]"
-              >
-                Manager
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickFill('ops.admin@ayyanfireworks.com', 'admin')}
-                className="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 dark:bg-slate-950 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:border-amber-500/40 text-[11px] text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-300 transition-colors text-center font-medium min-h-[36px]"
-              >
-                Ops Admin
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickFill('security.floor@ayyanfireworks.com', 'floor_staff')}
-                className="p-2 rounded-lg bg-slate-50 hover:bg-slate-100 dark:bg-slate-950 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:border-amber-500/40 text-[11px] text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-300 transition-colors text-center font-medium min-h-[36px]"
-              >
-                Floor Staff
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={handleQuickFillAdmin}
+              className="w-full p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-slate-950 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:border-amber-500/40 text-xs text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-300 transition-colors flex items-center justify-between font-semibold"
+            >
+              <span>{ADMIN_EMAIL}</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-bold uppercase">
+                Authorized
+              </span>
+            </button>
           </div>
         </div>
 
@@ -177,7 +172,7 @@ export const PortalLoginPage: React.FC = () => {
             href="/"
             className="text-xs text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors underline underline-offset-4"
           >
-            ← Return to Public Customer Portal
+            ← Return to Public Customer Website
           </a>
         </div>
       </div>

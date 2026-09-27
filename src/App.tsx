@@ -67,10 +67,28 @@ export const App: React.FC = () => {
             </Route>
 
             {/* ================================================================= */}
-            {/* 2. STANDALONE STAFF & MANAGEMENT PORTAL */}
+            {/* 2. STANDALONE ADMIN & OPERATIONS PORTAL */}
             {/* ================================================================= */}
+            <Route path="/admin/login" element={<PortalLoginPage />} />
             <Route path="/portal/login" element={<PortalLoginPage />} />
             
+            {/* Admin Routes */}
+            <Route
+              path="/admin"
+              element={
+                <PortalAuthGate>
+                  <PortalLayout />
+                </PortalAuthGate>
+              }
+            >
+              <Route index element={<Navigate to="/admin/dashboard" replace />} />
+              <Route path="dashboard" element={<PortalDashboardPage />} />
+              <Route path="products" element={<PortalProductsPage />} />
+              <Route path="slots" element={<PortalSlotsPage />} />
+              <Route path="bookings" element={<PortalBookingsPage />} />
+            </Route>
+
+            {/* Portal Routes (Alias) */}
             <Route
               path="/portal"
               element={
