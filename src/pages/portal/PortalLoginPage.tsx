@@ -23,6 +23,7 @@ export const PortalLoginPage: React.FC = () => {
 
   const [step, setStep] = useState<'email' | 'otp'>('email');
   const [email, setEmail] = useState<string>(ADMIN_EMAIL);
+  const [otpInput, setOtpInput] = useState<string>('');
   const [otpDigits, setOtpDigits] = useState<string[]>(['', '', '', '', '', '']);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,15 +35,15 @@ export const PortalLoginPage: React.FC = () => {
 
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  // If already logged in with authorized email, redirect immediately to admin dashboard
+  // If already logged in with authorized email, redirect immediately to admin
   useEffect(() => {
     if (currentUser && isAuthorizedAdminEmail(currentUser.email)) {
-      const from = (location.state as any)?.from?.pathname || '/admin/dashboard';
+      const from = (location.state as any)?.from?.pathname || '/admin';
       navigate(from, { replace: true });
     }
   }, [currentUser, navigate, location]);
 
-  // Countdown timer countdown effect for Step 2
+  // Countdown timer effect for Step 2
   useEffect(() => {
     let timer: any;
     if (step === 'otp' && countdown > 0) {
@@ -75,7 +76,7 @@ export const PortalLoginPage: React.FC = () => {
 
     // 1. Strict Security & Email Restriction (Pre-validation before any Supabase call)
     if (!isAuthorizedAdminEmail(cleanEmail)) {
-      setError('Access Denied: You are not authorized to access this portal.');
+      setError('Access Denied: Only authorized admin can log in.');
       return;
     }
 
@@ -85,7 +86,7 @@ export const PortalLoginPage: React.FC = () => {
       if (isSupabaseConfigured && supabase) {
         // Trigger Supabase OTP generation without user creation
         const { error: otpError } = await supabase.auth.signInWithOtp({
-          email: cleanEmail,
+          email: "prasadkolla1968@gmail.com",
           options: {
             shouldCreateUser: false,
           },
@@ -98,10 +99,11 @@ export const PortalLoginPage: React.FC = () => {
 
       // Transition to Screen 2: OTP Verification
       setStep('otp');
+      setOtpInput('');
       setOtpDigits(['', '', '', '', '', '']);
       setCountdown(60);
       setCanResend(false);
-      setSuccessMsg(`A 6-digit verification code has been dispatched to ${cleanEmail}`);
+      setSuccessMsg(`A 6-digit verification code has been sent to ${cleanEmail}`);
 
       // Auto-focus first OTP box on step transition
       setTimeout(() => {
@@ -114,7 +116,7 @@ export const PortalLoginPage: React.FC = () => {
     }
   };
 
-  // Step 2: Resend OTP
+  // Step 2: Resend OTP Code
   const handleResendOtp = async () => {
     if (!canResend || isLoading) return;
     setError(null);
@@ -122,7 +124,7 @@ export const PortalLoginPage: React.FC = () => {
 
     const cleanEmail = email.trim().toLowerCase();
     if (!isAuthorizedAdminEmail(cleanEmail)) {
-      setError('Access Denied: You are not authorized to access this portal.');
+      setError('Access Denied: Only authorized admin can log in.');
       return;
     }
 
@@ -130,14 +132,14 @@ export const PortalLoginPage: React.FC = () => {
     try {
       if (isSupabaseConfigured && supabase) {
         const { error: otpError } = await supabase.auth.signInWithOtp({
-          email: cleanEmail,
+          email: "prasadkolla1968@gmail.com",
           options: {
             shouldCreateUser: false,
           },
         });
 
         if (otpError) {
-          throw new Error(otpError.message || 'Failed to resend OTP.');
+          throw new Error(otpError.message || 'Failed to resend code.');
         }
       }
 
@@ -145,7 +147,7 @@ export const PortalLoginPage: React.FC = () => {
       setCanResend(false);
       setSuccessMsg(`A fresh 6-digit OTP code has been re-sent to ${cleanEmail}`);
     } catch (err: any) {
-      setError(err.message || 'Failed to resend OTP.');
+      setError(err.message || 'Failed to resend code.');
     } finally {
       setIsLoading(false);
     }
@@ -161,6 +163,7 @@ export const PortalLoginPage: React.FC = () => {
         if (i < 6) newDigits[i] = digit;
       });
       setOtpDigits(newDigits);
+      setOtpInput(newDigits.join(''));
       const nextIndex = Math.min(cleanDigits.length, 5);
       otpInputRefs.current[nextIndex]?.focus();
       return;
@@ -170,6 +173,7 @@ export const PortalLoginPage: React.FC = () => {
     const newDigits = [...otpDigits];
     newDigits[index] = cleanVal;
     setOtpDigits(newDigits);
+    setOtpInput(newDigits.join(''));
 
     if (error) setError(null);
 
@@ -191,14 +195,14 @@ export const PortalLoginPage: React.FC = () => {
     setError(null);
 
     const cleanEmail = email.trim().toLowerCase();
-    const otpInput = otpDigits.join('').trim();
+    const token = (otpInput || otpDigits.join('')).trim();
 
     if (!isAuthorizedAdminEmail(cleanEmail)) {
-      setError('Access Denied: You are not authorized to access this portal.');
+      setError('Access Denied: Only authorized admin can log in.');
       return;
     }
 
-    if (otpInput.length !== 6) {
+    if (token.length !== 6) {
       setError('Please enter the complete 6-digit OTP code.');
       return;
     }
@@ -207,25 +211,25 @@ export const PortalLoginPage: React.FC = () => {
 
     try {
       if (isSupabaseConfigured && supabase) {
-        const { data, error } = await supabase.auth.verifyOtp({
+        const { data, error: verifyErr } = await supabase.auth.verifyOtp({
           email: "prasadkolla1968@gmail.com",
-          token: otpInput.trim(),
+          token: token,
           type: "email",
         });
 
-        if (error) {
-          throw new Error(error.message || 'Invalid or expired OTP code. Please try again.');
+        if (verifyErr) {
+          throw new Error(verifyErr.message || 'Invalid or expired OTP code. Please try again.');
         }
 
         if (data?.user) {
           if (!isAuthorizedAdminEmail(data.user.email)) {
             await supabase.auth.signOut();
-            throw new Error('Access Denied: You are not authorized to access this portal.');
+            throw new Error('Access Denied: Only authorized admin can log in.');
           }
 
           // Authorize store session
           await staffLogin(cleanEmail, 'admin');
-          const from = (location.state as any)?.from?.pathname || '/admin/dashboard';
+          const from = (location.state as any)?.from?.pathname || '/admin';
           navigate(from, { replace: true });
           return;
         }
@@ -233,7 +237,7 @@ export const PortalLoginPage: React.FC = () => {
 
       // Offline / Demo verification fallback
       await staffLogin(cleanEmail, 'admin');
-      const from = (location.state as any)?.from?.pathname || '/admin/dashboard';
+      const from = (location.state as any)?.from?.pathname || '/admin';
       navigate(from, { replace: true });
     } catch (err: any) {
       setError(err.message || 'Invalid or expired OTP code. Please check and try again.');
@@ -314,7 +318,7 @@ export const PortalLoginPage: React.FC = () => {
                 className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-gold-500 hover:from-amber-400 hover:to-gold-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 disabled:opacity-50 mt-2 min-h-[44px] cursor-pointer"
               >
                 <KeyRound className="w-4 h-4" />
-                <span>{isLoading ? 'Generating OTP...' : 'Send OTP Verification Code'}</span>
+                <span>{isLoading ? 'Sending OTP...' : 'Send OTP'}</span>
               </button>
 
               {/* Quick Preset for Authorized Admin */}
@@ -367,7 +371,7 @@ export const PortalLoginPage: React.FC = () => {
                 </div>
               )}
 
-              {/* 6-Digit OTP Box Grid */}
+              {/* 6-Digit OTP Box Grid (maxLength={6}) */}
               <div className="space-y-2">
                 <label className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider block text-center">
                   Enter 6-Digit Verification Code
@@ -405,10 +409,10 @@ export const PortalLoginPage: React.FC = () => {
                 className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-gold-500 hover:from-amber-400 hover:to-gold-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 disabled:opacity-50 min-h-[44px] cursor-pointer"
               >
                 <Sparkles className="w-4 h-4" />
-                <span>{isLoading ? 'Verifying OTP Code...' : 'Verify & Access Admin Portal'}</span>
+                <span>{isLoading ? 'Verifying OTP Code...' : 'Verify & Access Admin'}</span>
               </button>
 
-              {/* Resend OTP Section */}
+              {/* Resend code Section */}
               <div className="pt-2 text-center text-xs text-slate-500 dark:text-slate-400 flex items-center justify-center gap-1.5">
                 <span>Didn&apos;t receive code?</span>
                 {canResend ? (
@@ -416,14 +420,14 @@ export const PortalLoginPage: React.FC = () => {
                     type="button"
                     onClick={handleResendOtp}
                     disabled={isLoading}
-                    className="text-amber-600 dark:text-amber-400 font-bold hover:underline flex items-center gap-1 disabled:opacity-50"
+                    className="text-amber-600 dark:text-amber-400 font-bold hover:underline flex items-center gap-1 disabled:opacity-50 cursor-pointer"
                   >
                     <RotateCcw className="w-3 h-3" />
-                    <span>Resend OTP</span>
+                    <span>Resend code</span>
                   </button>
                 ) : (
                   <span className="font-mono font-semibold text-slate-600 dark:text-slate-300">
-                    Resend in {countdown}s
+                    Resend code in {countdown}s
                   </span>
                 )}
               </div>
