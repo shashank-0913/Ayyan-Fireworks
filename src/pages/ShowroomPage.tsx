@@ -86,7 +86,12 @@ export const ShowroomPage: React.FC = () => {
                   <Phone className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400" />
                   <span>Direct Helpline</span>
                 </span>
-                <p className="font-mono text-amber-700 dark:text-gold-300 font-bold text-base">{SHOWROOM_CONTACT.phone}</p>
+                <a
+                  href={SHOWROOM_CONTACT.callUrl}
+                  className="font-mono text-amber-700 dark:text-gold-300 font-bold text-base hover:underline block"
+                >
+                  {SHOWROOM_CONTACT.phone}
+                </a>
               </div>
 
               <div className="space-y-1">

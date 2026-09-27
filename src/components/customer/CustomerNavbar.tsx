@@ -113,7 +113,7 @@ export const CustomerNavbar: React.FC = () => {
                 rel="noopener noreferrer"
                 className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 dark:bg-emerald-500/15 dark:hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold transition-all shadow-xs hover:shadow-sm transform hover:-translate-y-0.5 active:scale-95 min-touch"
                 aria-label="Chat on WhatsApp"
-                title="Chat with Showroom on WhatsApp (+1 555-171-5924)"
+                title={`Chat with Showroom on WhatsApp (${WHATSAPP_CONTACT.display})`}
               >
                 <WhatsAppIcon className="w-4 h-4 text-[#25D366]" />
                 <span className="hidden lg:inline">Chat on WhatsApp</span>
@@ -308,7 +308,7 @@ export const CustomerNavbar: React.FC = () => {
                 </div>
                 <div className="flex flex-col sm:flex-row gap-2 pt-1">
                   <a
-                    href={`tel:${SHOWROOM_CONTACT.phone.replace(/[^0-9+]/g, '')}`}
+                    href={SHOWROOM_CONTACT.callUrl}
                     className="flex-1 flex items-center justify-center gap-2 p-2.5 rounded-xl bg-slate-100 dark:bg-obsidian-900 border border-slate-200 dark:border-white/10 text-amber-700 dark:text-gold-300 font-bold text-xs"
                   >
                     <Phone className="w-3.5 h-3.5" />
@@ -337,7 +337,7 @@ export const CustomerNavbar: React.FC = () => {
                 className="w-full py-3 px-4 rounded-2xl bg-[#25D366] hover:bg-[#20ba5a] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md shadow-[#25D366]/20 transition-all min-touch active:scale-95"
               >
                 <WhatsAppIcon className="w-4 h-4 text-white" />
-                <span>Chat on WhatsApp (+1 555-171-5924)</span>
+                <span>Chat on WhatsApp ({WHATSAPP_CONTACT.display})</span>
               </a>
 
               <Link

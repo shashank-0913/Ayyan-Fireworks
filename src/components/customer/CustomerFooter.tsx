@@ -104,7 +104,12 @@ export const CustomerFooter: React.FC = () => {
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-amber-600 dark:text-gold-400 shrink-0" />
-                <span>{SHOWROOM_CONTACT.phone}</span>
+                <a
+                  href={SHOWROOM_CONTACT.callUrl}
+                  className="hover:text-amber-700 dark:hover:text-gold-300 font-medium transition-colors"
+                >
+                  {SHOWROOM_CONTACT.phone}
+                </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <WhatsAppIcon className="w-4 h-4 text-[#25D366] shrink-0" />

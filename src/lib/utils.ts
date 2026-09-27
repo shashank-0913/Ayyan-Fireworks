@@ -99,18 +99,34 @@ export function generateGoogleCalendarUrl(
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startIso}/${endIso}&details=${details}&location=${location}`;
 }
 
+const envWhatsAppNumber = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_WHATSAPP_NUMBER) ||
+  (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_WHATSAPP_NUMBER) ||
+  '917729992125';
+
+const envDisplayPhone = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_DISPLAY_PHONE) ||
+  (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_DISPLAY_PHONE) ||
+  '+91 77299 92125';
+
+const cleanWhatsAppNumber = String(envWhatsAppNumber).replace(/[^0-9]/g, '') || '917729992125';
+const cleanDisplayPhone = String(envDisplayPhone) || '+91 77299 92125';
+const defaultWhatsAppMessage = 'Hi! I want to inquire about Ayyan Fireworks crackers and gift boxes.';
+
 export const WHATSAPP_CONTACT = {
-  number: '15551715924',
-  display: '+1 (555) 171-5924',
-  defaultMessage: 'Hi',
-  url: 'https://wa.me/15551715924?text=Hi'
+  businessName: 'Ayyan Fireworks',
+  number: cleanWhatsAppNumber,
+  display: cleanDisplayPhone,
+  defaultMessage: defaultWhatsAppMessage,
+  directCallUrl: `tel:+${cleanWhatsAppNumber}`,
+  url: `https://wa.me/${cleanWhatsAppNumber}?text=${encodeURIComponent(defaultWhatsAppMessage)}`
 };
 
 export const SHOWROOM_CONTACT = {
   brandName: 'Ayyan Fireworks',
   subBrand: 'Bunny Brand Fancy Fireworks',
   since: 'Since 1987',
-  phone: '+91 94431 82400',
+  phone: WHATSAPP_CONTACT.display,
+  phoneRaw: WHATSAPP_CONTACT.number,
+  callUrl: WHATSAPP_CONTACT.directCallUrl,
   whatsapp: WHATSAPP_CONTACT.number,
   whatsappDisplay: WHATSAPP_CONTACT.display,
   whatsappUrl: WHATSAPP_CONTACT.url,
@@ -129,4 +145,5 @@ export function getWhatsAppUrl(customMessage?: string): string {
   const message = encodeURIComponent(customMessage);
   return `https://wa.me/${WHATSAPP_CONTACT.number}?text=${message}`;
 }
+
 
