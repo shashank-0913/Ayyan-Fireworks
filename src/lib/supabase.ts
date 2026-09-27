@@ -1,7 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const supabaseUrl = 
+  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) ||
+  (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_SUPABASE_URL) ||
+  'https://bdvrcpisjatvbbqffswp.supabase.co';
+
+const supabaseAnonKey = 
+  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_ANON_KEY) ||
+  (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_SUPABASE_ANON_KEY) ||
+  '';
 
 export const isSupabaseConfigured = Boolean(
   supabaseUrl && 
@@ -10,9 +17,11 @@ export const isSupabaseConfigured = Boolean(
   supabaseAnonKey !== 'your-supabase-anon-key-here'
 );
 
-export const supabase = isSupabaseConfigured
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : null;
+// Always instantiate Supabase client to trigger real network requests
+export const supabase = createClient(
+  supabaseUrl || 'https://bdvrcpisjatvbbqffswp.supabase.co',
+  supabaseAnonKey || ''
+);
 
 /**
  * Upload product image to Supabase Storage bucket 'product-images'

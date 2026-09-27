@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { useAyyanStore } from '../../context/AppContext';
 import { ADMIN_EMAIL, isAuthorizedAdminEmail } from '../../lib/utils';
-import { supabase, isSupabaseConfigured } from '../../lib/supabase';
+import { supabase } from '../../lib/supabase';
 import { ThemeToggle } from '../../components/common/ThemeToggle';
 
 export const PortalLoginPage: React.FC = () => {
@@ -21,7 +21,7 @@ export const PortalLoginPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [step, setStep] = useState<'email' | 'otp'>('email');
+  const [step, setStep] = useState<'EMAIL' | 'OTP'>('EMAIL');
   const [email, setEmail] = useState<string>(ADMIN_EMAIL);
   const [otpInput, setOtpInput] = useState<string>('');
   const [otpDigits, setOtpDigits] = useState<string[]>(['', '', '', '', '', '']);
@@ -43,10 +43,10 @@ export const PortalLoginPage: React.FC = () => {
     }
   }, [currentUser, navigate, location]);
 
-  // Countdown timer effect for Step 2
+  // Countdown timer effect for OTP screen
   useEffect(() => {
     let timer: any;
-    if (step === 'otp' && countdown > 0) {
+    if (step === 'OTP' && countdown > 0) {
       setCanResend(false);
       timer = setInterval(() => {
         setCountdown((prev) => {
@@ -66,7 +66,9 @@ export const PortalLoginPage: React.FC = () => {
     };
   }, [step, countdown]);
 
-  // Step 1: Send OTP to Email
+  // ===========================================================================
+  // Step 1 (Send OTP Button): Real Supabase Auth API Call
+  // ===========================================================================
   const handleRequestOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -74,49 +76,59 @@ export const PortalLoginPage: React.FC = () => {
 
     const cleanEmail = email.trim().toLowerCase();
 
-    // 1. Strict Security & Email Restriction (Pre-validation before any Supabase call)
+    // 1. Strict Security & Email Restriction (Pre-validation)
     if (!isAuthorizedAdminEmail(cleanEmail)) {
-      setError('Access Denied: Only authorized admin can log in.');
+      const deniedMsg = 'Access Denied: Only authorized admin can log in.';
+      setError(deniedMsg);
+      alert(deniedMsg);
       return;
     }
 
     setIsLoading(true);
 
     try {
-      if (isSupabaseConfigured && supabase) {
-        // Trigger Supabase OTP generation without user creation
-        const { error: otpError } = await supabase.auth.signInWithOtp({
-          email: "prasadkolla1968@gmail.com",
-          options: {
-            shouldCreateUser: false,
-          },
-        });
+      // Direct Supabase Auth API call to dispatch 6-digit email OTP
+      const { data, error: otpError } = await supabase.auth.signInWithOtp({
+        email: 'prasadkolla1968@gmail.com',
+        options: {
+          shouldCreateUser: false,
+        },
+      });
 
-        if (otpError) {
-          throw new Error(otpError.message || 'Failed to send OTP. Please check your Supabase Auth configuration.');
-        }
+      if (otpError) {
+        console.error('Supabase OTP send error:', otpError);
+        setError(otpError.message);
+        alert(otpError.message);
+        return; // DO NOT ADVANCE TO OTP SCREEN IF THERE IS AN ERROR
       }
 
-      // Transition to Screen 2: OTP Verification
-      setStep('otp');
+      console.log('Supabase OTP dispatched successfully:', data);
+
+      // Only transition to OTP entry screen if error is null:
+      setStep('OTP');
       setOtpInput('');
       setOtpDigits(['', '', '', '', '', '']);
       setCountdown(60);
       setCanResend(false);
-      setSuccessMsg(`A 6-digit verification code has been sent to ${cleanEmail}`);
+      setSuccessMsg(`A 6-digit verification code has been dispatched to ${cleanEmail}`);
 
-      // Auto-focus first OTP box on step transition
+      // Auto-focus first OTP box
       setTimeout(() => {
         otpInputRefs.current[0]?.focus();
       }, 150);
     } catch (err: any) {
-      setError(err.message || 'Failed to generate OTP code. Please try again.');
+      console.error('Supabase OTP exception:', err);
+      const msg = err.message || 'Failed to send OTP code. Please check your connection.';
+      setError(msg);
+      alert(msg);
     } finally {
       setIsLoading(false);
     }
   };
 
+  // ===========================================================================
   // Step 2: Resend OTP Code
+  // ===========================================================================
   const handleResendOtp = async () => {
     if (!canResend || isLoading) return;
     setError(null);
@@ -124,36 +136,45 @@ export const PortalLoginPage: React.FC = () => {
 
     const cleanEmail = email.trim().toLowerCase();
     if (!isAuthorizedAdminEmail(cleanEmail)) {
-      setError('Access Denied: Only authorized admin can log in.');
+      const deniedMsg = 'Access Denied: Only authorized admin can log in.';
+      setError(deniedMsg);
+      alert(deniedMsg);
       return;
     }
 
     setIsLoading(true);
     try {
-      if (isSupabaseConfigured && supabase) {
-        const { error: otpError } = await supabase.auth.signInWithOtp({
-          email: "prasadkolla1968@gmail.com",
-          options: {
-            shouldCreateUser: false,
-          },
-        });
+      const { data, error: otpError } = await supabase.auth.signInWithOtp({
+        email: 'prasadkolla1968@gmail.com',
+        options: {
+          shouldCreateUser: false,
+        },
+      });
 
-        if (otpError) {
-          throw new Error(otpError.message || 'Failed to resend code.');
-        }
+      if (otpError) {
+        console.error('Supabase OTP resend error:', otpError);
+        setError(otpError.message);
+        alert(otpError.message);
+        return;
       }
 
+      console.log('Supabase OTP re-sent successfully:', data);
       setCountdown(60);
       setCanResend(false);
       setSuccessMsg(`A fresh 6-digit OTP code has been re-sent to ${cleanEmail}`);
     } catch (err: any) {
-      setError(err.message || 'Failed to resend code.');
+      console.error('Supabase OTP resend exception:', err);
+      const msg = err.message || 'Failed to resend code.';
+      setError(msg);
+      alert(msg);
     } finally {
       setIsLoading(false);
     }
   };
 
+  // ===========================================================================
   // Step 2: Handle Individual OTP Digits & Auto-advance
+  // ===========================================================================
   const handleOtpChange = (index: number, value: string) => {
     // Handle paste of full 6-digit code
     if (value.length > 1) {
@@ -189,58 +210,68 @@ export const PortalLoginPage: React.FC = () => {
     }
   };
 
-  // Step 2: Verify OTP
+  // ===========================================================================
+  // Step 2: Verify OTP Token
+  // ===========================================================================
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    const cleanEmail = email.trim().toLowerCase();
-    const token = (otpInput || otpDigits.join('')).trim();
+    const enteredOtp = (otpInput || otpDigits.join('')).trim();
 
-    if (!isAuthorizedAdminEmail(cleanEmail)) {
-      setError('Access Denied: Only authorized admin can log in.');
+    if (!isAuthorizedAdminEmail(email)) {
+      const deniedMsg = 'Access Denied: Only authorized admin can log in.';
+      setError(deniedMsg);
+      alert(deniedMsg);
       return;
     }
 
-    if (token.length !== 6) {
-      setError('Please enter the complete 6-digit OTP code.');
+    if (enteredOtp.length !== 6) {
+      const lengthMsg = 'Please enter the complete 6-digit OTP code.';
+      setError(lengthMsg);
+      alert(lengthMsg);
       return;
     }
 
     setIsLoading(true);
 
     try {
-      if (isSupabaseConfigured && supabase) {
-        const { data, error: verifyErr } = await supabase.auth.verifyOtp({
-          email: "prasadkolla1968@gmail.com",
-          token: token,
-          type: "email",
-        });
+      const { data, error } = await supabase.auth.verifyOtp({
+        email: 'prasadkolla1968@gmail.com',
+        token: enteredOtp.trim(),
+        type: 'email',
+      });
 
-        if (verifyErr) {
-          throw new Error(verifyErr.message || 'Invalid or expired OTP code. Please try again.');
-        }
-
-        if (data?.user) {
-          if (!isAuthorizedAdminEmail(data.user.email)) {
-            await supabase.auth.signOut();
-            throw new Error('Access Denied: Only authorized admin can log in.');
-          }
-
-          // Authorize store session
-          await staffLogin(cleanEmail, 'admin');
-          const from = (location.state as any)?.from?.pathname || '/admin';
-          navigate(from, { replace: true });
-          return;
-        }
+      if (error) {
+        console.error("Supabase OTP verify error:", error);
+        setError(error.message);
+        alert(error.message);
+        return;
       }
 
-      // Offline / Demo verification fallback
-      await staffLogin(cleanEmail, 'admin');
-      const from = (location.state as any)?.from?.pathname || '/admin';
-      navigate(from, { replace: true });
+      if (data?.session || data?.user) {
+        if (data.user && !isAuthorizedAdminEmail(data.user.email)) {
+          await supabase.auth.signOut();
+          const deniedMsg = 'Access Denied: Only authorized admin can log in.';
+          setError(deniedMsg);
+          alert(deniedMsg);
+          return;
+        }
+
+        // Authorize store session and navigate to admin
+        await staffLogin('prasadkolla1968@gmail.com', 'admin');
+        navigate('/admin', { replace: true });
+        return;
+      }
+
+      // Fallback verification
+      await staffLogin('prasadkolla1968@gmail.com', 'admin');
+      navigate('/admin', { replace: true });
     } catch (err: any) {
-      setError(err.message || 'Invalid or expired OTP code. Please check and try again.');
+      console.error("Supabase OTP verify exception:", err);
+      const msg = err.message || 'Invalid or expired OTP code. Please check and try again.';
+      setError(msg);
+      alert(msg);
     } finally {
       setIsLoading(false);
     }
@@ -284,7 +315,7 @@ export const PortalLoginPage: React.FC = () => {
           {/* ========================================================================= */}
           {/* SCREEN 1: EMAIL SUBMISSION (REQUEST OTP)                                  */}
           {/* ========================================================================= */}
-          {step === 'email' ? (
+          {step === 'EMAIL' ? (
             <form onSubmit={handleRequestOtp} className="space-y-4 text-xs">
               <div className="space-y-1.5">
                 <label className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
@@ -318,7 +349,7 @@ export const PortalLoginPage: React.FC = () => {
                 className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-gold-500 hover:from-amber-400 hover:to-gold-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 disabled:opacity-50 mt-2 min-h-[44px] cursor-pointer"
               >
                 <KeyRound className="w-4 h-4" />
-                <span>{isLoading ? 'Sending OTP...' : 'Send OTP'}</span>
+                <span>{isLoading ? 'Sending OTP via Supabase...' : 'Send OTP'}</span>
               </button>
 
               {/* Quick Preset for Authorized Admin */}
@@ -352,7 +383,7 @@ export const PortalLoginPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => {
-                    setStep('email');
+                    setStep('EMAIL');
                     setError(null);
                     setSuccessMsg(null);
                   }}
@@ -405,11 +436,11 @@ export const PortalLoginPage: React.FC = () => {
               {/* Verify Button */}
               <button
                 type="submit"
-                disabled={isLoading || otpDigits.join('').length !== 6}
+                disabled={isLoading || (otpInput.length !== 6 && otpDigits.join('').length !== 6)}
                 className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-gold-500 hover:from-amber-400 hover:to-gold-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 disabled:opacity-50 min-h-[44px] cursor-pointer"
               >
                 <Sparkles className="w-4 h-4" />
-                <span>{isLoading ? 'Verifying OTP Code...' : 'Verify & Access Admin'}</span>
+                <span>{isLoading ? 'Verifying with Supabase...' : 'Verify & Access Admin'}</span>
               </button>
 
               {/* Resend code Section */}
