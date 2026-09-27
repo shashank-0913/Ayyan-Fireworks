@@ -13,6 +13,7 @@ import { HomePage } from './pages/HomePage';
 import { CataloguePage } from './pages/CataloguePage';
 import { BookSlotPage } from './pages/BookSlotPage';
 import { ShowroomPage } from './pages/ShowroomPage';
+import { AntigravityCatalogPage } from './pages/AntigravityCatalogPage';
 
 // Portal Components & Pages
 import { PortalAuthGate } from './components/portal/PortalAuthGate';
@@ -66,6 +67,9 @@ export const App: React.FC = () => {
               <Route path="/book-slot" element={<BookSlotPage />} />
               <Route path="/showroom" element={<ShowroomPage />} />
             </Route>
+
+            {/* Immersive Antigravity 3D Physics Catalog */}
+            <Route path="/antigravity" element={<AntigravityCatalogPage />} />
 
             {/* ================================================================= */}
             {/* 2. STANDALONE ADMIN & OPERATIONS PORTAL */}

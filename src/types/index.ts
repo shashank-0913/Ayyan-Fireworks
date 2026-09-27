@@ -1,22 +1,33 @@
 export type ProductCategory = 
+  | 'Maroons'
   | 'Sparklers'
   | 'Ground Chakkars'
-  | 'Ground Spinners'
+  | 'Chakkars'
+  | 'Wheels'
   | 'Flower Pots'
-  | 'Flower Pots & Fountains'
+  | 'Colourful Fountains'
+  | 'Fountains'
   | 'Sky Rockets'
-  | 'Sky Rockets & Missiles'
+  | 'Rockets'
+  | 'Novelties'
   | 'Aerial Multi-Shots'
-  | 'Aerial Multi-Shot Cakes'
+  | 'Cakes'
+  | 'Safety Matches'
+  | 'Matches'
   | 'Gift Boxes'
-  | 'Curated Family Gift Boxes';
+  | string;
 
 export const PRODUCT_CATEGORIES: ProductCategory[] = [
+  'Maroons',
   'Sparklers',
   'Ground Chakkars',
+  'Wheels',
   'Flower Pots',
+  'Colourful Fountains',
   'Sky Rockets',
+  'Novelties',
   'Aerial Multi-Shots',
+  'Safety Matches',
   'Gift Boxes'
 ];
 
@@ -24,6 +35,7 @@ export type SoundLevel = 'Low / Silent' | 'Medium' | 'High Spectacle';
 
 export interface Product {
   id: string;
+  code?: string;
   name: string;
   category: ProductCategory;
   price: number;

@@ -10,7 +10,8 @@ import {
   Flame,
   CalendarCheck,
   Tag,
-  CheckCircle2
+  CheckCircle2,
+  Sparkles
 } from 'lucide-react';
 import { useAyyanStore } from '../context/AppContext';
 import { ProductCard } from '../components/customer/ProductCard';
@@ -18,14 +19,17 @@ import { LegalComplianceBanner } from '../components/common/LegalComplianceBanne
 import { Product, SoundLevel } from '../types';
 import { formatINR } from '../lib/utils';
 
-// Exact Category Pill Tabs requested: "All", "Sparklers", "Chakkars", "Flower Pots", "Rockets", "Aerial Cakes", "Gift Boxes"
+// Official Ayyan Category Pill Tabs
 export const CATEGORY_PILL_TABS = [
   'All',
+  'Maroons',
   'Sparklers',
-  'Chakkars',
+  'Chakkars & Wheels',
   'Flower Pots',
-  'Rockets',
+  'Colour Fountains',
+  'Rockets & Novelties',
   'Aerial Cakes',
+  'Safety Matches',
   'Gift Boxes'
 ] as const;
 
@@ -37,7 +41,7 @@ export const CataloguePage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryTab>('All');
   const [selectedSound, setSelectedSound] = useState<'All' | SoundLevel>('All');
-  const [maxPrice, setMaxPrice] = useState<number>(10000);
+  const [maxPrice, setMaxPrice] = useState<number>(15000);
   const [sortBy, setSortBy] = useState<'default' | 'price_low' | 'price_high'>('default');
 
   // Category Matching Helper
@@ -47,18 +51,24 @@ export const CataloguePage: React.FC = () => {
     const name = (product.name || '').toLowerCase();
 
     switch (tab) {
+      case 'Maroons':
+        return cat.includes('maroon') || name.includes('maroon') || name.includes('cracker') || name.includes('sound');
       case 'Sparklers':
         return cat.includes('sparkler') || name.includes('sparkler');
-      case 'Chakkars':
-        return cat.includes('chakkar') || cat.includes('spinner') || name.includes('chakkar') || name.includes('spinner') || name.includes('wheel');
+      case 'Chakkars & Wheels':
+        return cat.includes('chakkar') || cat.includes('wheel') || cat.includes('spinner') || name.includes('chakkar') || name.includes('wheel') || name.includes('spinner') || name.includes('lotus');
       case 'Flower Pots':
-        return cat.includes('pot') || cat.includes('fountain') || name.includes('pot') || name.includes('fountain') || name.includes('ashoka') || name.includes('koti');
-      case 'Rockets':
-        return cat.includes('rocket') || cat.includes('missile') || name.includes('rocket') || name.includes('missile') || name.includes('lunik');
+        return (cat.includes('pot') || cat.includes('flower') || name.includes('pot')) && !cat.includes('colourful');
+      case 'Colour Fountains':
+        return cat.includes('colour') || cat.includes('fountain') || name.includes('fountain') || name.includes('jadugar') || name.includes('peacock') || name.includes('drops') || name.includes('patrol') || name.includes('manoranjan') || name.includes('roopkhela') || name.includes('varnajal');
+      case 'Rockets & Novelties':
+        return cat.includes('rocket') || cat.includes('novelties') || cat.includes('missile') || name.includes('rocket') || name.includes('missile') || name.includes('drone') || name.includes('pop');
       case 'Aerial Cakes':
-        return cat.includes('aerial') || cat.includes('multi-shot') || cat.includes('cake') || name.includes('shot') || name.includes('cake') || name.includes('aerial');
+        return cat.includes('cake') || cat.includes('shot') || cat.includes('aerial') || name.includes('shot') || name.includes('cake') || name.includes('star') || name.includes('mangal');
+      case 'Safety Matches':
+        return cat.includes('match') || name.includes('match') || name.includes('pops') || name.includes('ninja') || name.includes('twyla');
       case 'Gift Boxes':
-        return cat.includes('gift') || cat.includes('box') || cat.includes('hamper') || name.includes('gift') || name.includes('box') || name.includes('hamper');
+        return cat.includes('gift') || cat.includes('hamper') || cat.includes('box') || name.includes('hamper') || name.includes('box');
       default:
         return true;
     }
@@ -110,25 +120,14 @@ export const CataloguePage: React.FC = () => {
 
   // Compute counts for each category tab
   const categoryCounts = useMemo(() => {
-    const counts: Record<CategoryTab, number> = {
-      'All': products.filter(p => p.is_active).length,
-      'Sparklers': 0,
-      'Chakkars': 0,
-      'Flower Pots': 0,
-      'Rockets': 0,
-      'Aerial Cakes': 0,
-      'Gift Boxes': 0
-    };
-
-    products.filter(p => p.is_active).forEach(p => {
-      CATEGORY_PILL_TABS.forEach(tab => {
-        if (tab !== 'All' && matchesCategoryTab(p, tab)) {
-          counts[tab] = (counts[tab] || 0) + 1;
-        }
-      });
+    const counts: Record<string, number> = {};
+    CATEGORY_PILL_TABS.forEach(tab => {
+      counts[tab] = tab === 'All' 
+        ? products.filter(p => p.is_active).length 
+        : products.filter(p => p.is_active && matchesCategoryTab(p, tab)).length;
     });
 
-    return counts;
+    return counts as Record<CategoryTab, number>;
   }, [products]);
 
   const handleResetFilters = () => {
@@ -144,17 +143,28 @@ export const CataloguePage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 space-y-6 sm:space-y-8 pb-24 sm:pb-12">
       {/* Page Header */}
-      <div className="space-y-2.5 text-center sm:text-left">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/15 dark:bg-gold-500/10 border border-amber-500/30 dark:border-gold-500/30 text-amber-700 dark:text-gold-300 text-xs font-bold uppercase tracking-wider shadow-sm dark:shadow-glow-gold">
-          <Flame className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400 animate-pulse" />
-          <span>Official 2026 Factory Price Master</span>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="space-y-2 text-center sm:text-left">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/15 dark:bg-gold-500/10 border border-amber-500/30 dark:border-gold-500/30 text-amber-700 dark:text-gold-300 text-xs font-bold uppercase tracking-wider shadow-sm dark:shadow-glow-gold">
+            <Flame className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400 animate-pulse" />
+            <span>Official 2026 Factory Price Master</span>
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-display font-extrabold text-slate-900 dark:text-white tracking-tight">
+            Sivakasi Pyrotechnic Catalogue
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
+            Explore genuine PESO-certified Bunny Brand formulations, piece breakdowns, dynamic INR rates, and safety handling instructions.
+          </p>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-display font-extrabold text-slate-900 dark:text-white tracking-tight">
-          Sivakasi Pyrotechnic Catalogue
-        </h1>
-        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
-          Explore genuine PESO-certified Bunny Brand formulations, piece breakdowns, dynamic INR rates, and safety handling instructions.
-        </p>
+
+        {/* Antigravity 3D Physics Mode CTA */}
+        <Link
+          to="/antigravity"
+          className="px-5 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-gold-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-glow-gold transition-all active:scale-95 shrink-0 self-center sm:self-auto"
+        >
+          <Sparkles className="w-4 h-4 fill-current animate-spin" />
+          <span>Launch Zero-G Mode</span>
+        </Link>
       </div>
 
       {/* Statutory Legal Strip */}

@@ -6,7 +6,8 @@ import {
   ChevronDown, 
   ChevronUp, 
   CalendarCheck,
-  Volume2
+  Volume2,
+  ExternalLink
 } from 'lucide-react';
 import { Product } from '../../types';
 import { formatINR } from '../../lib/utils';
@@ -19,9 +20,11 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isSafetyOpen, setIsSafetyOpen] = useState(false);
   const [isExpandedDesc, setIsExpandedDesc] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const descriptionText = product.description || "Authentic Sivakasi festive pyrotechnic masterpiece crafted under strict statutory quality standards.";
   const isLongDescription = descriptionText.length > 90;
+  const googleSearchUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(`Ayyan Fireworks ${product.name} Sivakasi`)}`;
 
   return (
     <div className="group relative rounded-3xl bg-white dark:bg-obsidian-900/70 border border-slate-200/90 dark:border-white/[0.09] hover:border-amber-500/50 dark:hover:border-gold-500/40 p-4 sm:p-5 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1.5 shadow-sm hover:shadow-xl dark:shadow-xl dark:hover:shadow-glow-gold backdrop-blur-xl">
@@ -31,16 +34,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* =================================================================== */}
         <div className="relative aspect-[4/3] sm:aspect-[4/3] w-full rounded-2xl overflow-hidden bg-slate-100 dark:bg-obsidian-950 border border-slate-200/80 dark:border-white/10 shadow-inner">
           <img
-            src={product.image_url || 'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=800&q=80'}
+            src={imageError ? 'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=800&q=80' : (product.image_url || 'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=800&q=80')}
             alt={product.name}
+            onError={() => setImageError(true)}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 dark:from-obsidian-950/70 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 dark:from-obsidian-950/80 via-transparent to-transparent pointer-events-none" />
 
-          {/* Category Badge pinned to top-left corner */}
-          <div className="absolute top-3 left-3 px-3 py-1 rounded-xl bg-white/95 dark:bg-obsidian-950/90 backdrop-blur-md border border-amber-400/50 dark:border-gold-500/40 text-amber-700 dark:text-gold-300 font-bold text-[11px] uppercase tracking-wider shadow-md">
-            {product.category}
+          {/* Category & Item Code Badge pinned to top-left corner */}
+          <div className="absolute top-3 left-3 flex items-center gap-1.5">
+            <span className="px-3 py-1 rounded-xl bg-white/95 dark:bg-obsidian-950/90 backdrop-blur-md border border-amber-400/50 dark:border-gold-500/40 text-amber-700 dark:text-gold-300 font-bold text-[11px] uppercase tracking-wider shadow-md">
+              {product.category}
+            </span>
+            {product.code && (
+              <span className="px-2 py-1 rounded-xl bg-black/80 backdrop-blur-md border border-white/20 text-slate-200 font-mono font-bold text-[10px] shadow-md">
+                #{product.code}
+              </span>
+            )}
           </div>
 
           {/* Sound / Atmosphere Pill pinned to top-right corner if available */}
@@ -50,6 +61,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               <span>{product.sound_level}</span>
             </div>
           )}
+
+          {/* Direct Verified Google Photo Link overlay button */}
+          <a
+            href={googleSearchUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Inspect official packaging photos on Google"
+            className="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-sky-500/20 hover:bg-sky-500/30 text-sky-200 border border-sky-400/40 text-[10px] font-bold flex items-center gap-1 backdrop-blur-md transition-colors"
+          >
+            <ExternalLink className="w-3 h-3" />
+            <span>Verify Photo ↗</span>
+          </a>
         </div>
 
         {/* =================================================================== */}
@@ -57,7 +80,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* =================================================================== */}
         <div className="space-y-2.5 pt-1">
           {/* Product Name */}
-          <h3 className="font-display font-bold text-slate-900 dark:text-white text-base sm:text-xl leading-snug group-hover:text-amber-600 dark:group-hover:text-gold-300 transition-colors tracking-tight">
+          <h3 className="font-display font-bold text-slate-900 dark:text-white text-base sm:text-lg leading-snug group-hover:text-amber-600 dark:group-hover:text-gold-300 transition-colors tracking-tight">
             {product.name}
           </h3>
 

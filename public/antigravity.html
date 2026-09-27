@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ayyan Fireworks - Official Price List & Antigravity Catalog</title>
+  <!-- Matter.js Physics Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body, html {
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 20%, #161f30 0%, #07090e 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* Header Bar */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(10, 14, 24, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 204, 0, 0.25);
+      padding: 10px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand h1 {
+      font-size: 17px;
+      font-weight: 800;
+      color: #ffb703;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .brand span {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 6px 12px;
+      border-radius: 20px;
+      color: #fff;
+      font-size: 12px;
+      outline: none;
+      width: 160px;
+    }
+    .search-box:focus {
+      border-color: #ffb703;
+    }
+
+    .toggle-btn {
+      background: #ffb703;
+      color: #0b0f19;
+      font-weight: 700;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: transform 0.15s, background 0.2s;
+    }
+    .toggle-btn:hover {
+      background: #ffa000;
+      transform: scale(1.03);
+    }
+
+    /* Category Pill Filters */
+    .filter-bar {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      width: 100%;
+      padding-top: 6px;
+      scrollbar-width: none;
+    }
+    .filter-bar::-webkit-scrollbar { display: none; }
+
+    .filter-pill {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #cbd5e1;
+      padding: 4px 12px;
+      border-radius: 14px;
+      font-size: 11px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .filter-pill:hover, .filter-pill.active {
+      background: #ffb703;
+      color: #0b0f19;
+      font-weight: 700;
+      border-color: #ffb703;
+    }
+
+    /* Main Showcase / Arena */
+    #catalog-arena {
+      position: absolute;
+      top: 105px;
+      left: 0;
+      width: 100vw;
+      height: calc(100vh - 105px);
+      overflow-y: auto;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+
+    /* Standard Grid Mode */
+    #catalog-arena.grid-view {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+      justify-items: center;
+      align-content: start;
+      overflow-y: auto;
+    }
+
+    /* Antigravity Floating Mode */
+    #catalog-arena.gravity-view {
+      overflow: hidden;
+      position: absolute;
+      inset: 105px 0 0 0;
+    }
+
+    /* Product Card */
+    .product-card {
+      width: 155px;
+      height: 195px;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 215, 0, 0.22);
+      border-radius: 14px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+      user-select: none;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+    .product-card:hover {
+      border-color: #ffb703;
+      box-shadow: 0 0 20px rgba(255, 183, 3, 0.4);
+      transform: translateY(-3px);
+    }
+
+    .gravity-view .product-card {
+      position: absolute;
+      top: 0;
+      left: 0;
+      cursor: grab;
+      margin: 0;
+    }
+    .gravity-view .product-card:active {
+      cursor: grabbing;
+    }
+
+    .card-top {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 9px;
+      color: #94a3b8;
+    }
+    .card-category {
+      background: rgba(255, 183, 3, 0.15);
+      color: #ffb703;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .card-media {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 4px 0;
+    }
+    .card-media svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 2px 8px rgba(255, 183, 3, 0.35));
+    }
+
+    .card-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: #f1f5f9;
+      line-height: 1.25;
+      height: 28px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .card-meta {
+      font-size: 9.5px;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+    .card-bottom {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 4px;
+      padding-top: 4px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .card-price {
+      font-size: 13px;
+      font-weight: 800;
+      color: #4ade80;
+    }
+    .card-btn {
+      font-size: 9.5px;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .card-btn:hover {
+      background: rgba(56, 189, 248, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <h1>🧨 Ayyan Fireworks Factory</h1>
+      <span>Sivakasi • Official Price List 2024</span>
+    </div>
+
+    <div class="controls">
+      <input type="text" id="searchInput" class="search-box" placeholder="Search item or code..." />
+      <button id="togglePhysicsBtn" class="toggle-btn">🌀 Antigravity: OFF</button>
+    </div>
+
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-pill active" data-cat="ALL">All Items (45+)</button>
+      <button class="filter-pill" data-cat="Maroons">Maroons</button>
+      <button class="filter-pill" data-cat="Sparklers">Sparklers</button>
+      <button class="filter-pill" data-cat="Chakkars">Chakkars</button>
+      <button class="filter-pill" data-cat="Wheels">Wheels</button>
+      <button class="filter-pill" data-cat="Fountains">Fountains</button>
+      <button class="filter-pill" data-cat="Colourful Fountains">Colour Fountains</button>
+      <button class="filter-pill" data-cat="Rockets">Rockets</button>
+      <button class="filter-pill" data-cat="Cakes">Cakes</button>
+      <button class="filter-pill" data-cat="Novelties">Novelties</button>
+      <button class="filter-pill" data-cat="Matches">Matches</button>
+    </div>
+  </header>
+
+  <!-- Items Arena -->
+  <main id="catalog-arena" class="grid-view"></main>
+
+  <script>
+    // 1. DATASET FROM AYYAN PRICE SHEETS
+    const catalogData = [
+      // Maroons
+      { code: "0801", name: "Ganesh Crackers", category: "Maroons", per: "100 Pkts", rate: 3605, type: "bomb" },
+      { code: "0803", name: "Lakshmi Crackers", category: "Maroons", per: "100 Pkts", rate: 2070, type: "bomb" },
+      { code: "0802", name: "Bengal Prince Crackers", category: "Maroons", per: "100 Pkts", rate: 3605, type: "bomb" },
+      { code: "0804", name: "King Crackers", category: "Maroons", per: "100 Pkts", rate: 2070, type: "bomb" },
+      { code: "0805", name: "Jawan Crackers", category: "Maroons", per: "100 Pkts", rate: 1615, type: "bomb" },
+      { code: "0806", name: "Bird Crackers", category: "Maroons", per: "100 Pkts", rate: 835, type: "bomb" },
+
+      // Sparklers
+      { code: "0101", name: "7 cm Electric Sparklers", category: "Sparklers", per: "100 Boxes", rate: 1175, type: "sparkler" },
+      { code: "0102", name: "7 cm Coloured Sparklers", category: "Sparklers", per: "100 Boxes", rate: 1325, type: "sparkler" },
+      { code: "0103", name: "9 cm Electric Sparklers", category: "Sparklers", per: "100 Boxes", rate: 1325, type: "sparkler" },
+      { code: "0104", name: "9 cm Coloured Sparklers", category: "Sparklers", per: "100 Boxes", rate: 1500, type: "sparkler" },
+      { code: "0105", name: "10 cm Ruby Sparklers", category: "Sparklers", per: "10 Boxes", rate: 210, type: "sparkler" },
+      { code: "0109", name: "12 cm Electric Sparklers", category: "Sparklers", per: "10 Boxes", rate: 180, type: "sparkler" },
+      { code: "0110", name: "12 cm Coloured Sparklers", category: "Sparklers", per: "10 Boxes", rate: 240, type: "sparkler" },
+      { code: "0111", name: "15 cm Electric Sparklers", category: "Sparklers", per: "10 Boxes", rate: 400, type: "sparkler" },
+      { code: "0112", name: "15 cm Coloured Sparklers", category: "Sparklers", per: "10 Boxes", rate: 530, type: "sparkler" },
+      { code: "0115", name: "15 cm Panchavarnam 5 In One", category: "Sparklers", per: "10 Boxes", rate: 460, type: "sparkler" },
+      { code: "0116", name: "30 cm Electric Sparklers", category: "Sparklers", per: "10 Boxes", rate: 400, type: "sparkler" },
+      { code: "0117", name: "30 cm Coloured Sparklers", category: "Sparklers", per: "10 Boxes", rate: 530, type: "sparkler" },
+      { code: "0118", name: "50 cm Electric Sparklers", category: "Sparklers", per: "10 Boxes", rate: 1020, type: "sparkler" },
+      { code: "0119", name: "50 cm Coloured Sparklers", category: "Sparklers", per: "10 Boxes", rate: 1260, type: "sparkler" },
+      { code: "0120", name: "75 cm Electric Sparklers", category: "Sparklers", per: "10 Boxes", rate: 1700, type: "sparkler" },
+      { code: "0123", name: "Rajadhani Sparklers (5 Varities)", category: "Sparklers", per: "Box", rate: 238, type: "sparkler" },
+
+      // Chakkars
+      { code: "0201", name: "Ground Chakkar Medium", category: "Chakkars", per: "4 Boxes", rate: 248, type: "chakkar" },
+      { code: "0202", name: "Ground Chakkar Big", category: "Chakkars", per: "4 Boxes", rate: 350, type: "chakkar" },
+      { code: "0203", name: "Ground Chakkar Special", category: "Chakkars", per: "10 Boxes", rate: 820, type: "chakkar" },
+      { code: "0204", name: "Ground Chakkar Deluxe", category: "Chakkars", per: "10 Boxes", rate: 1450, type: "chakkar" },
+      { code: "0205", name: "Krishna Chakkar Big", category: "Chakkars", per: "4 Boxes", rate: 440, type: "chakkar" },
+      { code: "0206", name: "Krishna Chakkar Special", category: "Chakkars", per: "10 Boxes", rate: 860, type: "chakkar" },
+
+      // Wheels
+      { code: "0208", name: "Giant Wheel", category: "Wheels", per: "Box", rate: 103, type: "wheel" },
+      { code: "0209", name: "Joke Wheel", category: "Wheels", per: "Box", rate: 103, type: "wheel" },
+      { code: "0210", name: "Star Wheel", category: "Wheels", per: "Box", rate: 88, type: "wheel" },
+      { code: "0211", name: "Classic Wheel", category: "Wheels", per: "Box", rate: 174, type: "wheel" },
+      { code: "0212", name: "Whistling Wheel", category: "Wheels", per: "Box", rate: 112, type: "wheel" },
+      { code: "0215", name: "Glittering Wheel", category: "Wheels", per: "Box", rate: 100, type: "wheel" },
+      { code: "0221", name: "Lotus", category: "Wheels", per: "Box", rate: 70, type: "wheel" },
+
+      // Fountains
+      { code: "0301", name: "Flower Pots Small", category: "Fountains", per: "10 Boxes", rate: 500, type: "fountain" },
+      { code: "0302", name: "Flower Pots Big", category: "Fountains", per: "10 Boxes", rate: 800, type: "fountain" },
+      { code: "0303", name: "Flower Pots Special", category: "Fountains", per: "10 Boxes", rate: 1250, type: "fountain" },
+      { code: "0304", name: "Flower Pots Giant", category: "Fountains", per: "Box", rate: 265, type: "fountain" },
+      { code: "0307", name: "Flower Pots Red", category: "Fountains", per: "10 Boxes", rate: 1430, type: "fountain" },
+      { code: "0309", name: "Tri Colour Fountain", category: "Fountains", per: "Box", rate: 215, type: "fountain" },
+      { code: "0310", name: "Rangoli", category: "Fountains", per: "Box", rate: 136, type: "fountain" },
+      { code: "0325", name: "Colour Koti Deluxe", category: "Fountains", per: "Box", rate: 368, type: "fountain" },
+
+      // Colourful Fountains
+      { code: "0311", name: "Jadugar", category: "Colourful Fountains", per: "Box", rate: 155, type: "fountain" },
+      { code: "0312", name: "Manoranjan", category: "Colourful Fountains", per: "Box", rate: 155, type: "fountain" },
+      { code: "0313", name: "Roopkhela", category: "Colourful Fountains", per: "Box", rate: 270, type: "fountain" },
+      { code: "0314", name: "Varnajal", category: "Colourful Fountains", per: "Box", rate: 242, type: "fountain" },
+      { code: "0322", name: "Fire Drops", category: "Colourful Fountains", per: "Box", rate: 74, type: "fountain" },
+      { code: "0323", name: "Snow Patrol", category: "Colourful Fountains", per: "Box", rate: 74, type: "fountain" },
+      { code: "0336", name: "Mega Peacock", category: "Colourful Fountains", per: "Box", rate: 288, type: "fountain" },
+
+      // Rockets
+      { code: "1202", name: "Colour Rocket", category: "Rockets", per: "10 Boxes", rate: 650, type: "rocket" },
+      { code: "1203", name: "Rocket Bomb", category: "Rockets", per: "10 Boxes", rate: 794, type: "rocket" },
+      { code: "1204", name: "Flower Missile", category: "Rockets", per: "10 Boxes", rate: 750, type: "rocket" },
+      { code: "1205", name: "Sound Missile", category: "Rockets", per: "10 Boxes", rate: 930, type: "rocket" },
+      { code: "1210", name: "Parachute Rocket", category: "Rockets", per: "Box", rate: 215, type: "rocket" },
+      { code: "1213", name: "Air Whistle", category: "Rockets", per: "Box", rate: 145, type: "rocket" },
+
+      // Cakes (Multi-Shots)
+      { code: "1701", name: "Dekhe Man - 12 Star", category: "Cakes", per: "Box", rate: 120, type: "cake" },
+      { code: "1770", name: "Daisy Bees - 12 Star Yellow", category: "Cakes", per: "Box", rate: 127, type: "cake" },
+      { code: "1705", name: "Sky Storm - 12 Shot Crackling", category: "Cakes", per: "Box", rate: 128, type: "cake" },
+      { code: "1702", name: "Chal Mere Sath - 25 Shots MultiColour", category: "Cakes", per: "Box", rate: 238, type: "cake" },
+      { code: "1712", name: "Thor - 25 Shots MultiColour", category: "Cakes", per: "Box", rate: 310, type: "cake" },
+      { code: "1703", name: "Dil Maange More - 50 Shots", category: "Cakes", per: "Box", rate: 416, type: "cake" },
+      { code: "1731", name: "Wonder Night - 60 Shots", category: "Cakes", per: "Box", rate: 825, type: "cake" },
+      { code: "1744", name: "Subha Mangal - 500 Shots", category: "Cakes", per: "Box", rate: 7500, type: "cake" },
+      { code: "1745", name: "Sarva Mangal - 1000 Shots", category: "Cakes", per: "Box", rate: 15000, type: "cake" },
+
+      // Matches
+      { code: "0103-M", name: "Camel POPS Colour Matches", category: "Matches", per: "600 Boxes", rate: 2090, type: "matches" },
+      { code: "0104-M", name: "Camel NINJA 5 Colour Matches", category: "Matches", per: "600 Boxes", rate: 3595, type: "matches" },
+      { code: "0205-M", name: "Ayyan TWYLA Matches 5 Colours", category: "Matches", per: "600 Boxes", rate: 1950, type: "matches" }
+    ];
+
+    // High quality vector fireworks illustrations
+    const SVG_ICONS = {
+      sparkler: `<svg viewBox="0 0 64 64" fill="none"><path d="M12 52L36 28" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/><circle cx="44" cy="20" r="4" fill="#fbbf24"/><path d="M44 8v6M44 26v6M32 20h6M50 20h6M35 11l5 5M48 24l5 5M35 29l5-5M48 16l5-5" stroke="#fcd34d" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+      chakkar: `<svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="24" stroke="#f97316" stroke-width="3" stroke-dasharray="6 6"/><circle cx="32" cy="32" r="14" stroke="#fbbf24" stroke-width="3"/><circle cx="32" cy="32" r="5" fill="#ef4444"/><path d="M32 8c6 8 8 16 0 24s-8 16 0 24" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/></svg>`,
+      wheel: `<svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="#eab308" stroke-width="3"/><circle cx="32" cy="32" r="6" fill="#ef4444"/><path d="M32 10v44M10 32h44M16 16l32 32M48 16L16 48" stroke="#f59e0b" stroke-width="2.5"/></svg>`,
+      fountain: `<svg viewBox="0 0 64 64" fill="none"><path d="M22 52h20l-4-26H26l-4 26z" fill="#b91c1c" stroke="#f59e0b" stroke-width="2"/><path d="M32 26V8M32 8c-6 3-10 10-10 14M32 8c6 3 10 10 10 14" stroke="#facc15" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+      rocket: `<svg viewBox="0 0 64 64" fill="none"><path d="M28 36l8-8 12 4-4-12-16-4-10 10 4 10 6 0z" fill="#dc2626" stroke="#fbbf24" stroke-width="2"/><path d="M18 46l-8 8M18 46l4-4M18 46l-4 4" stroke="#f97316" stroke-width="2.5" stroke-linecap="round"/><path d="M40 24l6-6" stroke="#fbbf24" stroke-width="3"/></svg>`,
+      cake: `<svg viewBox="0 0 64 64" fill="none"><rect x="14" y="24" width="36" height="28" rx="4" fill="#7c2d12" stroke="#f59e0b" stroke-width="2.5"/><circle cx="22" cy="32" r="3" fill="#facc15"/><circle cx="32" cy="32" r="3" fill="#facc15"/><circle cx="42" cy="32" r="3" fill="#facc15"/><circle cx="22" cy="42" r="3" fill="#ef4444"/><circle cx="32" cy="42" r="3" fill="#ef4444"/><circle cx="42" cy="42" r="3" fill="#ef4444"/><path d="M22 24v-8M32 24v-12M42 24v-8" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+      bomb: `<svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="36" r="18" fill="#15803d" stroke="#facc15" stroke-width="2.5"/><path d="M32 18v-6c0-2 4-4 6-2" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/><circle cx="40" cy="10" r="3" fill="#f59e0b"/></svg>`,
+      matches: `<svg viewBox="0 0 64 64" fill="none"><rect x="18" y="18" width="28" height="34" rx="2" fill="#d97706" stroke="#fbbf24" stroke-width="2"/><rect x="22" y="14" width="20" height="6" fill="#b45309"/><circle cx="32" cy="34" r="7" fill="#ef4444"/></svg>`
+    };
+
+    const arena = document.getElementById("catalog-arena");
+    const toggleBtn = document.getElementById("togglePhysicsBtn");
+    const searchInput = document.getElementById("searchInput");
+    let isAntigravity = false;
+    let engine = null;
+    let runner = null;
+    let bodiesMap = [];
+
+    // Filter state
+    let activeCategory = "ALL";
+    let searchTerm = "";
+
+    function getFilteredItems() {
+      return catalogData.filter(item => {
+        const matchesCat = (activeCategory === "ALL") || 
+          (item.category.toLowerCase() === activeCategory.toLowerCase());
+        const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+          item.code.toLowerCase().includes(searchTerm.toLowerCase());
+        return matchesCat && matchesSearch;
+      });
+    }
+
+    function createCardElement(item) {
+      const card = document.createElement("div");
+      card.className = "product-card";
+      card.setAttribute("data-code", item.code);
+
+      const iconSvg = SVG_ICONS[item.type] || SVG_ICONS.bomb;
+      const googleImgQuery = encodeURIComponent(`Ayyan Fireworks ${item.name} Sivakasi`);
+      const googleSearchUrl = `https://www.google.com/search?tbm=isch&q=${googleImgQuery}`;
+
+      card.innerHTML = `
+        <div class="card-top">
+          <span class="card-category">${item.category}</span>
+          <span>#${item.code}</span>
+        </div>
+        <div class="card-media">${iconSvg}</div>
+        <div class="card-name" title="${item.name}">${item.name}</div>
+        <div class="card-meta">Per: ${item.per}</div>
+        <div class="card-bottom">
+          <div class="card-price">₹${item.rate.toLocaleString()}</div>
+          <a class="card-btn" href="${googleSearchUrl}" target="_blank" title="Search packaging photo on Google">Google ↗</a>
+        </div>
+      `;
+      return card;
+    }
+
+    // Render Grid
+    function renderGrid() {
+      cleanupPhysics();
+      arena.className = "grid-view";
+      arena.innerHTML = "";
+
+      const items = getFilteredItems();
+      if (items.length === 0) {
+        arena.innerHTML = `<div style="grid-column: 1/-1; padding: 40px; text-align: center; color: #94a3b8;">No products found matching your search.</div>`;
+        return;
+      }
+
+      items.forEach(item => {
+        const card = createCardElement(item);
+        arena.appendChild(card);
+      });
+    }
+
+    // Antigravity Matter.js Physics Mode
+    function startPhysics() {
+      if (typeof Matter === "undefined") {
+        alert("Matter.js could not be loaded from CDN. Falling back to Grid View.");
+        isAntigravity = false;
+        renderGrid();
+        return;
+      }
+
+      arena.className = "gravity-view";
+      arena.innerHTML = "";
+      bodiesMap = [];
+
+      const { Engine, Runner, Bodies, Composite, Mouse, MouseConstraint, Events } = Matter;
+
+      engine = Engine.create();
+      // Upward floating anti-gravity effect
+      engine.gravity.y = -0.04;
+      engine.gravity.x = 0;
+
+      const w = arena.clientWidth || window.innerWidth;
+      const h = arena.clientHeight || (window.innerHeight - 105);
+
+      // Boundaries around the viewport
+      const wallThickness = 80;
+      const walls = [
+        Bodies.rectangle(w / 2, -wallThickness / 2, w * 2, wallThickness, { isStatic: true }),
+        Bodies.rectangle(w / 2, h + wallThickness / 2, w * 2, wallThickness, { isStatic: true }),
+        Bodies.rectangle(-wallThickness / 2, h / 2, wallThickness, h * 2, { isStatic: true }),
+        Bodies.rectangle(w + wallThickness / 2, h / 2, wallThickness, h * 2, { isStatic: true })
+      ];
+      Composite.add(engine.world, walls);
+
+      // Create cards and assign physics bodies
+      const items = getFilteredItems().slice(0, 36); // Keep viewport light and responsive
+      items.forEach((item) => {
+        const card = createCardElement(item);
+        arena.appendChild(card);
+
+        const cardW = 155;
+        const cardH = 195;
+        const posX = Math.random() * (w - cardW - 40) + 20;
+        const posY = Math.random() * (h - cardH - 40) + 20;
+
+        const body = Bodies.rectangle(posX, posY, cardW, cardH, {
+          chamfer: { radius: 14 },
+          restitution: 0.8,
+          frictionAir: 0.02
+        });
+
+        Composite.add(engine.world, body);
+        bodiesMap.push({ body, card, w: cardW, h: cardH });
+      });
+
+      // Mouse Dragging in Physics
+      const mouse = Mouse.create(arena);
+      const mouseConstraint = MouseConstraint.create(engine, {
+        mouse: mouse,
+        constraint: { stiffness: 0.2, render: { visible: false } }
+      });
+      Composite.add(engine.world, mouseConstraint);
+
+      // Sync Body transforms to DOM elements
+      Events.on(engine, "afterUpdate", () => {
+        bodiesMap.forEach(({ body, card, w: bw, h: bh }) => {
+          const x = body.position.x - bw / 2;
+          const y = body.position.y - bh / 2;
+          card.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${body.angle}rad)`;
+        });
+      });
+
+      runner = Runner.create();
+      Runner.run(runner, engine);
+    }
+
+    function cleanupPhysics() {
+      if (runner && engine) {
+        Matter.Runner.stop(runner);
+        Matter.Engine.clear(engine);
+        runner = null;
+        engine = null;
+      }
+      bodiesMap = [];
+    }
+
+    // Toggle Antigravity Mode
+    toggleBtn.addEventListener("click", () => {
+      isAntigravity = !isAntigravity;
+      if (isAntigravity) {
+        toggleBtn.innerText = "🌀 Antigravity: ON";
+        toggleBtn.style.background = "#4ade80";
+        startPhysics();
+      } else {
+        toggleBtn.innerText = "🌀 Antigravity: OFF";
+        toggleBtn.style.background = "#ffb703";
+        renderGrid();
+      }
+    });
+
+    // Category Filter Clicks
+    document.querySelectorAll(".filter-pill").forEach(pill => {
+      pill.addEventListener("click", () => {
+        document.querySelectorAll(".filter-pill").forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+        activeCategory = pill.getAttribute("data-cat");
+        if (isAntigravity) startPhysics();
+        else renderGrid();
+      });
+    });
+
+    // Search Input
+    searchInput.addEventListener("input", (e) => {
+      searchTerm = e.target.value.trim();
+      if (isAntigravity) startPhysics();
+      else renderGrid();
+    });
+
+    // Handle Window Resizing
+    window.addEventListener("resize", () => {
+      if (isAntigravity) startPhysics();
+    });
+
+    // Initial Render
+    document.addEventListener("DOMContentLoaded", () => {
+      renderGrid();
+    });
+  </script>
+</body>
+</html>

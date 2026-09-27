@@ -12,7 +12,8 @@ import {
   Clock, 
   CalendarCheck,
   ShieldCheck,
-  ChevronRight
+  ChevronRight,
+  Sparkles
 } from 'lucide-react';
 import { LegalComplianceBanner } from '../common/LegalComplianceBanner';
 import { VIPTicker } from '../common/VIPTicker';
@@ -27,6 +28,7 @@ export const CustomerNavbar: React.FC = () => {
   const navLinks = [
     { name: 'Home', path: '/', icon: Flame },
     { name: '2026 Catalogue', path: '/catalogue', icon: BookOpen },
+    { name: 'Zero-G 3D', path: '/antigravity', icon: Sparkles },
     { name: 'Book VIP Slot', path: '/book-slot', icon: CalendarCheck },
     { name: 'Showroom Visit', path: '/showroom', icon: MapPin },
   ];

@@ -50,11 +50,11 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const LOCAL_STORAGE_KEYS = {
-  PRODUCTS: 'ayyan_products_clean_v5',
-  SLOTS: 'ayyan_slots_clean_v5',
-  BOOKINGS: 'ayyan_bookings_clean_v5',
-  STAFF_USER: 'ayyan_staff_user_clean_v5',
-  EMERGENCY_BLOCK: 'ayyan_emergency_block_clean_v5',
+  PRODUCTS: 'ayyan_products_clean_v6',
+  SLOTS: 'ayyan_slots_clean_v6',
+  BOOKINGS: 'ayyan_bookings_clean_v6',
+  STAFF_USER: 'ayyan_staff_user_clean_v6',
+  EMERGENCY_BLOCK: 'ayyan_emergency_block_clean_v6',
 };
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -192,8 +192,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           .select('*')
           .order('created_at', { ascending: false });
 
-        if (!prodErr && dbProducts !== null) {
+        if (!prodErr && Array.isArray(dbProducts) && dbProducts.length > 0) {
           setProducts(dbProducts as Product[]);
+        } else if (!prodErr && (!dbProducts || dbProducts.length === 0)) {
+          // If remote table has 0 products, preserve local rich INITIAL_PRODUCTS
+          setProducts(prev => (prev.length > 0 ? prev : INITIAL_PRODUCTS));
         }
 
         const { data: dbSlots, error: slotErr } = await client
@@ -201,7 +204,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           .select('*')
           .order('slot_date', { ascending: true });
 
-        if (!slotErr && dbSlots && dbSlots.length > 0) {
+        if (!slotErr && Array.isArray(dbSlots) && dbSlots.length > 0) {
           setSlots(dbSlots as Slot[]);
         }
 

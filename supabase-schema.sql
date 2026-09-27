@@ -25,7 +25,7 @@ create table if not exists public.products (
 
 -- 3. SLOTS TABLE (Showroom Visit Windows)
 create table if not exists public.slots (
-  id uuid primary key default uuid_generate_v4(),
+  id text primary key,
   slot_date date not null,
   start_time time not null,
   end_time time not null,
@@ -36,15 +36,20 @@ create table if not exists public.slots (
   constraint unique_date_time_slot unique (slot_date, start_time, end_time)
 );
 
--- 4. BOOKINGS TABLE (Customer VIP Passes)
+-- 4. BOOKINGS TABLE (Customer VIP Passes & Gate Tickets)
 create table if not exists public.bookings (
-  id uuid primary key default uuid_generate_v4(),
+  id text primary key,
   booking_code text not null unique,
-  slot_id uuid not null references public.slots(id) on delete cascade,
+  qr_token text not null default uuid_generate_v4()::text,
+  slot_id text not null,
   customer_name text not null,
   customer_phone text not null,
+  slot_date text,
+  slot_time text,
+  total_amount numeric(10, 2) default 0,
   visitor_count integer not null default 1 check (visitor_count > 0),
-  status text not null default 'confirmed' check (status in ('confirmed', 'checked_in', 'cancelled', 'no_show')),
+  status text not null default 'confirmed' check (status in ('confirmed', 'completed', 'checked_in', 'cancelled', 'no_show')),
+  verified_at timestamptz,
   notes text,
   created_at timestamptz default timezone('utc'::text, now()) not null
 );
@@ -55,6 +60,7 @@ create index if not exists idx_products_active on public.products(is_active);
 create index if not exists idx_slots_date on public.slots(slot_date);
 create index if not exists idx_bookings_slot on public.bookings(slot_id);
 create index if not exists idx_bookings_code on public.bookings(booking_code);
+create index if not exists idx_bookings_qr on public.bookings(qr_token);
 create index if not exists idx_bookings_phone on public.bookings(customer_phone);
 
 -- ==============================================================================
@@ -62,7 +68,7 @@ create index if not exists idx_bookings_phone on public.bookings(customer_phone)
 -- Prevents race conditions / overbooking using row-level locking (FOR UPDATE)
 -- ==============================================================================
 create or replace function public.book_visiting_slot(
-  p_slot_id uuid,
+  p_slot_id text,
   p_name text,
   p_phone text,
   p_visitors int default 1
@@ -73,9 +79,11 @@ security definer
 as $$
 declare
   v_slot record;
-  v_new_booking_id uuid;
+  v_new_booking_id text;
   v_booking_code text;
+  v_qr_token text;
   v_remaining_cap int;
+  v_slot_time text;
 begin
   -- Validate inputs
   if p_visitors is null or p_visitors < 1 then
@@ -108,13 +116,39 @@ begin
     );
   end if;
 
-  -- Generate unique readable booking code: AYN-XXXX
-  v_booking_code := 'AYN-' || upper(substr(md5(random()::text || clock_timestamp()::text), 1, 4)) || floor(10 + random() * 90)::text;
+  -- Generate unique readable booking code: AYN-XXXXXX
+  v_booking_code := 'AYN-' || floor(100000 + random() * 900000)::text;
+  v_new_booking_id := uuid_generate_v4()::text;
+  v_qr_token := uuid_generate_v4()::text;
+  v_slot_time := to_char(v_slot.start_time, 'HH12:MI AM') || ' – ' || to_char(v_slot.end_time, 'HH12:MI AM');
 
   -- Insert Booking
-  insert into public.bookings (booking_code, slot_id, customer_name, customer_phone, visitor_count, status)
-  values (v_booking_code, p_slot_id, trim(p_name), trim(p_phone), p_visitors, 'confirmed')
-  returning id into v_new_booking_id;
+  insert into public.bookings (
+    id,
+    booking_code,
+    qr_token,
+    slot_id,
+    customer_name,
+    customer_phone,
+    slot_date,
+    slot_time,
+    total_amount,
+    visitor_count,
+    status
+  )
+  values (
+    v_new_booking_id,
+    v_booking_code,
+    v_qr_token,
+    p_slot_id,
+    trim(p_name),
+    trim(p_phone),
+    v_slot.slot_date::text,
+    v_slot_time,
+    0,
+    p_visitors,
+    'confirmed'
+  );
 
   -- Update Slot booked capacity
   update public.slots
@@ -125,7 +159,9 @@ begin
     'success', true,
     'booking_id', v_new_booking_id,
     'booking_code', v_booking_code,
+    'qr_token', v_qr_token,
     'slot_date', v_slot.slot_date,
+    'slot_time', v_slot_time,
     'start_time', v_slot.start_time,
     'end_time', v_slot.end_time,
     'customer_name', trim(p_name),
