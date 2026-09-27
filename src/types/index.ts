@@ -40,6 +40,11 @@ export interface Product {
   category: ProductCategory;
   price: number;
   piece_count: string;
+  unit_price?: number;
+  unit_name?: string;
+  bundle_rate?: number;
+  bundle_unit?: string;
+  unit_breakdown?: string;
   description: string;
   safety_instructions: string;
   safety_tags?: string[];

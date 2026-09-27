@@ -18,115 +18,85 @@ import confetti from 'canvas-confetti';
 import { Link } from 'react-router-dom';
 import { WHATSAPP_CONTACT } from '../lib/utils';
 
+import { INITIAL_PRODUCTS } from '../lib/initialData';
+
 export interface AyyanCatalogItem {
   code: string;
   name: string;
-  category: 'Maroons' | 'Sparklers' | 'Chakkars' | 'Wheels' | 'Fountains' | 'Rockets' | 'Cakes' | 'Matches';
+  category: string;
   icon: string;
   rate: number;
   per: string;
   description?: string;
-  soundLevel?: 'Low / Silent' | 'Medium' | 'High Spectacle';
+  soundLevel?: 'Low / Silent' | 'Medium' | 'High Spectacle' | string;
 }
 
-// COMPLETE CATALOG FROM OFFICIAL AYYAN PRICE LISTS
-export const OFFICIAL_AYYAN_CATALOG: AyyanCatalogItem[] = [
-  // 1. Maroons
-  { code: "0801", name: "Ganesh Crackers", category: "Maroons", icon: "🧨", rate: 3605, per: "100 Pkts", description: "Authentic Sivakasi traditional red maroons with crisp gunpowder report.", soundLevel: "High Spectacle" },
-  { code: "0803", name: "Lakshmi Crackers", category: "Maroons", icon: "🧨", rate: 2070, per: "100 Pkts", description: "Classic single-sound festive crackers with loud sharp burst.", soundLevel: "High Spectacle" },
-  { code: "0802", name: "Bengal Prince Crackers", category: "Maroons", icon: "🧨", rate: 3605, per: "100 Pkts", description: "Royal-grade sound crackers with supreme decibel clarity.", soundLevel: "High Spectacle" },
-  { code: "0804", name: "King Crackers", category: "Maroons", icon: "🧨", rate: 2070, per: "100 Pkts", description: "High-decibel celebration crackers for Diwali & auspicious occasions.", soundLevel: "High Spectacle" },
-  { code: "0805", name: "Jawan Crackers", category: "Maroons", icon: "🧨", rate: 1615, per: "100 Pkts", description: "Medium-range family crackers with reliable fast ignition.", soundLevel: "Medium" },
-  { code: "0806", name: "Bird Crackers", category: "Maroons", icon: "🧨", rate: 835, per: "100 Pkts", description: "Compact quick-burst family celebration sound crackers.", soundLevel: "Medium" },
+const getProductCategoryGroup = (category: string): string => {
+  const cat = category.toLowerCase();
+  if (cat.includes('novelty') || cat.includes('novelties')) return 'Novelties';
+  if (cat.includes('shell')) return 'Shells';
+  if (cat.includes('mega') || cat.includes('display')) return 'Mega Displays';
+  if (cat.includes('cake') || cat.includes('shot') || cat.includes('repeater') || cat.includes('multi-shot')) return 'Cakes';
+  if (cat.includes('maroon') || cat.includes('cracker')) return 'Maroons';
+  if (cat.includes('sparkler')) return 'Sparklers';
+  if (cat.includes('chakkar')) return 'Chakkars';
+  if (cat.includes('wheel')) return 'Wheels';
+  if (cat.includes('fountain') || cat.includes('flower pot') || cat.includes('rangoli')) return 'Fountains';
+  if (cat.includes('rocket') || cat.includes('missile')) return 'Rockets';
+  if (cat.includes('match')) return 'Matches';
+  if (cat.includes('gift') || cat.includes('assorted')) return 'Gift Boxes';
+  return category;
+};
 
-  // 2. Sparklers
-  { code: "0101", name: "7 cm Electric Sparklers", category: "Sparklers", icon: "✨", rate: 1175, per: "100 Boxes", description: "Pure silver glitter sparklers with smokeless formula.", soundLevel: "Low / Silent" },
-  { code: "0102", name: "7 cm Coloured Sparklers", category: "Sparklers", icon: "✨", rate: 1325, per: "100 Boxes", description: "Vibrant multi-colored sparkling handheld sticks.", soundLevel: "Low / Silent" },
-  { code: "0103", name: "9 cm Electric Sparklers", category: "Sparklers", icon: "✨", rate: 1325, per: "100 Boxes", description: "Extended duration gold and silver sparkling star discharge.", soundLevel: "Low / Silent" },
-  { code: "0104", name: "9 cm Coloured Sparklers", category: "Sparklers", icon: "✨", rate: 1500, per: "100 Boxes", description: "Rich emerald, ruby, and golden star bursts safe for kids.", soundLevel: "Low / Silent" },
-  { code: "0105", name: "10 cm Ruby Sparklers", category: "Sparklers", icon: "✨", rate: 210, per: "10 Boxes", description: "Deep ruby red sparkling glow with minimal smoke.", soundLevel: "Low / Silent" },
-  { code: "0109", name: "12 cm Electric Sparklers", category: "Sparklers", icon: "✨", rate: 180, per: "10 Boxes", description: "Bright white electric sparklers with steady burn.", soundLevel: "Low / Silent" },
-  { code: "0110", name: "12 cm Coloured Sparklers", category: "Sparklers", icon: "✨", rate: 240, per: "10 Boxes", description: "4-color changing dazzling handheld fireworks.", soundLevel: "Low / Silent" },
-  { code: "0111", name: "15 cm Electric Sparklers", category: "Sparklers", icon: "✨", rate: 400, per: "10 Boxes", description: "Long glitter sticks for weddings, parties, and festive entrances.", soundLevel: "Low / Silent" },
-  { code: "0112", name: "15 cm Coloured Sparklers", category: "Sparklers", icon: "✨", rate: 530, per: "10 Boxes", description: "Heavy multi-color sparkle discharge with long burning time.", soundLevel: "Low / Silent" },
-  { code: "0115", name: "15 cm Panchavarnam 5 In 1", category: "Sparklers", icon: "✨", rate: 460, per: "10 Boxes", description: "5 distinct color transformations in a single sparkle stick.", soundLevel: "Low / Silent" },
-  { code: "0116", name: "30 cm Electric Sparklers", category: "Sparklers", icon: "✨", rate: 400, per: "10 Boxes", description: "Extra-long mega burning family sparkler sticks.", soundLevel: "Low / Silent" },
-  { code: "0117", name: "30 cm Coloured Sparklers", category: "Sparklers", icon: "✨", rate: 530, per: "10 Boxes", description: "Vibrant multi-color 30cm sparklers with long burn.", soundLevel: "Low / Silent" },
-  { code: "0118", name: "50 cm Electric Sparklers", category: "Sparklers", icon: "✨", rate: 1020, per: "10 Boxes", description: "Giant 50cm sparklers with over 3 minutes of continuous burn.", soundLevel: "Low / Silent" },
-  { code: "0119", name: "50 cm Coloured Sparklers", category: "Sparklers", icon: "✨", rate: 1260, per: "10 Boxes", description: "Mega colored sparkling sticks for extended celebrations.", soundLevel: "Low / Silent" },
-  { code: "0120", name: "75 cm Electric Sparklers", category: "Sparklers", icon: "✨", rate: 1700, per: "10 Boxes", description: "Giant 75cm mega handheld fireworks.", soundLevel: "Low / Silent" },
-  { code: "0123", name: "Rajadhani Sparklers (5 Varieties)", category: "Sparklers", icon: "✨", rate: 238, per: "Box", description: "Assorted 5 premium varieties in single pack.", soundLevel: "Low / Silent" },
+const getCategoryIcon = (category: string, name: string): string => {
+  const cat = category.toLowerCase();
+  const n = name.toLowerCase();
+  if (cat.includes('maroon') || n.includes('cracker')) return '🧨';
+  if (cat.includes('sparkler')) return '✨';
+  if (cat.includes('chakkar')) return '🌀';
+  if (cat.includes('wheel')) return '🎡';
+  if (cat.includes('fountain') || cat.includes('flower pot') || cat.includes('rangoli')) return '🌋';
+  if (cat.includes('rocket') || cat.includes('missile')) return '🚀';
+  if (cat.includes('mega') || cat.includes('display')) return '🌟';
+  if (cat.includes('cake') || cat.includes('shots') || cat.includes('repeater')) return '🎆';
+  if (cat.includes('shell')) return '💥';
+  if (cat.includes('novel') || n.includes('shot') || n.includes('drone') || n.includes('helicopter') || n.includes('spinner') || n.includes('mini')) return '🛸';
+  if (cat.includes('match')) return '🔥';
+  if (cat.includes('gift') || cat.includes('assorted')) return '🎁';
+  return '✨';
+};
 
-  // 3. Chakkars
-  { code: "0201", name: "Ground Chakkar Medium", category: "Chakkars", icon: "🌀", rate: 248, per: "4 Boxes", description: "High-speed golden rotating wheel on smooth ground.", soundLevel: "Low / Silent" },
-  { code: "0202", name: "Ground Chakkar Big", category: "Chakkars", icon: "🌀", rate: 350, per: "4 Boxes", description: "Wide-radius silver spinner with rapid rotational velocity.", soundLevel: "Low / Silent" },
-  { code: "0203", name: "Ground Chakkar Special", category: "Chakkars", icon: "🌀", rate: 820, per: "10 Boxes", description: "Special long-running sparkling ground spinner.", soundLevel: "Low / Silent" },
-  { code: "0204", name: "Ground Chakkar Deluxe", category: "Chakkars", icon: "🌀", rate: 1450, per: "10 Boxes", description: "Deluxe dual-color rotational fireworks wheel.", soundLevel: "Low / Silent" },
-  { code: "0205", name: "Krishna Chakkar Big", category: "Chakkars", icon: "🌀", rate: 440, per: "4 Boxes", description: "Legendary Bunny Brand Krishna design with brilliant aura.", soundLevel: "Low / Silent" },
-  { code: "0206", name: "Krishna Chakkar Special", category: "Chakkars", icon: "🌀", rate: 860, per: "10 Boxes", description: "Extended duration rotating ground fireworks.", soundLevel: "Low / Silent" },
-
-  // 4. Wheels
-  { code: "0208", name: "Giant Wheel", category: "Wheels", icon: "🎡", rate: 103, per: "Box", description: "Dynamic rotating wheel with dual-color aura.", soundLevel: "Low / Silent" },
-  { code: "0209", name: "Joke Wheel", category: "Wheels", icon: "🎡", rate: 103, per: "Box", description: "Whimsical spinning wheel with surprise crackling finish.", soundLevel: "Low / Silent" },
-  { code: "0210", name: "Star Wheel", category: "Wheels", icon: "🎡", rate: 88, per: "Box", description: "Brilliant star-shaped spinning ground wheel.", soundLevel: "Low / Silent" },
-  { code: "0211", name: "Classic Wheel", category: "Wheels", icon: "🎡", rate: 174, per: "Box", description: "High rotational speed with gold aura.", soundLevel: "Low / Silent" },
-  { code: "0212", name: "Whistling Wheel", category: "Wheels", icon: "🎡", rate: 112, per: "Box", description: "Auditory spinning wheel producing a pleasant musical whistle.", soundLevel: "Medium" },
-  { code: "0215", name: "Glittering Wheel", category: "Wheels", icon: "🎡", rate: 100, per: "Box", description: "Multi-color glittering rotation effect.", soundLevel: "Low / Silent" },
-  { code: "0221", name: "Lotus Wheel", category: "Wheels", icon: "🎡", rate: 70, per: "Box", description: "Petal-shaped floral fountain spinner mimicking a blooming lotus.", soundLevel: "Low / Silent" },
-
-  // 5. Fountains
-  { code: "0301", name: "Flower Pots Small", category: "Fountains", icon: "🌋", rate: 500, per: "10 Boxes", description: "Golden shower fountain shooting 8 feet high.", soundLevel: "Low / Silent" },
-  { code: "0302", name: "Flower Pots Big", category: "Fountains", icon: "🌋", rate: 800, per: "10 Boxes", description: "Volcanic gold and silver sparkling shower with wide canopy.", soundLevel: "Low / Silent" },
-  { code: "0303", name: "Flower Pots Special", category: "Fountains", icon: "🌋", rate: 1250, per: "10 Boxes", description: "Extra high sparkling canopy cone fountain.", soundLevel: "Low / Silent" },
-  { code: "0304", name: "Flower Pots Giant", category: "Fountains", icon: "🌋", rate: 265, per: "Box", description: "Towering 15-foot sparkling fountain spray.", soundLevel: "Low / Silent" },
-  { code: "0307", name: "Flower Pots Red", category: "Fountains", icon: "🌋", rate: 1430, per: "10 Boxes", description: "Deep ruby red sparkling shower.", soundLevel: "Low / Silent" },
-  { code: "0309", name: "Tri Colour Fountain", category: "Fountains", icon: "🌋", rate: 215, per: "Box", description: "Three distinct sequential color bursts.", soundLevel: "Low / Silent" },
-  { code: "0310", name: "Rangoli", category: "Fountains", icon: "🌋", rate: 136, per: "Box", description: "Floral pattern sparkling stage fountain.", soundLevel: "Low / Silent" },
-  { code: "0325", name: "Colour Koti Deluxe", category: "Fountains", icon: "🌋", rate: 368, per: "Box", description: "High power mega canopy fountain.", soundLevel: "Low / Silent" },
-  { code: "0311", name: "Jadugar", category: "Fountains", icon: "🪄", rate: 155, per: "Box", description: "Multi-color morphing stage fountain with ruby-to-emerald transitions.", soundLevel: "Low / Silent" },
-  { code: "0312", name: "Manoranjan", category: "Fountains", icon: "🪄", rate: 155, per: "Box", description: "Colorful family celebration stage effect.", soundLevel: "Low / Silent" },
-  { code: "0313", name: "Roopkhela", category: "Fountains", icon: "🪄", rate: 270, per: "Box", description: "Multi-shade sparkling fountain.", soundLevel: "Low / Silent" },
-  { code: "0314", name: "Varnajal", category: "Fountains", icon: "🪄", rate: 242, per: "Box", description: "Vibrant shower cascade.", soundLevel: "Low / Silent" },
-  { code: "0322", name: "Fire Drops", category: "Fountains", icon: "🔥", rate: 74, per: "Box", description: "Cascading golden rain drops with red strobe accents.", soundLevel: "Low / Silent" },
-  { code: "0323", name: "Snow Patrol", category: "Fountains", icon: "🔥", rate: 74, per: "Box", description: "Silver white sparkling shower effect.", soundLevel: "Low / Silent" },
-  { code: "0336", name: "Mega Peacock", category: "Fountains", icon: "🦚", rate: 288, per: "Box", description: "Broad multi-nozzle fan fountain mimicking majestic peacock feathers.", soundLevel: "Low / Silent" },
-
-  // 6. Rockets
-  { code: "1202", name: "Colour Rocket", category: "Rockets", icon: "🚀", rate: 650, per: "10 Boxes", description: "High-altitude vertical ascent with starry color parachute.", soundLevel: "High Spectacle" },
-  { code: "1203", name: "Rocket Bomb", category: "Rockets", icon: "🚀", rate: 794, per: "10 Boxes", description: "Fast whistling ascent ending in heavy aerial salute report.", soundLevel: "High Spectacle" },
-  { code: "1204", name: "Flower Missile", category: "Rockets", icon: "🚀", rate: 750, per: "10 Boxes", description: "Rocket with sparkling floral spray trailing the sky.", soundLevel: "High Spectacle" },
-  { code: "1205", name: "Sound Missile", category: "Rockets", icon: "🚀", rate: 930, per: "10 Boxes", description: "Whistling high report aerial missile.", soundLevel: "High Spectacle" },
-  { code: "1210", name: "Parachute Rocket", category: "Rockets", icon: "🪂", rate: 215, per: "Box", description: "Ascends 100+ meters and slowly descends with a glowing color flare.", soundLevel: "Low / Silent" },
-  { code: "1213", name: "Air Whistle", category: "Rockets", icon: "🚀", rate: 145, per: "Box", description: "Auditory whistling sky rocket.", soundLevel: "Medium" },
-
-  // 7. Cakes
-  { code: "1701", name: "Dekhe Man - 12 Star", category: "Cakes", icon: "🎆", rate: 120, per: "Box", description: "Sequential 12-star multi-color night sky barrage.", soundLevel: "High Spectacle" },
-  { code: "1770", name: "Daisy Bees - 12 Star Yellow", category: "Cakes", icon: "🎆", rate: 127, per: "Box", description: "Dancing yellow comet stars with crackling.", soundLevel: "High Spectacle" },
-  { code: "1705", name: "Sky Storm - 12 Shot", category: "Cakes", icon: "🎆", rate: 128, per: "Box", description: "Thunderous aerial breaks with palm tree brocade effects.", soundLevel: "High Spectacle" },
-  { code: "1702", name: "Chal Mere Sath - 25 Shot", category: "Cakes", icon: "🎆", rate: 238, per: "Box", description: "25-shot rapid-fire canopy filled with golden willow stars.", soundLevel: "High Spectacle" },
-  { code: "1712", name: "Thor - 25 Shots", category: "Cakes", icon: "🎆", rate: 310, per: "Box", description: "Heavy caliber thunder shots with titanium salute bursts.", soundLevel: "High Spectacle" },
-  { code: "1703", name: "Dil Maange More - 50 Shots", category: "Cakes", icon: "🎆", rate: 416, per: "Box", description: "50-shot non-stop aerial fiesta with glitter and strobe effects.", soundLevel: "High Spectacle" },
-  { code: "1731", name: "Wonder Night - 60 Shots", category: "Cakes", icon: "🎆", rate: 825, per: "Box", description: "60-shot sequential multi-color barrage.", soundLevel: "High Spectacle" },
-  { code: "1744", name: "Subha Mangal - 500 Shots", category: "Cakes", icon: "🎆", rate: 7500, per: "Box", description: "Grand finale 500-shot non-stop pyrotechnic display cake.", soundLevel: "High Spectacle" },
-  { code: "1745", name: "Sarva Mangal - 1000 Shots", category: "Cakes", icon: "🎆", rate: 15000, per: "Box", description: "Grand pyrotechnic 1000-shot finale display.", soundLevel: "High Spectacle" },
-
-  // 8. Matches
-  { code: "0103-M", name: "Camel POPS Matches", category: "Matches", icon: "🔥", rate: 2090, per: "600 Boxes", description: "Safe color-flame friction safety match lights.", soundLevel: "Low / Silent" },
-  { code: "0104-M", name: "Camel NINJA Matches", category: "Matches", icon: "🔥", rate: 3595, per: "600 Boxes", description: "Heavy glow stormproof ignition matches for fireworks.", soundLevel: "Low / Silent" },
-  { code: "0205-M", name: "Ayyan TWYLA Matches 5 Colours", category: "Matches", icon: "🔥", rate: 1950, per: "600 Boxes", description: "5 color flame friction match lights.", soundLevel: "Low / Silent" }
-];
+// FULL 120+ MASTER INVENTORY LOADED DYNAMICALLY
+export const OFFICIAL_AYYAN_CATALOG: AyyanCatalogItem[] = INITIAL_PRODUCTS.map((prod, idx) => {
+  const code = prod.code || (prod.id.startsWith('ayyan-') ? prod.id.replace('ayyan-', '').slice(0, 10).toUpperCase() : `AY-${idx + 1}`);
+  return {
+    code,
+    name: prod.name,
+    category: getProductCategoryGroup(prod.category),
+    icon: getCategoryIcon(prod.category, prod.name),
+    rate: prod.price,
+    per: prod.piece_count || 'piece',
+    description: prod.description,
+    soundLevel: prod.sound_level as any,
+  };
+});
 
 export const CATEGORIES_LIST = [
   'ALL',
+  'Novelties',
+  'Shells',
+  'Cakes',
+  'Mega Displays',
   'Maroons',
   'Sparklers',
   'Chakkars',
   'Wheels',
   'Fountains',
   'Rockets',
-  'Cakes',
-  'Matches'
+  'Matches',
+  'Gift Boxes'
 ] as const;
+
 
 // Synthesized Sound Effects
 function playSynthesizedTone(type: 'pop' | 'blast' | 'chime', soundEnabled = true) {

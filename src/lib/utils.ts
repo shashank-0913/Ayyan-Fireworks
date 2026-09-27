@@ -10,7 +10,8 @@ export function formatINR(amount: number): string {
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',
-    maximumFractionDigits: 0,
+    maximumFractionDigits: amount % 1 === 0 ? 0 : 2,
+    minimumFractionDigits: amount % 1 === 0 ? 0 : 2,
   }).format(amount);
 }
 

@@ -1,4 +1,9 @@
-import { Product, Slot, Booking } from '../types';
+const fs = require('fs');
+const path = require('path');
+
+const targetPath = path.resolve(__dirname, '../src/lib/initialData.ts');
+
+const scriptContent = `import { Product, Slot, Booking } from '../types';
 
 // =============================================================================
 // AYYAN FIREWORKS FACTORY — COMPLETE OFFICIAL MASTER INVENTORY & PRICE LISTS
@@ -3071,7 +3076,7 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     id: 'ayyan-shell-2-ayyan-pink',
-    name: 'Ayyan\'s Pink (2" Shell)',
+    name: "Ayyan's Pink (2" Shell)",
     category: 'Aerial Shells',
     price: 110.00,
     piece_count: '1 Piece',
@@ -4205,7 +4210,7 @@ export const generateInitialSlots = (): Slot[] => {
 
     hours.forEach((h, index) => {
       slots.push({
-        id: `slot-${dateStr}-${index}`,
+        id: \`slot-\${dateStr}-\${index}\`,
         slot_date: dateStr,
         start_time: h.start,
         end_time: h.end,
@@ -4223,3 +4228,7 @@ export const generateInitialSlots = (): Slot[] => {
 export const generateInitialBookings = (_slots?: Slot[]): Booking[] => {
   return [];
 };
+`;
+
+fs.writeFileSync(targetPath, scriptContent, 'utf-8');
+console.log('Successfully written full master inventory to src/lib/initialData.ts');

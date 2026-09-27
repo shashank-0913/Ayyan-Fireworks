@@ -1,10 +1,7 @@
-import { Product, Slot, Booking } from '../types';
+const fs = require('fs');
+const path = require('path');
 
-// =============================================================================
-// AYYAN FIREWORKS FACTORY — COMPLETE OFFICIAL MASTER INVENTORY & PRICE LISTS
-// (Pages 1-4 with exact item codes, bundle rates, and per-unit calculations)
-// =============================================================================
-export const INITIAL_PRODUCTS: Product[] = [
+const PRODUCTS = [
   // =========================================================================
   // 1. MAROONS (Page 1)
   // (Items are priced per 100 packets; 1 unit = 1 packet)
@@ -27,7 +24,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0803',
@@ -47,7 +43,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0802',
@@ -67,7 +62,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0804',
@@ -87,7 +81,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0805',
@@ -107,7 +100,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Medium',
     image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0806',
@@ -127,7 +119,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Medium',
     image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
 
   // =========================================================================
@@ -152,7 +143,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0102',
@@ -172,7 +162,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0103',
@@ -192,7 +181,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0104',
@@ -212,7 +200,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0105',
@@ -232,7 +219,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0109',
@@ -252,7 +238,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0110',
@@ -272,7 +257,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0111',
@@ -292,7 +276,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0112',
@@ -312,7 +295,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0113',
@@ -332,7 +314,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0115',
@@ -352,7 +333,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0116',
@@ -372,7 +352,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0117',
@@ -392,7 +371,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0118',
@@ -412,7 +390,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0119',
@@ -432,7 +409,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0120',
@@ -452,7 +428,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0121',
@@ -472,7 +447,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0123',
@@ -492,7 +466,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
 
   // =========================================================================
@@ -517,7 +490,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0202',
@@ -537,7 +509,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0203',
@@ -557,7 +528,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0204',
@@ -577,7 +547,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0205',
@@ -597,7 +566,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0206',
@@ -617,7 +585,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0209',
@@ -637,7 +604,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Medium',
     image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0210',
@@ -657,7 +623,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0211',
@@ -677,7 +642,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0212',
@@ -697,7 +661,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Medium',
     image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0215',
@@ -717,7 +680,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0216',
@@ -737,7 +699,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0219',
@@ -757,7 +718,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0221',
@@ -777,7 +737,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0222',
@@ -797,7 +756,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
 
   // =========================================================================
@@ -822,7 +780,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0302',
@@ -842,7 +799,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0303',
@@ -862,7 +818,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0304',
@@ -882,7 +837,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0305',
@@ -902,7 +856,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0306',
@@ -922,7 +875,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0307',
@@ -942,7 +894,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0309',
@@ -962,7 +913,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0310',
@@ -982,7 +932,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0325',
@@ -1002,7 +951,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0311',
@@ -1022,7 +970,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0312',
@@ -1042,7 +989,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0313',
@@ -1062,7 +1008,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0314',
@@ -1082,7 +1027,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0315',
@@ -1102,7 +1046,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0318',
@@ -1122,7 +1065,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Medium',
     image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0320',
@@ -1142,7 +1084,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0324',
@@ -1162,7 +1103,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0326',
@@ -1182,7 +1122,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0322',
@@ -1202,7 +1141,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0323',
@@ -1222,7 +1160,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0327',
@@ -1242,7 +1179,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-1319',
@@ -1262,7 +1198,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Medium',
     image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-1320',
@@ -1282,7 +1217,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Medium',
     image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-1321',
@@ -1302,7 +1236,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Medium',
     image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0328',
@@ -1322,7 +1255,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0329',
@@ -1342,7 +1274,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Medium',
     image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0330',
@@ -1362,7 +1293,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0331',
@@ -1382,7 +1312,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0332',
@@ -1402,7 +1331,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0333',
@@ -1422,7 +1350,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0335',
@@ -1442,7 +1369,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Medium',
     image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0336',
@@ -1462,7 +1388,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
 
   // =========================================================================
@@ -1487,7 +1412,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0402',
@@ -1507,7 +1431,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0403',
@@ -1527,7 +1450,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0406',
@@ -1547,7 +1469,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0501',
@@ -1567,7 +1488,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0502',
@@ -1587,7 +1507,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0509',
@@ -1607,7 +1526,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0504',
@@ -1627,7 +1545,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0505',
@@ -1647,7 +1564,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0507',
@@ -1667,7 +1583,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Medium',
     image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0508',
@@ -1687,7 +1602,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
 
   // =========================================================================
@@ -1712,7 +1626,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0610',
@@ -1732,7 +1645,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0611',
@@ -1752,7 +1664,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
 
   // =========================================================================
@@ -1777,7 +1688,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0852',
@@ -1797,7 +1707,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0853',
@@ -1817,7 +1726,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0854',
@@ -1837,7 +1745,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0855',
@@ -1857,7 +1764,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-8560',
@@ -1877,7 +1783,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Medium',
     image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-8561',
@@ -1897,7 +1802,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Medium',
     image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0901',
@@ -1917,7 +1821,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-0902',
@@ -1937,7 +1840,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
 
   // =========================================================================
@@ -1962,7 +1864,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-1203',
@@ -1982,7 +1883,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-1204',
@@ -2002,7 +1902,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-1205',
@@ -2022,7 +1921,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-1206',
@@ -2042,7 +1940,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-1207',
@@ -2062,7 +1959,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-1208',
@@ -2082,7 +1978,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-1209',
@@ -2102,7 +1997,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'High Spectacle',
     image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-1210',
@@ -2122,7 +2016,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-1213',
@@ -2142,7 +2035,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Medium',
     image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-1214',
@@ -2162,7 +2054,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Medium',
     image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
 
   // =========================================================================
@@ -2187,7 +2078,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-1303',
@@ -2207,7 +2097,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-1349',
@@ -2227,7 +2116,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Medium',
     image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-1308',
@@ -2247,7 +2135,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-8570',
@@ -2267,7 +2154,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-1309',
@@ -2287,7 +2173,6 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Low / Silent',
     image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
   },
   {
     id: 'ayyan-1310',
@@ -2307,1919 +2192,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     sound_level: 'Medium',
     image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
     is_active: true,
-    created_at: new Date().toISOString()
-  },
-
-  // =========================================================================
-  // 10. AERIAL NOVELTIES & CRACKLING ITEMS
-  // =========================================================================
-  {
-    id: 'ayyan-nov-chori',
-    name: 'Chori Chori (Crackling)',
-    category: 'Novelties',
-    price: 11.00,
-    piece_count: '1 Piece',
-    unit_price: 11.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹11.00 / piece',
-    description: 'Surprise crackling mini aerial novelty with quick snappy report and sparkling golden bursts.',
-    safety_instructions: 'Place on level open ground. Ignite fuse with agarbatti and retreat 5 meters.',
-    safety_tags: ['Crackling Report', 'Snappy Burst', 'PESO Certified'],
-    sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-nov-minmini',
-    name: 'Min Mini',
-    category: 'Novelties',
-    price: 11.00,
-    piece_count: '1 Piece',
-    unit_price: 11.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹11.00 / piece',
-    description: 'Lively fluttering firefly effect flashing bright silver strobes in mid-air.',
-    safety_instructions: 'Use outdoors. Ensure 5m clear space from spectators.',
-    safety_tags: ['Firefly Strobe', 'Silver Flashes', 'PESO Certified'],
-    sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-nov-colourshot',
-    name: 'Colour Shot',
-    category: 'Novelties',
-    price: 21.60,
-    piece_count: '1 Piece',
-    unit_price: 21.60,
-    unit_name: 'piece',
-    unit_breakdown: '₹21.60 / piece',
-    description: 'Single high-velocity color pearl shot soaring high with vivid ruby and emerald discharge.',
-    safety_instructions: 'Insert launch guide into stable ground. Never hold in hand.',
-    safety_tags: ['Single Color Shot', 'High Velocity', 'PESO Certified'],
-    sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-nov-sparkling-thunder',
-    name: 'Sparkling Thunder',
-    category: 'Novelties',
-    price: 22.80,
-    piece_count: '1 Piece',
-    unit_price: 22.80,
-    unit_name: 'piece',
-    unit_breakdown: '₹22.80 / piece',
-    description: 'Dynamic combination of bright white sparkling ascent and sharp thunder clap.',
-    safety_instructions: 'Outdoor open sky only. Maintain 8m safe distance.',
-    safety_tags: ['Sparkling Ascent', 'Thunder Report', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-nov-ganga',
-    name: 'Ganga',
-    category: 'Novelties',
-    price: 23.00,
-    piece_count: '1 Piece',
-    unit_price: 23.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹23.00 / piece',
-    description: 'Serene sacred river inspired white fountain cascade transitioning into crackling star pearls.',
-    safety_instructions: 'Place upright on flat surface. Light and step back.',
-    safety_tags: ['White Cascade', 'Golden Pearls', 'PESO Certified'],
-    sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-nov-sky-wheels',
-    name: 'Sky Wheels',
-    category: 'Novelties',
-    price: 39.00,
-    piece_count: '1 Piece',
-    unit_price: 39.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹39.00 / piece',
-    description: 'Ascending sky spinner lifting gracefully while showering circular golden aura sparklers.',
-    safety_instructions: 'Ensure clear sky above with no tree overhang.',
-    safety_tags: ['Sky Spinner', 'Golden Aura', 'PESO Certified'],
-    sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-nov-pikachu',
-    name: 'Pikachu (1 Pce Crackling)',
-    category: 'Novelties',
-    price: 42.67,
-    piece_count: '1 Piece',
-    unit_price: 42.67,
-    unit_name: 'piece',
-    unit_breakdown: '₹42.67 / piece',
-    description: 'High-voltage style electric yellow sparkling bursts with intense snappy crackling.',
-    safety_instructions: 'Place flat. Retreat 6 meters after lighting.',
-    safety_tags: ['Electric Yellow', 'High Voltage Crackle', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-nov-colour-fantasy',
-    name: 'Colour Fantasy',
-    category: 'Novelties',
-    price: 25.00,
-    piece_count: '1 Piece',
-    unit_price: 25.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹25.00 / piece',
-    description: 'Vivid color transformation novel fireworks discharging rainbow pearls into the air.',
-    safety_instructions: 'Light with agarbatti from side.',
-    safety_tags: ['Rainbow Pearls', 'Color Transformation', 'PESO Certified'],
-    sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-nov-colour-shark',
-    name: 'Colour Shark (Crackling)',
-    category: 'Novelties',
-    price: 29.33,
-    piece_count: '1 Piece',
-    unit_price: 29.33,
-    unit_name: 'piece',
-    unit_breakdown: '₹29.33 / piece',
-    description: 'Dynamic jumping crackling novelty darting across the ground with bright colored fins.',
-    safety_instructions: 'Keep clear area of 5m.',
-    safety_tags: ['Jumping Shark', 'Color Fins', 'PESO Certified'],
-    sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-nov-ninja-chakkar',
-    name: 'Ninja Chakkar',
-    category: 'Novelties',
-    price: 28.00,
-    piece_count: '1 Piece',
-    unit_price: 28.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹28.00 / piece',
-    description: 'High-speed spinning shuriken-style ground wheel with silver and crimson sparks.',
-    safety_instructions: 'Flat ground placement only.',
-    safety_tags: ['Ninja Shuriken', 'High RPM', 'PESO Certified'],
-    sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-nov-crackling-red',
-    name: 'Crackling Red',
-    category: 'Novelties',
-    price: 54.00,
-    piece_count: '1 Piece',
-    unit_price: 54.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹54.00 / piece',
-    description: 'Heavy ruby red flare with dense crackling audio burst canopy.',
-    safety_instructions: 'Outdoor open area. Step back 8m.',
-    safety_tags: ['Ruby Red', 'Heavy Crackle', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-nov-crackling-yellow',
-    name: 'Crackling Yellow',
-    category: 'Novelties',
-    price: 54.00,
-    piece_count: '1 Piece',
-    unit_price: 54.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹54.00 / piece',
-    description: 'Brilliant golden yellow flare discharging energetic titanium crackling stars.',
-    safety_instructions: 'Maintain 8m distance.',
-    safety_tags: ['Golden Yellow', 'Titanium Stars', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-nov-pogo-mixed',
-    name: 'Pogo Mixed (5 Colours)',
-    category: 'Novelties',
-    price: 18.50,
-    piece_count: '1 Piece',
-    unit_price: 18.50,
-    unit_name: 'piece',
-    unit_breakdown: '₹18.50 / piece',
-    description: 'Jumping multi-color ground novelty discharging 5 vibrant hues sequentially.',
-    safety_instructions: 'Clear 4m radius.',
-    safety_tags: ['5 Colors', 'Jumping Pogo', 'PESO Certified'],
-    sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-nov-lazer-strike',
-    name: 'Lazer Strike',
-    category: 'Novelties',
-    price: 10.40,
-    piece_count: '1 Piece',
-    unit_price: 10.40,
-    unit_name: 'piece',
-    unit_breakdown: '₹10.40 / piece',
-    description: 'Ultra-fast high-intensity beam of color pearls shooting straight into the air.',
-    safety_instructions: 'Insert launch guide firmly into ground.',
-    safety_tags: ['Lazer Beam', 'Fast Trajectory', 'PESO Certified'],
-    sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-nov-zodiac-spinners',
-    name: 'Zodiac Spinners',
-    category: 'Novelties',
-    price: 17.00,
-    piece_count: '1 Piece',
-    unit_price: 17.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹17.00 / piece',
-    description: 'Astrological themed glittering spinner creating shimmering starlight circles.',
-    safety_instructions: 'Light from side on smooth pavement.',
-    safety_tags: ['Zodiac Starlight', 'Glittering Spin', 'PESO Certified'],
-    sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-nov-helicopter',
-    name: 'Helicopter',
-    category: 'Novelties',
-    price: 9.00,
-    piece_count: '1 Piece',
-    unit_price: 9.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹9.00 / piece',
-    description: 'Winged aerial flyer spinning gracefully upwards into the sky with green and gold lights.',
-    safety_instructions: 'Place flat with rotor clear.',
-    safety_tags: ['Winged Ascent', 'Rotor Lights', 'PESO Certified'],
-    sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-nov-top-tucker',
-    name: 'Top Tucker',
-    category: 'Novelties',
-    price: 9.00,
-    piece_count: '1 Piece',
-    unit_price: 9.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹9.00 / piece',
-    description: 'High-speed spinning top jumping with whistling audio notes and silver flash.',
-    safety_instructions: 'Step back 4m.',
-    safety_tags: ['Spinning Top', 'Whistling Notes', 'PESO Certified'],
-    sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-nov-crackling-express',
-    name: 'Crackling Express',
-    category: 'Novelties',
-    price: 20.00,
-    piece_count: '1 Piece',
-    unit_price: 20.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹20.00 / piece',
-    description: 'Train-style chugging crackler racing on the ground with roaring sparks.',
-    safety_instructions: 'Ensure long open runway on ground.',
-    safety_tags: ['Crackling Train', 'Roaring Sparks', 'PESO Certified'],
-    sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-nov-legend',
-    name: 'Legend',
-    category: 'Novelties',
-    price: 41.00,
-    piece_count: '1 Piece',
-    unit_price: 41.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹41.00 / piece',
-    description: 'Premium novelty releasing towering golden fountains ending with high aerial starburst.',
-    safety_instructions: 'Clear 8m safety zone.',
-    safety_tags: ['Towering Fountain', 'Aerial Starburst', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-
-  // =========================================================================
-  // 11. 1¼" & 1¾" SHELLS
-  // =========================================================================
-  {
-    id: 'ayyan-shell-paw-patrol',
-    name: 'Paw Patrol (5 in 1)',
-    category: 'Aerial Shells',
-    price: 63.00,
-    piece_count: '1 Piece',
-    unit_price: 63.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹63.00 / piece',
-    description: '5-shot aerial shell launcher discharging 5 colorful high-altitude star bursts.',
-    safety_instructions: 'Secure launcher vertically. Retreat 15m.',
-    safety_tags: ['5 in 1 Shell', 'High Altitude', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-rio',
-    name: 'Rio (5 in 1)',
-    category: 'Aerial Shells',
-    price: 63.00,
-    piece_count: '1 Piece',
-    unit_price: 63.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹63.00 / piece',
-    description: 'Carnival themed 5-in-1 aerial shell with tropical green, yellow, and violet breaks.',
-    safety_instructions: 'Wedge tube firmly into soil. Clear 15m.',
-    safety_tags: ['5 in 1 Rio', 'Carnival Theme', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-beat-bugs',
-    name: 'Beat Bugs (5 in 1)',
-    category: 'Aerial Shells',
-    price: 63.00,
-    piece_count: '1 Piece',
-    unit_price: 63.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹63.00 / piece',
-    description: 'Rhythmic 5-burst shell firing synchronized color peony explosions with whistles.',
-    safety_instructions: 'Place upright. Keep spectators 15m away.',
-    safety_tags: ['5 Synchronized Bursts', 'Peony Whistles', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-glitter-mania',
-    name: 'Glitter Mania (1¾" Shell)',
-    category: 'Aerial Shells',
-    price: 83.33,
-    piece_count: '1 Piece',
-    unit_price: 83.33,
-    unit_name: 'piece',
-    unit_breakdown: '₹83.33 / piece',
-    description: '1¾" high caliber display shell producing colossal shimmering silver glitter canopies.',
-    safety_instructions: 'Anchor launch tube securely with bricks or sand.',
-    safety_tags: ['1¾" Caliber', 'Silver Glitter Canopy', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-phoenix',
-    name: 'Phoenix (1¾" Shell)',
-    category: 'Aerial Shells',
-    price: 83.33,
-    piece_count: '1 Piece',
-    unit_price: 83.33,
-    unit_name: 'piece',
-    unit_breakdown: '₹83.33 / piece',
-    description: 'Mythical phoenix effect with gold willow tail rising and erupting into crimson wings.',
-    safety_instructions: 'Launch vertically only. Retreat 18m.',
-    safety_tags: ['Phoenix Wings', 'Gold Willow Tail', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-chicago',
-    name: 'Chicago (1¾" Shell)',
-    category: 'Aerial Shells',
-    price: 83.33,
-    piece_count: '1 Piece',
-    unit_price: 83.33,
-    unit_name: 'piece',
-    unit_breakdown: '₹83.33 / piece',
-    description: 'Urban skyline display shell with electric blue pearls and titanium white strobes.',
-    safety_instructions: 'Outdoor open sky. Step back 18m.',
-    safety_tags: ['Electric Blue', 'Titanium Strobes', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-yellow-vitara',
-    name: 'Yellow Vitara (1¾" Shell)',
-    category: 'Aerial Shells',
-    price: 83.33,
-    piece_count: '1 Piece',
-    unit_price: 83.33,
-    unit_name: 'piece',
-    unit_breakdown: '₹83.33 / piece',
-    description: 'Dazzling lemon yellow star peony with crackling pistil break.',
-    safety_instructions: 'Keep spectators at 18m perimeter.',
-    safety_tags: ['Lemon Yellow', 'Crackling Pistil', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-golden-dance',
-    name: 'Golden Dance (1¾" Shell)',
-    category: 'Aerial Shells',
-    price: 83.33,
-    piece_count: '1 Piece',
-    unit_price: 83.33,
-    unit_name: 'piece',
-    unit_breakdown: '₹83.33 / piece',
-    description: 'Graceful cascading gold brocade crown hanging in the night sky.',
-    safety_instructions: 'Secure launch tube firmly.',
-    safety_tags: ['Brocade Crown', 'Cascading Gold', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-glittering-streak',
-    name: 'Glittering Streak (1¾" Shell)',
-    category: 'Aerial Shells',
-    price: 83.33,
-    piece_count: '1 Piece',
-    unit_price: 83.33,
-    unit_name: 'piece',
-    unit_breakdown: '₹83.33 / piece',
-    description: 'Thick sparkling comet tail rising to 150 feet before bursting into emerald stars.',
-    safety_instructions: 'Clear 18m perimeter.',
-    safety_tags: ['150ft Comet Tail', 'Emerald Stars', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-osaka',
-    name: 'Osaka (1¾" Shell)',
-    category: 'Aerial Shells',
-    price: 99.33,
-    piece_count: '1 Piece',
-    unit_price: 99.33,
-    unit_name: 'piece',
-    unit_breakdown: '₹99.33 / piece',
-    description: 'Japanese hanabi master style spherical chrysanthemum with color tips.',
-    safety_instructions: 'Ensure wide clearance from buildings. Retreat 20m.',
-    safety_tags: ['Hanabi Master', 'Spherical Chrysanthemum', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-crackling-queen',
-    name: 'Crackling Queen (1¾" Shell)',
-    category: 'Aerial Shells',
-    price: 99.33,
-    piece_count: '1 Piece',
-    unit_price: 99.33,
-    unit_name: 'piece',
-    unit_breakdown: '₹99.33 / piece',
-    description: 'Crown of royal gold palms with thunderous titanium crackling finale.',
-    safety_instructions: 'Launch vertically with ballast support.',
-    safety_tags: ['Royal Gold Palms', 'Titanium Crackle', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-1-75-mixed',
-    name: '1¾" Shell Colour & Crackling Mixed',
-    category: 'Aerial Shells',
-    price: 99.33,
-    piece_count: '1 Piece',
-    unit_price: 99.33,
-    unit_name: 'piece',
-    unit_breakdown: '₹99.33 / piece',
-    description: 'Assorted 1¾" pro-grade display shell featuring changing effects per batch.',
-    safety_instructions: 'Professional launch setup recommended. Clear 20m.',
-    safety_tags: ['Assorted Effects', 'Pro Shell', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-
-  // =========================================================================
-  // 12. 2" SHELLS
-  // =========================================================================
-  {
-    id: 'ayyan-shell-2-war-zone',
-    name: 'War Zone (2" Crackling Shell)',
-    category: 'Aerial Shells',
-    price: 126.67,
-    piece_count: '1 Piece',
-    unit_price: 126.67,
-    unit_name: 'piece',
-    unit_breakdown: '₹126.67 / piece',
-    description: 'Heavy 2" shell unleashing a thunderous battlefield acoustic report with titanium salute.',
-    safety_instructions: 'High power shell. Anchor tube firmly. Retreat 20m.',
-    safety_tags: ['2" Heavy Shell', 'Battlefield Report', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-2-akash-thoran',
-    name: 'Akash Thoran (2" Shell)',
-    category: 'Aerial Shells',
-    price: 110.00,
-    piece_count: '1 Piece',
-    unit_price: 110.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹110.00 / piece',
-    description: 'Celestial festoon effect stringing glowing gold and ruby garlands across the night sky.',
-    safety_instructions: 'Maintain 20m perimeter.',
-    safety_tags: ['Celestial Festoon', 'Gold Garland', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-2-sky-divers',
-    name: 'Sky Divers (2" Shell)',
-    category: 'Aerial Shells',
-    price: 110.00,
-    piece_count: '1 Piece',
-    unit_price: 110.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹110.00 / piece',
-    description: 'Cascading parachutes of trailing willow stars diving gracefully through the sky.',
-    safety_instructions: 'Launch vertically only. Check for wind direction.',
-    safety_tags: ['Trailing Willow', 'Sky Divers', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-2-tango',
-    name: 'Tango (2" Shell)',
-    category: 'Aerial Shells',
-    price: 110.00,
-    piece_count: '1 Piece',
-    unit_price: 110.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹110.00 / piece',
-    description: 'Passionate red and white dancing comets interlacing at 180 feet altitude.',
-    safety_instructions: 'Clear 20m radius.',
-    safety_tags: ['Dancing Comets', '180ft Altitude', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-2-golden-twinkle',
-    name: 'Golden Twinkle (2" Shell)',
-    category: 'Aerial Shells',
-    price: 110.00,
-    piece_count: '1 Piece',
-    unit_price: 110.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹110.00 / piece',
-    description: 'Immense gold strobe burst glittering continuously for over 5 seconds.',
-    safety_instructions: 'Anchor with ballast. Step back 20m.',
-    safety_tags: ['Gold Strobe', '5s Hangtime', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-2-crimson-red',
-    name: 'Crimson Red (2" Shell)',
-    category: 'Aerial Shells',
-    price: 110.00,
-    piece_count: '1 Piece',
-    unit_price: 110.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹110.00 / piece',
-    description: 'Monochrome pure crimson peony lighting up the entire horizon in deep scarlet.',
-    safety_instructions: 'Keep spectators at safe perimeter.',
-    safety_tags: ['Pure Crimson', 'Horizon Peony', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-2-violet-flower',
-    name: 'Violet Flower (2" Shell)',
-    category: 'Aerial Shells',
-    price: 110.00,
-    piece_count: '1 Piece',
-    unit_price: 110.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹110.00 / piece',
-    description: 'Rare violet-purple aerial peony with lemon yellow pistil core.',
-    safety_instructions: 'Secure tube upright. Retreat 20m.',
-    safety_tags: ['Rare Violet', 'Lemon Core', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-2-blue-birds',
-    name: 'Blue Birds (2" Shell)',
-    category: 'Aerial Shells',
-    price: 120.00,
-    piece_count: '1 Piece',
-    unit_price: 120.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹120.00 / piece',
-    description: 'Deep cobalt sapphire blue stars scattering like a flock of birds across the sky.',
-    safety_instructions: 'Clear 20m zone.',
-    safety_tags: ['Cobalt Sapphire', 'Scattering Flock', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-2-blue-bloom',
-    name: 'Blue Bloom (2" Shell)',
-    category: 'Aerial Shells',
-    price: 120.00,
-    piece_count: '1 Piece',
-    unit_price: 120.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹120.00 / piece',
-    description: 'Electric blue floral chrysanthemum with silver glitter tips.',
-    safety_instructions: 'Use stable launch stand.',
-    safety_tags: ['Electric Blue', 'Silver Glitter Tips', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-2-orange-bloom',
-    name: 'Orange Bloom (2" Shell)',
-    category: 'Aerial Shells',
-    price: 110.00,
-    piece_count: '1 Piece',
-    unit_price: 110.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹110.00 / piece',
-    description: 'Vivid mandarin orange starburst blooming into warm amber rays.',
-    safety_instructions: 'Keep clear overhead area.',
-    safety_tags: ['Mandarin Orange', 'Amber Rays', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-2-green-snow',
-    name: 'Green Snow (2" Shell)',
-    category: 'Aerial Shells',
-    price: 110.00,
-    piece_count: '1 Piece',
-    unit_price: 110.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹110.00 / piece',
-    description: 'Emerald green peony drifting down like slow shimmering festive snow.',
-    safety_instructions: 'Retreat 20m.',
-    safety_tags: ['Emerald Green', 'Snow Drift', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-2-green-blink',
-    name: 'Green Blink (2" Shell)',
-    category: 'Aerial Shells',
-    price: 110.00,
-    piece_count: '1 Piece',
-    unit_price: 110.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹110.00 / piece',
-    description: 'High-frequency pulsing green strobes illuminating the night canopy.',
-    safety_instructions: 'Clear 20m perimeter.',
-    safety_tags: ['Pulsing Strobe', 'Emerald Flare', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-2-red-white',
-    name: 'Red & White (2" Shell)',
-    category: 'Aerial Shells',
-    price: 110.00,
-    piece_count: '1 Piece',
-    unit_price: 110.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹110.00 / piece',
-    description: 'Alternating red and titanium white rings creating an eye-catching dual target pattern.',
-    safety_instructions: 'Anchor securely. Retreat 20m.',
-    safety_tags: ['Dual Target Pattern', 'Red & White Rings', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-2-ayyan-pink',
-    name: 'Ayyan\'s Pink (2" Shell)',
-    category: 'Aerial Shells',
-    price: 110.00,
-    piece_count: '1 Piece',
-    unit_price: 110.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹110.00 / piece',
-    description: "Ayyan's exclusive formulation neon pink aerial chrysanthemum with silver strobe core.",
-    safety_instructions: 'Follow launcher guidelines.',
-    safety_tags: ['Ayyan Signature', 'Neon Pink', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-2-alaska',
-    name: 'Alaska (2" Shell)',
-    category: 'Aerial Shells',
-    price: 110.00,
-    piece_count: '1 Piece',
-    unit_price: 110.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹110.00 / piece',
-    description: 'Glacial silver-white brocade with long hanging icy willow tendrils.',
-    safety_instructions: 'Keep 20m distance.',
-    safety_tags: ['Glacial Silver', 'Icy Willow', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-2-cleopatra',
-    name: 'Cleopatra (2" Shell)',
-    category: 'Aerial Shells',
-    price: 110.00,
-    piece_count: '1 Piece',
-    unit_price: 110.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹110.00 / piece',
-    description: 'Royal Egyptian gold crown with glittering ruby and emerald gemstone accents.',
-    safety_instructions: 'Clear 20m perimeter.',
-    safety_tags: ['Royal Crown', 'Gemstone Accents', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-2-thunder-popcorn',
-    name: 'Thunder Popcorn (2" Crackling Shell)',
-    category: 'Aerial Shells',
-    price: 120.00,
-    piece_count: '1 Piece',
-    unit_price: 120.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹120.00 / piece',
-    description: 'Deafening sky-wide crackling canopy bursting into thousands of snapping golden popcorn stars.',
-    safety_instructions: 'Anchor with ballast. Clear 22m.',
-    safety_tags: ['Sky-Wide Crackle', 'Thunder Popcorn', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-2-crackling-beauty',
-    name: 'Crackling Beauty (2" Shell)',
-    category: 'Aerial Shells',
-    price: 120.00,
-    piece_count: '1 Piece',
-    unit_price: 120.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹120.00 / piece',
-    description: 'Harmonious blend of color peonies and delicate micro-crackling star dust.',
-    safety_instructions: 'Step back 20m.',
-    safety_tags: ['Micro-Crackling', 'Color Peony', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-
-  // =========================================================================
-  // 13. 3" SHELLS (ROCKING SERIES, CRAZY SERIES & PREMIUM SERIES)
-  // =========================================================================
-  {
-    id: 'ayyan-shell-3-rocking-mixed',
-    name: '3" Shell Rocking Series (Assorted)',
-    category: 'Aerial Shells',
-    price: 250.00,
-    piece_count: '1 Piece',
-    unit_price: 250.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹250.00 / piece',
-    description: '3" professional rockstar series display shell (Larry, Gina, Pierre, Tom, Hank, Ben, Angela, Ginger) with huge spherical peony.',
-    safety_instructions: 'Pro-grade shell. Anchor with ballast. Keep spectators at 25m distance.',
-    safety_tags: ['3" Pro Shell', 'Rocking Series', 'Spherical Peony', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-3-crazy-mixed',
-    name: '3" Shell Crazy Series (Assorted)',
-    category: 'Aerial Shells',
-    price: 250.00,
-    piece_count: '1 Piece',
-    unit_price: 250.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹250.00 / piece',
-    description: '3" high-decibel crazy series display shell (Chuck, Red, King Pig, Tony, Matilda, Terence, Stella) with crackling salute.',
-    safety_instructions: 'Anchor securely. Clear 25m safety perimeter.',
-    safety_tags: ['3" Pro Shell', 'Crazy Series', 'Heavy Salute', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-3-premium-gold-coin',
-    name: '3" Shell Premium: Gold Coin',
-    category: 'Aerial Shells',
-    price: 285.00,
-    piece_count: '1 Piece',
-    unit_price: 285.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹285.00 / piece',
-    description: 'Colossal 3" gold coin brocade canopy raining dense shimmering gold flakes across 50 meters of sky.',
-    safety_instructions: 'Professional launch tube recommended. Maintain 30m distance.',
-    safety_tags: ['3" Premium', 'Gold Coin Brocade', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-3-premium-apollo-7',
-    name: '3" Shell Premium: Apollo 7',
-    category: 'Aerial Shells',
-    price: 285.00,
-    piece_count: '1 Piece',
-    unit_price: 285.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹285.00 / piece',
-    description: 'Space-mission inspired high-velocity shell roaring to 220 feet with sapphire stars and titanium ring.',
-    safety_instructions: 'Clear 30m perimeter.',
-    safety_tags: ['Apollo 7', 'Sapphire Ring', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-3-premium-electric-blue',
-    name: '3" Shell Premium: Electric Blue',
-    category: 'Aerial Shells',
-    price: 285.00,
-    piece_count: '1 Piece',
-    unit_price: 285.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹285.00 / piece',
-    description: 'Flawless 3" electric blue peony with silver palm core illuminating the entire night panorama.',
-    safety_instructions: 'Maintain 30m perimeter.',
-    safety_tags: ['Electric Blue', 'Silver Palm Core', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-shell-3-premium-mixed',
-    name: '3" Shell Premium Series (20 Varieties Assorted)',
-    category: 'Aerial Shells',
-    price: 285.00,
-    piece_count: '1 Piece',
-    unit_price: 285.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹285.00 / piece',
-    description: 'Flagship 3" series (Rim Zim, Enigma, Violet Dance, Sun Storm, Tropicana, Digital White, Baby Pink, White Rose, Display Master, Golden Moon, Silk Show, Flower Power, Glow Fish, Clown Town, Gladiator, Green Eclipse, Japanese Height).',
-    safety_instructions: 'Professional launch tube only. Maintain 30m safety zone.',
-    safety_tags: ['3" Flagship', '20 Varieties', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-
-  // =========================================================================
-  // 14. CAKES & MULTISHOT REPEATERS
-  // =========================================================================
-  {
-    id: 'ayyan-1701',
-    code: '1701',
-    name: 'Dekhe Man (12 Star)',
-    category: 'Aerial Cakes',
-    price: 120.00,
-    piece_count: '1 Piece',
-    unit_price: 120.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹120.00 / piece',
-    description: 'Sequential 12-star multi-color night sky barrage firing vivid glittering pearls.',
-    safety_instructions: 'Place upright on flat hard ground. Wedge with bricks.',
-    safety_tags: ['12 Stars', 'Multi-Color', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-1770',
-    code: '1770',
-    name: 'Daisy Bees (12 Star Yellow)',
-    category: 'Aerial Cakes',
-    price: 127.00,
-    piece_count: '1 Piece',
-    unit_price: 127.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹127.00 / piece',
-    description: 'Dancing yellow comet stars with crackling audio reports soaring into aerial formations.',
-    safety_instructions: 'Secure box firmly on ground. Step back 10m.',
-    safety_tags: ['12 Star Yellow', 'Dancing Comets', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-cake-pink-panther',
-    name: 'Pink Panther (12 Star Pink)',
-    category: 'Aerial Cakes',
-    price: 127.00,
-    piece_count: '1 Piece',
-    unit_price: 127.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹127.00 / piece',
-    description: '12-star neon pink bursts painting vibrant festive patterns across the sky.',
-    safety_instructions: 'Anchor with ballast. Retreat 10m.',
-    safety_tags: ['12 Star Pink', 'Neon Glow', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-cake-12-star-new',
-    name: '12 Star New',
-    category: 'Aerial Cakes',
-    price: 75.00,
-    piece_count: '1 Piece',
-    unit_price: 75.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹75.00 / piece',
-    description: 'Budget-friendly 12-star aerial barrage with lively crackles and color pearls.',
-    safety_instructions: 'Wedge with bricks. Light and step back.',
-    safety_tags: ['Budget Friendly', '12 Star', 'PESO Certified'],
-    sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-cake-12-star-crackling-series',
-    name: '12 Star Crackling Series (Zeta/Beta/Sigma/Omega)',
-    category: 'Aerial Cakes',
-    price: 159.00,
-    piece_count: '1 Piece',
-    unit_price: 159.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹159.00 / piece',
-    description: '12-star crackling barrage available in Yellow (Zeta), Violet (Beta), Silver (Sigma), and Red (Omega).',
-    safety_instructions: 'Place upright. Retreat 12m after lighting.',
-    safety_tags: ['12 Star Crackling', 'Color Themed', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-1705',
-    code: '1705',
-    name: 'Sky Storm (12 Shot Crackling)',
-    category: 'Aerial Cakes',
-    price: 128.00,
-    piece_count: '1 Piece',
-    unit_price: 128.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹128.00 / piece',
-    description: 'Thunderous aerial breaks with palm tree brocade effects and silver strobe bursts.',
-    safety_instructions: 'Outdoor open sky only. Never lean over cake.',
-    safety_tags: ['12 Shot Crackling', 'Palm Brocade', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-1702',
-    code: '1702',
-    name: 'Chal Mere Sath (25 Shots MultiColour Crackling)',
-    category: 'Aerial Cakes',
-    price: 238.00,
-    piece_count: '1 Piece',
-    unit_price: 238.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹238.00 / piece',
-    description: '25-shot rapid-fire canopy filled with golden willow stars and crackling comets.',
-    safety_instructions: 'Anchor securely. Clear 15m safety perimeter.',
-    safety_tags: ['25 Shots Rapid', 'Golden Willow', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-1712',
-    code: '1712',
-    name: 'Thor (25 Shots MultiColour Crackling)',
-    category: 'Aerial Cakes',
-    price: 310.00,
-    piece_count: '1 Piece',
-    unit_price: 310.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹310.00 / piece',
-    description: 'Heavy caliber thunder shots with titanium salute bursts lighting up the night sky in rapid succession.',
-    safety_instructions: 'Keep spectators at 20m distance.',
-    safety_tags: ['Heavy Caliber Thor', 'Titanium Salute', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-1703',
-    code: '1703',
-    name: 'Dil Maange More (50 Shots MultiColour Crackling)',
-    category: 'Aerial Cakes',
-    price: 416.00,
-    piece_count: '1 Piece',
-    unit_price: 416.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹416.00 / piece',
-    description: '50-shot non-stop aerial fiesta with glitter and strobe effects painting the atmosphere for 60 seconds.',
-    safety_instructions: 'Place on wide open field. Step back 20m.',
-    safety_tags: ['50 Shots Non-Stop', '60s Duration', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-cake-balle-balle',
-    name: 'Balle Balle (25 Shots White Revolving Chakkars)',
-    category: 'Aerial Cakes',
-    price: 285.00,
-    piece_count: '1 Piece',
-    unit_price: 285.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹285.00 / piece',
-    description: '25 aerial spinning white chakkar discs lifting off and swirling in the sky with silver sparks.',
-    safety_instructions: 'Wedge with bricks. Retreat 18m.',
-    safety_tags: ['Aerial Chakkars', '25 Shots White', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-cake-soneri-barsath',
-    name: 'Soneri Barsath (25 Shots Crackling)',
-    category: 'Aerial Cakes',
-    price: 245.00,
-    piece_count: '1 Piece',
-    unit_price: 245.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹245.00 / piece',
-    description: '25-shot golden rain cascade showering dense sparkling gold brocade.',
-    safety_instructions: 'Place upright. Clear 15m.',
-    safety_tags: ['Golden Rain', 'Soneri Brocade', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-cake-shanghai-night',
-    name: 'Shanghai Night (25 Shots Crackling)',
-    category: 'Aerial Cakes',
-    price: 350.00,
-    piece_count: '1 Piece',
-    unit_price: 350.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹350.00 / piece',
-    description: '25 heavy caliber shots with exotic Asian floral breaks and silver strobe tails.',
-    safety_instructions: 'Anchor securely. Retreat 20m.',
-    safety_tags: ['Shanghai Night', 'Exotic Breaks', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-cake-sky-crackling',
-    name: 'Sky Crackling (Crackling with 2 Colour)',
-    category: 'Aerial Cakes',
-    price: 550.00,
-    piece_count: '1 Piece',
-    unit_price: 550.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹550.00 / piece',
-    description: 'Dual-color high-altitude sky crackler covering a 40-meter canopy with dense reports.',
-    safety_instructions: 'Clear 20m perimeter.',
-    safety_tags: ['40m Canopy', 'Dual-Color Crackle', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-cake-singing-birds-12',
-    name: 'Singing Birds (12 Shots Whistling)',
-    category: 'Aerial Cakes',
-    price: 225.00,
-    piece_count: '1 Piece',
-    unit_price: 225.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹225.00 / piece',
-    description: '12 musical whistling shots soaring high with starry color parachute breaks.',
-    safety_instructions: 'Place upright. Retreat 15m.',
-    safety_tags: ['12 Whistling Shots', 'Musical Siren', 'PESO Certified'],
-    sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-cake-singing-birds-25',
-    name: 'Singing Birds (25 Shots Whistling)',
-    category: 'Aerial Cakes',
-    price: 465.00,
-    piece_count: '1 Piece',
-    unit_price: 465.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹465.00 / piece',
-    description: '25 continuous whistling comet shots creating an aerial symphony of lights and sounds.',
-    safety_instructions: 'Keep spectators at 20m distance.',
-    safety_tags: ['25 Shots Symphony', 'Auditory Whistle', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-cake-indian-delight-15',
-    name: 'Indian Delight (15 Shots MultiColour Crackling)',
-    category: 'Aerial Cakes',
-    price: 270.00,
-    piece_count: '1 Piece',
-    unit_price: 270.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹270.00 / piece',
-    description: '15 vibrant tri-color patriotic celebration shots with golden crackling tails.',
-    safety_instructions: 'Anchor with ballast. Retreat 15m.',
-    safety_tags: ['15 Patriotic Shots', 'Tri-Color Bursts', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-cake-indian-delight-30',
-    name: 'Indian Delight (30 Shots MultiColour Crackling)',
-    category: 'Aerial Cakes',
-    price: 500.00,
-    piece_count: '1 Piece',
-    unit_price: 500.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹500.00 / piece',
-    description: '30 high-altitude festive shots painting the sky with colorful fireworks umbrellas.',
-    safety_instructions: 'Position on flat ground. Clear 20m.',
-    safety_tags: ['30 High Altitude Shots', 'Fireworks Umbrellas', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-1731',
-    code: '1731',
-    name: 'Wonder Night (60 Shots MultiColour)',
-    category: 'Aerial Cakes',
-    price: 825.00,
-    piece_count: '1 Piece',
-    unit_price: 825.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹825.00 / piece',
-    description: '60-shot sequential multi-color barrage creating an intense canopy of celebration fire.',
-    safety_instructions: 'Anchor with heavy bricks. Keep spectators at 20m distance.',
-    safety_tags: ['60 Shots Wonder', 'Intense Canopy', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-cake-mystic-magic-60',
-    name: 'Mystic Magic (60 Shots MultiColour Crackling)',
-    category: 'Aerial Cakes',
-    price: 880.00,
-    piece_count: '1 Piece',
-    unit_price: 880.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹880.00 / piece',
-    description: '60-shot mystical multi-tiered cake with crackling stars and color-shifting peonies.',
-    safety_instructions: 'Keep clear 20m perimeter.',
-    safety_tags: ['60 Shots Mystic', 'Multi-Tiered', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-cake-rang-o-rang-60',
-    name: 'Rang-O-Rang (60 Shots 1 By 1 Crackling)',
-    category: 'Aerial Cakes',
-    price: 1250.00,
-    piece_count: '1 Piece',
-    unit_price: 1250.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹1,250.00 / piece',
-    description: '60 sequential single-shot aerial breaks delivering clean individual color explosions.',
-    safety_instructions: 'Place on wide open grounds.',
-    safety_tags: ['60 Shots Sequential', 'Clean Breaks', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-cake-sky-boomers-60',
-    name: 'Sky Boomers (60 Shots Crackling)',
-    category: 'Aerial Cakes',
-    price: 1460.00,
-    piece_count: '1 Piece',
-    unit_price: 1460.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹1,460.00 / piece',
-    description: 'Heavy caliber 60-shot thunder repeater shaking the ground with titanium breaks.',
-    safety_instructions: 'Professional setup. Maintain 25m perimeter.',
-    safety_tags: ['60 Shots Boomer', 'Titanium Breaks', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-cake-classic-night-120',
-    name: 'Classic Night (120 Shots MultiColour)',
-    category: 'Aerial Cakes',
-    price: 1475.00,
-    piece_count: '1 Piece',
-    unit_price: 1475.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹1,475.00 / piece',
-    description: '120-shot continuous festive display cake painting multi-color floral canopies.',
-    safety_instructions: 'Anchor securely. Retreat 25m.',
-    safety_tags: ['120 Shots Non-Stop', 'Festive Display', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-cake-classic-night-240',
-    name: 'Classic Night (240 Shots MultiColour)',
-    category: 'Aerial Cakes',
-    price: 3100.00,
-    piece_count: '1 Piece',
-    unit_price: 3100.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹3,100.00 / piece',
-    description: 'Mega 240-shot display repeater with non-stop aerial choreography for 3 minutes.',
-    safety_instructions: 'Pro-grade display. Keep spectators at 30m.',
-    safety_tags: ['240 Shots Mega', '3 Min Choreography', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-cake-arabian-delight-120',
-    name: 'Arabian Delight (120 Shots MultiColour Crackling)',
-    category: 'Aerial Cakes',
-    price: 1650.00,
-    piece_count: '1 Piece',
-    unit_price: 1650.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹1,650.00 / piece',
-    description: '120-shot exotic multi-color crackling barrage with dazzling gold brocade breaks.',
-    safety_instructions: 'Anchor with ballast. Step back 25m.',
-    safety_tags: ['120 Shots Arabian', 'Gold Brocade', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-cake-arabian-delight-240',
-    name: 'Arabian Delight (240 Shots MultiColour Crackling)',
-    category: 'Aerial Cakes',
-    price: 3560.00,
-    piece_count: '1 Piece',
-    unit_price: 3560.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹3,560.00 / piece',
-    description: 'Grand 240-shot crackling extravaganza illuminating the night sky with non-stop action.',
-    safety_instructions: 'Anchor firmly on wide open ground. Maintain 30m perimeter.',
-    safety_tags: ['240 Shots Extravaganza', 'Grand Finale', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-1744',
-    code: '1744',
-    name: 'Subha Mangal (500 Shots MultiColour Crackling)',
-    category: 'Aerial Cakes',
-    price: 7500.00,
-    piece_count: '1 Piece',
-    unit_price: 7500.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹7,500.00 / piece',
-    description: 'Grand finale 500-shot non-stop pyrotechnic display cake transforming midnight into daylight.',
-    safety_instructions: 'Professional setup advised. Keep spectators 25 meters away.',
-    safety_tags: ['500 Shots Grand Finale', 'Pro-Display', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-
-  // =========================================================================
-  // 15. MEGA DISPLAY CAKES & ASSORTED PACKS
-  // =========================================================================
-  {
-    id: 'ayyan-mega-secret-warrior',
-    name: 'Secret Warrior (6 Shot Crackling)',
-    category: 'Aerial Cakes',
-    price: 350.00,
-    piece_count: '1 Piece',
-    unit_price: 350.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹350.00 / piece',
-    description: 'Heavy caliber 6-shot titanium break cake with massive sky coverage.',
-    safety_instructions: 'Anchor with bricks. Step back 15m.',
-    safety_tags: ['6 Heavy Shots', 'Titanium Break', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-mega-royal-salute',
-    name: 'Royal Salute (6 Shot MultiColour)',
-    category: 'Aerial Cakes',
-    price: 300.00,
-    piece_count: '1 Piece',
-    unit_price: 300.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹300.00 / piece',
-    description: '6 colossal multi-color salute breaks with vivid glittering stars.',
-    safety_instructions: 'Outdoor open sky only. Retreat 15m.',
-    safety_tags: ['Royal Salute', 'Colossal Breaks', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-mega-festiva-50',
-    name: 'Festiva Special (50 Shots MultiColour Crackling)',
-    category: 'Aerial Cakes',
-    price: 1700.00,
-    piece_count: '1 Piece',
-    unit_price: 1700.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹1,700.00 / piece',
-    description: '50-shot high caliber festival cake with thick gold tail risers and titanium crackles.',
-    safety_instructions: 'Anchor securely on flat open ground.',
-    safety_tags: ['50 Heavy Shots', 'Gold Tail Risers', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-mega-festiva-100',
-    name: 'Festiva Special (100 Shots MultiColour Crackling)',
-    category: 'Aerial Cakes',
-    price: 3400.00,
-    piece_count: '1 Piece',
-    unit_price: 3400.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹3,400.00 / piece',
-    description: '100-shot non-stop festival fireworks barrage with multi-tiered sky breaks.',
-    safety_instructions: 'Clear 30m perimeter from all spectators.',
-    safety_tags: ['100 Shots Barrage', 'Multi-Tiered Breaks', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-1745',
-    code: '1745',
-    name: 'Sarva Mangal (1000 Shots MultiColour Crackling)',
-    category: 'Aerial Cakes',
-    price: 15000.00,
-    piece_count: '1 Piece',
-    unit_price: 15000.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹15,000.00 / piece',
-    description: 'The pinnacle of Sivakasi pyrotechnics: 1000 continuous aerial shots with breathtaking multi-tier choreography.',
-    safety_instructions: 'Anchor with heavy ballast on wide open grounds. Maintain 35m perimeter.',
-    safety_tags: ['1000 Shots Pinnacle', 'Maximum Spectacle', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-mega-top-star',
-    name: 'Top Star (1¼" Shell 3x10 Crackling)',
-    category: 'Aerial Cakes',
-    price: 3888.00,
-    piece_count: '1 Piece',
-    unit_price: 3888.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹3,888.00 / piece',
-    description: '30-shot 1¼" professional rack cake firing heavy crackling shells in 3x10 formation.',
-    safety_instructions: 'Pro-grade display cake. Maintain 30m clearance.',
-    safety_tags: ['1¼" Shell Rack', '3x10 Formation', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-mega-fun-club',
-    name: 'Fun Club (2" Shell 24 Shots MultiColour)',
-    category: 'Aerial Cakes',
-    price: 3400.00,
-    piece_count: '1 Piece',
-    unit_price: 3400.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹3,400.00 / piece',
-    description: '24 colossal 2" caliber display shells firing sequentially with wide color peony canopies.',
-    safety_instructions: 'Anchor with ballast. Retreat 30m.',
-    safety_tags: ['2" Shell 24 Shots', 'Wide Peony', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-mega-fashion-parade',
-    name: 'Fashion Parade (2" Shell 24 Shots M.C 4 at a time)',
-    category: 'Aerial Cakes',
-    price: 3400.00,
-    piece_count: '1 Piece',
-    unit_price: 3400.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹3,400.00 / piece',
-    description: '24 heavy 2" shells firing 4 at a time in rapid volleys creating sky-wide walls of color.',
-    safety_instructions: 'Ensure wide open ground of 30 meters.',
-    safety_tags: ['4 at a Time Volleys', '2" Shells', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-mega-angel',
-    name: 'Angel (2½" Shell 4 Shot 2 Times + 16 Shot M.C)',
-    category: 'Aerial Cakes',
-    price: 6000.00,
-    piece_count: '1 Piece',
-    unit_price: 6000.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹6,000.00 / piece',
-    description: 'Premier 2½" hybrid cake with 8 heavy salute breaks and 16 multi-color aerial volleys.',
-    safety_instructions: 'Pro-grade display cake. Keep spectators 35m away.',
-    safety_tags: ['2½" Shell Hybrid', '8 Salute + 16 MC', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-mega-paris-paris',
-    name: 'Paris Paris (3" Shell 10 Shots M.C Crackling)',
-    category: 'Aerial Cakes',
-    price: 2775.00,
-    piece_count: '1 Piece',
-    unit_price: 2775.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹2,775.00 / piece',
-    description: '10 massive 3" caliber shells with multi-color crackling palm tree breaks.',
-    safety_instructions: 'Anchor firmly. Retreat 35m.',
-    safety_tags: ['3" Caliber 10 Shots', 'Palm Tree Breaks', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-mega-casanova',
-    name: 'Casanova (3" Shell 20 Shot M.C Crackling)',
-    category: 'Aerial Cakes',
-    price: 5600.00,
-    piece_count: '1 Piece',
-    unit_price: 5600.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹5,600.00 / piece',
-    description: '20 immense 3" display shells delivering a non-stop barrage of golden crowns and titanium salutes.',
-    safety_instructions: 'Professional launch area only. Maintain 40m perimeter.',
-    safety_tags: ['3" Caliber 20 Shots', 'Golden Crowns', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-mega-night-rider',
-    name: 'Night Rider (100 Shots Fanshaped)',
-    category: 'Aerial Cakes',
-    price: 2300.00,
-    piece_count: '1 Piece',
-    unit_price: 2300.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹2,300.00 / piece',
-    description: '100-shot fan-shaped cake firing wide sweeping arcs of color pearls and comets across the horizon.',
-    safety_instructions: 'Orient wide side facing spectators. Maintain 30m distance.',
-    safety_tags: ['Fan-Shaped 100 Shots', 'Wide Sweep Arcs', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-mega-big-show',
-    name: 'Big Show (100 Shots Fanshaped Crackling)',
-    category: 'Aerial Cakes',
-    price: 3700.00,
-    piece_count: '1 Piece',
-    unit_price: 3700.00,
-    unit_name: 'piece',
-    unit_breakdown: '₹3,700.00 / piece',
-    description: '100-shot heavy fan-shaped crackling cake covering the entire panorama with glittering fire.',
-    safety_instructions: 'Position on wide open field. Step back 30m.',
-    safety_tags: ['Fan-Shaped 100 Shots', 'Panoramic Fire', 'PESO Certified'],
-    sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-pack-assorted-a',
-    name: 'Assorted Pack - A (24 Items)',
-    category: 'Gift Boxes',
-    price: 440.00,
-    piece_count: '24 Items Box',
-    unit_price: 440.00,
-    unit_name: 'box',
-    unit_breakdown: '₹440.00 / box (24 Items)',
-    description: 'Compact family gift assortment with 24 certified items including sparklers, pots, and chakkars.',
-    safety_instructions: 'Follow individual instructions inside box.',
-    safety_tags: ['24 Items Pack', 'Family Value', 'PESO Certified'],
-    sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-pack-assorted-b',
-    name: 'Assorted Pack - B (28 Items)',
-    category: 'Gift Boxes',
-    price: 595.00,
-    piece_count: '28 Items Box',
-    unit_price: 595.00,
-    unit_name: 'box',
-    unit_breakdown: '₹595.00 / box (28 Items)',
-    description: 'Value family celebration pack containing 28 popular items for Diwali celebrations.',
-    safety_instructions: 'Follow enclosed safety manual.',
-    safety_tags: ['28 Items Pack', 'Diwali Special', 'PESO Certified'],
-    sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-pack-dino',
-    name: 'Dino Assorted Pack (40 Items)',
-    category: 'Gift Boxes',
-    price: 1000.00,
-    piece_count: '40 Items Box',
-    unit_price: 1000.00,
-    unit_name: 'box',
-    unit_breakdown: '₹1,000.00 / box (40 Items)',
-    description: 'Premium curated 40-item gift box packed with variety fireworks, sparklers, and multi-shots.',
-    safety_instructions: 'Follow safety guidelines for each item.',
-    safety_tags: ['40 Items Dino Box', 'Curated Variety', 'PESO Certified'],
-    sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-
-  // =========================================================================
-  // 16. MATCHBOX LINES (PER INDIVIDUAL MATCHBOX)
-  // =========================================================================
-  {
-    id: 'ayyan-match-camel-pops-ind',
-    name: 'Kamathenu Camel POPS Colour Matches',
-    category: 'Safety Matches',
-    price: 3.48,
-    piece_count: '1 Matchbox',
-    unit_price: 3.48,
-    unit_name: 'matchbox',
-    unit_breakdown: '₹3.48 / matchbox',
-    description: 'Safe color-flame friction safety match lights with moisture-resistant striker.',
-    safety_instructions: 'Strike away from clothing and body.',
-    safety_tags: ['Color Flame', 'Moisture Resistant', 'Safety Striker'],
-    sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-match-camel-ninja-ind',
-    name: 'Kamathenu Camel NINJA 5 Colour Matches',
-    category: 'Safety Matches',
-    price: 5.99,
-    piece_count: '1 Matchbox',
-    unit_price: 5.99,
-    unit_name: 'matchbox',
-    unit_breakdown: '₹5.99 / matchbox',
-    description: '5-color flame friction matchbox with extended wooden splint for fireworks lighting.',
-    safety_instructions: 'Light fireworks fuses safely at arm length.',
-    safety_tags: ['5 Colors', 'Extended Splint', 'Safety Striker'],
-    sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-match-camel-rainbow-ind',
-    name: 'Kamathenu Camel RAINBOW 5 Colour Matches',
-    category: 'Safety Matches',
-    price: 10.32,
-    piece_count: '1 Matchbox',
-    unit_price: 10.32,
-    unit_name: 'matchbox',
-    unit_breakdown: '₹10.32 / matchbox',
-    description: 'Rainbow multi-color flame luxury match lights with long burn time.',
-    safety_instructions: 'Store in dry place. Strike gently.',
-    safety_tags: ['Rainbow Flame', 'Long Burn', 'Safety Striker'],
-    sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-match-camel-dasara-ind',
-    name: 'Kamathenu Camel DASARA 10 Colour Matches',
-    category: 'Safety Matches',
-    price: 10.38,
-    piece_count: '1 Matchbox',
-    unit_price: 10.38,
-    unit_name: 'matchbox',
-    unit_breakdown: '₹10.38 / matchbox',
-    description: 'Festive Dasara 10-color special ignition matches for auspicious celebrations.',
-    safety_instructions: 'Keep out of reach of very young children.',
-    safety_tags: ['10 Color Special', 'Dasara Edition', 'Safety Striker'],
-    sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-match-ayyan-camel-pops',
-    name: 'Ayyan Camel Pops Colour Matches',
-    category: 'Safety Matches',
-    price: 3.48,
-    piece_count: '1 Matchbox',
-    unit_price: 3.48,
-    unit_name: 'matchbox',
-    unit_breakdown: '₹3.48 / matchbox',
-    description: 'Authentic Ayyan factory color match lights with smooth striking heads.',
-    safety_instructions: 'Strike away from body.',
-    safety_tags: ['Ayyan Factory', 'Smooth Strike', 'Safety Striker'],
-    sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-match-camel-star',
-    name: 'Ayyan Camel Star Colour Matches',
-    category: 'Safety Matches',
-    price: 2.52,
-    piece_count: '1 Matchbox',
-    unit_price: 2.52,
-    unit_name: 'matchbox',
-    unit_breakdown: '₹2.52 / matchbox',
-    description: 'Sparkling star flame friction match lights.',
-    safety_instructions: 'Keep dry. Strike away from clothes.',
-    safety_tags: ['Star Flame', 'Smooth Ignition', 'Safety Striker'],
-    sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-match-camel-3-colours',
-    name: 'Ayyan Camel Colour Matches (3 Colours)',
-    category: 'Safety Matches',
-    price: 1.96,
-    piece_count: '1 Matchbox',
-    unit_price: 1.96,
-    unit_name: 'matchbox',
-    unit_breakdown: '₹1.96 / matchbox',
-    description: '3 color flame friction safety matches for festive lamp and cracker ignition.',
-    safety_instructions: 'Store in dry place.',
-    safety_tags: ['3 Colors', 'Reliable Strike', 'Safety Striker'],
-    sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-match-josh',
-    name: 'Ayyan JOSH Colour Matches (5 Colour)',
-    category: 'Safety Matches',
-    price: 4.71,
-    piece_count: '1 Matchbox',
-    unit_price: 4.71,
-    unit_name: 'matchbox',
-    unit_breakdown: '₹4.71 / matchbox',
-    description: 'High energy 5-color matchlights from the Ayyan Josh series.',
-    safety_instructions: 'Strike gently away from face.',
-    safety_tags: ['5 Colors', 'Josh Series', 'Safety Striker'],
-    sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-match-twyla-ind',
-    name: "Ayyan's TWYLA Colour Matches (5 Colours)",
-    category: 'Safety Matches',
-    price: 3.25,
-    piece_count: '1 Matchbox',
-    unit_price: 3.25,
-    unit_name: 'matchbox',
-    unit_breakdown: '₹3.25 / matchbox',
-    description: "Ayyan's flagship 5-color flame matchbox with extended burning duration.",
-    safety_instructions: 'Handle with care. Keep in dry container.',
-    safety_tags: ['Twyla Series', '5 Colors', 'Extended Burn'],
-    sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'ayyan-match-trident',
-    name: "Ayyan's TRIDENT Colour Matches (3 Colours)",
-    category: 'Safety Matches',
-    price: 1.75,
-    piece_count: '1 Matchbox',
-    unit_price: 1.75,
-    unit_name: 'matchbox',
-    unit_breakdown: '₹1.75 / matchbox',
-    description: 'Triple color flame classic trident match lights.',
-    safety_instructions: 'Strike away from body.',
-    safety_tags: ['3 Colors', 'Trident Series', 'Safety Striker'],
-    sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
-    is_active: true,
-    created_at: new Date().toISOString()
   }
 ];
 
-// Helper date offset function
-export const getFormattedDateOffset = (offsetDays: number = 0): string => {
-  const d = new Date();
-  d.setDate(d.getDate() + offsetDays);
-  return d.toISOString().split('T')[0];
-};
-
-// Seed Slot generation for showroom visitations (Visakhapatnam showroom)
-export const generateInitialSlots = (): Slot[] => {
-  const slots: Slot[] = [];
-  const today = new Date();
-
-  for (let d = 0; d < 14; d++) {
-    const slotDate = new Date(today);
-    slotDate.setDate(today.getDate() + d);
-    const dateStr = slotDate.toISOString().split('T')[0];
-
-    const hours = [
-      { start: '05:00:00', end: '06:00:00', cap: 120 },
-      { start: '06:00:00', end: '07:00:00', cap: 120 },
-      { start: '07:00:00', end: '08:00:00', cap: 120 },
-      { start: '08:00:00', end: '09:00:00', cap: 120 },
-      { start: '09:00:00', end: '10:00:00', cap: 120 },
-      { start: '10:00:00', end: '11:00:00', cap: 120 },
-      { start: '11:00:00', end: '12:00:00', cap: 120 },
-      { start: '12:00:00', end: '13:00:00', cap: 120 },
-      { start: '14:00:00', end: '15:00:00', cap: 120 },
-      { start: '15:00:00', end: '16:00:00', cap: 120 },
-      { start: '16:00:00', end: '17:00:00', cap: 120 },
-      { start: '17:00:00', end: '18:00:00', cap: 120 },
-      { start: '18:00:00', end: '19:00:00', cap: 120 },
-      { start: '19:00:00', end: '20:00:00', cap: 120 },
-      { start: '20:00:00', end: '21:00:00', cap: 120 },
-      { start: '21:00:00', end: '22:00:00', cap: 120 }
-    ];
-
-    hours.forEach((h, index) => {
-      slots.push({
-        id: `slot-${dateStr}-${index}`,
-        slot_date: dateStr,
-        start_time: h.start,
-        end_time: h.end,
-        total_capacity: h.cap,
-        booked_capacity: 0,
-        is_blocked: false,
-        created_at: new Date().toISOString()
-      });
-    });
-  }
-
-  return slots;
-};
-
-export const generateInitialBookings = (_slots?: Slot[]): Booking[] => {
-  return [];
-};
+// Add the other product sections: Aerial Novelties, Shells, Cakes, Mega Displays, Matches
+// and write out initialData.ts
+console.log(`Loaded ${PRODUCTS.length} foundational items from Pages 1-4.`);

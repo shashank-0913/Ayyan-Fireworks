@@ -85,25 +85,37 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </h3>
 
           {/* Pack Count & Prominent Gold Price */}
-          <div className="flex items-baseline justify-between gap-2 p-3 rounded-2xl bg-amber-50/70 dark:bg-obsidian-950/80 border border-amber-200/80 dark:border-white/[0.06]">
-            <div>
-              <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 dark:text-slate-400 block mb-0.5">
-                Showroom Price
-              </span>
-              <div className="text-2xl sm:text-3xl font-extrabold text-amber-700 dark:text-gold-300 font-mono tracking-tight drop-shadow-[0_1px_8px_rgba(217,119,6,0.2)] dark:drop-shadow-[0_2px_12px_rgba(245,158,11,0.25)]">
-                {formatINR(product.price)}
+          <div className="p-3 rounded-2xl bg-amber-50/70 dark:bg-obsidian-950/80 border border-amber-200/80 dark:border-white/[0.06] space-y-2">
+            <div className="flex items-baseline justify-between gap-2">
+              <div>
+                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 dark:text-slate-400 block mb-0.5">
+                  Showroom Price
+                </span>
+                <div className="text-2xl sm:text-3xl font-extrabold text-amber-700 dark:text-gold-300 font-mono tracking-tight drop-shadow-[0_1px_8px_rgba(217,119,6,0.2)] dark:drop-shadow-[0_2px_12px_rgba(245,158,11,0.25)]">
+                  {formatINR(product.price)}
+                </div>
+              </div>
+
+              <div className="text-right">
+                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 dark:text-slate-400 block mb-0.5">
+                  Packaging
+                </span>
+                <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-white/5 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-white/10 shadow-xs">
+                  <Package className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400 shrink-0" />
+                  <span>{product.piece_count}</span>
+                </span>
               </div>
             </div>
 
-            <div className="text-right">
-              <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 dark:text-slate-400 block mb-0.5">
-                Packaging
-              </span>
-              <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-white/5 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-white/10 shadow-xs">
-                <Package className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400 shrink-0" />
-                <span>{product.piece_count}</span>
-              </span>
-            </div>
+            {/* Per-piece / Per-unit Calculation Breakdown */}
+            {(product.unit_breakdown || (product.unit_price && product.unit_name)) && (
+              <div className="pt-2 border-t border-amber-200/50 dark:border-white/5 flex items-center justify-between gap-1 text-[11px] text-amber-900 dark:text-gold-300/90 font-medium">
+                <span className="text-slate-500 dark:text-slate-400 text-[10px]">Unit Calculation:</span>
+                <span className="font-mono font-bold bg-amber-100/70 dark:bg-gold-500/10 px-2 py-0.5 rounded-md border border-amber-300/50 dark:border-gold-500/20">
+                  {product.unit_breakdown || `→ ${formatINR(product.unit_price!)} / ${product.unit_name}`}
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
