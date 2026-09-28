@@ -77,8 +77,13 @@ export const FireworkIntroSplash: React.FC<FireworkIntroSplashProps> = ({ onComp
       setIsVisible(true);
       return;
     }
-    const hasSeen = sessionStorage.getItem('hasSeenIntro');
-    if (!hasSeen) {
+    try {
+      const hasSeen = sessionStorage.getItem('hasSeenIntro');
+      if (!hasSeen) {
+        setIsVisible(true);
+      }
+    } catch (e) {
+      // In private mode or disabled storage, show splash gracefully
       setIsVisible(true);
     }
   }, [forceShow]);
@@ -97,7 +102,11 @@ export const FireworkIntroSplash: React.FC<FireworkIntroSplashProps> = ({ onComp
   const handleFinish = useCallback(() => {
     if (isFadingOut) return;
     setIsFadingOut(true);
-    sessionStorage.setItem('hasSeenIntro', 'true');
+    try {
+      sessionStorage.setItem('hasSeenIntro', 'true');
+    } catch (e) {
+      console.warn('Failed to set sessionStorage flag:', e);
+    }
 
     setTimeout(() => {
       setIsVisible(false);

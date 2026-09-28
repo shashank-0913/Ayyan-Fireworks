@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { Product, Slot, Booking, StaffUser, BookingRpcResponse, BookingStatus } from '../types';
 import { INITIAL_PRODUCTS, generateInitialSlots } from '../lib/initialData';
-import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { supabase, isSupabaseConfigured, DEFAULT_PRODUCT_IMAGE } from '../lib/supabase';
 import { isAuthorizedAdminEmail, ADMIN_EMAIL, generateUUID, formatTime, formatDateReadable } from '../lib/utils';
 
 export interface GateScanResult {
@@ -57,13 +57,58 @@ const LOCAL_STORAGE_KEYS = {
   EMERGENCY_BLOCK: 'ayyan_emergency_block_clean_v7',
 };
 
+// Safe localStorage wrappers to guarantee no QuotaExceededError crashes
+export const safeGetItem = (key: string): string | null => {
+  try {
+    return localStorage.getItem(key);
+  } catch (e) {
+    console.warn(`[Storage] Failed to read key "${key}":`, e);
+    return null;
+  }
+};
+
+export const safeSetItem = (key: string, value: string): void => {
+  try {
+    localStorage.setItem(key, value);
+  } catch (e) {
+    console.warn(`[Storage] Failed to write key "${key}":`, e);
+  }
+};
+
+export const safeRemoveItem = (key: string): void => {
+  try {
+    localStorage.removeItem(key);
+  } catch (e) {
+    console.warn(`[Storage] Failed to remove key "${key}":`, e);
+  }
+};
+
+/**
+ * Sanitizes product objects so that no raw Base64 data strings enter localStorage
+ */
+const sanitizeProductImage = (url?: string): string => {
+  if (!url || url.startsWith('data:')) {
+    return DEFAULT_PRODUCT_IMAGE;
+  }
+  return url;
+};
+
+const sanitizeProductsForStorage = (prods: Product[]): Product[] => {
+  return prods.map(p => ({
+    ...p,
+    image_url: sanitizeProductImage(p.image_url)
+  }));
+};
+
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [products, setProducts] = useState<Product[]>(() => {
-    const saved = localStorage.getItem(LOCAL_STORAGE_KEYS.PRODUCTS);
+    const saved = safeGetItem(LOCAL_STORAGE_KEYS.PRODUCTS);
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return sanitizeProductsForStorage(parsed);
+        }
       } catch (e) {
         console.warn('Failed to parse saved products:', e);
       }
@@ -72,7 +117,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
 
   const [slots, setSlots] = useState<Slot[]>(() => {
-    const saved = localStorage.getItem(LOCAL_STORAGE_KEYS.SLOTS);
+    const saved = safeGetItem(LOCAL_STORAGE_KEYS.SLOTS);
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -85,7 +130,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
 
   const [bookings, setBookings] = useState<Booking[]>(() => {
-    const saved = localStorage.getItem(LOCAL_STORAGE_KEYS.BOOKINGS);
+    const saved = safeGetItem(LOCAL_STORAGE_KEYS.BOOKINGS);
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -98,7 +143,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
 
   const [currentUser, setCurrentUser] = useState<StaffUser | null>(() => {
-    const saved = localStorage.getItem(LOCAL_STORAGE_KEYS.STAFF_USER);
+    const saved = safeGetItem(LOCAL_STORAGE_KEYS.STAFF_USER);
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -113,35 +158,47 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
 
   const [isEmergencyBlocked, setIsEmergencyBlocked] = useState<boolean>(() => {
-    const saved = localStorage.getItem(LOCAL_STORAGE_KEYS.EMERGENCY_BLOCK);
-    return saved ? JSON.parse(saved) : false;
+    const saved = safeGetItem(LOCAL_STORAGE_KEYS.EMERGENCY_BLOCK);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return false;
+      }
+    }
+    return false;
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Sync to local storage
+  // Sync to local storage with sanitization & error guarding
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+    try {
+      const sanitized = sanitizeProductsForStorage(products);
+      safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitized));
+    } catch (err) {
+      console.warn('Could not save products to localStorage:', err);
+    }
   }, [products]);
 
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEYS.SLOTS, JSON.stringify(slots));
+    safeSetItem(LOCAL_STORAGE_KEYS.SLOTS, JSON.stringify(slots));
   }, [slots]);
 
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEYS.BOOKINGS, JSON.stringify(bookings));
+    safeSetItem(LOCAL_STORAGE_KEYS.BOOKINGS, JSON.stringify(bookings));
   }, [bookings]);
 
   useEffect(() => {
     if (currentUser && isAuthorizedAdminEmail(currentUser.email)) {
-      localStorage.setItem(LOCAL_STORAGE_KEYS.STAFF_USER, JSON.stringify(currentUser));
+      safeSetItem(LOCAL_STORAGE_KEYS.STAFF_USER, JSON.stringify(currentUser));
     } else {
-      localStorage.removeItem(LOCAL_STORAGE_KEYS.STAFF_USER);
+      safeRemoveItem(LOCAL_STORAGE_KEYS.STAFF_USER);
     }
   }, [currentUser]);
 
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEYS.EMERGENCY_BLOCK, JSON.stringify(isEmergencyBlocked));
+    safeSetItem(LOCAL_STORAGE_KEYS.EMERGENCY_BLOCK, JSON.stringify(isEmergencyBlocked));
   }, [isEmergencyBlocked]);
 
   // Load live data and sync Auth from Supabase if configured
@@ -190,10 +247,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         const { data: dbProducts, error: prodErr } = await client
           .from('products')
           .select('*')
-          .order('created_at', { ascending: false });
+          .order('id', { ascending: false });
 
         if (!prodErr && Array.isArray(dbProducts) && dbProducts.length > 0) {
-          setProducts(dbProducts as Product[]);
+          const mapped: Product[] = dbProducts.map(p => ({
+            id: String(p.id),
+            name: p.name || 'Firework SKU',
+            category: p.category || 'Sparklers',
+            price: Number(p.price) || 0,
+            piece_count: p.piece_count || '1 Box',
+            description: p.description || '',
+            safety_instructions: p.safety_instructions || 'Keep 10m clearance. Light with agarbatti.',
+            safety_tags: p.safety_tags || ['PESO Certified'],
+            sound_level: p.sound_level || 'Medium',
+            image_url: sanitizeProductImage(p.image_url),
+            is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
+            created_at: p.created_at || new Date().toISOString()
+          }));
+          setProducts(mapped);
         } else if (!prodErr && (!dbProducts || dbProducts.length === 0)) {
           // If remote table has 0 products, preserve local rich INITIAL_PRODUCTS
           setProducts(prev => (prev.length > 0 ? prev : INITIAL_PRODUCTS));
@@ -479,31 +550,38 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Product Actions
   const addProduct = async (productData: Omit<Product, 'id' | 'created_at'>): Promise<Product> => {
+    const sanitizedImage = sanitizeProductImage(productData.image_url);
     const newProduct: Product = {
       ...productData,
+      image_url: sanitizedImage,
       id: `prod-${Date.now()}`,
       created_at: new Date().toISOString()
     };
 
     if (isSupabaseConfigured && supabase) {
       try {
-        const { data, error } = await supabase.from('products').insert([{
+        // Only include columns that exist in the Supabase schema
+        const dbPayload = {
           name: newProduct.name,
           category: newProduct.category,
-          price: newProduct.price,
-          piece_count: newProduct.piece_count,
-          description: newProduct.description,
-          safety_instructions: newProduct.safety_instructions,
-          safety_tags: newProduct.safety_tags || [],
-          sound_level: newProduct.sound_level || 'Medium',
-          image_url: newProduct.image_url,
-          is_active: newProduct.is_active
-        }]).select();
+          price: Number(newProduct.price) || 0,
+          description: newProduct.description || '',
+          image_url: sanitizedImage
+        };
+
+        const { data, error } = await supabase.from('products').insert([dbPayload]).select();
 
         if (!error && data && data.length > 0) {
-          const createdFromDb = data[0] as Product;
+          const dbRow = data[0];
+          const createdFromDb: Product = {
+            ...newProduct,
+            id: String(dbRow.id),
+            created_at: dbRow.created_at || newProduct.created_at
+          };
           setProducts(prev => [createdFromDb, ...prev]);
           return createdFromDb;
+        } else if (error) {
+          console.warn('Supabase product insert error, falling back locally:', error.message);
         }
       } catch (e) {
         console.warn('Supabase product insert fallback:', e);
@@ -515,11 +593,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const updateProduct = async (id: string, updates: Partial<Product>): Promise<Product> => {
+    const sanitizedUpdates = { ...updates };
+    if (sanitizedUpdates.image_url !== undefined) {
+      sanitizedUpdates.image_url = sanitizeProductImage(sanitizedUpdates.image_url);
+    }
+
     let updated: Product | null = null;
 
     setProducts(prev => prev.map(p => {
       if (p.id === id) {
-        updated = { ...p, ...updates };
+        updated = { ...p, ...sanitizedUpdates };
         return updated;
       }
       return p;
@@ -527,7 +610,33 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     if (isSupabaseConfigured && supabase) {
       try {
-        await supabase.from('products').update(updates).eq('id', id);
+        // Check if id is a numeric integer ID matching Supabase bigint schema
+        const isNumericId = /^\d+$/.test(id);
+
+        if (isNumericId) {
+          // Prepare payload containing only fields that exist in Supabase schema
+          const dbPayload: Record<string, any> = {};
+          if (sanitizedUpdates.name !== undefined) dbPayload.name = sanitizedUpdates.name;
+          if (sanitizedUpdates.category !== undefined) dbPayload.category = sanitizedUpdates.category;
+          if (sanitizedUpdates.price !== undefined) dbPayload.price = Number(sanitizedUpdates.price);
+          if (sanitizedUpdates.description !== undefined) dbPayload.description = sanitizedUpdates.description;
+          if (sanitizedUpdates.image_url !== undefined) dbPayload.image_url = sanitizedUpdates.image_url;
+
+          if (Object.keys(dbPayload).length > 0) {
+            const { error: updateError } = await supabase
+              .from('products')
+              .update(dbPayload)
+              .eq('id', parseInt(id, 10));
+
+            if (updateError) {
+              console.warn('Supabase product update error:', updateError.message);
+            }
+          }
+        } else {
+          // Product has a static code ID like 'ayyan-0310'.
+          // Avoid querying bigint 'id' column with string text to prevent 400 Bad Request.
+          console.info(`Product "${id}" updated locally in cache.`);
+        }
       } catch (e) {
         console.warn('Supabase product update fallback:', e);
       }
@@ -541,7 +650,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setProducts(prev => prev.filter(p => p.id !== id));
     if (isSupabaseConfigured && supabase) {
       try {
-        await supabase.from('products').delete().eq('id', id);
+        const isNumericId = /^\d+$/.test(id);
+        if (isNumericId) {
+          const { error: deleteError } = await supabase
+            .from('products')
+            .delete()
+            .eq('id', parseInt(id, 10));
+
+          if (deleteError) {
+            console.warn('Supabase product delete error:', deleteError.message);
+          }
+        }
       } catch (e) {
         console.warn('Supabase product delete fallback:', e);
       }
@@ -728,7 +847,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
     }
     setCurrentUser(null);
-    localStorage.removeItem(LOCAL_STORAGE_KEYS.STAFF_USER);
+    safeRemoveItem(LOCAL_STORAGE_KEYS.STAFF_USER);
   };
 
   const resetToDefaultSeed = () => {
@@ -737,10 +856,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setSlots(seedSlots);
     setBookings([]);
     setIsEmergencyBlocked(false);
-    localStorage.removeItem(LOCAL_STORAGE_KEYS.PRODUCTS);
-    localStorage.removeItem(LOCAL_STORAGE_KEYS.SLOTS);
-    localStorage.removeItem(LOCAL_STORAGE_KEYS.BOOKINGS);
-    localStorage.removeItem(LOCAL_STORAGE_KEYS.EMERGENCY_BLOCK);
+    safeRemoveItem(LOCAL_STORAGE_KEYS.PRODUCTS);
+    safeRemoveItem(LOCAL_STORAGE_KEYS.SLOTS);
+    safeRemoveItem(LOCAL_STORAGE_KEYS.BOOKINGS);
+    safeRemoveItem(LOCAL_STORAGE_KEYS.EMERGENCY_BLOCK);
   };
 
   return (

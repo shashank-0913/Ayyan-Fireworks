@@ -16,9 +16,13 @@ const THEME_STORAGE_KEY = 'ayyan_theme_preference';
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>(() => {
-    const saved = localStorage.getItem(THEME_STORAGE_KEY);
-    if (saved === 'dark' || saved === 'light' || saved === 'system') {
-      return saved;
+    try {
+      const saved = localStorage.getItem(THEME_STORAGE_KEY);
+      if (saved === 'dark' || saved === 'light' || saved === 'system') {
+        return saved;
+      }
+    } catch (e) {
+      console.warn('Failed to read theme preference from storage:', e);
     }
     return 'dark'; // Festive Midnight default
   });
@@ -62,7 +66,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
-    localStorage.setItem(THEME_STORAGE_KEY, newTheme);
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, newTheme);
+    } catch (e) {
+      console.warn('Failed to write theme preference to storage:', e);
+    }
   };
 
   const toggleTheme = () => {

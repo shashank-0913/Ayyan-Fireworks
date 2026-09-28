@@ -8,6 +8,8 @@ import { FireworkIntroSplash } from './components/common/FireworkIntroSplash';
 import { CustomerNavbar } from './components/customer/CustomerNavbar';
 import { CustomerFooter } from './components/customer/CustomerFooter';
 
+import { ErrorBoundary } from './components/common/ErrorBoundary';
+
 // Customer Pages
 import { HomePage } from './pages/HomePage';
 import { CataloguePage } from './pages/CataloguePage';
@@ -54,69 +56,71 @@ const CustomerPortalLayout: React.FC = () => {
 
 export const App: React.FC = () => {
   return (
-    <ThemeProvider>
-      <AppProvider>
-        <BrowserRouter>
-          <Routes>
-            {/* ================================================================= */}
-            {/* 1. PUBLIC CUSTOMER PORTAL */}
-            {/* ================================================================= */}
-            <Route element={<CustomerPortalLayout />}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/catalogue" element={<CataloguePage />} />
-              <Route path="/book-slot" element={<BookSlotPage />} />
-              <Route path="/showroom" element={<ShowroomPage />} />
-            </Route>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <AppProvider>
+          <BrowserRouter>
+            <Routes>
+              {/* ================================================================= */}
+              {/* 1. PUBLIC CUSTOMER PORTAL */}
+              {/* ================================================================= */}
+              <Route element={<CustomerPortalLayout />}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/catalogue" element={<CataloguePage />} />
+                <Route path="/book-slot" element={<BookSlotPage />} />
+                <Route path="/showroom" element={<ShowroomPage />} />
+              </Route>
 
-            {/* Immersive Antigravity 3D Physics Catalog */}
-            <Route path="/antigravity" element={<AntigravityCatalogPage />} />
+              {/* Immersive Antigravity 3D Physics Catalog */}
+              <Route path="/antigravity" element={<AntigravityCatalogPage />} />
 
-            {/* ================================================================= */}
-            {/* 2. STANDALONE ADMIN & OPERATIONS PORTAL */}
-            {/* ================================================================= */}
-            <Route path="/admin/login" element={<PortalLoginPage />} />
-            <Route path="/portal/login" element={<PortalLoginPage />} />
-            
-            {/* Admin Routes */}
-            <Route
-              path="/admin"
-              element={
-                <PortalAuthGate>
-                  <PortalLayout />
-                </PortalAuthGate>
-              }
-            >
-              <Route index element={<Navigate to="/admin/dashboard" replace />} />
-              <Route path="dashboard" element={<PortalDashboardPage />} />
-              <Route path="products" element={<PortalProductsPage />} />
-              <Route path="slots" element={<PortalSlotsPage />} />
-              <Route path="bookings" element={<PortalBookingsPage />} />
-              <Route path="scanner" element={<PortalScannerPage />} />
-            </Route>
+              {/* ================================================================= */}
+              {/* 2. STANDALONE ADMIN & OPERATIONS PORTAL */}
+              {/* ================================================================= */}
+              <Route path="/admin/login" element={<PortalLoginPage />} />
+              <Route path="/portal/login" element={<PortalLoginPage />} />
+              
+              {/* Admin Routes */}
+              <Route
+                path="/admin"
+                element={
+                  <PortalAuthGate>
+                    <PortalLayout />
+                  </PortalAuthGate>
+                }
+              >
+                <Route index element={<Navigate to="/admin/dashboard" replace />} />
+                <Route path="dashboard" element={<PortalDashboardPage />} />
+                <Route path="products" element={<PortalProductsPage />} />
+                <Route path="slots" element={<PortalSlotsPage />} />
+                <Route path="bookings" element={<PortalBookingsPage />} />
+                <Route path="scanner" element={<PortalScannerPage />} />
+              </Route>
 
-            {/* Portal Routes (Alias) */}
-            <Route
-              path="/portal"
-              element={
-                <PortalAuthGate>
-                  <PortalLayout />
-                </PortalAuthGate>
-              }
-            >
-              <Route index element={<Navigate to="/portal/dashboard" replace />} />
-              <Route path="dashboard" element={<PortalDashboardPage />} />
-              <Route path="products" element={<PortalProductsPage />} />
-              <Route path="slots" element={<PortalSlotsPage />} />
-              <Route path="bookings" element={<PortalBookingsPage />} />
-              <Route path="scanner" element={<PortalScannerPage />} />
-            </Route>
+              {/* Portal Routes (Alias) */}
+              <Route
+                path="/portal"
+                element={
+                  <PortalAuthGate>
+                    <PortalLayout />
+                  </PortalAuthGate>
+                }
+              >
+                <Route index element={<Navigate to="/portal/dashboard" replace />} />
+                <Route path="dashboard" element={<PortalDashboardPage />} />
+                <Route path="products" element={<PortalProductsPage />} />
+                <Route path="slots" element={<PortalSlotsPage />} />
+                <Route path="bookings" element={<PortalBookingsPage />} />
+                <Route path="scanner" element={<PortalScannerPage />} />
+              </Route>
 
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </BrowserRouter>
-      </AppProvider>
-    </ThemeProvider>
+              {/* Fallback */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </BrowserRouter>
+        </AppProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 };
 

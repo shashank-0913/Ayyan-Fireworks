@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { X, Trash2, CheckCircle2, Image as ImageIcon, Loader2, Camera, Tag, Package } from 'lucide-react';
+import { X, Trash2, CheckCircle2, AlertTriangle, AlertCircle, Image as ImageIcon, Loader2, Camera, Tag, Package } from 'lucide-react';
 import { Product, ProductCategory, PRODUCT_CATEGORIES } from '../../types';
 import { useAyyanStore } from '../../context/AppContext';
-import { uploadProductImage } from '../../lib/supabase';
+import { uploadProductImage, DEFAULT_PRODUCT_IMAGE } from '../../lib/supabase';
 
 interface ProductDrawerProps {
   isOpen: boolean;
@@ -34,7 +34,7 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
   const [isActive, setIsActive] = useState(true);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastMessage, setToastMessage] = useState<{ type: 'success' | 'warning' | 'error'; text: string } | null>(null);
 
   useEffect(() => {
     if (productToEdit) {
@@ -44,7 +44,11 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
       setPieceCount(productToEdit.piece_count);
       setDescription(productToEdit.description);
       setSafetyInstructions(productToEdit.safety_instructions);
-      setImageUrl(productToEdit.image_url);
+      setImageUrl(
+        productToEdit.image_url?.startsWith('data:') 
+          ? PRESET_IMAGES[0].url 
+          : (productToEdit.image_url || PRESET_IMAGES[0].url)
+      );
       setIsActive(productToEdit.is_active);
     } else {
       setName('');
@@ -66,12 +70,23 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
 
     try {
       setIsUploadingImage(true);
+      setToastMessage(null);
       const publicUrl = await uploadProductImage(file);
       setImageUrl(publicUrl);
-    } catch (err) {
-      console.error('Image upload failed:', err);
+      setToastMessage({ type: 'success', text: 'Photo uploaded to cloud storage successfully!' });
+      setTimeout(() => setToastMessage(null), 4000);
+    } catch (err: any) {
+      console.warn('Image upload error, utilizing safe fallback image:', err);
+      // Fallback to preset photo, never storing huge base64 strings
+      setImageUrl(PRESET_IMAGES[0].url);
+      setToastMessage({
+        type: 'warning',
+        text: err?.message || 'Storage upload notice: Using standard catalogue image.'
+      });
+      setTimeout(() => setToastMessage(null), 6000);
     } finally {
       setIsUploadingImage(false);
+      e.target.value = '';
     }
   };
 
@@ -81,6 +96,9 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
 
     setIsSaving(true);
     try {
+      // Ensure image URL is clean and safe
+      const cleanImageUrl = (imageUrl && !imageUrl.startsWith('data:')) ? imageUrl : DEFAULT_PRODUCT_IMAGE;
+
       if (productToEdit) {
         await updateProduct(productToEdit.id, {
           name: name.trim(),
@@ -89,10 +107,10 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
           piece_count: pieceCount.trim() || '1 Box',
           description: description.trim() || 'Authentic Sivakasi fireworks creation.',
           safety_instructions: safetyInstructions.trim() || 'Keep safe clearance. Place on hard flat ground.',
-          image_url: imageUrl,
+          image_url: cleanImageUrl,
           is_active: isActive
         });
-        setToastMessage('Product updated successfully!');
+        setToastMessage({ type: 'success', text: 'Product updated successfully!' });
       } else {
         await addProduct({
           name: name.trim(),
@@ -101,18 +119,22 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
           piece_count: pieceCount.trim() || '1 Box',
           description: description.trim() || 'Authentic Sivakasi fireworks creation.',
           safety_instructions: safetyInstructions.trim() || 'Keep safe clearance. Place on hard flat ground.',
-          image_url: imageUrl,
+          image_url: cleanImageUrl,
           is_active: isActive
         });
-        setToastMessage('Product published to catalogue!');
+        setToastMessage({ type: 'success', text: 'Product published to catalogue!' });
       }
 
       setTimeout(() => {
         setToastMessage(null);
         onClose();
       }, 800);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to save product:', err);
+      setToastMessage({
+        type: 'error',
+        text: `Failed to save product: ${err?.message || 'Unknown error'}`
+      });
     } finally {
       setIsSaving(false);
     }
@@ -121,8 +143,13 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
   const handleDelete = async () => {
     if (!productToEdit) return;
     if (window.confirm(`Are you sure you want to permanently delete "${productToEdit.name}"?`)) {
-      await deleteProduct(productToEdit.id);
-      onClose();
+      try {
+        await deleteProduct(productToEdit.id);
+        onClose();
+      } catch (err: any) {
+        console.error('Failed to delete product:', err);
+        setToastMessage({ type: 'error', text: `Delete failed: ${err?.message || 'Error'}` });
+      }
     }
   };
 
@@ -154,9 +181,26 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
 
         {/* Toast alert */}
         {toastMessage && (
-          <div className="mx-4 sm:mx-6 mt-3 p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 dark:text-emerald-300 text-xs font-bold flex items-center gap-2 animate-in fade-in">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <span>{toastMessage}</span>
+          <div className={`mx-4 sm:mx-6 mt-3 p-3 rounded-xl border text-xs font-bold flex items-center justify-between gap-2 animate-in fade-in ${
+            toastMessage.type === 'success'
+              ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-800 dark:text-emerald-300'
+              : toastMessage.type === 'warning'
+              ? 'bg-amber-500/15 border-amber-500/30 text-amber-800 dark:text-amber-300'
+              : 'bg-red-500/15 border-red-500/30 text-red-800 dark:text-red-300'
+          }`}>
+            <div className="flex items-center gap-2">
+              {toastMessage.type === 'success' && <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />}
+              {toastMessage.type === 'warning' && <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />}
+              {toastMessage.type === 'error' && <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0" />}
+              <span>{toastMessage.text}</span>
+            </div>
+            <button 
+              type="button" 
+              onClick={() => setToastMessage(null)} 
+              className="text-slate-500 hover:text-slate-900 dark:hover:text-white p-1"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
           </div>
         )}
 
