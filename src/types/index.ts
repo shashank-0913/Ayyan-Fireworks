@@ -51,6 +51,8 @@ export interface Product {
   sound_level?: SoundLevel;
   video_url?: string;
   image_url: string;
+  image?: string;
+  imageUrl?: string;
   is_active: boolean;
   created_at?: string;
 }

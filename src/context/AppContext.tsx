@@ -50,11 +50,11 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const LOCAL_STORAGE_KEYS = {
-  PRODUCTS: 'ayyan_products_clean_v7',
-  SLOTS: 'ayyan_slots_clean_v7',
-  BOOKINGS: 'ayyan_bookings_clean_v7',
-  STAFF_USER: 'ayyan_staff_user_clean_v7',
-  EMERGENCY_BLOCK: 'ayyan_emergency_block_clean_v7',
+  PRODUCTS: 'ayyan_products_clean_v8_cdn',
+  SLOTS: 'ayyan_slots_clean_v8_cdn',
+  BOOKINGS: 'ayyan_bookings_clean_v8_cdn',
+  STAFF_USER: 'ayyan_staff_user_clean_v8_cdn',
+  EMERGENCY_BLOCK: 'ayyan_emergency_block_clean_v8_cdn',
 };
 
 // Safe localStorage wrappers to guarantee no QuotaExceededError crashes
@@ -250,28 +250,42 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           .order('id', { ascending: false });
 
         if (!prodErr && Array.isArray(dbProducts) && dbProducts.length > 0) {
-          const mapped: Product[] = dbProducts.map(p => ({
-            id: String(p.id),
-            name: p.name || 'Firework SKU',
-            category: p.category || 'Sparklers',
-            price: Number(p.price) || 0,
-            piece_count: p.piece_count || '1 Box',
-            description: p.description || '',
-            safety_instructions: p.safety_instructions || 'Keep 10m clearance. Light with agarbatti.',
-            safety_tags: p.safety_tags || ['PESO Certified'],
-            sound_level: p.sound_level || 'Medium',
-            image_url: sanitizeProductImage(p.image_url),
-            is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
-            created_at: p.created_at || new Date().toISOString()
-          }));
+          const mapped: Product[] = dbProducts.map(p => {
+            const initialMatch = INITIAL_PRODUCTS.find(
+              ip => (p.code && ip.code === p.code) || (p.name && ip.name.toLowerCase() === p.name.toLowerCase()) || String(p.id) === ip.id
+            );
+            return {
+              id: String(p.id || initialMatch?.id || `db-${p.name}`),
+              code: p.code || initialMatch?.code,
+              name: p.name || initialMatch?.name || 'Firework SKU',
+              category: p.category || initialMatch?.category || 'Sparklers',
+              price: Number(p.price) || initialMatch?.price || 0,
+              piece_count: p.piece_count || initialMatch?.piece_count || '1 Box',
+              unit_price: initialMatch?.unit_price,
+              unit_name: initialMatch?.unit_name,
+              bundle_rate: initialMatch?.bundle_rate,
+              bundle_unit: initialMatch?.bundle_unit,
+              unit_breakdown: initialMatch?.unit_breakdown,
+              description: p.description || initialMatch?.description || '',
+              safety_instructions: p.safety_instructions || initialMatch?.safety_instructions || 'Keep 10m clearance. Light with agarbatti.',
+              safety_tags: p.safety_tags || initialMatch?.safety_tags || ['PESO Certified'],
+              sound_level: p.sound_level || initialMatch?.sound_level || 'Medium',
+              image_url: sanitizeProductImage(p.image_url || p.image || p.imageUrl || initialMatch?.image_url),
+              is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
+              created_at: p.created_at || new Date().toISOString()
+            };
+          });
 
           // Merge live Supabase products over initial static list, giving DB records precedence
           const dbNames = new Set(mapped.map(p => p.name.trim().toLowerCase()));
           const remainingInitial = INITIAL_PRODUCTS.filter(p => !dbNames.has(p.name.trim().toLowerCase()));
-          setProducts([...mapped, ...remainingInitial]);
+          const freshList = [...mapped, ...remainingInitial];
+          setProducts(freshList);
+          safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(freshList)));
         } else if (!prodErr && (!dbProducts || dbProducts.length === 0)) {
           // If remote table has 0 products, preserve local rich INITIAL_PRODUCTS
-          setProducts(prev => (prev.length > 0 ? prev : INITIAL_PRODUCTS));
+          setProducts(INITIAL_PRODUCTS);
+          safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(INITIAL_PRODUCTS)));
         }
 
         const { data: dbSlots, error: slotErr } = await client
