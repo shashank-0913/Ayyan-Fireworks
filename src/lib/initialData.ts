@@ -25,7 +25,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place flat on open ground. Ignite fuse using an agarbatti and retreat immediately to 10 meters distance.',
     safety_tags: ['High Decibel', 'Festive Salute', 'PESO Certified', 'Bunny Brand'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0801.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -45,7 +45,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Light individually in clear open space. Do not ignite inside containers or bottles.',
     safety_tags: ['Auspicious Burst', 'Traditional Formula', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0803.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -65,7 +65,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Keep spectators at minimum 10m clearance. Light from side with cotton garments.',
     safety_tags: ['Royal Grade', 'Crisp Report', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0801.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -85,7 +85,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Outdoor open ground ignition only. Never bend over cracker during lighting.',
     safety_tags: ['Heavy Report', 'Procession Grade', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0803.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -105,7 +105,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Lay flat on dry concrete or earth. Light and step back 5 meters.',
     safety_tags: ['Family Celebration', 'Quick Burst', 'PESO Certified'],
     sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0805.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -125,7 +125,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place on ground, light with agarbatti and move to a safe distance.',
     safety_tags: ['Compact Pkts', 'Lively Crackle', 'PESO Certified'],
     sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0806.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -150,7 +150,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Hold by wire at arms length pointing away from body. Immerse spent wire into bucket of water.',
     safety_tags: ['Smokeless', 'Child Safe', 'Green Chemistry', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0101.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -170,7 +170,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Wear cotton clothing. Light one at a time and extinguish spent sticks in water.',
     safety_tags: ['Multi-Colour', 'Vivid Stars', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0102.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -190,7 +190,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Hold at arm length. Do not touch glowing wire tip.',
     safety_tags: ['Uniform Burn', 'Bright Stars', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0101.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -210,7 +210,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Keep water bucket nearby. Never wave near clothing or hair.',
     safety_tags: ['Vibrant Hues', 'Low Smoke', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0102.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -230,7 +230,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Hold firmly by wire base. Dip in water after use.',
     safety_tags: ['Ruby Red', 'High Luminosity', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0105.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -250,7 +250,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Outdoor use recommended. Light with agarbatti or candle.',
     safety_tags: ['Bright White', 'Steady Burn', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0101.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -270,7 +270,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Hold at arm length. Extinguish spent rods in water.',
     safety_tags: ['4-Color Shift', 'Extended Flame', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0102.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -290,7 +290,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Maintain 2 meters distance from others. Do not touch hot wire.',
     safety_tags: ['Grand Entrance', 'Long Burn', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0101.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -310,7 +310,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Extinguish wire in water bucket immediately after burn ends.',
     safety_tags: ['Heavy Discharge', 'Multi-Color', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0102.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -330,7 +330,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Light from side. Extinguish in water.',
     safety_tags: ['Ruby Sparkle', 'Rich Color', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0105.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -350,7 +350,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Hold at arm length pointing away from body. Keep in sight until spent.',
     safety_tags: ['Panchavarnam', '5-Color Shift', 'Iconic Ayyan', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0115.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -370,7 +370,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Adult supervision required. Always discard wire in water bucket.',
     safety_tags: ['30cm Mega', '90s Duration', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0116.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -390,7 +390,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Keep 2m clearance. Do not inhale smoke directly.',
     safety_tags: ['30cm Colored', 'Vivid Stars', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0117.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -410,7 +410,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Hold with two hands if needed. Place spent rod into water immediately.',
     safety_tags: ['50cm Giant', '3 Min Duration', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0101.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -430,7 +430,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Hold at safe distance. Never touch heated rod.',
     safety_tags: ['50cm Multi-Color', 'Towering Canopy', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0102.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -450,7 +450,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Adults only. Ensure ample outdoor open space.',
     safety_tags: ['75cm Mega', '4 Min Duration', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0101.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -470,7 +470,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Hold securely. Discard in large water bucket.',
     safety_tags: ['75cm Giant Color', 'Supreme Brilliance', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0102.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -490,7 +490,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Keep in dry place. Light with cotton garments only.',
     safety_tags: ['5 Varieties', 'Gift Edition', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0115.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -515,7 +515,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place on smooth, flat dry surface with arrow pointing upward. Light fuse at edge and step back.',
     safety_tags: ['High RPM', 'Golden Aura', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0201.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -535,7 +535,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Ensure 3 meters radius around the spinner is free of dry leaves or flammable materials.',
     safety_tags: ['Wide Radius', 'Silver Rings', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0202.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -555,7 +555,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place on flat cement or tile surface. Clear 4 meters.',
     safety_tags: ['Dual-Phase', 'Long Duration', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0203.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -575,7 +575,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place flat. Ignite fuse and retreat 5 meters.',
     safety_tags: ['Deluxe Gold', '45s Spin', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0204.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -595,7 +595,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Light with agarbatti and step back.',
     safety_tags: ['Krishna Halo', 'Bunny Brand', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0205.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -615,7 +615,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Flat ground placement only. Clear 5 meters.',
     safety_tags: ['Sacred Chakra', 'Extended Spin', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0205.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -635,7 +635,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Mount with nail or place securely. Step back 5m.',
     safety_tags: ['Surprise Crackle', 'Jumping Stars', 'PESO Certified'],
     sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0209.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -655,7 +655,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place on level surface. Retreat 5m.',
     safety_tags: ['Star Spokes', 'Radiating Gold', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0210.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -675,7 +675,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Clear 3m radius.',
     safety_tags: ['High RPM', 'Balanced Spin', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0209.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -695,7 +695,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Outdoor ground use only. Step back 5m.',
     safety_tags: ['Musical Whistle', 'Auditory Effect', 'PESO Certified'],
     sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0209.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -715,7 +715,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Light fuse and retreat 5m.',
     safety_tags: ['Glittering Flashes', 'Multi-Color', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0215.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -735,7 +735,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place flat on open ground.',
     safety_tags: ['Red & White', 'Concentric Rings', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0216.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -755,7 +755,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Light with agarbatti and step back.',
     safety_tags: ['Orange & Purple', 'High Velocity', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0216.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -775,7 +775,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place on smooth ground. Retreat 5m.',
     safety_tags: ['Blooming Lotus', 'Floral Petals', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0209.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -795,7 +795,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place flat and ignite. Clear 3m.',
     safety_tags: ['Cocktail Spinner', 'Rapid Buzz', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0222.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -820,7 +820,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place upright on flat earth. Light top tip and retreat 4 meters.',
     safety_tags: ['8ft Golden Canopy', 'Low Smoke', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0301.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -840,7 +840,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Ensure vertical placement. Keep clearance overhead from tree branches.',
     safety_tags: ['12ft Canopy', 'Volcanic Spray', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0302.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -860,7 +860,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Outdoor open sky only. Retreat 6 meters.',
     safety_tags: ['15ft High Spray', 'Gold Palm Tails', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0303.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -880,7 +880,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Position on flat stone/pavement. Clear 8 meters.',
     safety_tags: ['20ft Giant', '40s Duration', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0304.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -900,7 +900,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Stand clear 6 meters.',
     safety_tags: ['Deluxe Caliber', 'Dense Canopy', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0305.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -920,7 +920,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Light top fuse and step back.',
     safety_tags: ['5 Pack Value', 'Thick Glitter', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0305.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -940,7 +940,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Maintain 6m clearance.',
     safety_tags: ['Crimson Red', 'Emerald Strobes', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0307.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -960,7 +960,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place upright. Clear 6 meters.',
     safety_tags: ['Tri-Color Indian Flare', '3-Stage Fountain', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0309.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1000,7 +1000,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Outdoor open area only.',
     safety_tags: ['Colour Koti', '15ft Spray', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0325.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1180,7 +1180,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Light and step back.',
     safety_tags: ['24k Gold Spray', 'Micro-Sparks', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0326.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1200,7 +1200,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place on level stone.',
     safety_tags: ['Golden Rain', 'Red Strobes', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0322.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1220,7 +1220,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Outdoor ground only.',
     safety_tags: ['Silver Snow', 'Cool Strobe', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0323.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1240,7 +1240,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Light top fuse. Step back 4m.',
     safety_tags: ['Royal Purple', 'Gentle Spray', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0327.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1260,7 +1260,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Retreat 5m.',
     safety_tags: ['Crackling Star', 'Snappy Golden', 'PESO Certified'],
     sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1319.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1300,7 +1300,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Clear 5m perimeter.',
     safety_tags: ['Sonic Siren', 'Silver Flare', 'PESO Certified'],
     sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1321.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1360,7 +1360,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Clear 4m.',
     safety_tags: ['Citrus Orange', 'Amber Stars', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0330.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1400,7 +1400,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Position on flat ground. Step back 6m.',
     safety_tags: ['Peacock Gold', 'Plumage Spray', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0332.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1440,7 +1440,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Step back 5m.',
     safety_tags: ['Dual-Action', 'Titanium Crackle', 'PESO Certified'],
     sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0335.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1460,7 +1460,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Maintain 8 meters safety perimeter. Orient the wide nozzle arc facing the audience.',
     safety_tags: ['Mega Peacock', 'Multi-Nozzle Fan', 'Grand Stage Finale', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0336.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1485,7 +1485,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Hold by plastic end at arm length.',
     safety_tags: ['45cm Strobe', 'Twinkling Star', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0401.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1505,7 +1505,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Dip spent wire in water.',
     safety_tags: ['60cm Strobe', 'High Visibility', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0402.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1525,7 +1525,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Hold with two hands. Keep away from face.',
     safety_tags: ['120cm Mega Torch', '2 Min Strobe', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0402.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1545,7 +1545,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place on ground, light and step back.',
     safety_tags: ['Electric Diamond', 'Silver Flashes', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0406.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1605,7 +1605,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Hold at arm length.',
     safety_tags: ['Mint Green', 'Cool Flame', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0509.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1645,7 +1645,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Outdoor use recommended.',
     safety_tags: ['Rainbow Spectrum', '7 Shades', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0505.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1665,7 +1665,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Launch from clear ground. Step back 8m.',
     safety_tags: ['Twin Spirals', 'Fluttering Wings', 'PESO Certified'],
     sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0507.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1685,7 +1685,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place upright. Clear 6m.',
     safety_tags: ['Percussion Rhythm', 'Fast Beats', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0508.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1710,7 +1710,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place on open ground. Light fuse and retreat 10 meters immediately.',
     safety_tags: ['High Decibel', 'Salute Bomb', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0605.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1730,7 +1730,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Never light in enclosed spaces. Retreat 12m.',
     safety_tags: ['Metallic Foil', 'Titanium Burst', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0605.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1750,7 +1750,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Adult use only. Clear 15m perimeter.',
     safety_tags: ['Max Decibel', 'Giant Foil Block', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0605.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1775,7 +1775,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place upright. Step back 10m.',
     safety_tags: ['Double Sound', 'Ground + Aerial', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0851.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1795,7 +1795,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Maintain 12m distance.',
     safety_tags: ['Heavy Caliber', 'Double Salute', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0852.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1815,7 +1815,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Clear 15m perimeter.',
     safety_tags: ['3 Sound Burst', 'Color Star Balls', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0853.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1835,7 +1835,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place upright on open ground. Retreat 8m.',
     safety_tags: ['Flower + Bomb', 'Surprise Salute', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0305.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1855,7 +1855,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Light fuse and retreat 6m.',
     safety_tags: ['Tri-Color Spheres', 'Glowing Canopy', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0309.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1895,7 +1895,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Ensure level open ground.',
     safety_tags: ['Flip Spin', 'Playful Jump', 'PESO Certified'],
     sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_8561.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1915,7 +1915,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Scatter on open ground or light string from fuse. Step back 8m.',
     safety_tags: ['Red Bijili', '100 Pcs Bag', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0901.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1935,7 +1935,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Light safely with agarbatti. Retreat 8m.',
     safety_tags: ['Stripped Bijili', 'Snappy Report', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0902.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1960,7 +1960,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place stick upright in a stable launch bottle or tube on open ground. Never hold in hand.',
     safety_tags: ['Vertical Ascent', 'Color Burst', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1202.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -1980,7 +1980,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Launch vertically only. Check for overhead wires.',
     safety_tags: ['Fast Ascent', 'Salute Report', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1203.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2000,7 +2000,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Use stable launch guide tube.',
     safety_tags: ['Floral Missile', 'Star Bloom', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1202.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2020,7 +2020,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Clear 15m perimeter.',
     safety_tags: ['200ft Altitude', 'High Decibel Bang', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0116.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2040,7 +2040,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Launch from clear open grounds.',
     safety_tags: ['Multi Colour Pearls', 'High Altitude', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1202.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2060,7 +2060,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Ensure vertical tube guidance.',
     safety_tags: ['Double Aerial Report', 'Twin Stage', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0116.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2080,7 +2080,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Step back 15m.',
     safety_tags: ['Spherical Peony', 'Deluxe Color', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1202.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2100,7 +2100,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Wide open field only. Keep 20m distance.',
     safety_tags: ['Titanium Bass', 'Max Sound Power', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0116.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2120,7 +2120,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Use in wide open fields away from power lines.',
     safety_tags: ['Parachute Descent', '100m Flare', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1210.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2140,7 +2140,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Launch vertically from open ground with launch bottle.',
     safety_tags: ['Musical Siren', 'Sky Whistle', 'PESO Certified'],
     sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1213.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2185,7 +2185,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Throw firmly against hard pavement. Safe for children.',
     safety_tags: ['Pop Pop', 'Friction Crackle', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1300.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2205,7 +2205,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place on open ground. Light and step back 3m.',
     safety_tags: ['Jumping Popcorn', 'Crackling Spark', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1303.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2225,7 +2225,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Insert launch guide into stable ground. Retreat 6m.',
     safety_tags: ['7 Shot Gold', 'Golden Pearls', 'PESO Certified'],
     sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1349.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2245,7 +2245,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place flat on open ground. Clear 5m.',
     safety_tags: ['Winged Flight', 'Dancing Butterfly', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1308.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2265,7 +2265,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Ensure clear sky above.',
     safety_tags: ['Helicopter Drone', 'Rotor Lights', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_8570.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2285,7 +2285,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Flat ground placement. Step back 4m.',
     safety_tags: ['Bunny Brand', 'Jumping Novelty', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1309.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2305,7 +2305,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place on open ground. Retreat 5m.',
     safety_tags: ['Magic Mystery', '3-Stage Effect', 'PESO Certified'],
     sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1310.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2326,7 +2326,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place on level open ground. Ignite fuse with agarbatti and retreat 5 meters.',
     safety_tags: ['Crackling Report', 'Snappy Burst', 'PESO Certified'],
     sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-chori.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2343,7 +2343,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Use outdoors. Ensure 5m clear space from spectators.',
     safety_tags: ['Firefly Strobe', 'Silver Flashes', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-minmini.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2360,7 +2360,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Insert launch guide into stable ground. Never hold in hand.',
     safety_tags: ['Single Color Shot', 'High Velocity', 'PESO Certified'],
     sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-colourshot.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2377,7 +2377,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Outdoor open sky only. Maintain 8m safe distance.',
     safety_tags: ['Sparkling Ascent', 'Thunder Report', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-sparkling-thunder.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2411,7 +2411,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Ensure clear sky above with no tree overhang.',
     safety_tags: ['Sky Spinner', 'Golden Aura', 'PESO Certified'],
     sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-sky-wheels.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2428,7 +2428,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place flat. Retreat 6 meters after lighting.',
     safety_tags: ['Electric Yellow', 'High Voltage Crackle', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-pikachu.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2445,7 +2445,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Light with agarbatti from side.',
     safety_tags: ['Rainbow Pearls', 'Color Transformation', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-colourshot.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2479,7 +2479,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Flat ground placement only.',
     safety_tags: ['Ninja Shuriken', 'High RPM', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-ninja-chakkar.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2496,7 +2496,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Outdoor open area. Step back 8m.',
     safety_tags: ['Ruby Red', 'Heavy Crackle', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-crackling-red.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2513,7 +2513,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Maintain 8m distance.',
     safety_tags: ['Golden Yellow', 'Titanium Stars', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-crackling-yellow.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2547,7 +2547,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Insert launch guide firmly into ground.',
     safety_tags: ['Lazer Beam', 'Fast Trajectory', 'PESO Certified'],
     sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-lazer-strike.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2564,7 +2564,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Light from side on smooth pavement.',
     safety_tags: ['Zodiac Starlight', 'Glittering Spin', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-zodiac-spinners.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2581,7 +2581,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place flat with rotor clear.',
     safety_tags: ['Winged Ascent', 'Rotor Lights', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-helicopter.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2598,7 +2598,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Step back 4m.',
     safety_tags: ['Spinning Top', 'Whistling Notes', 'PESO Certified'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-top-tucker.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2615,7 +2615,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Ensure long open runway on ground.',
     safety_tags: ['Crackling Train', 'Roaring Sparks', 'PESO Certified'],
     sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-crackling-express.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2632,7 +2632,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Clear 8m safety zone.',
     safety_tags: ['Towering Fountain', 'Aerial Starburst', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-legend.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2653,7 +2653,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Secure launcher vertically. Retreat 15m.',
     safety_tags: ['5 in 1 Shell', 'High Altitude', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-paw-patrol.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2670,7 +2670,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Wedge tube firmly into soil. Clear 15m.',
     safety_tags: ['5 in 1 Rio', 'Carnival Theme', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-rio.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2687,7 +2687,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place upright. Keep spectators 15m away.',
     safety_tags: ['5 Synchronized Bursts', 'Peony Whistles', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-beat-bugs.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2721,7 +2721,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Launch vertically only. Retreat 18m.',
     safety_tags: ['Phoenix Wings', 'Gold Willow Tail', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-phoenix.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2738,7 +2738,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Outdoor open sky. Step back 18m.',
     safety_tags: ['Electric Blue', 'Titanium Strobes', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-chicago.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2755,7 +2755,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Keep spectators at 18m perimeter.',
     safety_tags: ['Lemon Yellow', 'Crackling Pistil', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-chicago.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2772,7 +2772,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Secure launch tube firmly.',
     safety_tags: ['Brocade Crown', 'Cascading Gold', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-golden-dance.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2789,7 +2789,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Clear 18m perimeter.',
     safety_tags: ['150ft Comet Tail', 'Emerald Stars', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-glittering-streak.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2806,7 +2806,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Ensure wide clearance from buildings. Retreat 20m.',
     safety_tags: ['Hanabi Master', 'Spherical Chrysanthemum', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-phoenix.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2823,7 +2823,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Launch vertically with ballast support.',
     safety_tags: ['Royal Gold Palms', 'Titanium Crackle', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-golden-dance.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2861,7 +2861,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'High power shell. Anchor tube firmly. Retreat 20m.',
     safety_tags: ['2" Heavy Shell', 'Battlefield Report', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-war-zone.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2878,7 +2878,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Maintain 20m perimeter.',
     safety_tags: ['Celestial Festoon', 'Gold Garland', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-akash-thoran.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2895,7 +2895,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Launch vertically only. Check for wind direction.',
     safety_tags: ['Trailing Willow', 'Sky Divers', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-sky-divers.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2912,7 +2912,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Clear 20m radius.',
     safety_tags: ['Dancing Comets', '180ft Altitude', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-sky-divers.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2929,7 +2929,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Anchor with ballast. Step back 20m.',
     safety_tags: ['Gold Strobe', '5s Hangtime', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-golden-twinkle.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2946,7 +2946,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Keep spectators at safe perimeter.',
     safety_tags: ['Pure Crimson', 'Horizon Peony', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-crimson-red.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2963,7 +2963,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Secure tube upright. Retreat 20m.',
     safety_tags: ['Rare Violet', 'Lemon Core', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-violet-flower.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2980,7 +2980,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Clear 20m zone.',
     safety_tags: ['Cobalt Sapphire', 'Scattering Flock', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-blue-birds.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -2997,7 +2997,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Use stable launch stand.',
     safety_tags: ['Electric Blue', 'Silver Glitter Tips', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-blue-birds.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3014,7 +3014,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Keep clear overhead area.',
     safety_tags: ['Mandarin Orange', 'Amber Rays', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-orange-bloom.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3065,7 +3065,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Anchor securely. Retreat 20m.',
     safety_tags: ['Dual Target Pattern', 'Red & White Rings', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-red-white.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3082,7 +3082,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Follow launcher guidelines.',
     safety_tags: ['Ayyan Signature', 'Neon Pink', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-ayyan-pink.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3099,7 +3099,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Keep 20m distance.',
     safety_tags: ['Glacial Silver', 'Icy Willow', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-alaska.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3116,7 +3116,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Clear 20m perimeter.',
     safety_tags: ['Royal Crown', 'Gemstone Accents', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-alaska.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3133,7 +3133,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Anchor with ballast. Clear 22m.',
     safety_tags: ['Sky-Wide Crackle', 'Thunder Popcorn', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-thunder-popcorn.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3171,7 +3171,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Pro-grade shell. Anchor with ballast. Keep spectators at 25m distance.',
     safety_tags: ['3" Pro Shell', 'Rocking Series', 'Spherical Peony', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-3-rocking-mixed.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3205,7 +3205,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Professional launch tube recommended. Maintain 30m distance.',
     safety_tags: ['3" Premium', 'Gold Coin Brocade', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-3-premium-gold-coin.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3239,7 +3239,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Maintain 30m perimeter.',
     safety_tags: ['Electric Blue', 'Silver Palm Core', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-3-premium-electric-blue.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3278,7 +3278,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place upright on flat hard ground. Wedge with bricks.',
     safety_tags: ['12 Stars', 'Multi-Color', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1701.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3296,7 +3296,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Secure box firmly on ground. Step back 10m.',
     safety_tags: ['12 Star Yellow', 'Dancing Comets', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1770.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3313,7 +3313,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Anchor with ballast. Retreat 10m.',
     safety_tags: ['12 Star Pink', 'Neon Glow', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-pink-panther.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3365,7 +3365,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Outdoor open sky only. Never lean over cake.',
     safety_tags: ['12 Shot Crackling', 'Palm Brocade', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1705.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3383,7 +3383,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Anchor securely. Clear 15m safety perimeter.',
     safety_tags: ['25 Shots Rapid', 'Golden Willow', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1702.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3401,7 +3401,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Keep spectators at 20m distance.',
     safety_tags: ['Heavy Caliber Thor', 'Titanium Salute', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1712.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3419,7 +3419,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place on wide open field. Step back 20m.',
     safety_tags: ['50 Shots Non-Stop', '60s Duration', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1703.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3436,7 +3436,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Wedge with bricks. Retreat 18m.',
     safety_tags: ['Aerial Chakkars', '25 Shots White', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-balle-balle.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3453,7 +3453,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place upright. Clear 15m.',
     safety_tags: ['Golden Rain', 'Soneri Brocade', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-balle-balle.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3470,7 +3470,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Anchor securely. Retreat 20m.',
     safety_tags: ['Shanghai Night', 'Exotic Breaks', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-shanghai-night.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3487,7 +3487,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Clear 20m perimeter.',
     safety_tags: ['40m Canopy', 'Dual-Color Crackle', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-sky-crackling.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3504,7 +3504,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place upright. Retreat 15m.',
     safety_tags: ['12 Whistling Shots', 'Musical Siren', 'PESO Certified'],
     sound_level: 'Medium',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-singing-birds-12.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3521,7 +3521,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Keep spectators at 20m distance.',
     safety_tags: ['25 Shots Symphony', 'Auditory Whistle', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-singing-birds-12.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3538,7 +3538,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Anchor with ballast. Retreat 15m.',
     safety_tags: ['15 Patriotic Shots', 'Tri-Color Bursts', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-indian-delight-15.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3555,7 +3555,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Position on flat ground. Clear 20m.',
     safety_tags: ['30 High Altitude Shots', 'Fireworks Umbrellas', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-indian-delight-15.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3573,7 +3573,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Anchor with heavy bricks. Keep spectators at 20m distance.',
     safety_tags: ['60 Shots Wonder', 'Intense Canopy', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1731.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3590,7 +3590,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Keep clear 20m perimeter.',
     safety_tags: ['60 Shots Mystic', 'Multi-Tiered', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-mystic-magic-60.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3607,7 +3607,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Place on wide open grounds.',
     safety_tags: ['60 Shots Sequential', 'Clean Breaks', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-orange-bloom.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3641,7 +3641,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Anchor securely. Retreat 25m.',
     safety_tags: ['120 Shots Non-Stop', 'Festive Display', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-classic-night-120.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3658,7 +3658,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Pro-grade display. Keep spectators at 30m.',
     safety_tags: ['240 Shots Mega', '3 Min Choreography', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-classic-night-120.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3731,7 +3731,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Anchor with bricks. Step back 15m.',
     safety_tags: ['6 Heavy Shots', 'Titanium Break', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-rio.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3748,7 +3748,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Outdoor open sky only. Retreat 15m.',
     safety_tags: ['Royal Salute', 'Colossal Breaks', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_mega-royal-salute.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3851,7 +3851,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Ensure wide open ground of 30 meters.',
     safety_tags: ['4 at a Time Volleys', '2" Shells', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_mega-fashion-parade.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3868,7 +3868,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Pro-grade display cake. Keep spectators 35m away.',
     safety_tags: ['2½" Shell Hybrid', '8 Salute + 16 MC', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_mega-angel.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3885,7 +3885,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Anchor firmly. Retreat 35m.',
     safety_tags: ['3" Caliber 10 Shots', 'Palm Tree Breaks', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_mega-paris-paris.png',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -3919,7 +3919,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Orient wide side facing spectators. Maintain 30m distance.',
     safety_tags: ['Fan-Shaped 100 Shots', 'Wide Sweep Arcs', 'PESO Certified'],
     sound_level: 'High Spectacle',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_mega-night-rider.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -4008,7 +4008,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Strike away from clothing and body.',
     safety_tags: ['Color Flame', 'Moisture Resistant', 'Safety Striker'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_match-camel-pops-ind.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -4025,7 +4025,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Light fireworks fuses safely at arm length.',
     safety_tags: ['5 Colors', 'Extended Splint', 'Safety Striker'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_match-camel-pops-ind.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -4042,7 +4042,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Store in dry place. Strike gently.',
     safety_tags: ['Rainbow Flame', 'Long Burn', 'Safety Striker'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_match-camel-pops-ind.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -4059,7 +4059,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Keep out of reach of very young children.',
     safety_tags: ['10 Color Special', 'Dasara Edition', 'Safety Striker'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_match-camel-pops-ind.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -4076,7 +4076,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Strike away from body.',
     safety_tags: ['Ayyan Factory', 'Smooth Strike', 'Safety Striker'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_match-camel-pops-ind.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -4093,7 +4093,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Keep dry. Strike away from clothes.',
     safety_tags: ['Star Flame', 'Smooth Ignition', 'Safety Striker'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_match-camel-pops-ind.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -4110,7 +4110,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Store in dry place.',
     safety_tags: ['3 Colors', 'Reliable Strike', 'Safety Striker'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_match-camel-pops-ind.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },
@@ -4127,7 +4127,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     safety_instructions: 'Strike gently away from face.',
     safety_tags: ['5 Colors', 'Josh Series', 'Safety Striker'],
     sound_level: 'Low / Silent',
-    image_url: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80',
+    image_url: 'https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_match-camel-pops-ind.jpg',
     is_active: true,
     created_at: new Date().toISOString()
   },

@@ -1,0 +1,1557 @@
+{
+  "timestamp": "2026-09-28T15:28:50.066Z",
+  "totalProcessed": 220,
+  "exactMatches": 155,
+  "seriesFallbacks": 65,
+  "uniqueUploadedUrls": 121,
+  "products": [
+    {
+      "id": "ayyan-0801",
+      "code": "0801",
+      "name": "Ganesh Crackers",
+      "category": "Maroons",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Ganesh-Crackers-10-Pkt.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0801.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0803",
+      "code": "0803",
+      "name": "Lakshmi Crackers",
+      "category": "Maroons",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Lakshmi-or-King-Carckers-10-Pkt.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0803.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0802",
+      "code": "0802",
+      "name": "Bengal Prince Crackers",
+      "category": "Maroons",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Ganesh-Crackers-10-Pkt.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0801.png",
+      "isExact": false
+    },
+    {
+      "id": "ayyan-0804",
+      "code": "0804",
+      "name": "King Crackers",
+      "category": "Maroons",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Lakshmi-or-King-Carckers-10-Pkt.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0803.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0805",
+      "code": "0805",
+      "name": "Jawan Crackers",
+      "category": "Maroons",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Jawan-Crackers-10Pkt.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0805.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0806",
+      "code": "0806",
+      "name": "Bird Crackers",
+      "category": "Maroons",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Bird-Crackers-10-Pkt.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0806.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0101",
+      "code": "0101",
+      "name": "7 cm Electric Sparklers",
+      "category": "Sparklers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/50cm-electric-sparklers.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0101.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0102",
+      "code": "0102",
+      "name": "7 cm Coloured Sparklers",
+      "category": "Sparklers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/50-cm-Coloured-Sparklers-10-box.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0102.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0103",
+      "code": "0103",
+      "name": "9 cm Electric Sparklers",
+      "category": "Sparklers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/50cm-electric-sparklers.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0101.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0104",
+      "code": "0104",
+      "name": "9 cm Coloured Sparklers",
+      "category": "Sparklers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/50-cm-Coloured-Sparklers-10-box.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0102.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0105",
+      "code": "0105",
+      "name": "10 cm Ruby Sparklers",
+      "category": "Sparklers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/10cm-Ruby-Sparklers-10-box.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0105.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0109",
+      "code": "0109",
+      "name": "12 cm Electric Sparklers",
+      "category": "Sparklers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/50cm-electric-sparklers.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0101.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0110",
+      "code": "0110",
+      "name": "12 cm Coloured Sparklers",
+      "category": "Sparklers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/50-cm-Coloured-Sparklers-10-box.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0102.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0111",
+      "code": "0111",
+      "name": "15 cm Electric Sparklers",
+      "category": "Sparklers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/50cm-electric-sparklers.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0101.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0112",
+      "code": "0112",
+      "name": "15 cm Coloured Sparklers",
+      "category": "Sparklers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/50-cm-Coloured-Sparklers-10-box.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0102.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0113",
+      "code": "0113",
+      "name": "15 cm Ruby Sparklers",
+      "category": "Sparklers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/10cm-Ruby-Sparklers-10-box.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0105.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0115",
+      "code": "0115",
+      "name": "15 cm Panchavarnam 5 In One",
+      "category": "Sparklers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/15cm-Coloured-Sparklers-10-box.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0115.png",
+      "isExact": false
+    },
+    {
+      "id": "ayyan-0116",
+      "code": "0116",
+      "name": "30 cm Electric Sparklers",
+      "category": "Sparklers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/40116629_1-ayyan-fireworks-crackers-classic-rocket-sound.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0116.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0117",
+      "code": "0117",
+      "name": "30 cm Coloured Sparklers",
+      "category": "Sparklers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/40117583_1-ayyan-fireworks-crackers-assorted-box-c.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0117.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0118",
+      "code": "0118",
+      "name": "50 cm Electric Sparklers",
+      "category": "Sparklers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/50cm-electric-sparklers.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0101.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0119",
+      "code": "0119",
+      "name": "50 cm Coloured Sparklers",
+      "category": "Sparklers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/50-cm-Coloured-Sparklers-10-box.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0102.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0120",
+      "code": "0120",
+      "name": "75 cm Electric Sparklers",
+      "category": "Sparklers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/50cm-electric-sparklers.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0101.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0121",
+      "code": "0121",
+      "name": "75 cm Coloured Sparklers",
+      "category": "Sparklers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/50-cm-Coloured-Sparklers-10-box.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0102.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0123",
+      "code": "0123",
+      "name": "Rajadhani Sparklers (5 Varieties)",
+      "category": "Sparklers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/15cm-Coloured-Sparklers-10-box.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0115.png",
+      "isExact": false
+    },
+    {
+      "id": "ayyan-0201",
+      "code": "0201",
+      "name": "Ground Chakkar Medium",
+      "category": "Ground Chakkars",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/1696660841-AYYAN-Ground-Super-Deluxe.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0201.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0202",
+      "code": "0202",
+      "name": "Ground Chakkar Big",
+      "category": "Ground Chakkars",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Ground-Chakkar-Big-25-pcs.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0202.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0203",
+      "code": "0203",
+      "name": "Ground Chakkar Special",
+      "category": "Ground Chakkars",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Ground-Chakkar-Special.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0203.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0204",
+      "code": "0204",
+      "name": "Ground Chakkar Deluxe",
+      "category": "Ground Chakkars",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2026/02/IMG-20260204-WA0038.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0204.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0205",
+      "code": "0205",
+      "name": "Krishna Chakkar Big",
+      "category": "Ground Chakkars",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0002_Untitled-1-12_0005_Layer-8-1-1.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0205.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0206",
+      "code": "0206",
+      "name": "Krishna Chakkar Special",
+      "category": "Ground Chakkars",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0002_Untitled-1-12_0005_Layer-8-1-1.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0205.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0209",
+      "code": "0209",
+      "name": "Joke Wheel",
+      "category": "Wheels",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Whistling-Wheel.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0209.png",
+      "isExact": false
+    },
+    {
+      "id": "ayyan-0210",
+      "code": "0210",
+      "name": "Star Wheel",
+      "category": "Wheels",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0012_Untitled-1-12_0008_Layer-5.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0210.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0211",
+      "code": "0211",
+      "name": "Classic Wheel",
+      "category": "Wheels",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Whistling-Wheel.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0209.png",
+      "isExact": false
+    },
+    {
+      "id": "ayyan-0212",
+      "code": "0212",
+      "name": "Whistling Wheel",
+      "category": "Wheels",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Whistling-Wheel.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0209.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0215",
+      "code": "0215",
+      "name": "Glittering Wheel",
+      "category": "Wheels",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Screenshot_2026-05-20-14-14-57-94_680d03679600f7af0b4c700c6b270fe7.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0215.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0216",
+      "code": "0216",
+      "name": "Tinto Wheel (Red & White)",
+      "category": "Wheels",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/rio-wheel-1.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0216.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0219",
+      "code": "0219",
+      "name": "Rio Wheel (Orange & Purple)",
+      "category": "Wheels",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/rio-wheel-1.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0216.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0221",
+      "code": "0221",
+      "name": "Lotus Wheel",
+      "category": "Wheels",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Whistling-Wheel.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0209.png",
+      "isExact": false
+    },
+    {
+      "id": "ayyan-0222",
+      "code": "0222",
+      "name": "Cocktail Spinners",
+      "category": "Wheels",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Cocktail-Spinners.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0222.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0301",
+      "code": "0301",
+      "name": "Flower Pots Small",
+      "category": "Flower Pots",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Flower-pots-small-copy.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0301.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0302",
+      "code": "0302",
+      "name": "Flower Pots Big",
+      "category": "Flower Pots",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Flower-Pots-Big-600x600-1.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0302.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0303",
+      "code": "0303",
+      "name": "Flower Pots Special",
+      "category": "Flower Pots",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Flower-Pots-Special-600x600-1.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0303.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0304",
+      "code": "0304",
+      "name": "Flower Pots Giant",
+      "category": "Flower Pots",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Screenshot_2026-05-20-14-17-44-14_680d03679600f7af0b4c700c6b270fe7.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0304.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0305",
+      "code": "0305",
+      "name": "Flower Pots Deluxe (2 Pcs)",
+      "category": "Flower Pots",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Flower-Pots-Deluxe-5-Pcs.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0305.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0306",
+      "code": "0306",
+      "name": "Flower Pots Deluxe (5 Pcs)",
+      "category": "Flower Pots",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Flower-Pots-Deluxe-5-Pcs.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0305.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0307",
+      "code": "0307",
+      "name": "Flower Pots Red",
+      "category": "Flower Pots",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Flower-Pots-Red-1.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0307.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0309",
+      "code": "0309",
+      "name": "Tri Colour Fountain",
+      "category": "Colourful Fountains",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Tri-Colour-Fountain-5-Pcs.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0309.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0325",
+      "code": "0325",
+      "name": "Colour Koti Deluxe",
+      "category": "Colourful Fountains",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0005_Untitled-1-12_0002_Layer-12.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0325.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0326",
+      "code": "0326",
+      "name": "Pure Gold Fountain",
+      "category": "Colourful Fountains",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Pure-Gold-1.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0326.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0322",
+      "code": "0322",
+      "name": "Fire Drops Fountain",
+      "category": "Colourful Fountains",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Fire-Drops.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0322.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0323",
+      "code": "0323",
+      "name": "Snow Patrol Fountain",
+      "category": "Colourful Fountains",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Snow-Patrol.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0323.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0327",
+      "code": "0327",
+      "name": "Purple Dove Fountain",
+      "category": "Colourful Fountains",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2026/02/IMG-20260204-WA0020.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0327.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1319",
+      "code": "1319",
+      "name": "Crackling Star Fountain",
+      "category": "Colourful Fountains",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2026/09/IMG-20260906-WA0008-rotated.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1319.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1321",
+      "code": "1321",
+      "name": "Super Sonica Siren",
+      "category": "Colourful Fountains",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0003_Untitled-1-12_0004_Layer-10.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1321.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0330",
+      "code": "0330",
+      "name": "Orange Crush Fountain",
+      "category": "Colourful Fountains",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/orange_crush-600x600-1.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0330.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0332",
+      "code": "0332",
+      "name": "Golden Dawn (Peacock Gold)",
+      "category": "Colourful Fountains",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Indiga-Surprise-Golden-Dawn.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0332.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0335",
+      "code": "0335",
+      "name": "Tora Tora (Colour & Crackling)",
+      "category": "Colourful Fountains",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0000_Layer-1.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0335.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0336",
+      "code": "0336",
+      "name": "Mega Peacock Stage Fountain",
+      "category": "Colourful Fountains",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2026/02/IMG-20260204-WA0031.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0336.jpg",
+      "isExact": false
+    },
+    {
+      "id": "ayyan-0401",
+      "code": "0401",
+      "name": "Twinkling Star 45 cms",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2025/06/IMG-20250401-WA0023.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0401.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0402",
+      "code": "0402",
+      "name": "Twinkling Star 60 cms",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Twinkling-Star-120-cms.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0402.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0403",
+      "code": "0403",
+      "name": "Twinkling Star 120 cms",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Twinkling-Star-120-cms.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0402.png",
+      "isExact": false
+    },
+    {
+      "id": "ayyan-0406",
+      "code": "0406",
+      "name": "Electric Diamond",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Electric-Diamond.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0406.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0509",
+      "code": "0509",
+      "name": "Mint Candle",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/mint-candle-copy.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0509.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0505",
+      "code": "0505",
+      "name": "Rainbow Candle",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Rainbow-Candle.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0505.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0507",
+      "code": "0507",
+      "name": "Twin Birds",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2026/02/IMG-20250729-WA0021.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0507.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0508",
+      "code": "0508",
+      "name": "Chenda Melam (Crackling)",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Chenda-Melam.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0508.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0605",
+      "code": "0605",
+      "name": "Hydrogen Bomb",
+      "category": "Atom Bombs",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Hydrogen-bomb-Foils.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0605.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0610",
+      "code": "0610",
+      "name": "Hydrogen Bomb Foils",
+      "category": "Atom Bombs",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Hydrogen-bomb-Foils.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0605.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0611",
+      "code": "0611",
+      "name": "Cake Bomb Big Foils",
+      "category": "Atom Bombs",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Hydrogen-bomb-Foils.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0605.png",
+      "isExact": false
+    },
+    {
+      "id": "ayyan-0851",
+      "code": "0851",
+      "name": "Double Sound Small",
+      "category": "Combination Crackers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Double-Sound-Crackers-10-Pkt.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0851.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0852",
+      "code": "0852",
+      "name": "Double Sound Big",
+      "category": "Combination Crackers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/1696590285-DOUBLE-SOUND-BIG-AYYAN.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0852.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0853",
+      "code": "0853",
+      "name": "Three Sound with Colour",
+      "category": "Combination Crackers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Three-Sound-with-Colour-10-Pkt.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0853.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0854",
+      "code": "0854",
+      "name": "Flower Bomb Deluxe",
+      "category": "Combination Crackers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Flower-Pots-Deluxe-5-Pcs.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0305.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0855",
+      "code": "0855",
+      "name": "Tri Colour Balls",
+      "category": "Combination Crackers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Tri-Colour-Fountain-5-Pcs.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0309.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-8561",
+      "code": "8561",
+      "name": "Ulta Pulta",
+      "category": "Combination Crackers",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Ulta-Pulta-Flower-Bomb-5-Pcs.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_8561.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0901",
+      "code": "0901",
+      "name": "Loose Crackers Red Bijili",
+      "category": "Maroons",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Loose-Crackers-Red-Bijili.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0901.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-0902",
+      "code": "0902",
+      "name": "Loose Crackers Stripped Bijili",
+      "category": "Maroons",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Loose-crackers-Stripped-Bijili.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0902.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1202",
+      "code": "1202",
+      "name": "Colour Rocket",
+      "category": "Sky Rockets",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Multi-colour-Rocket-or-Flower-Missle.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1202.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1203",
+      "code": "1203",
+      "name": "Rocket Bomb",
+      "category": "Sky Rockets",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Rocket-Bomb.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1203.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1204",
+      "code": "1204",
+      "name": "Flower Missile Rocket",
+      "category": "Sky Rockets",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Multi-colour-Rocket-or-Flower-Missle.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1202.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1205",
+      "code": "1205",
+      "name": "Sound Missile Rocket",
+      "category": "Sky Rockets",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/40116629_1-ayyan-fireworks-crackers-classic-rocket-sound.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0116.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1206",
+      "code": "1206",
+      "name": "Multi Colour Rocket",
+      "category": "Sky Rockets",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Multi-colour-Rocket-or-Flower-Missle.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1202.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1207",
+      "code": "1207",
+      "name": "Double Sound Rocket",
+      "category": "Sky Rockets",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/40116629_1-ayyan-fireworks-crackers-classic-rocket-sound.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0116.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1208",
+      "code": "1208",
+      "name": "Deluxe Rocket Colour",
+      "category": "Sky Rockets",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Multi-colour-Rocket-or-Flower-Missle.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1202.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1209",
+      "code": "1209",
+      "name": "Classic Rocket Sound",
+      "category": "Sky Rockets",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/40116629_1-ayyan-fireworks-crackers-classic-rocket-sound.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_0116.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1210",
+      "code": "1210",
+      "name": "Parachute Rocket",
+      "category": "Sky Rockets",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/glittring-streak-sky-shot-ayyans-e1707540251210.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1210.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1213",
+      "code": "1213",
+      "name": "Air Whistle Rocket",
+      "category": "Sky Rockets",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Screenshot_2025-04-04-18-58-59-46_e5d3893ac03954c6bb675ef2555b879b.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1213.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1300",
+      "code": "1300",
+      "name": "Pop Pop (Crackling)",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/WhatsApp-Image-2024-05-09-at-21.31.38_dd8e4ece.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1300.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1303",
+      "code": "1303",
+      "name": "Crackling Pop Corn",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/crackling-popcorn-copy.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1303.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1349",
+      "code": "1349",
+      "name": "Seven Shot Gold",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Seven-Shot-Gold-5-Pcs.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1349.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1308",
+      "code": "1308",
+      "name": "Dancing Butterfly",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2025/06/IMG-20250401-WA0015-rotated.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1308.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-8570",
+      "code": "8570",
+      "name": "Super Drone",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Super-Drone.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_8570.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1309",
+      "code": "1309",
+      "name": "Funny Bunny",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Funny-Bunny-10-Pcs.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1309.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1310",
+      "code": "1310",
+      "name": "Magic Mystery",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Magic-Mystery-10-Pcs.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1310.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-nov-chori",
+      "code": "nov-chori",
+      "name": "Chori Chori (Crackling)",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Chori-Chori-10-Pcs.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-chori.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-nov-minmini",
+      "code": "nov-minmini",
+      "name": "Min Mini",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/WhatsApp-Image-2024-03-19-at-13.46.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-minmini.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-nov-colourshot",
+      "code": "nov-colourshot",
+      "name": "Colour Shot",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Screenshot_2025-04-04-19-03-45-75_e5d3893ac03954c6bb675ef2555b879b.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-colourshot.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-nov-sparkling-thunder",
+      "code": "nov-sparkling-thunder",
+      "name": "Sparkling Thunder",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Sparkling-Thunder-5Pcs.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-sparkling-thunder.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-nov-sky-wheels",
+      "code": "nov-sky-wheels",
+      "name": "Sky Wheels",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/1696592284-SKY-WHEELS.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-sky-wheels.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-nov-pikachu",
+      "code": "nov-pikachu",
+      "name": "Pikachu (1 Pce Crackling)",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Pikachu-Elite-fancy-novelty-3-Pcs.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-pikachu.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-nov-colour-fantasy",
+      "code": "nov-colour-fantasy",
+      "name": "Colour Fantasy",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Screenshot_2025-04-04-19-03-45-75_e5d3893ac03954c6bb675ef2555b879b.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-colourshot.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-nov-ninja-chakkar",
+      "code": "nov-ninja-chakkar",
+      "name": "Ninja Chakkar",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Ninja-Chakkar.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-ninja-chakkar.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-nov-crackling-red",
+      "code": "nov-crackling-red",
+      "name": "Crackling Red",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0000_Untitled-1-12_0007_Layer-6-2.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-crackling-red.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-nov-crackling-yellow",
+      "code": "nov-crackling-yellow",
+      "name": "Crackling Yellow",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Crackling-Yellow-3-Pcs.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-crackling-yellow.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-nov-lazer-strike",
+      "code": "nov-lazer-strike",
+      "name": "Lazer Strike",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Lazer-Strike-5-Pcs.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-lazer-strike.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-nov-zodiac-spinners",
+      "code": "nov-zodiac-spinners",
+      "name": "Zodiac Spinners",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Zodiac-Spinners-5-Pcs.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-zodiac-spinners.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-nov-helicopter",
+      "code": "nov-helicopter",
+      "name": "Helicopter",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Helicopter-5-Pcs.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-helicopter.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-nov-top-tucker",
+      "code": "nov-top-tucker",
+      "name": "Top Tucker",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Top-tucker-given-by-customer.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-top-tucker.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-nov-crackling-express",
+      "code": "nov-crackling-express",
+      "name": "Crackling Express",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0002_Layer-3.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-crackling-express.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-nov-legend",
+      "code": "nov-legend",
+      "name": "Legend",
+      "category": "Novelties",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0004_Layer-5-e1714712461396.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_nov-legend.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-paw-patrol",
+      "code": "shell-paw-patrol",
+      "name": "Paw Patrol (5 in 1)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Paw-PatrolZoomaRocky-5Pcs-1.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-paw-patrol.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-rio",
+      "code": "shell-rio",
+      "name": "Rio (5 in 1)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Secret-warrior-6-shot-crackling.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-rio.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-beat-bugs",
+      "code": "shell-beat-bugs",
+      "name": "Beat Bugs (5 in 1)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Beat-Bugs-600x600-1.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-beat-bugs.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-phoenix",
+      "code": "shell-phoenix",
+      "name": "Phoenix (1¾\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/OntarioPhoenixOsaka.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-phoenix.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-chicago",
+      "code": "shell-chicago",
+      "name": "Chicago (1¾\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Chicago-600x600-1.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-chicago.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-yellow-vitara",
+      "code": "shell-yellow-vitara",
+      "name": "Yellow Vitara (1¾\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Chicago-600x600-1.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-chicago.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-golden-dance",
+      "code": "shell-golden-dance",
+      "name": "Golden Dance (1¾\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Golden-Dnace-Crackling-queen.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-golden-dance.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-glittering-streak",
+      "code": "shell-glittering-streak",
+      "name": "Glittering Streak (1¾\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Glittering-Streak.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-glittering-streak.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-osaka",
+      "code": "shell-osaka",
+      "name": "Osaka (1¾\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/OntarioPhoenixOsaka.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-phoenix.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-crackling-queen",
+      "code": "shell-crackling-queen",
+      "name": "Crackling Queen (1¾\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Golden-Dnace-Crackling-queen.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-golden-dance.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-2-war-zone",
+      "code": "shell-2-war-zone",
+      "name": "War Zone (2\" Crackling Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/War-Zone-Glitter-Crackling.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-war-zone.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-2-akash-thoran",
+      "code": "shell-2-akash-thoran",
+      "name": "Akash Thoran (2\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/akash-thoran_3-copy.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-akash-thoran.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-2-sky-divers",
+      "code": "shell-2-sky-divers",
+      "name": "Sky Divers (2\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Sky-DiversTango.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-sky-divers.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-2-tango",
+      "code": "shell-2-tango",
+      "name": "Tango (2\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Sky-DiversTango.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-sky-divers.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-2-golden-twinkle",
+      "code": "shell-2-golden-twinkle",
+      "name": "Golden Twinkle (2\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Golden-Twinkle.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-golden-twinkle.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-2-crimson-red",
+      "code": "shell-2-crimson-red",
+      "name": "Crimson Red (2\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Crimson-Red.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-crimson-red.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-2-violet-flower",
+      "code": "shell-2-violet-flower",
+      "name": "Violet Flower (2\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Violet-flower.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-violet-flower.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-2-blue-birds",
+      "code": "shell-2-blue-birds",
+      "name": "Blue Birds (2\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Blue-BirdsBlue-Bloom.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-blue-birds.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-2-blue-bloom",
+      "code": "shell-2-blue-bloom",
+      "name": "Blue Bloom (2\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Blue-BirdsBlue-Bloom.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-blue-birds.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-2-orange-bloom",
+      "code": "shell-2-orange-bloom",
+      "name": "Orange Bloom (2\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Orange-Bloom.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-orange-bloom.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-2-red-white",
+      "code": "shell-2-red-white",
+      "name": "Red & White (2\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Red-white.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-red-white.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-2-ayyan-pink",
+      "code": "shell-2-ayyan-pink",
+      "name": "Ayyan\\",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/ayyan-ring-acp-with-gun-copy.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-ayyan-pink.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-2-alaska",
+      "code": "shell-2-alaska",
+      "name": "Alaska (2\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/cleopatra_3-copy.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-alaska.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-2-cleopatra",
+      "code": "shell-2-cleopatra",
+      "name": "Cleopatra (2\" Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/cleopatra_3-copy.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-alaska.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-2-thunder-popcorn",
+      "code": "shell-2-thunder-popcorn",
+      "name": "Thunder Popcorn (2\" Crackling Shell)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Thunder-Popcorn-crackling.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-thunder-popcorn.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-3-rocking-mixed",
+      "code": "shell-3-rocking-mixed",
+      "name": "3\" Shell Rocking Series (Assorted)",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2026/02/IMG-20260204-WA0033.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-3-rocking-mixed.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-shell-3-premium-gold-coin",
+      "code": "shell-3-premium-gold-coin",
+      "name": "3\" Shell Premium: Gold Coin",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/gold-coin_3-copy.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-3-premium-gold-coin.png",
+      "isExact": false
+    },
+    {
+      "id": "ayyan-shell-3-premium-electric-blue",
+      "code": "shell-3-premium-electric-blue",
+      "name": "3\" Shell Premium: Electric Blue",
+      "category": "Aerial Shells",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Electric-blue.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-3-premium-electric-blue.png",
+      "isExact": false
+    },
+    {
+      "id": "ayyan-1701",
+      "code": "1701",
+      "name": "Dekhe Man (12 Star)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Dekhe-Man-12-stars.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1701.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1770",
+      "code": "1770",
+      "name": "Daisy Bees (12 Star Yellow)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Daisy-Bees-12-shot-yellow.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1770.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-cake-pink-panther",
+      "code": "cake-pink-panther",
+      "name": "Pink Panther (12 Star Pink)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Pink-Panther-12-shot-pink.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-pink-panther.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1705",
+      "code": "1705",
+      "name": "Sky Storm (12 Shot Crackling)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Sky-Storm-12-shot-crackling.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1705.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1702",
+      "code": "1702",
+      "name": "Chal Mere Sath (25 Shots MultiColour Crackling)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Chal-Mere-Sath-25-shot.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1702.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1712",
+      "code": "1712",
+      "name": "Thor (25 Shots MultiColour Crackling)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Thor-Multi-Colour-Cracklings.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1712.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1703",
+      "code": "1703",
+      "name": "Dil Maange More (50 Shots MultiColour Crackling)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Dil-Maange-More-50-shot.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1703.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-cake-balle-balle",
+      "code": "cake-balle-balle",
+      "name": "Balle Balle (25 Shots White Revolving Chakkars)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Balle-balle-soneri-barsath-25-shots-cracklin.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-balle-balle.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-cake-soneri-barsath",
+      "code": "cake-soneri-barsath",
+      "name": "Soneri Barsath (25 Shots Crackling)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Balle-balle-soneri-barsath-25-shots-cracklin.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-balle-balle.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-cake-shanghai-night",
+      "code": "cake-shanghai-night",
+      "name": "Shanghai Night (25 Shots Crackling)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0008_Untitled-1-12_0012_Layer-1.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-shanghai-night.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-cake-sky-crackling",
+      "code": "cake-sky-crackling",
+      "name": "Sky Crackling (Crackling with 2 Colour)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/sky-crackling.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-sky-crackling.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-cake-singing-birds-12",
+      "code": "cake-singing-birds-12",
+      "name": "Singing Birds (12 Shots Whistling)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Singing-birs-12-shot-whistle.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-singing-birds-12.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-cake-singing-birds-25",
+      "code": "cake-singing-birds-25",
+      "name": "Singing Birds (25 Shots Whistling)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Singing-birs-12-shot-whistle.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-singing-birds-12.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-cake-indian-delight-15",
+      "code": "cake-indian-delight-15",
+      "name": "Indian Delight (15 Shots MultiColour Crackling)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0011_Untitled-1-12_0009_Layer-4.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-indian-delight-15.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-cake-indian-delight-30",
+      "code": "cake-indian-delight-30",
+      "name": "Indian Delight (30 Shots MultiColour Crackling)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0011_Untitled-1-12_0009_Layer-4.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-indian-delight-15.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-1731",
+      "code": "1731",
+      "name": "Wonder Night (60 Shots MultiColour)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Wonder-night-60-shot-four-colour.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_1731.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-cake-mystic-magic-60",
+      "code": "cake-mystic-magic-60",
+      "name": "Mystic Magic (60 Shots MultiColour Crackling)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/673beb43707bb-38d7b522-4a7f-f4a1-f8d4-22f350c3c272.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-mystic-magic-60.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-cake-rang-o-rang-60",
+      "code": "cake-rang-o-rang-60",
+      "name": "Rang-O-Rang (60 Shots 1 By 1 Crackling)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Orange-Bloom.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-2-orange-bloom.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-cake-classic-night-120",
+      "code": "cake-classic-night-120",
+      "name": "Classic Night (120 Shots MultiColour)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Classic-Night-240-shot-four-colour.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-classic-night-120.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-cake-classic-night-240",
+      "code": "cake-classic-night-240",
+      "name": "Classic Night (240 Shots MultiColour)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Classic-Night-240-shot-four-colour.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_cake-classic-night-120.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-mega-secret-warrior",
+      "code": "mega-secret-warrior",
+      "name": "Secret Warrior (6 Shot Crackling)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Secret-warrior-6-shot-crackling.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_shell-rio.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-mega-royal-salute",
+      "code": "mega-royal-salute",
+      "name": "Royal Salute (6 Shot MultiColour)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Royal-Salute-6-shot-multicolour.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_mega-royal-salute.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-mega-fashion-parade",
+      "code": "mega-fashion-parade",
+      "name": "Fashion Parade (2\" Shell 24 Shots M.C 4 at a time)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/AS-CI-1730.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_mega-fashion-parade.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-mega-angel",
+      "code": "mega-angel",
+      "name": "Angel (2½\" Shell 4 Shot 2 Times + 16 Shot M.C)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2026/02/IMG-20260204-WA0043.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_mega-angel.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-mega-paris-paris",
+      "code": "mega-paris-paris",
+      "name": "Paris Paris (3\" Shell 10 Shots M.C Crackling)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Paris-Paris-3-inch-10-shots.png",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_mega-paris-paris.png",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-mega-night-rider",
+      "code": "mega-night-rider",
+      "name": "Night Rider (100 Shots Fanshaped)",
+      "category": "Aerial Cakes",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/Untitled-1_0005_Layer-6.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_mega-night-rider.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-match-camel-pops-ind",
+      "code": "match-camel-pops-ind",
+      "name": "Kamathenu Camel POPS Colour Matches",
+      "category": "Safety Matches",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_match-camel-pops-ind.jpg",
+      "isExact": false
+    },
+    {
+      "id": "ayyan-match-camel-ninja-ind",
+      "code": "match-camel-ninja-ind",
+      "name": "Kamathenu Camel NINJA 5 Colour Matches",
+      "category": "Safety Matches",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_match-camel-pops-ind.jpg",
+      "isExact": false
+    },
+    {
+      "id": "ayyan-match-camel-rainbow-ind",
+      "code": "match-camel-rainbow-ind",
+      "name": "Kamathenu Camel RAINBOW 5 Colour Matches",
+      "category": "Safety Matches",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_match-camel-pops-ind.jpg",
+      "isExact": false
+    },
+    {
+      "id": "ayyan-match-camel-dasara-ind",
+      "code": "match-camel-dasara-ind",
+      "name": "Kamathenu Camel DASARA 10 Colour Matches",
+      "category": "Safety Matches",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_match-camel-pops-ind.jpg",
+      "isExact": false
+    },
+    {
+      "id": "ayyan-match-ayyan-camel-pops",
+      "code": "match-ayyan-camel-pops",
+      "name": "Ayyan Camel Pops Colour Matches",
+      "category": "Safety Matches",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_match-camel-pops-ind.jpg",
+      "isExact": false
+    },
+    {
+      "id": "ayyan-match-camel-star",
+      "code": "match-camel-star",
+      "name": "Ayyan Camel Star Colour Matches",
+      "category": "Safety Matches",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_match-camel-pops-ind.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-match-camel-3-colours",
+      "code": "match-camel-3-colours",
+      "name": "Ayyan Camel Colour Matches (3 Colours)",
+      "category": "Safety Matches",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_match-camel-pops-ind.jpg",
+      "isExact": true
+    },
+    {
+      "id": "ayyan-match-josh",
+      "code": "match-josh",
+      "name": "Ayyan JOSH Colour Matches (5 Colour)",
+      "category": "Safety Matches",
+      "originalImage": "https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg",
+      "supabaseUrl": "https://bdvrcpisjatvbbqffswp.supabase.co/storage/v1/object/public/products/official/ayyan_match-camel-pops-ind.jpg",
+      "isExact": false
+    }
+  ]
+}
