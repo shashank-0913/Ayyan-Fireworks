@@ -264,7 +264,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
             created_at: p.created_at || new Date().toISOString()
           }));
-          setProducts(mapped);
+
+          // Merge live Supabase products over initial static list, giving DB records precedence
+          const dbNames = new Set(mapped.map(p => p.name.trim().toLowerCase()));
+          const remainingInitial = INITIAL_PRODUCTS.filter(p => !dbNames.has(p.name.trim().toLowerCase()));
+          setProducts([...mapped, ...remainingInitial]);
         } else if (!prodErr && (!dbProducts || dbProducts.length === 0)) {
           // If remote table has 0 products, preserve local rich INITIAL_PRODUCTS
           setProducts(prev => (prev.length > 0 ? prev : INITIAL_PRODUCTS));
@@ -632,10 +636,34 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               console.warn('Supabase product update error:', updateError.message);
             }
           }
-        } else {
-          // Product has a static code ID like 'ayyan-0310'.
-          // Avoid querying bigint 'id' column with string text to prevent 400 Bad Request.
-          console.info(`Product "${id}" updated locally in cache.`);
+        } else if (updated) {
+          // Product was from initial catalogue list (non-numeric ID).
+          // Insert into Supabase so edits persist permanently across browser reloads.
+          const dbInsertPayload = {
+            name: (updated as Product).name,
+            category: (updated as Product).category,
+            price: Number((updated as Product).price) || 0,
+            description: (updated as Product).description || '',
+            image_url: (updated as Product).image_url
+          };
+
+          const { data, error: insertError } = await supabase
+            .from('products')
+            .insert([dbInsertPayload])
+            .select();
+
+          if (!insertError && data && data.length > 0) {
+            const newDbId = String(data[0].id);
+            const persistedProduct: Product = {
+              ...(updated as Product),
+              id: newDbId,
+              created_at: data[0].created_at || (updated as Product).created_at
+            };
+            updated = persistedProduct;
+            setProducts(prev => prev.map(p => (p.id === id ? persistedProduct : p)));
+          } else if (insertError) {
+            console.warn('Supabase product persistence notice:', insertError.message);
+          }
         }
       } catch (e) {
         console.warn('Supabase product update fallback:', e);

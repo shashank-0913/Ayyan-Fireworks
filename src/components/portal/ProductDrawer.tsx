@@ -73,15 +73,14 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
       setToastMessage(null);
       const publicUrl = await uploadProductImage(file);
       setImageUrl(publicUrl);
-      setToastMessage({ type: 'success', text: 'Photo uploaded to cloud storage successfully!' });
+      setToastMessage({ type: 'success', text: 'Photo uploaded to Supabase Storage successfully!' });
       setTimeout(() => setToastMessage(null), 4000);
     } catch (err: any) {
-      console.warn('Image upload error, utilizing safe fallback image:', err);
-      // Fallback to preset photo, never storing huge base64 strings
-      setImageUrl(PRESET_IMAGES[0].url);
+      console.error('Image upload failed:', err);
+      // Keep existing image URL, do not overwrite with fallback or base64
       setToastMessage({
-        type: 'warning',
-        text: err?.message || 'Storage upload notice: Using standard catalogue image.'
+        type: 'error',
+        text: err?.message || 'Storage upload failed. Kept existing image.'
       });
       setTimeout(() => setToastMessage(null), 6000);
     } finally {
