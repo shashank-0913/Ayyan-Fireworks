@@ -12,8 +12,7 @@ import {
   Clock, 
   CalendarCheck,
   ShieldCheck,
-  ChevronRight,
-  Sparkles
+  ChevronRight
 } from 'lucide-react';
 import { LegalComplianceBanner } from '../common/LegalComplianceBanner';
 import { VIPTicker } from '../common/VIPTicker';
@@ -28,7 +27,6 @@ export const CustomerNavbar: React.FC = () => {
   const navLinks = [
     { name: 'Home', path: '/', icon: Flame },
     { name: '2026 Catalogue', path: '/catalogue', icon: BookOpen },
-    { name: 'Zero-G 3D', path: '/antigravity', icon: Sparkles },
     { name: 'Book VIP Slot', path: '/book-slot', icon: CalendarCheck },
     { name: 'Showroom Visit', path: '/showroom', icon: MapPin },
   ];
@@ -108,20 +106,6 @@ export const CustomerNavbar: React.FC = () => {
 
             {/* Right Quick Actions */}
             <div className="flex items-center gap-2 sm:gap-2.5">
-              {/* WhatsApp Header Action */}
-              <a
-                href={WHATSAPP_CONTACT.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 dark:bg-emerald-500/15 dark:hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold transition-all shadow-xs hover:shadow-sm transform hover:-translate-y-0.5 active:scale-95 min-touch"
-                aria-label="Chat on WhatsApp"
-                title={`Chat with Showroom on WhatsApp (${WHATSAPP_CONTACT.display})`}
-              >
-                <WhatsAppIcon className="w-4 h-4 text-[#25D366]" />
-                <span className="hidden lg:inline">Chat on WhatsApp</span>
-                <span className="lg:hidden text-[11px]">WhatsApp</span>
-              </a>
-
               {/* Theme Toggle Button */}
               <ThemeToggle />
 

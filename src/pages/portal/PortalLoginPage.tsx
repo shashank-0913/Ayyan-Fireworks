@@ -12,9 +12,16 @@ import {
   Lock
 } from 'lucide-react';
 import { useAyyanStore } from '../../context/AppContext';
-import { ADMIN_EMAIL, isAuthorizedAdminEmail } from '../../lib/utils';
+import { isAuthorizedAdminEmail } from '../../lib/utils';
 import { supabase } from '../../lib/supabase';
 import { ThemeToggle } from '../../components/common/ThemeToggle';
+
+function maskEmail(email: string): string {
+  if (!email || !email.includes('@')) return email;
+  const [user, domain] = email.split('@');
+  if (user.length <= 2) return `${user}***@${domain}`;
+  return `${user.slice(0, 2)}${'*'.repeat(Math.min(user.length - 3, 5))}${user.slice(-1)}@${domain}`;
+}
 
 export const PortalLoginPage: React.FC = () => {
   const { staffLogin, currentUser } = useAyyanStore();
@@ -22,7 +29,7 @@ export const PortalLoginPage: React.FC = () => {
   const location = useLocation();
 
   const [step, setStep] = useState<'EMAIL' | 'OTP'>('EMAIL');
-  const [email, setEmail] = useState<string>(ADMIN_EMAIL);
+  const [email, setEmail] = useState<string>('');
   const [otpDigits, setOtpDigits] = useState<string[]>(['', '', '', '', '', '']);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -75,11 +82,15 @@ export const PortalLoginPage: React.FC = () => {
 
     const cleanEmail = email.trim().toLowerCase();
 
+    if (!cleanEmail) {
+      setError('Please enter your admin email address.');
+      return;
+    }
+
     // 1. Strict Security & Email Restriction (Pre-validation)
     if (!isAuthorizedAdminEmail(cleanEmail)) {
-      const deniedMsg = 'Access Denied: Only authorized admin can log in.';
+      const deniedMsg = 'Access Denied: Only authorized admin credentials can log in.';
       setError(deniedMsg);
-      alert(deniedMsg);
       return;
     }
 
@@ -88,7 +99,7 @@ export const PortalLoginPage: React.FC = () => {
     try {
       // Direct Supabase Auth API call to dispatch 6-digit email OTP
       const { data, error: otpError } = await supabase.auth.signInWithOtp({
-        email: 'prasadkolla1968@gmail.com',
+        email: cleanEmail,
         options: {
           shouldCreateUser: false,
           emailRedirectTo: undefined, // ensure no redirect link overrides OTP behavior
@@ -98,7 +109,6 @@ export const PortalLoginPage: React.FC = () => {
       if (otpError) {
         console.error('Supabase OTP send error:', otpError);
         setError(otpError.message);
-        alert(otpError.message);
         return; // DO NOT ADVANCE TO OTP SCREEN IF THERE IS AN ERROR
       }
 
@@ -109,7 +119,7 @@ export const PortalLoginPage: React.FC = () => {
       setOtpDigits(['', '', '', '', '', '']);
       setCountdown(60);
       setCanResend(false);
-      setSuccessMsg(`A 6-digit verification code has been dispatched to ${cleanEmail}`);
+      setSuccessMsg(`A 6-digit verification code has been dispatched to ${maskEmail(cleanEmail)}`);
 
       // Auto-focus first OTP box
       setTimeout(() => {
@@ -119,7 +129,6 @@ export const PortalLoginPage: React.FC = () => {
       console.error('Supabase OTP exception:', err);
       const msg = err.message || 'Failed to send OTP code. Please check your connection.';
       setError(msg);
-      alert(msg);
     } finally {
       setIsLoading(false);
     }
@@ -137,36 +146,33 @@ export const PortalLoginPage: React.FC = () => {
     if (!isAuthorizedAdminEmail(cleanEmail)) {
       const deniedMsg = 'Access Denied: Only authorized admin can log in.';
       setError(deniedMsg);
-      alert(deniedMsg);
       return;
     }
 
     setIsLoading(true);
     try {
       const { data, error: otpError } = await supabase.auth.signInWithOtp({
-        email: 'prasadkolla1968@gmail.com',
+        email: cleanEmail,
         options: {
           shouldCreateUser: false,
-          emailRedirectTo: undefined, // ensure no redirect link overrides OTP behavior
+          emailRedirectTo: undefined,
         },
       });
 
       if (otpError) {
         console.error('Supabase OTP resend error:', otpError);
         setError(otpError.message);
-        alert(otpError.message);
         return;
       }
 
       console.log('Supabase OTP re-sent successfully:', data);
       setCountdown(60);
       setCanResend(false);
-      setSuccessMsg(`A fresh 6-digit OTP code has been re-sent to ${cleanEmail}`);
+      setSuccessMsg(`A fresh 6-digit OTP code has been re-sent to ${maskEmail(cleanEmail)}`);
     } catch (err: any) {
       console.error('Supabase OTP resend exception:', err);
       const msg = err.message || 'Failed to resend code.';
       setError(msg);
-      alert(msg);
     } finally {
       setIsLoading(false);
     }
@@ -219,19 +225,18 @@ export const PortalLoginPage: React.FC = () => {
     e.preventDefault();
     setError(null);
 
+    const cleanEmail = email.trim().toLowerCase();
     const enteredOtp = otpDigits.join('').trim();
 
-    if (!isAuthorizedAdminEmail(email)) {
+    if (!isAuthorizedAdminEmail(cleanEmail)) {
       const deniedMsg = 'Access Denied: Only authorized admin can log in.';
       setError(deniedMsg);
-      alert(deniedMsg);
       return;
     }
 
     if (enteredOtp.length !== 6) {
       const lengthMsg = 'Please enter the complete 6-digit OTP code.';
       setError(lengthMsg);
-      alert(lengthMsg);
       return;
     }
 
@@ -239,7 +244,7 @@ export const PortalLoginPage: React.FC = () => {
 
     try {
       const { data, error } = await supabase.auth.verifyOtp({
-        email: 'prasadkolla1968@gmail.com',
+        email: cleanEmail,
         token: enteredOtp.trim(),
         type: 'email',
       });
@@ -247,7 +252,6 @@ export const PortalLoginPage: React.FC = () => {
       if (error) {
         console.error('Supabase OTP verify error:', error);
         setError(error.message);
-        alert(error.message);
         return;
       }
 
@@ -256,24 +260,22 @@ export const PortalLoginPage: React.FC = () => {
           await supabase.auth.signOut();
           const deniedMsg = 'Access Denied: Only authorized admin can log in.';
           setError(deniedMsg);
-          alert(deniedMsg);
           return;
         }
 
         // Authorize store session and navigate to admin
-        await staffLogin('prasadkolla1968@gmail.com', 'admin');
+        await staffLogin(cleanEmail, 'admin');
         navigate('/admin', { replace: true });
         return;
       }
 
       // Fallback verification
-      await staffLogin('prasadkolla1968@gmail.com', 'admin');
+      await staffLogin(cleanEmail, 'admin');
       navigate('/admin', { replace: true });
     } catch (err: any) {
       console.error('Supabase OTP verify exception:', err);
       const msg = err.message || 'Invalid or expired OTP code. Please check and try again.';
       setError(msg);
-      alert(msg);
     } finally {
       setIsLoading(false);
     }
@@ -309,11 +311,11 @@ export const PortalLoginPage: React.FC = () => {
         <div className="bg-white/95 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800/90 py-8 px-6 sm:px-10 rounded-3xl shadow-xl space-y-6 backdrop-blur-xl transition-all duration-300">
           
           {/* Security Notice */}
-          <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-900 dark:text-amber-300 text-[11px] flex items-start gap-2.5 transition-all">
+          <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-900 dark:text-amber-300 text-xs flex items-start gap-2.5 transition-all">
             <ShieldCheck className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
             <div className="leading-relaxed">
-              <strong>Single Authorized Client: </strong>
-              Restricted exclusively to <code>{ADMIN_EMAIL}</code>.
+              <strong>Authorized Portal Access: </strong>
+              Restricted exclusively to authorized store management personnel.
             </div>
           </div>
 
@@ -336,7 +338,7 @@ export const PortalLoginPage: React.FC = () => {
                       setEmail(e.target.value);
                       if (error) setError(null);
                     }}
-                    placeholder={ADMIN_EMAIL}
+                    placeholder="Enter registered admin email"
                     className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-4 py-3 text-slate-900 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 text-sm font-medium transition-all"
                   />
                 </div>
@@ -357,23 +359,6 @@ export const PortalLoginPage: React.FC = () => {
                   <KeyRound className="w-4 h-4" />
                   <span>{isLoading ? 'Sending OTP via Supabase...' : 'Send OTP'}</span>
                 </button>
-
-                {/* Quick Preset for Authorized Admin */}
-                <div className="pt-3 border-t border-slate-200 dark:border-slate-800">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setEmail(ADMIN_EMAIL);
-                      setError(null);
-                    }}
-                    className="w-full p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-slate-950 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 flex items-center justify-between font-semibold transition-colors cursor-pointer"
-                  >
-                    <span>{ADMIN_EMAIL}</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-bold uppercase">
-                      Authorized
-                    </span>
-                  </button>
-                </div>
               </form>
             </div>
           ) : (
@@ -386,7 +371,7 @@ export const PortalLoginPage: React.FC = () => {
                 <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs transition-all">
                   <div className="truncate pr-2">
                     <span className="text-[10px] uppercase font-bold text-slate-400 block">Sent OTP To</span>
-                    <span className="font-semibold text-slate-800 dark:text-slate-200 font-mono text-xs">{email}</span>
+                    <span className="font-semibold text-slate-800 dark:text-slate-200 font-mono text-xs">{maskEmail(email)}</span>
                   </div>
                   <button
                     type="button"

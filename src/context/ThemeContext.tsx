@@ -24,10 +24,10 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     } catch (e) {
       console.warn('Failed to read theme preference from storage:', e);
     }
-    return 'dark'; // Festive Midnight default
+    return 'light'; // Default to light theme
   });
 
-  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>('dark');
+  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>('light');
 
   useEffect(() => {
     const root = document.documentElement;

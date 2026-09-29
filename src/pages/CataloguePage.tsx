@@ -10,8 +10,7 @@ import {
   Flame,
   CalendarCheck,
   Tag,
-  CheckCircle2,
-  Sparkles
+  CheckCircle2
 } from 'lucide-react';
 import { useAyyanStore } from '../context/AppContext';
 import { ProductCard } from '../components/customer/ProductCard';
@@ -156,15 +155,6 @@ export const CataloguePage: React.FC = () => {
             Explore genuine PESO-certified Bunny Brand formulations, piece breakdowns, dynamic INR rates, and safety handling instructions.
           </p>
         </div>
-
-        {/* Antigravity 3D Physics Mode CTA */}
-        <Link
-          to="/antigravity"
-          className="px-5 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-gold-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-glow-gold transition-all active:scale-95 shrink-0 self-center sm:self-auto"
-        >
-          <Sparkles className="w-4 h-4 fill-current animate-spin" />
-          <span>Launch Zero-G Mode</span>
-        </Link>
       </div>
 
       {/* Statutory Legal Strip */}
