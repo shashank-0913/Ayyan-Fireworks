@@ -88,9 +88,9 @@ export const PortalLayout: React.FC = () => {
                 <Menu className="w-5 h-5" />
               </button>
 
-              <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-amber-400 to-gold-600 rounded-xl p-0.5 border border-amber-400/40 flex items-center justify-center shrink-0 shadow-sm">
-                <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center p-0.5">
-                  <img src="/ayyan-emblem.png" alt="Bunny Brand" className="w-full h-full object-contain rounded-full" />
+              <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-amber-400 to-gold-600 rounded-full p-0.5 border border-amber-400/40 flex items-center justify-center shrink-0 shadow-sm">
+                <div className="w-full h-full bg-slate-950 rounded-full flex items-center justify-center p-0.5 overflow-hidden">
+                  <img src="/ayyan-emblem.png" alt="Bunny Brand" className="w-full h-full object-contain" />
                 </div>
               </div>
               <div>
@@ -208,8 +208,8 @@ export const PortalLayout: React.FC = () => {
               {/* Drawer Header */}
               <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-slate-950 p-0.5 border border-amber-400/40">
-                    <img src="/ayyan-emblem.png" alt="Logo" className="w-full h-full object-contain rounded-full" />
+                  <div className="w-8 h-8 rounded-full bg-slate-950 p-0.5 border border-amber-400/40 overflow-hidden flex items-center justify-center">
+                    <img src="/ayyan-emblem.png" alt="Logo" className="w-full h-full object-contain" />
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-slate-900 dark:text-white">Owner Portal</h3>

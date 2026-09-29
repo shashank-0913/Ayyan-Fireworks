@@ -292,9 +292,13 @@ export const PortalLoginPage: React.FC = () => {
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-b from-amber-500/10 via-amber-500/5 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-3 transition-all duration-300">
-        <div className="w-18 h-18 bg-gradient-to-br from-amber-400 via-amber-500 to-gold-600 rounded-3xl p-1 border border-amber-500/40 inline-flex items-center justify-center mx-auto shadow-glow-gold transform hover:scale-105 transition-transform duration-300">
-          <div className="w-full h-full bg-slate-950 rounded-[20px] flex items-center justify-center p-1">
-            <img src="/ayyan-emblem.png" alt="Bunny Brand" className="w-full h-full object-contain rounded-full" />
+        <div className="w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-br from-amber-400 via-amber-500 to-gold-600 rounded-3xl p-1 border border-amber-500/40 inline-flex items-center justify-center mx-auto shadow-md dark:shadow-glow-gold transform hover:scale-105 transition-transform duration-300">
+          <div className="w-full h-full bg-slate-950 rounded-[22px] flex items-center justify-center p-2.5 sm:p-3 overflow-hidden">
+            <img 
+              src="/ayyan-emblem.png" 
+              alt="Bunny Brand Fancy Fireworks" 
+              className="w-full h-full object-contain filter drop-shadow-sm select-none" 
+            />
           </div>
         </div>
 
