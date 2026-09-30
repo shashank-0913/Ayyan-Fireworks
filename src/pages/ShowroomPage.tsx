@@ -70,7 +70,7 @@ export const ShowroomPage: React.FC = () => {
                   <Navigation className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400" />
                   <span>Landmark & Highway Route</span>
                 </span>
-                <p className="text-slate-700 dark:text-slate-200">Main Road / NH-16 (near Natayyapalem / Drivers Colony), Sheela Nagar</p>
+                <p className="text-slate-700 dark:text-slate-200">Main Road / NH-16 (near Natayyapalem), Sheela Nagar</p>
               </div>
 
               <div className="space-y-1">
@@ -191,7 +191,7 @@ export const ShowroomPage: React.FC = () => {
               </div>
               <div className="absolute top-0 bottom-0 left-1/3 w-12 bg-slate-800/80 border-x border-white/10 flex items-center justify-center">
                 <span className="font-mono text-[9px] text-slate-400 -rotate-90 whitespace-nowrap">
-                  Drivers Colony Road
+                  Natayyapalem Road
                 </span>
               </div>
 

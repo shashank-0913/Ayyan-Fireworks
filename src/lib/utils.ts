@@ -95,7 +95,7 @@ export function generateGoogleCalendarUrl(
   const details = encodeURIComponent(
     `Official Showroom VIP Visiting Slot for ${customerName}.\nBooking Ref: ${bookingCode}\n\nStrictly In-Store Viewing & PESO Safety Compliance.\nPlease show this pass at the reception desk upon arrival.`
   );
-  const location = encodeURIComponent('Ayyan Fireworks Flagship Showroom, Main Road / NH-16 (near Natayyapalem / Drivers Colony), Sheela Nagar, Visakhapatnam, Andhra Pradesh 530012');
+  const location = encodeURIComponent('Ayyan Fireworks Flagship Showroom, Main Road / NH-16 (near Natayyapalem), Sheela Nagar, Visakhapatnam, Andhra Pradesh 530012');
 
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startIso}/${endIso}&details=${details}&location=${location}`;
 }
@@ -131,9 +131,9 @@ export const SHOWROOM_CONTACT = {
   whatsapp: WHATSAPP_CONTACT.number,
   whatsappDisplay: WHATSAPP_CONTACT.display,
   whatsappUrl: WHATSAPP_CONTACT.url,
-  address: 'Main Road / NH-16 (near Natayyapalem / Drivers Colony), Sheela Nagar, Visakhapatnam, Andhra Pradesh 530012, India.',
+  address: 'Main Road / NH-16 (near Natayyapalem), Sheela Nagar, Visakhapatnam, Andhra Pradesh 530012, India.',
   shortAddress: 'NH-16, Sheela Nagar, Visakhapatnam 530012',
-  landmark: 'Near Natayyapalem / Drivers Colony, Sheela Nagar',
+  landmark: 'Near Natayyapalem, Sheela Nagar',
   city: 'Visakhapatnam, Andhra Pradesh',
   pincode: '530012',
   googleMapsUrl: 'https://maps.app.goo.gl/agWQFufKjWkwFbVs7',
