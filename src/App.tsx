@@ -24,7 +24,11 @@ import { PortalDashboardPage } from './pages/portal/PortalDashboardPage';
 import { PortalProductsPage } from './pages/portal/PortalProductsPage';
 import { PortalSlotsPage } from './pages/portal/PortalSlotsPage';
 import { PortalBookingsPage } from './pages/portal/PortalBookingsPage';
-import { PortalScannerPage } from './pages/portal/PortalScannerPage';
+
+// Standalone Gate Portal Components & Pages
+import { GateAuthGate } from './components/gate/GateAuthGate';
+import { GateLoginPage } from './pages/gate/GateLoginPage';
+import { GateScannerPage } from './pages/gate/GateScannerPage';
 
 // Customer Layout Wrapper
 const CustomerPortalLayout: React.FC = () => {
@@ -74,7 +78,21 @@ export const App: React.FC = () => {
               <Route path="/antigravity" element={<Navigate to="/catalogue" replace />} />
 
               {/* ================================================================= */}
-              {/* 2. STANDALONE ADMIN & OPERATIONS PORTAL */}
+              {/* 2. DEDICATED STANDALONE GATE VERIFICATION PORTAL                  */}
+              {/* ================================================================= */}
+              <Route path="/gate/login" element={<GateLoginPage />} />
+              <Route
+                path="/gate"
+                element={
+                  <GateAuthGate>
+                    <GateScannerPage />
+                  </GateAuthGate>
+                }
+              />
+              <Route path="/scanner" element={<Navigate to="/gate" replace />} />
+
+              {/* ================================================================= */}
+              {/* 3. STANDALONE ADMIN & OPERATIONS PORTAL                           */}
               {/* ================================================================= */}
               <Route path="/admin/login" element={<PortalLoginPage />} />
               <Route path="/portal/login" element={<PortalLoginPage />} />
@@ -93,7 +111,7 @@ export const App: React.FC = () => {
                 <Route path="products" element={<PortalProductsPage />} />
                 <Route path="slots" element={<PortalSlotsPage />} />
                 <Route path="bookings" element={<PortalBookingsPage />} />
-                <Route path="scanner" element={<PortalScannerPage />} />
+                <Route path="scanner" element={<Navigate to="/gate" replace />} />
               </Route>
 
               {/* Portal Routes (Alias) */}
@@ -110,7 +128,7 @@ export const App: React.FC = () => {
                 <Route path="products" element={<PortalProductsPage />} />
                 <Route path="slots" element={<PortalSlotsPage />} />
                 <Route path="bookings" element={<PortalBookingsPage />} />
-                <Route path="scanner" element={<PortalScannerPage />} />
+                <Route path="scanner" element={<Navigate to="/gate" replace />} />
               </Route>
 
               {/* Fallback */}
