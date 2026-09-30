@@ -16,6 +16,11 @@ import { CataloguePage } from './pages/CataloguePage';
 import { BookSlotPage } from './pages/BookSlotPage';
 import { ShowroomPage } from './pages/ShowroomPage';
 
+// Standalone Dedicated Scanner Components & Pages (Owner OTP Secured)
+import { ScannerAuthGate } from './components/scanner/ScannerAuthGate';
+import { ScannerLoginPage } from './pages/scanner/ScannerLoginPage';
+import { ScannerPage } from './pages/scanner/ScannerPage';
+
 // Portal Components & Pages
 import { PortalAuthGate } from './components/portal/PortalAuthGate';
 import { PortalLayout } from './components/portal/PortalLayout';
@@ -24,7 +29,6 @@ import { PortalDashboardPage } from './pages/portal/PortalDashboardPage';
 import { PortalProductsPage } from './pages/portal/PortalProductsPage';
 import { PortalSlotsPage } from './pages/portal/PortalSlotsPage';
 import { PortalBookingsPage } from './pages/portal/PortalBookingsPage';
-import { PortalScannerPage } from './pages/portal/PortalScannerPage';
 
 // Customer Layout Wrapper
 const CustomerPortalLayout: React.FC = () => {
@@ -73,13 +77,26 @@ export const App: React.FC = () => {
               {/* Antigravity Route Redirect to Catalogue */}
               <Route path="/antigravity" element={<Navigate to="/catalogue" replace />} />
 
-              {/* Gate & Scanner direct route aliases -> Admin Scanner */}
-              <Route path="/gate/login" element={<Navigate to="/admin/login" replace />} />
-              <Route path="/gate" element={<Navigate to="/admin/scanner" replace />} />
-              <Route path="/scanner" element={<Navigate to="/admin/scanner" replace />} />
+              {/* ================================================================= */}
+              {/* 2. DEDICATED STANDALONE OWNER QR SCANNER PORTAL                   */}
+              {/* ================================================================= */}
+              <Route path="/scanner/login" element={<ScannerLoginPage />} />
+              <Route
+                path="/scanner"
+                element={
+                  <ScannerAuthGate>
+                    <ScannerPage />
+                  </ScannerAuthGate>
+                }
+              />
+              {/* Aliases for quick access */}
+              <Route path="/verify-qr" element={<Navigate to="/scanner" replace />} />
+              <Route path="/verify-qr/login" element={<Navigate to="/scanner/login" replace />} />
+              <Route path="/gate" element={<Navigate to="/scanner" replace />} />
+              <Route path="/gate/login" element={<Navigate to="/scanner/login" replace />} />
 
               {/* ================================================================= */}
-              {/* 2. STANDALONE ADMIN & OPERATIONS PORTAL                           */}
+              {/* 3. STANDALONE ADMIN & OPERATIONS PORTAL                           */}
               {/* ================================================================= */}
               <Route path="/admin/login" element={<PortalLoginPage />} />
               <Route path="/portal/login" element={<PortalLoginPage />} />
@@ -95,7 +112,7 @@ export const App: React.FC = () => {
               >
                 <Route index element={<Navigate to="/admin/dashboard" replace />} />
                 <Route path="dashboard" element={<PortalDashboardPage />} />
-                <Route path="scanner" element={<PortalScannerPage />} />
+                <Route path="scanner" element={<Navigate to="/scanner" replace />} />
                 <Route path="products" element={<PortalProductsPage />} />
                 <Route path="slots" element={<PortalSlotsPage />} />
                 <Route path="bookings" element={<PortalBookingsPage />} />
@@ -112,7 +129,7 @@ export const App: React.FC = () => {
               >
                 <Route index element={<Navigate to="/portal/dashboard" replace />} />
                 <Route path="dashboard" element={<PortalDashboardPage />} />
-                <Route path="scanner" element={<PortalScannerPage />} />
+                <Route path="scanner" element={<Navigate to="/scanner" replace />} />
                 <Route path="products" element={<PortalProductsPage />} />
                 <Route path="slots" element={<PortalSlotsPage />} />
                 <Route path="bookings" element={<PortalBookingsPage />} />

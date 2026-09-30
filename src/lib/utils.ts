@@ -146,15 +146,20 @@ export function getWhatsAppUrl(customMessage?: string): string {
   return `https://wa.me/${WHATSAPP_CONTACT.number}?text=${message}`;
 }
 
-const envAdminEmail = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_ADMIN_EMAIL) ||
-  (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_ADMIN_EMAIL) ||
+const envAdminEmail = (typeof import.meta !== 'undefined' && (import.meta.env?.VITE_OWNER_EMAIL || import.meta.env?.VITE_ADMIN_EMAIL)) ||
+  (typeof process !== 'undefined' && (process.env?.NEXT_PUBLIC_OWNER_EMAIL || process.env?.NEXT_PUBLIC_ADMIN_EMAIL)) ||
   'prasadkolla1968@gmail.com';
 
 export const ADMIN_EMAIL = String(envAdminEmail).trim().toLowerCase();
+export const OWNER_EMAIL = ADMIN_EMAIL;
 
 export function isAuthorizedAdminEmail(email?: string | null): boolean {
   if (!email) return false;
   return email.trim().toLowerCase() === ADMIN_EMAIL;
+}
+
+export function isAuthorizedOwnerEmail(email?: string | null): boolean {
+  return isAuthorizedAdminEmail(email);
 }
 
 export function generateUUID(): string {

@@ -86,11 +86,11 @@ export const PortalDashboardPage: React.FC = () => {
 
         <div className="flex flex-wrap items-center gap-2.5">
           <Link
-            to={`${basePath}/scanner`}
+            to="/scanner"
             className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black flex items-center gap-1.5 transition-all shadow-md active:scale-95 min-h-[40px]"
           >
             <QrCode className="w-4 h-4 text-slate-950" />
-            <span>📷 Gate QR Scanner</span>
+            <span>Gate QR Scanner</span>
           </Link>
 
           <button
