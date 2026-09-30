@@ -268,7 +268,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               unit_breakdown: initialMatch?.unit_breakdown,
               description: p.description || initialMatch?.description || '',
               safety_instructions: p.safety_instructions || initialMatch?.safety_instructions || 'Keep 10m clearance. Light with agarbatti.',
-              safety_tags: p.safety_tags || initialMatch?.safety_tags || ['PESO Certified'],
+              safety_tags: p.safety_tags || initialMatch?.safety_tags || ['Bunny Certified'],
               sound_level: p.sound_level || initialMatch?.sound_level || 'Medium',
               image_url: sanitizeProductImage(p.image_url || p.image || p.imageUrl || initialMatch?.image_url),
               is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
@@ -522,14 +522,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     // c. If found AND status === 'completed':
     if (matchedBooking.status === 'completed') {
       const verifiedAtDate = matchedBooking.verified_at
-        ? `${formatDateReadable(matchedBooking.verified_at.split('T')[0])} ${new Date(matchedBooking.verified_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })}`
+        ? `${formatDateReadable(matchedBooking.verified_at.split('T')[0])} at ${new Date(matchedBooking.verified_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })}`
         : 'earlier today';
 
       return {
         status: 'completed',
         booking: matchedBooking,
         verified_at: matchedBooking.verified_at || undefined,
-        message: `RE-ENTRY REJECTED: Ticket already checked in on ${verifiedAtDate}`
+        message: `ALREADY CHECKED IN at ${verifiedAtDate}`
       };
     }
 
@@ -562,7 +562,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       status: 'confirmed',
       booking: completedBooking,
       verified_at: nowIso,
-      message: 'Entry Verified & Slot Closed!'
+      message: 'Entry Verified & Slot Closed Permanently'
     };
   }, [bookings]);
 

@@ -118,10 +118,10 @@ export const PortalScannerPage: React.FC = () => {
       const result = await verifyGateTicket(tokenOrCode);
 
       if (result.status === 'confirmed') {
-        // d. Found and confirmed: Entry Verified & Slot Closed!
+        // d. Found and confirmed: Entry Verified & Slot Closed Permanently!
         setScanState('confirmed');
         setActiveBooking(result.booking || null);
-        setStatusMessage(result.message || 'Entry Verified & Slot Closed!');
+        setStatusMessage(result.message || 'Entry Verified & Slot Closed Permanently');
         setVerifiedAtString(result.verified_at || new Date().toISOString());
         playScanTone('success', soundEnabled);
         if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
@@ -137,17 +137,17 @@ export const PortalScannerPage: React.FC = () => {
             slotTime: result.booking?.slot_time,
             slotDate: result.booking?.slot_date,
             status: 'confirmed',
-            message: 'Entry Verified & Slot Closed',
+            message: 'Entry Verified & Slot Closed Permanently',
             timestamp: new Date().toLocaleTimeString('en-IN')
           },
           ...prev.slice(0, 24)
         ]);
 
       } else if (result.status === 'completed') {
-        // c. Found and already completed: RE-ENTRY REJECTED
+        // c. Found and already completed: ALREADY CHECKED IN
         setScanState('completed');
         setActiveBooking(result.booking || null);
-        setStatusMessage(result.message);
+        setStatusMessage(result.message || 'ALREADY CHECKED IN');
         setVerifiedAtString(result.verified_at || '');
         playScanTone('error', soundEnabled);
         if (navigator.vibrate) navigator.vibrate([250]);
@@ -162,7 +162,7 @@ export const PortalScannerPage: React.FC = () => {
             slotTime: result.booking?.slot_time,
             slotDate: result.booking?.slot_date,
             status: 'completed',
-            message: result.message,
+            message: result.message || 'ALREADY CHECKED IN',
             timestamp: new Date().toLocaleTimeString('en-IN')
           },
           ...prev.slice(0, 24)
@@ -519,7 +519,7 @@ export const PortalScannerPage: React.FC = () => {
                       ENTRY PERMITTED
                     </span>
                     <h2 className="text-xl sm:text-2xl font-black text-emerald-300 tracking-tight mt-1">
-                      Entry Verified & Slot Closed!
+                      Entry Verified & Slot Closed Permanently
                     </h2>
                     <p className="text-xs text-emerald-200/80 font-mono">
                       Supabase slot marked completed • Verified at {verifiedAtString ? new Date(verifiedAtString).toLocaleTimeString('en-IN') : new Date().toLocaleTimeString('en-IN')}
@@ -590,7 +590,7 @@ export const PortalScannerPage: React.FC = () => {
                       ENTRY DENIED
                     </span>
                     <h2 className="text-xl sm:text-2xl font-black text-red-400 tracking-tight mt-1">
-                      RE-ENTRY REJECTED!
+                      ALREADY CHECKED IN!
                     </h2>
                     <p className="text-xs text-red-300 font-mono">
                       {statusMessage}

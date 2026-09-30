@@ -8,7 +8,8 @@ import {
   ArrowRight, 
   CheckCircle2, 
   Clock, 
-  FileSpreadsheet
+  FileSpreadsheet,
+  QrCode
 } from 'lucide-react';
 import { useAyyanStore } from '../../context/AppContext';
 import { KPICards } from '../../components/portal/KPICards';
@@ -84,6 +85,14 @@ export const PortalDashboardPage: React.FC = () => {
         </div>
 
         <div className="flex flex-wrap items-center gap-2.5">
+          <Link
+            to={`${basePath}/scanner`}
+            className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black flex items-center gap-1.5 transition-all shadow-md active:scale-95 min-h-[40px]"
+          >
+            <QrCode className="w-4 h-4 text-slate-950" />
+            <span>📷 Gate QR Scanner</span>
+          </Link>
+
           <button
             onClick={() => setIsProductDrawerOpen(true)}
             className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5 transition-colors border border-slate-300 dark:border-slate-700 min-h-[40px]"

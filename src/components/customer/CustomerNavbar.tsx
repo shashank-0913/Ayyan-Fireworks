@@ -9,10 +9,8 @@ import {
   Flame, 
   Phone, 
   Clock, 
-  ShieldCheck,
   ChevronRight
 } from 'lucide-react';
-import { LegalComplianceBanner } from '../common/LegalComplianceBanner';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { SHOWROOM_CONTACT, WHATSAPP_CONTACT } from '../../lib/utils';
@@ -39,9 +37,6 @@ export const CustomerNavbar: React.FC = () => {
       {/* 1. TOP STICKY HEADER (DESKTOP & MOBILE COMPACT)                           */}
       {/* ========================================================================= */}
       <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-white/95 dark:bg-obsidian-950/90 border-b border-slate-200/80 dark:border-white/[0.08] transition-colors duration-200">
-        {/* Statutory Legal Strip (Desktop & Mobile) */}
-        <LegalComplianceBanner compact />
-
         {/* Top Bar Container */}
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20">
@@ -299,11 +294,6 @@ export const CustomerNavbar: React.FC = () => {
                 <UserCheck className="w-4 h-4 text-amber-500 dark:text-amber-400" />
                 <span>Admin & Management Workstation</span>
               </Link>
-
-              <div className="flex items-center justify-center gap-1.5 text-[10px] text-emerald-600 dark:text-emerald-400 pt-1 font-semibold">
-                <ShieldCheck className="w-3.5 h-3.5" />
-                <span>PESO Licensed Showroom Facility</span>
-              </div>
             </div>
           </div>
         </div>

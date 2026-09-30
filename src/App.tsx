@@ -24,11 +24,7 @@ import { PortalDashboardPage } from './pages/portal/PortalDashboardPage';
 import { PortalProductsPage } from './pages/portal/PortalProductsPage';
 import { PortalSlotsPage } from './pages/portal/PortalSlotsPage';
 import { PortalBookingsPage } from './pages/portal/PortalBookingsPage';
-
-// Standalone Gate Portal Components & Pages
-import { GateAuthGate } from './components/gate/GateAuthGate';
-import { GateLoginPage } from './pages/gate/GateLoginPage';
-import { GateScannerPage } from './pages/gate/GateScannerPage';
+import { PortalScannerPage } from './pages/portal/PortalScannerPage';
 
 // Customer Layout Wrapper
 const CustomerPortalLayout: React.FC = () => {
@@ -77,22 +73,13 @@ export const App: React.FC = () => {
               {/* Antigravity Route Redirect to Catalogue */}
               <Route path="/antigravity" element={<Navigate to="/catalogue" replace />} />
 
-              {/* ================================================================= */}
-              {/* 2. DEDICATED STANDALONE GATE VERIFICATION PORTAL                  */}
-              {/* ================================================================= */}
-              <Route path="/gate/login" element={<GateLoginPage />} />
-              <Route
-                path="/gate"
-                element={
-                  <GateAuthGate>
-                    <GateScannerPage />
-                  </GateAuthGate>
-                }
-              />
-              <Route path="/scanner" element={<Navigate to="/gate" replace />} />
+              {/* Gate & Scanner direct route aliases -> Admin Scanner */}
+              <Route path="/gate/login" element={<Navigate to="/admin/login" replace />} />
+              <Route path="/gate" element={<Navigate to="/admin/scanner" replace />} />
+              <Route path="/scanner" element={<Navigate to="/admin/scanner" replace />} />
 
               {/* ================================================================= */}
-              {/* 3. STANDALONE ADMIN & OPERATIONS PORTAL                           */}
+              {/* 2. STANDALONE ADMIN & OPERATIONS PORTAL                           */}
               {/* ================================================================= */}
               <Route path="/admin/login" element={<PortalLoginPage />} />
               <Route path="/portal/login" element={<PortalLoginPage />} />
@@ -108,10 +95,10 @@ export const App: React.FC = () => {
               >
                 <Route index element={<Navigate to="/admin/dashboard" replace />} />
                 <Route path="dashboard" element={<PortalDashboardPage />} />
+                <Route path="scanner" element={<PortalScannerPage />} />
                 <Route path="products" element={<PortalProductsPage />} />
                 <Route path="slots" element={<PortalSlotsPage />} />
                 <Route path="bookings" element={<PortalBookingsPage />} />
-                <Route path="scanner" element={<Navigate to="/gate" replace />} />
               </Route>
 
               {/* Portal Routes (Alias) */}
@@ -125,10 +112,10 @@ export const App: React.FC = () => {
               >
                 <Route index element={<Navigate to="/portal/dashboard" replace />} />
                 <Route path="dashboard" element={<PortalDashboardPage />} />
+                <Route path="scanner" element={<PortalScannerPage />} />
                 <Route path="products" element={<PortalProductsPage />} />
                 <Route path="slots" element={<PortalSlotsPage />} />
                 <Route path="bookings" element={<PortalBookingsPage />} />
-                <Route path="scanner" element={<Navigate to="/gate" replace />} />
               </Route>
 
               {/* Fallback */}

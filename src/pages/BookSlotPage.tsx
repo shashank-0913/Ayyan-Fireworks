@@ -1,6 +1,5 @@
 import React from 'react';
 import { SlotBookingFlow } from '../components/customer/SlotBookingFlow';
-import { LegalComplianceBanner } from '../components/common/LegalComplianceBanner';
 import { Calendar, Clock, ShieldCheck, MapPin } from 'lucide-react';
 
 export const BookSlotPage: React.FC = () => {
@@ -19,9 +18,6 @@ export const BookSlotPage: React.FC = () => {
           Avoid festive queues. Secure a dedicated 1-hour in-store visiting pass with personalized pyrotechnic advisory, direct factory pricing, and priority entry.
         </p>
       </div>
-
-      {/* Statutory Banner */}
-      <LegalComplianceBanner compact />
 
       {/* The 3-Step Interactive Booking Engine */}
       <SlotBookingFlow />
@@ -43,7 +39,7 @@ export const BookSlotPage: React.FC = () => {
             <ShieldCheck className="w-5 h-5" />
           </div>
           <div>
-            <h4 className="font-bold text-slate-900 dark:text-white text-sm mb-1">PESO Safety Locker Compliance</h4>
+            <h4 className="font-bold text-slate-900 dark:text-white text-sm mb-1">Certified Packaging & Safety</h4>
             <p className="leading-relaxed">All verified purchases are securely packaged in fire-retardant corrugated cartons with safety seals.</p>
           </div>
         </div>

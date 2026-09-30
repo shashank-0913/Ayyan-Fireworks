@@ -22,7 +22,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onImageClick 
   const [isExpandedDesc, setIsExpandedDesc] = useState(false);
   const [isInternalLightboxOpen, setIsInternalLightboxOpen] = useState(false);
 
-  const descriptionText = product.description || "Authentic Sivakasi festive pyrotechnic masterpiece crafted under strict statutory quality standards.";
+  const descriptionText = product.description || "Authentic Sivakasi festive pyrotechnic masterpiece crafted with premium Bunny Brand quality standards.";
   const isLongDescription = descriptionText.length > 90;
 
   const handleImageClick = () => {

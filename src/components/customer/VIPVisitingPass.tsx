@@ -170,7 +170,7 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
 
       ctx.fillStyle = '#10b981';
       ctx.font = 'bold 12px system-ui, -apple-system, sans-serif';
-      ctx.fillText('✓ PESO Licensed Facility  •  Guaranteed Priority Entry  •  One-Time Pass', 50, 435);
+      ctx.fillText('✓ Official Store Entry Pass  •  Guaranteed Priority Admission  •  One-Time Pass', 50, 435);
 
       // Draw QR Code onto Canvas from the SVG element
       const svgElement = document.querySelector('#ticket-qr-svg');
@@ -302,7 +302,7 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
                 Ayyan Fireworks
               </h3>
               <p className="text-[11px] text-slate-400">
-                Official VIP Gate Pass • PESO Licensed Facility
+                Official VIP Visiting Pass • Bunny Brand Flagship
               </p>
             </div>
           </div>

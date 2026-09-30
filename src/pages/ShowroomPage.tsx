@@ -12,7 +12,6 @@ import {
 } from 'lucide-react';
 import { SHOWROOM_CONTACT, WHATSAPP_CONTACT } from '../lib/utils';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
-import { LegalComplianceBanner } from '../components/common/LegalComplianceBanner';
 
 export const ShowroomPage: React.FC = () => {
   return (
@@ -27,11 +26,9 @@ export const ShowroomPage: React.FC = () => {
           Showroom & Navigation Guide
         </h1>
         <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
-          Plan your festive visit to our licensed premises in Visakhapatnam. Safe, air-conditioned viewing galleries with expert pyrotechnic guidance.
+          Plan your festive visit to our flagship showroom in Visakhapatnam. Safe, air-conditioned viewing galleries with expert pyrotechnic guidance.
         </p>
       </div>
-
-      <LegalComplianceBanner compact />
 
       {/* Main Grid: Showroom Details & Map Simulation */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -109,10 +106,10 @@ export const ShowroomPage: React.FC = () => {
 
               <div className="space-y-1">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                  <span>Statutory License</span>
+                  <Building className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400" />
+                  <span>Facility Type</span>
                 </span>
-                <p className="font-mono text-xs text-slate-600 dark:text-slate-300">{SHOWROOM_CONTACT.pesoLicense}</p>
+                <p className="text-xs text-slate-600 dark:text-slate-300">Authorized Bunny Brand Flagship Showroom</p>
               </div>
             </div>
 
@@ -159,7 +156,7 @@ export const ShowroomPage: React.FC = () => {
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                <span>PESO-certified safety packaging provided for secure personal transportation.</span>
+                <span>Heavy-duty secure festive packaging provided for safe vehicle transportation.</span>
               </li>
             </ul>
           </div>
@@ -247,7 +244,7 @@ export const ShowroomPage: React.FC = () => {
 
               <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-obsidian-950 border border-slate-200 dark:border-white/5 space-y-1">
                 <strong className="text-amber-700 dark:text-gold-300 block">4. Direct Billing & Vehicle Dispatch</strong>
-                <p className="text-slate-600 dark:text-slate-400">Complete statutory billing directly at checkout with instant loading assistance.</p>
+                <p className="text-slate-600 dark:text-slate-400">Complete showroom billing directly at checkout with instant loading assistance.</p>
               </div>
             </div>
           </div>

@@ -13,7 +13,6 @@ import {
 import { useAyyanStore } from '../context/AppContext';
 import { ProductCard } from '../components/customer/ProductCard';
 import { ProductImageLightbox } from '../components/customer/ProductImageLightbox';
-import { LegalComplianceBanner } from '../components/common/LegalComplianceBanner';
 import { Product, SoundLevel } from '../types';
 import { formatINR } from '../lib/utils';
 
@@ -152,13 +151,10 @@ export const CataloguePage: React.FC = () => {
             Sivakasi Pyrotechnic Catalogue
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
-            Explore genuine PESO-certified Bunny Brand formulations, piece breakdowns, dynamic INR rates, and safety handling instructions.
+            Explore genuine Bunny Brand formulations, piece breakdowns, dynamic INR rates, and safety handling instructions.
           </p>
         </div>
       </div>
-
-      {/* Statutory Legal Strip */}
-      <LegalComplianceBanner compact />
 
       {/* ========================================================================= */}
       {/* 1. SEARCH & QUICK FILTERS CONTROL PANEL                                   */}

@@ -93,7 +93,7 @@ export function generateGoogleCalendarUrl(
 
   const title = encodeURIComponent(`Ayyan Fireworks Showroom VIP Visit (${bookingCode})`);
   const details = encodeURIComponent(
-    `Official Showroom VIP Visiting Slot for ${customerName}.\nBooking Ref: ${bookingCode}\n\nStrictly In-Store Viewing & PESO Safety Compliance.\nPlease show this pass at the reception desk upon arrival.`
+    `Official Showroom VIP Visiting Slot for ${customerName}.\nBooking Ref: ${bookingCode}\n\nStrictly In-Store Viewing.\nPlease show this pass at the reception desk upon arrival.`
   );
   const location = encodeURIComponent('Ayyan Fireworks Flagship Showroom, Main Road / NH-16 (near Natayyapalem), Sheela Nagar, Visakhapatnam, Andhra Pradesh 530012');
 
@@ -137,7 +137,6 @@ export const SHOWROOM_CONTACT = {
   city: 'Visakhapatnam, Andhra Pradesh',
   pincode: '530012',
   googleMapsUrl: 'https://maps.app.goo.gl/agWQFufKjWkwFbVs7',
-  pesoLicense: 'PESO Licensed Showroom - Class 7, Div 2 Compliant',
   operationalHours: 'Mon - Sun: 05:00 AM – 10:00 PM IST (All 7 Days during Festive Season)'
 };
 

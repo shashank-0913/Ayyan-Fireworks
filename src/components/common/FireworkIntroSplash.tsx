@@ -453,7 +453,7 @@ export const FireworkIntroSplash: React.FC<FireworkIntroSplashProps> = ({ onComp
           </button>
           <span className="text-[11px] text-slate-400/80 font-medium flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-            PESO Certified & 100% Green Pyrotechnics
+            Bunny Brand Certified Fireworks • Since 1987
           </span>
         </div>
       </div>

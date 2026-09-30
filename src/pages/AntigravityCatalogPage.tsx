@@ -643,7 +643,7 @@ export const AntigravityCatalogPage: React.FC = () => {
               <div>
                 <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">Factory Quality</span>
                 <span className="text-xs font-semibold text-emerald-300">
-                  PESO Certified
+                  Bunny Brand Certified
                 </span>
               </div>
             </div>
