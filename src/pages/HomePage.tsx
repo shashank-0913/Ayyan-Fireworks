@@ -2,13 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Sparkles, 
-  ShieldCheck, 
   Calendar, 
   BookOpen, 
   ArrowRight, 
   Flame, 
-  Award, 
-  Users, 
   Clock,
   CalendarCheck
 } from 'lucide-react';
@@ -20,29 +17,6 @@ export const HomePage: React.FC = () => {
   const { products } = useAyyanStore();
 
   const featuredProducts = products.filter((p: Product) => p.is_active).slice(0, 6);
-
-  const TRUST_PILLARS = [
-    {
-      icon: ShieldCheck,
-      title: 'PESO Licensed & CSIR-NEERI Green Certified',
-      description: 'Zero barium nitrate, low-smoke formulation, and 100% statutory compliant for safer family celebrations.'
-    },
-    {
-      icon: Award,
-      title: 'Direct Factory Transparency',
-      description: 'Direct Sivakasi manufacturing pricing without middleman markups. Discover accurate rates upfront in our live catalogue.'
-    },
-    {
-      icon: Users,
-      title: 'In-Store VIP Showroom Experience',
-      description: 'Avoid festive crowd rush. Book a dedicated 1-hour air-conditioned consultation slot for personalized selection.'
-    },
-    {
-      icon: Flame,
-      title: 'Heritage Craftsmanship Since 1923',
-      description: 'Over a century of pyrotechnic mastery, precision timing fuses, and unmatched color vibrancy.'
-    }
-  ];
 
   return (
     <div className="relative space-y-20 pb-20 overflow-hidden">
@@ -163,43 +137,6 @@ export const HomePage: React.FC = () => {
             </div>
           </div>
         )}
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 3. WHY AYYAN FIREWORKS / TRUST PILLARS */}
-      {/* ========================================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl bg-slate-50 dark:bg-gradient-to-b dark:from-obsidian-900 dark:to-obsidian-950 border border-slate-200/90 dark:border-white/[0.08] p-8 sm:p-12 space-y-10 shadow-sm">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs font-bold uppercase tracking-widest text-amber-700 dark:text-gold-400">
-              Safety • Transparency • Authenticity
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-              Why Celebrations Trust Ayyan Fireworks
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-              Committed to responsible festive heritage and Supreme Court compliant green pyrotechnics.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {TRUST_PILLARS.map((pillar, index) => {
-              const Icon = pillar.icon;
-              return (
-                <div
-                  key={index}
-                  className="rounded-2xl bg-white dark:bg-obsidian-950/70 border border-slate-200 dark:border-white/5 p-6 space-y-3 hover:border-amber-400 dark:hover:border-gold-500/30 transition-colors shadow-xs"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-amber-500/15 dark:bg-gold-500/10 border border-amber-500/30 dark:border-gold-500/20 flex items-center justify-center text-amber-600 dark:text-gold-400">
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm">{pillar.title}</h3>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{pillar.description}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
       </section>
     </div>
   );

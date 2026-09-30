@@ -48,17 +48,27 @@ export const PortalDashboardPage: React.FC = () => {
   const handleExportToday = () => {
     const exportData = todayBookings.map(b => {
       const s = b.slot || slots.find(slot => slot.id === b.slot_id);
+      const slotDate = s?.slot_date || b.slot_date || todayStr;
+      const slotWindow = s 
+        ? `${formatTime(s.start_time)} - ${formatTime(s.end_time)}` 
+        : (b.slot_time || 'Standard Window');
+      const formattedAmountOrCount = b.total_amount && b.total_amount > 0
+        ? `₹${b.total_amount.toLocaleString('en-IN')}`
+        : (b.visitor_count ? `${b.visitor_count} Guest(s)` : '1 Visitor');
+
       return {
-        'Booking Code': b.booking_code,
-        'Visitor Name': b.customer_name,
-        'Phone': b.customer_phone,
-        'Visitors Count': b.visitor_count,
-        'Time Slot': s ? `${formatTime(s.start_time)} - ${formatTime(s.end_time)}` : '',
-        'Status': b.status.toUpperCase(),
-        'Special Notes': b.notes || 'N/A'
+        'Booking ID / Code': b.booking_code || b.id,
+        'Customer Name': b.customer_name || 'Visitor',
+        'WhatsApp / Phone Number': b.customer_phone ? `+91 ${b.customer_phone}` : 'N/A',
+        'Slot Date': slotDate,
+        'Slot Window / Time': slotWindow,
+        'Total Amount / Item Count': formattedAmountOrCount,
+        'Status (Confirmed / Completed)': (b.status || 'confirmed').toUpperCase(),
+        'Checked-in Timestamp (verified_at)': b.verified_at ? new Date(b.verified_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : 'Not Checked In'
       };
     });
-    exportToCSV(`Ayyan_Guest_Manifest_${todayStr}`, exportData);
+    const todayIsoDate = new Date().toISOString().split('T')[0];
+    exportToCSV(`ayyan_fireworks_manifest_${todayIsoDate}`, exportData);
   };
 
   return (

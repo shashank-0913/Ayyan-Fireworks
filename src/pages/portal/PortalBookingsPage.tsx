@@ -9,10 +9,12 @@ import {
   Calendar,
   CalendarCheck,
   History,
-  Timer
+  Timer,
+  Loader2
 } from 'lucide-react';
 import { useAyyanStore } from '../../context/AppContext';
 import { formatTime, formatDateReadable, exportToCSV } from '../../lib/utils';
+import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 import { Booking } from '../../types';
 
 export const PortalBookingsPage: React.FC = () => {
@@ -22,6 +24,7 @@ export const PortalBookingsPage: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<string>('all');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [timelineTab, setTimelineTab] = useState<'all' | 'present' | 'upcoming' | 'past'>('all');
+  const [isExporting, setIsExporting] = useState(false);
 
   // Today's YYYY-MM-DD
   const todayStr = useMemo(() => {
@@ -107,24 +110,79 @@ export const PortalBookingsPage: React.FC = () => {
       });
   }, [bookings, slots, search, selectedDate, selectedStatus, timelineTab, todayStr]);
 
-  const handleExportCSV = () => {
-    const data = filteredBookings.map(b => {
-      const s = b.slot || slots.find(slot => slot.id === b.slot_id);
-      const timeline = getBookingTimeline(b);
-      return {
-        'Booking Ref': b.booking_code,
-        'Visitor Name': b.customer_name,
-        'Mobile Number': b.customer_phone,
-        'Visiting Period': timeline === 'present' ? 'PRESENT (TODAY)' : timeline === 'upcoming' ? 'UPCOMING (FUTURE)' : 'PAST (COMPLETED)',
-        'Guest Count': b.visitor_count,
-        'Visiting Date': s ? s.slot_date : '',
-        'Time Window': s ? `${formatTime(s.start_time)} - ${formatTime(s.end_time)}` : '',
-        'Booking Status': b.status.toUpperCase(),
-        'Notes': b.notes || 'N/A',
-        'Booked Timestamp': b.created_at
-      };
-    });
-    exportToCSV(`Ayyan_Guest_Manifest_${todayStr}`, data);
+  const handleDownloadManifest = async () => {
+    setIsExporting(true);
+    try {
+      let exportRecords: Booking[] = [];
+
+      // Query all records from Supabase 'bookings' table if configured
+      if (isSupabaseConfigured && supabase) {
+        const { data, error } = await supabase
+          .from('bookings')
+          .select('*, slots(*)')
+          .order('created_at', { ascending: false });
+
+        if (!error && data && data.length > 0) {
+          exportRecords = data.map((b: any) => ({
+            ...b,
+            slot: b.slots || slots.find(s => s.id === b.slot_id)
+          }));
+        }
+      }
+
+      // Fallback to local / filtered store bookings if offline or empty query
+      if (exportRecords.length === 0) {
+        exportRecords = bookings.length > 0 ? bookings : filteredBookings;
+      }
+
+      const formattedData = exportRecords.map(b => {
+        const s = b.slot || slots.find(slot => slot.id === b.slot_id);
+        const slotDate = s?.slot_date || b.slot_date || 'N/A';
+        const slotWindow = s 
+          ? `${formatTime(s.start_time)} - ${formatTime(s.end_time)}` 
+          : (b.slot_time || 'Standard Window');
+        const formattedAmountOrCount = b.total_amount && b.total_amount > 0
+          ? `₹${b.total_amount.toLocaleString('en-IN')}`
+          : (b.visitor_count ? `${b.visitor_count} Guest(s)` : '1 Visitor');
+        const statusText = (b.status || 'confirmed').toUpperCase();
+        const checkedInTimestamp = b.verified_at 
+          ? new Date(b.verified_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) 
+          : 'Not Checked In';
+
+        return {
+          'Booking ID / Code': b.booking_code || b.id,
+          'Customer Name': b.customer_name || 'Visitor',
+          'WhatsApp / Phone Number': b.customer_phone ? `+91 ${b.customer_phone}` : 'N/A',
+          'Slot Date': slotDate,
+          'Slot Window / Time': slotWindow,
+          'Total Amount / Item Count': formattedAmountOrCount,
+          'Status (Confirmed / Completed)': statusText,
+          'Checked-in Timestamp (verified_at)': checkedInTimestamp
+        };
+      });
+
+      const todayIsoDate = new Date().toISOString().split('T')[0];
+      exportToCSV(`ayyan_fireworks_manifest_${todayIsoDate}`, formattedData);
+    } catch (err) {
+      console.error('Failed to export full manifest from Supabase, falling back to local dataset:', err);
+      const fallbackData = filteredBookings.map(b => {
+        const s = b.slot || slots.find(slot => slot.id === b.slot_id);
+        return {
+          'Booking ID / Code': b.booking_code || b.id,
+          'Customer Name': b.customer_name || 'Visitor',
+          'WhatsApp / Phone Number': b.customer_phone ? `+91 ${b.customer_phone}` : 'N/A',
+          'Slot Date': s?.slot_date || b.slot_date || 'N/A',
+          'Slot Window / Time': s ? `${formatTime(s.start_time)} - ${formatTime(s.end_time)}` : (b.slot_time || 'Standard Window'),
+          'Total Amount / Item Count': b.total_amount && b.total_amount > 0 ? `₹${b.total_amount.toLocaleString('en-IN')}` : `${b.visitor_count || 1} Guest(s)`,
+          'Status (Confirmed / Completed)': (b.status || 'confirmed').toUpperCase(),
+          'Checked-in Timestamp (verified_at)': b.verified_at ? new Date(b.verified_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : 'Not Checked In'
+        };
+      });
+      const todayIsoDate = new Date().toISOString().split('T')[0];
+      exportToCSV(`ayyan_fireworks_manifest_${todayIsoDate}`, fallbackData);
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   return (
@@ -142,11 +200,17 @@ export const PortalBookingsPage: React.FC = () => {
         </div>
 
         <button
-          onClick={handleExportCSV}
-          className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-2 transition-all shadow-md min-h-[40px] active:scale-95"
+          onClick={handleDownloadManifest}
+          disabled={isExporting}
+          className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-xs flex items-center gap-2.5 transition-all shadow-md hover:shadow-emerald-500/25 min-h-[42px] active:scale-95 disabled:opacity-60 ring-1 ring-emerald-400/30"
+          title="Download all customer bookings from Supabase as CSV"
         >
-          <FileSpreadsheet className="w-4 h-4" />
-          <span>Export Manifest (CSV)</span>
+          {isExporting ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <FileSpreadsheet className="w-4 h-4 text-emerald-100" />
+          )}
+          <span>{isExporting ? 'Preparing Manifest...' : 'Download Manifest (CSV / Excel)'}</span>
         </button>
       </div>
 

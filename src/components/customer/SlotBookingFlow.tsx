@@ -7,11 +7,9 @@ import {
   CheckCircle2, 
   AlertCircle, 
   Sparkles, 
-  ShieldCheck, 
   ArrowRight, 
   ArrowLeft, 
   Flame, 
-  Info,
   CalendarCheck2,
   Lock
 } from 'lucide-react';
@@ -42,7 +40,6 @@ export const SlotBookingFlow: React.FC = () => {
   const [selectedSlotId, setSelectedSlotId] = useState<string>('');
   const [guestName, setGuestName] = useState<string>('');
   const [guestPhone, setGuestPhone] = useState<string>('');
-  const [guestNotes, setGuestNotes] = useState<string>('');
 
   // Submission State
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -130,7 +127,7 @@ export const SlotBookingFlow: React.FC = () => {
 
     try {
       // 1 booking = 1 slot reservation for family/group (visitor_count = 1)
-      const res = await bookSlot(selectedSlotId, guestName, cleanPhone, 1, guestNotes);
+      const res = await bookSlot(selectedSlotId, guestName, cleanPhone, 1, '');
 
       if (!res.success) {
         setErrorMessage(res.error || 'Failed to reserve slot. Please try another time.');
@@ -161,7 +158,7 @@ export const SlotBookingFlow: React.FC = () => {
           visitor_count: 1,
           status: 'confirmed',
           verified_at: null,
-          notes: guestNotes,
+          notes: '',
           created_at: new Date().toISOString()
         };
 
@@ -183,7 +180,6 @@ export const SlotBookingFlow: React.FC = () => {
     setSelectedSlotId('');
     setGuestName('');
     setGuestPhone('');
-    setGuestNotes('');
     setConfirmedBooking(null);
     setErrorMessage(null);
   };
@@ -508,29 +504,6 @@ export const SlotBookingFlow: React.FC = () => {
                   className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl pl-12 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white font-mono placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-amber-500 min-h-[48px]"
                 />
               </div>
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                <Info className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                <span>Special Requirements or Fireworks Inquiries (Optional)</span>
-              </label>
-              <textarea
-                rows={2}
-                value={guestNotes}
-                onChange={(e) => setGuestNotes(e.target.value)}
-                placeholder="e.g. Interested in 120-shot aerial cakes, gift boxes, and daytime sparklers for kids..."
-                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-4 py-2.5 text-base sm:text-xs text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-amber-500 leading-relaxed"
-              />
-            </div>
-          </div>
-
-          {/* Statutory Zero-Payment Verification Strip */}
-          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex items-start gap-3 text-xs text-slate-600 dark:text-slate-400">
-            <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-            <div>
-              <strong className="text-slate-900 dark:text-slate-200">Zero-Charge Statutory Reservation: </strong>
-              Showroom visiting passes are issued completely free of charge. No payment is collected online. Strictly adherence to PESO showroom capacity limits.
             </div>
           </div>
 
