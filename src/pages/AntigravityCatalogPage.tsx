@@ -11,8 +11,7 @@ import {
   Minimize2, 
   X, 
   Phone,
-  ArrowLeft,
-  CalendarCheck
+  ArrowLeft
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { Link } from 'react-router-dom';
@@ -665,14 +664,6 @@ export const AntigravityCatalogPage: React.FC = () => {
                 <Phone className="w-4 h-4" />
                 <span>WhatsApp Inquiry</span>
               </a>
-
-              <Link
-                to="/book-slot"
-                className="py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-gold-400 hover:from-amber-400 hover:to-gold-300 text-slate-950 font-black text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all"
-              >
-                <CalendarCheck className="w-4 h-4" />
-                <span>Book VIP Slot</span>
-              </Link>
             </div>
           </div>
         </div>

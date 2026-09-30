@@ -1,16 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { 
   Car, 
   ShieldCheck, 
-  Calendar, 
   ExternalLink, 
   Navigation, 
   CheckCircle2, 
-  Building,
-  MapPin,
-  Clock,
-  Phone
+  Building, 
+  MapPin, 
+  Clock, 
+  Phone 
 } from 'lucide-react';
 import { SHOWROOM_CONTACT, WHATSAPP_CONTACT } from '../lib/utils';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
@@ -141,14 +139,6 @@ export const ShowroomPage: React.FC = () => {
                 <span>Chat with Us on WhatsApp</span>
                 <ExternalLink className="w-3.5 h-3.5 text-white/80" />
               </a>
-
-              <Link
-                to="/book-slot"
-                className="w-full py-3 px-4 rounded-xl bg-slate-50 hover:bg-amber-50 dark:bg-obsidian-950 dark:hover:bg-slate-800 border border-amber-400/50 dark:border-gold-500/30 text-amber-700 dark:text-gold-300 text-xs font-bold flex items-center justify-center gap-2 text-center shadow-xs"
-              >
-                <Calendar className="w-4 h-4 text-amber-600 dark:text-gold-400" />
-                <span>Reserve Free VIP Visiting Slot</span>
-              </Link>
             </div>
           </div>
 

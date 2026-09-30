@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
-  Calendar, 
   BookOpen, 
   MapPin, 
   Menu, 
@@ -10,12 +9,10 @@ import {
   Flame, 
   Phone, 
   Clock, 
-  CalendarCheck,
   ShieldCheck,
   ChevronRight
 } from 'lucide-react';
 import { LegalComplianceBanner } from '../common/LegalComplianceBanner';
-import { VIPTicker } from '../common/VIPTicker';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { SHOWROOM_CONTACT, WHATSAPP_CONTACT } from '../../lib/utils';
@@ -27,7 +24,6 @@ export const CustomerNavbar: React.FC = () => {
   const navLinks = [
     { name: 'Home', path: '/', icon: Flame },
     { name: '2026 Catalogue', path: '/catalogue', icon: BookOpen },
-    { name: 'Book VIP Slot', path: '/book-slot', icon: CalendarCheck },
     { name: 'Showroom Visit', path: '/showroom', icon: MapPin },
   ];
 
@@ -45,9 +41,6 @@ export const CustomerNavbar: React.FC = () => {
       <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-white/95 dark:bg-obsidian-950/90 border-b border-slate-200/80 dark:border-white/[0.08] transition-colors duration-200">
         {/* Statutory Legal Strip (Desktop & Mobile) */}
         <LegalComplianceBanner compact />
-
-        {/* Dynamic VIP Slot Ticker */}
-        <VIPTicker />
 
         {/* Top Bar Container */}
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
@@ -109,15 +102,6 @@ export const CustomerNavbar: React.FC = () => {
               {/* Theme Toggle Button */}
               <ThemeToggle />
 
-              {/* Desktop Reserve Button */}
-              <Link
-                to="/book-slot"
-                className="hidden md:flex gold-gradient-btn px-5 py-2.5 rounded-xl text-xs font-bold items-center gap-2 min-touch"
-              >
-                <Calendar className="w-4 h-4" />
-                <span>Reserve Slot</span>
-              </Link>
-
               {/* Admin Portal Doorway */}
               <Link
                 to="/admin"
@@ -146,7 +130,7 @@ export const CustomerNavbar: React.FC = () => {
       {/* 2. STICKY MOBILE BOTTOM NAVIGATION BAR (FIXED ON MOBILE < MD)             */}
       {/* ========================================================================= */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-obsidian-950/95 backdrop-blur-2xl border-t border-slate-200/90 dark:border-white/10 pb-safe shadow-[0_-8px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_-8px_30px_rgba(0,0,0,0.8)] transition-colors duration-200">
-        <nav className="grid grid-cols-4 h-16 items-center px-1 max-w-md mx-auto">
+        <nav className="grid grid-cols-3 h-16 items-center px-2 max-w-md mx-auto">
           {/* 1. Home */}
           <Link
             to="/"
@@ -179,26 +163,7 @@ export const CustomerNavbar: React.FC = () => {
             )}
           </Link>
 
-          {/* 3. Book Slot (Highlighted Central Action) */}
-          <Link
-            to="/book-slot"
-            className={`flex flex-col items-center justify-center h-full min-touch relative transition-colors ${
-              isActive('/book-slot') 
-                ? 'text-amber-700 dark:text-gold-300 font-bold' 
-                : 'text-amber-600 dark:text-amber-400 hover:text-amber-700'
-            }`}
-          >
-            <div className={`p-1.5 rounded-xl transition-all ${
-              isActive('/book-slot') 
-                ? 'bg-amber-500 dark:bg-gold-500 text-white dark:text-obsidian-950 shadow-md dark:shadow-glow-gold' 
-                : 'bg-amber-500/15 dark:bg-gold-500/15 text-amber-600 dark:text-gold-400 border border-amber-500/30 dark:border-gold-500/30'
-            }`}>
-              <CalendarCheck className="w-4 h-4" />
-            </div>
-            <span className="text-[10px] mt-0.5 font-bold tracking-tight">Book Slot</span>
-          </Link>
-
-          {/* 4. Showroom */}
+          {/* 3. Showroom */}
           <Link
             to="/showroom"
             className={`flex flex-col items-center justify-center h-full min-touch relative transition-colors ${

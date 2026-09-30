@@ -2,12 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Sparkles, 
-  Calendar, 
+  MapPin, 
   BookOpen, 
   ArrowRight, 
   Flame, 
-  Clock,
-  CalendarCheck
+  Clock
 } from 'lucide-react';
 import { useAyyanStore } from '../context/AppContext';
 import { ProductCard } from '../components/customer/ProductCard';
@@ -62,11 +61,11 @@ export const HomePage: React.FC = () => {
             </Link>
 
             <Link
-              to="/book-slot"
+              to="/showroom"
               className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white dark:bg-obsidian-900/90 hover:bg-slate-50 dark:hover:bg-slate-900 border border-amber-400/50 dark:border-gold-500/40 text-amber-700 dark:text-gold-300 hover:text-slate-900 dark:hover:text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 transition-all hover:border-amber-500 shadow-sm dark:shadow-glass"
             >
-              <Calendar className="w-5 h-5 text-amber-600 dark:text-gold-400" />
-              <span>Reserve Showroom Visit</span>
+              <MapPin className="w-5 h-5 text-amber-600 dark:text-gold-400" />
+              <span>Showroom & Directions</span>
             </Link>
           </div>
         </div>
@@ -123,16 +122,16 @@ export const HomePage: React.FC = () => {
                 Official Season Pricing Updating Shortly
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                Our master pyrotechnicians are finalizing the certified festive line-up. Book your priority showroom visit window to experience exclusive previews.
+                Our master pyrotechnicians are finalizing the certified festive line-up. Explore our digital price list or visit our Visakhapatnam showroom for live demonstrations.
               </p>
             </div>
             <div className="pt-2">
               <Link
-                to="/book-slot"
+                to="/catalogue"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-500 dark:bg-gold-500 hover:bg-amber-400 dark:hover:bg-gold-400 text-obsidian-950 font-bold text-xs uppercase tracking-wider shadow-md dark:shadow-glow-gold transition-all"
               >
-                <CalendarCheck className="w-4 h-4" />
-                <span>Reserve Showroom Visiting Slot</span>
+                <BookOpen className="w-4 h-4" />
+                <span>Explore Full Catalogue</span>
               </Link>
             </div>
           </div>

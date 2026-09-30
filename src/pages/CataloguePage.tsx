@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import { 
   Search, 
   SlidersHorizontal, 
@@ -8,12 +7,12 @@ import {
   ArrowUpDown, 
   X, 
   Flame,
-  CalendarCheck,
   Tag,
   CheckCircle2
 } from 'lucide-react';
 import { useAyyanStore } from '../context/AppContext';
 import { ProductCard } from '../components/customer/ProductCard';
+import { ProductImageLightbox } from '../components/customer/ProductImageLightbox';
 import { LegalComplianceBanner } from '../components/common/LegalComplianceBanner';
 import { Product, SoundLevel } from '../types';
 import { formatINR } from '../lib/utils';
@@ -42,6 +41,7 @@ export const CataloguePage: React.FC = () => {
   const [selectedSound, setSelectedSound] = useState<'All' | SoundLevel>('All');
   const [maxPrice, setMaxPrice] = useState<number>(15000);
   const [sortBy, setSortBy] = useState<'default' | 'price_low' | 'price_high'>('default');
+  const [lightboxProduct, setLightboxProduct] = useState<Product | null>(null);
 
   // Category Matching Helper
   const matchesCategoryTab = (product: Product, tab: CategoryTab): boolean => {
@@ -334,14 +334,6 @@ export const CataloguePage: React.FC = () => {
                 {searchQuery && <span> matching &ldquo;<strong className="text-slate-900 dark:text-white">{searchQuery}</strong>&rdquo;</span>}
               </span>
             </div>
-
-            <Link
-              to="/book-slot"
-              className="inline-flex items-center gap-1.5 text-amber-700 hover:text-amber-800 dark:text-gold-300 dark:hover:text-gold-200 font-bold underline underline-offset-4"
-            >
-              <CalendarCheck className="w-3.5 h-3.5" />
-              <span>Book Showroom Visiting Slot</span>
-            </Link>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
@@ -349,6 +341,7 @@ export const CataloguePage: React.FC = () => {
               <ProductCard
                 key={product.id}
                 product={product}
+                onImageClick={setLightboxProduct}
               />
             ))}
           </div>
@@ -362,24 +355,23 @@ export const CataloguePage: React.FC = () => {
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto leading-relaxed">
             We couldn&apos;t find any fireworks matching &ldquo;<strong>{searchQuery || selectedCategory}</strong>&rdquo;. Try searching for &ldquo;sparkler&rdquo;, &ldquo;pot&rdquo;, &ldquo;12 shot&rdquo;, or resetting your filters.
           </p>
-          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div className="pt-2 flex items-center justify-center">
             <button
               type="button"
               onClick={handleResetFilters}
-              className="px-6 py-3 rounded-2xl bg-amber-500 dark:bg-gold-500 text-slate-950 font-extrabold text-xs shadow-md dark:shadow-glow-gold min-h-[44px] active:scale-95"
+              className="px-6 py-3 rounded-2xl bg-amber-500 dark:bg-gold-500 text-slate-950 font-extrabold text-xs shadow-md dark:shadow-glow-gold min-h-[44px] active:scale-95 cursor-pointer"
             >
               Reset All Filters
             </button>
-            <Link
-              to="/book-slot"
-              className="px-6 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold text-xs min-h-[44px] flex items-center justify-center gap-2"
-            >
-              <CalendarCheck className="w-4 h-4 text-amber-500" />
-              <span>Reserve Showroom Slot</span>
-            </Link>
           </div>
         </div>
       )}
+
+      {/* Fullscreen Product Image Lightbox Modal */}
+      <ProductImageLightbox
+        product={lightboxProduct}
+        onClose={() => setLightboxProduct(null)}
+      />
     </div>
   );
 };
