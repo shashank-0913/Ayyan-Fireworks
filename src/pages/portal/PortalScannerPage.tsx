@@ -27,7 +27,8 @@ import {
   stopAllCameraMediaTracks, 
   cleanupScannerInstance, 
   getCameraErrorMessage, 
-  extractCleanQrPayload 
+  extractCleanQrPayload,
+  startScannerWithFallback
 } from '../../lib/cameraUtils';
 
 // Synthesized Audio Feedback Helper (Zero external audio file dependencies)
@@ -353,16 +354,13 @@ export const PortalScannerPage: React.FC = () => {
         // Pre-emptively stop any stale camera tracks
         stopAllCameraMediaTracks();
 
-        // Get available camera video devices
-        const devices = await Html5Qrcode.getCameras();
-        if (isMounted && devices && devices.length > 0) {
-          setAvailableCameras(devices.map(d => ({ id: d.id, label: d.label || `Camera ${d.id.substring(0, 4)}` })));
-          if (!selectedCameraId) {
-            // Default to back camera or last device
-            const backCam = devices.find(d => d.label.toLowerCase().includes('back') || d.label.toLowerCase().includes('rear')) || devices[devices.length - 1];
-            setSelectedCameraId(backCam.id);
+        // Get available camera video devices if permitted
+        try {
+          const devices = await Html5Qrcode.getCameras();
+          if (isMounted && devices && devices.length > 0) {
+            setAvailableCameras(devices.map(d => ({ id: d.id, label: d.label || `Camera ${d.id.substring(0, 4)}` })));
           }
-        }
+        } catch (e) {}
 
         if (!cameraActive) return;
 
@@ -393,19 +391,15 @@ export const PortalScannerPage: React.FC = () => {
           aspectRatio: 1.0,
         };
 
-        const cameraIdOrConfig = selectedCameraId ? { deviceId: { exact: selectedCameraId } } : { facingMode: 'environment' };
-
-        await html5QrCode.start(
-          cameraIdOrConfig,
+        await startScannerWithFallback(
+          html5QrCode,
           config,
+          selectedCameraId || undefined,
           (decodedText) => {
             if (isMounted && !isProcessingRef.current) {
               const cleaned = extractCleanQrPayload(decodedText);
               processVerification(cleaned || decodedText);
             }
-          },
-          () => {
-            // Ignored frame parsing noise
           }
         );
       } catch (err: any) {

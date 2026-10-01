@@ -1,9 +1,9 @@
-import { Html5Qrcode } from 'html5-qrcode';
+import { Html5Qrcode, Html5QrcodeCameraScanConfig } from 'html5-qrcode';
 
 /**
  * Cleanly terminates all active media stream tracks across video elements in the DOM.
  * This guarantees hardware camera sensors (USB, mobile rear/front lenses) are released
- * and never left in a 'busy' or locked state during route transitions or unmounts.
+ * and never left in a 'busy' or locked state during route transitions, retries, or unmounts.
  */
 export function stopAllCameraMediaTracks(): void {
   try {
@@ -39,7 +39,11 @@ export function stopAllCameraMediaTracks(): void {
     if (typeof window !== 'undefined' && (window as any).__ACTIVE_CAMERA_STREAM__) {
       try {
         const globalStream = (window as any).__ACTIVE_CAMERA_STREAM__ as MediaStream;
-        globalStream.getTracks().forEach((track) => track.stop());
+        globalStream.getTracks().forEach((track) => {
+          try {
+            track.stop();
+          } catch (e) {}
+        });
         (window as any).__ACTIVE_CAMERA_STREAM__ = null;
       } catch (e) {}
     }
@@ -68,45 +72,87 @@ export async function cleanupScannerInstance(scanner: Html5Qrcode | null): Promi
 }
 
 /**
- * Extracts and cleans a scanned QR payload or manual input string.
- * Handles raw UUIDs, URL parameters, JSON objects, and surrounding whitespace/quotes.
+ * Extracts and sanitizes a scanned QR payload or manual input string.
+ * Strips leading/trailing whitespace, quotes, JSON wrapping (e.g. {"id":"..."}, {"bookingId":"..."}),
+ * and extracts the raw clean ID / ticket code.
  */
 export function extractCleanQrPayload(raw: string | null | undefined): string {
   if (!raw) return '';
   let str = String(raw).trim();
 
-  // Remove surrounding quotes if present
-  if ((str.startsWith('"') && str.endsWith('"')) || (str.startsWith("'") && str.endsWith("'"))) {
-    str = str.slice(1, -1).trim();
-  }
-
-  // Handle JSON encoded QR codes (e.g. {"id":"...", "ticket_code":"..."})
-  if (str.startsWith('{') && str.endsWith('}')) {
-    try {
-      const parsed = JSON.parse(str);
-      const extracted =
-        parsed.id ||
-        parsed.booking_id ||
-        parsed.ticket_code ||
-        parsed.booking_code ||
-        parsed.qr_token ||
-        parsed.code ||
-        parsed.token;
-      if (extracted) {
-        return String(extracted).trim();
-      }
-    } catch (e) {
-      // Not valid JSON, continue with string processing
+  // 1. Strip outer quotes (single, double, backticks, escaped quotes) repeatedly if nested
+  while (
+    (str.startsWith('"') && str.endsWith('"')) ||
+    (str.startsWith("'") && str.endsWith("'")) ||
+    (str.startsWith('`') && str.endsWith('`')) ||
+    (str.startsWith('\\"') && str.endsWith('\\"'))
+  ) {
+    if (str.startsWith('\\"') && str.endsWith('\\"')) {
+      str = str.slice(2, -2).trim();
+    } else {
+      str = str.slice(1, -1).trim();
     }
   }
 
-  // Handle URLs (e.g. https://domain.com/verify?id=UUID or https://domain.com/gate/UUID)
+  // 2. Handle JSON encoded QR codes (e.g. {"id":"...", "bookingId":"...", "ticket_code":"..."})
+  if ((str.startsWith('{') && str.endsWith('}')) || (str.startsWith('{\\"') && str.endsWith('\\"}'))) {
+    try {
+      const parsed = str.startsWith('{\\"') ? JSON.parse(JSON.parse(str)) : JSON.parse(str);
+      if (parsed && typeof parsed === 'object') {
+        const extracted =
+          parsed.id ||
+          parsed.bookingId ||
+          parsed.booking_id ||
+          parsed.ticket_code ||
+          parsed.ticketCode ||
+          parsed.booking_code ||
+          parsed.bookingCode ||
+          parsed.qr_token ||
+          parsed.qrToken ||
+          parsed.code ||
+          parsed.token;
+        if (extracted) {
+          return String(extracted).trim();
+        }
+      }
+    } catch (e) {
+      // Not valid JSON directly, check regex extraction below
+    }
+  }
+
+  // 3. Check for JSON object pattern within the payload
+  try {
+    const jsonMatch = str.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      const parsed = JSON.parse(jsonMatch[0]);
+      if (parsed && typeof parsed === 'object') {
+        const extracted =
+          parsed.id ||
+          parsed.bookingId ||
+          parsed.booking_id ||
+          parsed.ticket_code ||
+          parsed.ticketCode ||
+          parsed.booking_code ||
+          parsed.bookingCode ||
+          parsed.qr_token ||
+          parsed.qrToken ||
+          parsed.code ||
+          parsed.token;
+        if (extracted) {
+          return String(extracted).trim();
+        }
+      }
+    }
+  } catch (e) {}
+
+  // 4. Handle URLs (e.g. https://domain.com/verify?id=UUID or https://domain.com/gate/UUID)
   if (str.includes('http://') || str.includes('https://') || str.includes('?') || str.includes('&')) {
     try {
-      // Build URL safely with fallback base
-      const url = new URL(str, typeof window !== 'undefined' ? window.location.origin : 'https://ayyan.local');
+      const url = new URL(str, typeof window !== 'undefined' ? window.location.origin : 'https://ayyanfireworks.com');
       const param =
         url.searchParams.get('id') ||
+        url.searchParams.get('bookingId') ||
+        url.searchParams.get('booking_id') ||
         url.searchParams.get('ticket_code') ||
         url.searchParams.get('booking_code') ||
         url.searchParams.get('code') ||
@@ -116,7 +162,7 @@ export function extractCleanQrPayload(raw: string | null | undefined): string {
         return param.trim();
       }
 
-      // Check pathname segments
+      // Check URL path segments
       const segments = url.pathname.split('/').filter(Boolean);
       if (segments.length > 0) {
         const last = segments[segments.length - 1];
@@ -124,12 +170,145 @@ export function extractCleanQrPayload(raw: string | null | undefined): string {
           return last.trim();
         }
       }
-    } catch (e) {
-      // Not a standard URL, continue
-    }
+    } catch (e) {}
   }
 
   return str.trim();
+}
+
+/**
+ * Flexible fallback strategy for starting the camera scanner:
+ * 1. Stops all previous media tracks using stream.getTracks().forEach(t => t.stop()) to prevent hardware lock errors.
+ * 2. Pre-flight requests camera access using navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } } }).
+ * 3. Initializes with { facingMode: "environment" } rather than hardcoding camera index 0.
+ * 4. If environment fails, falls back gracefully to the first available video device from Html5Qrcode.getCameras().
+ */
+export async function startScannerWithFallback(
+  html5QrCode: Html5Qrcode,
+  config: Html5QrcodeCameraScanConfig,
+  preferredCameraId?: string,
+  onScanSuccess?: (decodedText: string) => void,
+  onScanFailure?: (errorMessage: string) => void
+): Promise<{ startedWith: string }> {
+  // Step 1: Ensure all previous media tracks are stopped
+  stopAllCameraMediaTracks();
+
+  // Step 2: Request camera access using navigator.mediaDevices.getUserMedia with ideal environment facingMode
+  if (typeof navigator !== 'undefined' && navigator.mediaDevices?.getUserMedia) {
+    try {
+      const preflightStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: "environment" } }
+      });
+      // Release pre-flight stream immediately so camera is unlocked for Html5Qrcode
+      preflightStream.getTracks().forEach((track) => {
+        try {
+          track.stop();
+        } catch (e) {}
+      });
+    } catch (permErr) {
+      console.warn("Pre-flight getUserMedia notice (proceeding to Html5Qrcode):", permErr);
+    }
+  }
+
+  // Ensure tracks stopped after preflight
+  stopAllCameraMediaTracks();
+
+  const successCallback = (decodedText: string) => {
+    if (onScanSuccess) {
+      onScanSuccess(decodedText);
+    }
+  };
+
+  const failureCallback = (errorMessage: string) => {
+    if (onScanFailure) {
+      onScanFailure(errorMessage);
+    }
+  };
+
+  // Step 3: If a specific camera device was selected in UI, try that first
+  if (preferredCameraId) {
+    try {
+      await html5QrCode.start(
+        preferredCameraId,
+        config,
+        successCallback,
+        failureCallback
+      );
+      return { startedWith: `deviceId: ${preferredCameraId}` };
+    } catch (selectedErr) {
+      console.warn(`Could not start with selected device ${preferredCameraId}, falling back to facingMode: environment:`, selectedErr);
+      stopAllCameraMediaTracks();
+    }
+  }
+
+  // Step 4: Primary Strategy — { facingMode: "environment" }
+  try {
+    await html5QrCode.start(
+      { facingMode: "environment" },
+      config,
+      successCallback,
+      failureCallback
+    );
+    return { startedWith: "facingMode: environment" };
+  } catch (envErr) {
+    console.warn("Html5Qrcode facingMode: 'environment' start failed, attempting device enumeration fallback:", envErr);
+    stopAllCameraMediaTracks();
+  }
+
+  // Step 5: Graceful Fallback — query Html5Qrcode.getCameras()
+  try {
+    const devices = await Html5Qrcode.getCameras();
+    if (devices && devices.length > 0) {
+      // Find back/rear lens or default to first available camera
+      const backDevice = devices.find((d) => {
+        const label = (d.label || '').toLowerCase();
+        return label.includes('back') || label.includes('rear') || label.includes('environment');
+      });
+
+      const fallbackDeviceId = backDevice ? backDevice.id : devices[0].id;
+
+      try {
+        await html5QrCode.start(
+          fallbackDeviceId,
+          config,
+          successCallback,
+          failureCallback
+        );
+        return { startedWith: `fallback device: ${fallbackDeviceId}` };
+      } catch (devErr) {
+        console.warn(`Fallback camera ${fallbackDeviceId} failed, trying first available device:`, devErr);
+        stopAllCameraMediaTracks();
+
+        if (devices.length > 1 && fallbackDeviceId !== devices[0].id) {
+          await html5QrCode.start(
+            devices[0].id,
+            config,
+            successCallback,
+            failureCallback
+          );
+          return { startedWith: `first device: ${devices[0].id}` };
+        }
+        throw devErr;
+      }
+    }
+  } catch (camListErr) {
+    console.warn("Html5Qrcode.getCameras() fallback failed:", camListErr);
+    stopAllCameraMediaTracks();
+  }
+
+  // Step 6: Final fallback attempt: facingMode: "user"
+  try {
+    await html5QrCode.start(
+      { facingMode: "user" },
+      config,
+      successCallback,
+      failureCallback
+    );
+    return { startedWith: "facingMode: user" };
+  } catch (userCamErr) {
+    stopAllCameraMediaTracks();
+    throw userCamErr;
+  }
 }
 
 /**

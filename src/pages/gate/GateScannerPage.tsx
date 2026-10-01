@@ -24,7 +24,8 @@ import {
   stopAllCameraMediaTracks, 
   cleanupScannerInstance, 
   getCameraErrorMessage, 
-  extractCleanQrPayload 
+  extractCleanQrPayload,
+  startScannerWithFallback
 } from '../../lib/cameraUtils';
 
 // Synthesized Web Audio Tones (No external audio file dependencies)
@@ -359,20 +360,13 @@ export const GateScannerPage: React.FC = () => {
         // Pre-emptively stop any stale camera tracks
         stopAllCameraMediaTracks();
 
-        // Get available camera devices
-        const devices = await Html5Qrcode.getCameras();
-        if (isMounted && devices && devices.length > 0) {
-          setAvailableCameras(devices.map(d => ({ id: d.id, label: d.label || `Camera ${d.id.substring(0, 4)}` })));
-          if (!selectedCameraId) {
-            // Default to back/environment camera
-            const backCam = devices.find(d => 
-              d.label.toLowerCase().includes('back') || 
-              d.label.toLowerCase().includes('rear') ||
-              d.label.toLowerCase().includes('environment')
-            ) || devices[devices.length - 1];
-            setSelectedCameraId(backCam.id);
+        // Get available camera devices if permitted
+        try {
+          const devices = await Html5Qrcode.getCameras();
+          if (isMounted && devices && devices.length > 0) {
+            setAvailableCameras(devices.map(d => ({ id: d.id, label: d.label || `Camera ${d.id.substring(0, 4)}` })));
           }
-        }
+        } catch (e) {}
 
         if (!cameraActive) return;
 
@@ -403,19 +397,15 @@ export const GateScannerPage: React.FC = () => {
           aspectRatio: 1.0,
         };
 
-        const cameraIdOrConfig = selectedCameraId ? { deviceId: { exact: selectedCameraId } } : { facingMode: 'environment' };
-
-        await html5QrCode.start(
-          cameraIdOrConfig,
+        await startScannerWithFallback(
+          html5QrCode,
           config,
+          selectedCameraId || undefined,
           (decodedText) => {
             if (isMounted && !isProcessingRef.current) {
               const cleaned = extractCleanQrPayload(decodedText);
               processVerification(cleaned || decodedText);
             }
-          },
-          () => {
-            // Frame noise
           }
         );
       } catch (err: any) {

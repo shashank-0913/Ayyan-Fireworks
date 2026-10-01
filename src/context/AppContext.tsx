@@ -473,78 +473,86 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Gate Scanner Verification Engine
   const verifyGateTicket = useCallback(async (tokenOrCode: string): Promise<GateScanResult> => {
+    // Console Logging as required for developer diagnosis
+    console.log("Raw Scanned Payload:", tokenOrCode);
+
     const cleanedPayload = extractCleanQrPayload(tokenOrCode);
-    if (!cleanedPayload) {
+    const cleanedId = (cleanedPayload || tokenOrCode || '').trim();
+    if (!cleanedId) {
       return { status: 'invalid', message: 'Invalid or Empty Ticket Payload!' };
     }
 
-    const upperPayload = cleanedPayload.toUpperCase();
+    const upperPayload = cleanedId.toUpperCase();
     let matchedBooking: Booking | null = null;
 
-    // a. Query Supabase: Primary key 'id', 'booking_code', 'qr_token'
+    // a. Query Supabase: Primary key 'id' and booking code/ticket_code column
     if (isSupabaseConfigured && supabase) {
       try {
-        // 1. Direct Primary Key ID lookup (handles raw UUIDs e.g. 1bbb99b7-51dc-4419-bd62-a583e6de7b10)
-        const { data: idData, error: idError } = await supabase
-          .from('bookings')
-          .select('*')
-          .eq('id', cleanedPayload)
+        // Required Supabase check against both primary key and ticket_code column
+        const { data, error } = await supabase
+          .from("bookings")
+          .select("*")
+          .or(`id.eq.${cleanedId},ticket_code.eq.${cleanedId}`)
           .maybeSingle();
 
-        if (!idError && idData) {
-          matchedBooking = idData as Booking;
+        console.log("Supabase Verification Result:", { data, error });
+
+        if (!error && data) {
+          matchedBooking = data as Booking;
         }
 
-        // 2. Fast combined .or query across id, booking_code, qr_token
+        // Additional fallback query across booking_code and qr_token if primary query returned null
         if (!matchedBooking) {
-          const { data: orData, error: orError } = await supabase
-            .from('bookings')
-            .select('*')
-            .or(`id.eq.${cleanedPayload},booking_code.eq.${upperPayload},qr_token.eq.${cleanedPayload}`)
+          const { data: altData, error: altError } = await supabase
+            .from("bookings")
+            .select("*")
+            .or(`id.eq.${cleanedId},booking_code.eq.${upperPayload},qr_token.eq.${cleanedId}`)
             .maybeSingle();
 
-          if (!orError && orData) {
-            matchedBooking = orData as Booking;
+          if (!altError && altData) {
+            matchedBooking = altData as Booking;
+            console.log("Supabase Verification Result (Alt Columns):", { data: altData, error: altError });
           }
         }
 
-        // 3. Fallback check by booking_code (case-insensitive / exact)
+        // Direct primary key ID lookup fallback
+        if (!matchedBooking) {
+          const { data: idData } = await supabase
+            .from("bookings")
+            .select("*")
+            .eq("id", cleanedId)
+            .maybeSingle();
+
+          if (idData) {
+            matchedBooking = idData as Booking;
+          }
+        }
+
+        // Direct booking_code lookup fallback
         if (!matchedBooking) {
           const { data: codeData } = await supabase
-            .from('bookings')
-            .select('*')
-            .eq('booking_code', upperPayload)
+            .from("bookings")
+            .select("*")
+            .eq("booking_code", upperPayload)
             .maybeSingle();
 
           if (codeData) {
             matchedBooking = codeData as Booking;
           }
         }
-
-        // 4. Fallback check by qr_token
-        if (!matchedBooking) {
-          const { data: tokenData } = await supabase
-            .from('bookings')
-            .select('*')
-            .eq('qr_token', cleanedPayload)
-            .maybeSingle();
-
-          if (tokenData) {
-            matchedBooking = tokenData as Booking;
-          }
-        }
       } catch (err) {
-        console.warn('Supabase verifyGateTicket lookup error:', err);
+        console.warn("Supabase verifyGateTicket lookup error:", err);
       }
     }
 
     // Local state fallback check
     if (!matchedBooking) {
       matchedBooking = bookings.find(
-        b => b.id?.trim().toLowerCase() === cleanedPayload.toLowerCase() ||
-             b.qr_token?.trim().toLowerCase() === cleanedPayload.toLowerCase() ||
+        b => b.id?.trim().toLowerCase() === cleanedId.toLowerCase() ||
+             b.qr_token?.trim().toLowerCase() === cleanedId.toLowerCase() ||
              b.booking_code?.trim().toUpperCase() === upperPayload ||
-             (b as any).ticket_code?.trim().toUpperCase() === upperPayload
+             (b as any).ticket_code?.trim().toUpperCase() === upperPayload ||
+             (b as any).ticket_code?.trim().toLowerCase() === cleanedId.toLowerCase()
       ) || null;
     }
 
@@ -552,13 +560,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (!matchedBooking) {
       return {
         status: 'invalid',
-        message: 'Invalid or Fake Ticket!'
+        message: 'Invalid or Fake Ticket! No matching booking record found.'
       };
     }
 
-    // c. Prevent Re-Scanning: If found AND already used/scanned:
-    const isAlreadyScanned = matchedBooking.status === 'completed' ||
-      matchedBooking.status === 'checked_in' ||
+    // c. Status & Time Validation: Support both `status` and `booking_status`
+    const rawStatus = String(
+      matchedBooking.status || 
+      (matchedBooking as any).booking_status || 
+      'confirmed'
+    ).toLowerCase();
+
+    // Prevent Re-Scanning: If found AND already used/scanned:
+    const isAlreadyScanned = 
+      rawStatus === 'completed' ||
+      rawStatus === 'checked_in' ||
       matchedBooking.is_scanned === true;
 
     if (isAlreadyScanned) {
@@ -571,17 +587,26 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         status: 'completed',
         booking: matchedBooking,
         verified_at: scannedTime || undefined,
-        slot_time: matchedBooking.slot_time || matchedBooking.time_slot,
-        slot_date: matchedBooking.slot_date || matchedBooking.visit_date,
+        slot_time: matchedBooking.slot_time || (matchedBooking as any).time_slot,
+        slot_date: matchedBooking.slot_date || (matchedBooking as any).visit_date,
         message: `Already Scanned at ${verifiedAtDate}`
       };
     }
 
+    // Cancelled reservation rejection
+    if (rawStatus === 'cancelled') {
+      return {
+        status: 'invalid',
+        booking: matchedBooking,
+        message: 'Booking Cancelled: This slot reservation is no longer active.'
+      };
+    }
+
     // d. Strict Time-Slot Validation:
-    const slotDate = matchedBooking.slot_date || matchedBooking.visit_date || (matchedBooking.slot?.slot_date) || '';
-    const slotTime = matchedBooking.slot_time || matchedBooking.time_slot || '';
-    const startTime = matchedBooking.slot?.start_time;
-    const endTime = matchedBooking.slot?.end_time;
+    const slotDate = matchedBooking.slot_date || (matchedBooking as any).visit_date || (matchedBooking.slot?.slot_date) || '';
+    const slotTime = matchedBooking.slot_time || (matchedBooking as any).time_slot || '';
+    const startTime = matchedBooking.slot?.start_time || (matchedBooking as any).start_time;
+    const endTime = matchedBooking.slot?.end_time || (matchedBooking as any).end_time;
 
     const timingCheck = validateSlotTiming(slotDate, slotTime, startTime, endTime, 15);
 
@@ -616,6 +641,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           .from('bookings')
           .update({
             status: 'completed',
+            booking_status: 'completed',
             verified_at: nowIso,
             is_scanned: true,
             scanned_at: nowIso

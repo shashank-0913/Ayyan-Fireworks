@@ -28,7 +28,8 @@ import {
   stopAllCameraMediaTracks, 
   cleanupScannerInstance, 
   getCameraErrorMessage, 
-  extractCleanQrPayload 
+  extractCleanQrPayload,
+  startScannerWithFallback
 } from '../../lib/cameraUtils';
 
 // Synthesized Web Audio Tones (Zero external dependencies)
@@ -397,15 +398,14 @@ export const ScannerPage: React.FC = () => {
         // Pre-emptively stop any stale camera tracks before requesting devices
         stopAllCameraMediaTracks();
 
-        // Enumerate video devices
-        const devices = await Html5Qrcode.getCameras();
-        if (isMounted && devices && devices.length > 0) {
-          setAvailableCameras(devices.map(d => ({ id: d.id, label: d.label || `Camera ${d.id.substring(0, 4)}` })));
-          if (!selectedCameraId) {
-            // Default to rear/back camera
-            const backCam = devices.find(d => d.label.toLowerCase().includes('back') || d.label.toLowerCase().includes('rear') || d.label.toLowerCase().includes('environment')) || devices[devices.length - 1];
-            setSelectedCameraId(backCam.id);
+        // Enumerate video devices if available
+        try {
+          const devices = await Html5Qrcode.getCameras();
+          if (isMounted && devices && devices.length > 0) {
+            setAvailableCameras(devices.map(d => ({ id: d.id, label: d.label || `Camera ${d.id.substring(0, 4)}` })));
           }
+        } catch (e) {
+          // getCameras might require active stream permission on some platforms
         }
 
         if (!cameraActive) return;
@@ -437,19 +437,16 @@ export const ScannerPage: React.FC = () => {
           aspectRatio: 1.0,
         };
 
-        const cameraIdOrConfig = selectedCameraId ? { deviceId: { exact: selectedCameraId } } : { facingMode: 'environment' };
-
-        await html5QrCode.start(
-          cameraIdOrConfig,
+        // Start scanner with flexible environment fallback & media track release
+        await startScannerWithFallback(
+          html5QrCode,
           config,
+          selectedCameraId || undefined,
           (decodedText) => {
             if (isMounted && !isProcessingRef.current) {
               const cleaned = extractCleanQrPayload(decodedText);
               processVerification(cleaned || decodedText);
             }
-          },
-          () => {
-            // Frame parsing loop
           }
         );
 
