@@ -3,6 +3,7 @@ import { Product, Slot, Booking, StaffUser, BookingRpcResponse, BookingStatus } 
 import { INITIAL_PRODUCTS, generateInitialSlots } from '../lib/initialData';
 import { supabase, isSupabaseConfigured, DEFAULT_PRODUCT_IMAGE } from '../lib/supabase';
 import { isAuthorizedAdminEmail, ADMIN_EMAIL, generateUUID, formatTime, formatDateReadable } from '../lib/utils';
+import { extractCleanQrPayload } from '../lib/cameraUtils';
 
 export interface GateScanResult {
   status: 'confirmed' | 'completed' | 'invalid';
@@ -470,29 +471,43 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Gate Scanner Verification Engine
   const verifyGateTicket = useCallback(async (tokenOrCode: string): Promise<GateScanResult> => {
-    const clean = tokenOrCode.trim();
-    if (!clean) {
-      return { status: 'invalid', message: 'Invalid or Fake Ticket!' };
+    const cleanedPayload = extractCleanQrPayload(tokenOrCode);
+    if (!cleanedPayload) {
+      return { status: 'invalid', message: 'Invalid or Empty Ticket Payload!' };
     }
 
+    const upperPayload = cleanedPayload.toUpperCase();
     let matchedBooking: Booking | null = null;
 
-    // a. Query Supabase: Fast combined .or query across id, booking_code, and qr_token
+    // a. Query Supabase: Primary key 'id', 'booking_code', 'qr_token'
     if (isSupabaseConfigured && supabase) {
       try {
-        const cleanedPayload = clean;
-        const upperPayload = clean.toUpperCase();
-
-        const { data, error } = await supabase
+        // 1. Direct Primary Key ID lookup (handles raw UUIDs e.g. 1bbb99b7-51dc-4419-bd62-a583e6de7b10)
+        const { data: idData, error: idError } = await supabase
           .from('bookings')
           .select('*')
-          .or(`id.eq.${cleanedPayload},booking_code.eq.${upperPayload},qr_token.eq.${cleanedPayload}`)
+          .eq('id', cleanedPayload)
           .maybeSingle();
 
-        if (!error && data) {
-          matchedBooking = data as Booking;
-        } else if (error) {
-          // Fallback individual queries if PostgreSQL UUID format error occurs on non-UUID string
+        if (!idError && idData) {
+          matchedBooking = idData as Booking;
+        }
+
+        // 2. Fast combined .or query across id, booking_code, qr_token
+        if (!matchedBooking) {
+          const { data: orData, error: orError } = await supabase
+            .from('bookings')
+            .select('*')
+            .or(`id.eq.${cleanedPayload},booking_code.eq.${upperPayload},qr_token.eq.${cleanedPayload}`)
+            .maybeSingle();
+
+          if (!orError && orData) {
+            matchedBooking = orData as Booking;
+          }
+        }
+
+        // 3. Fallback check by booking_code (case-insensitive / exact)
+        if (!matchedBooking) {
           const { data: codeData } = await supabase
             .from('bookings')
             .select('*')
@@ -501,16 +516,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
           if (codeData) {
             matchedBooking = codeData as Booking;
-          } else {
-            const { data: tokenData } = await supabase
-              .from('bookings')
-              .select('*')
-              .eq('qr_token', cleanedPayload)
-              .maybeSingle();
+          }
+        }
 
-            if (tokenData) {
-              matchedBooking = tokenData as Booking;
-            }
+        // 4. Fallback check by qr_token
+        if (!matchedBooking) {
+          const { data: tokenData } = await supabase
+            .from('bookings')
+            .select('*')
+            .eq('qr_token', cleanedPayload)
+            .maybeSingle();
+
+          if (tokenData) {
+            matchedBooking = tokenData as Booking;
           }
         }
       } catch (err) {
@@ -518,10 +536,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
     }
 
-    // Local fallback check
+    // Local state fallback check
     if (!matchedBooking) {
       matchedBooking = bookings.find(
-        b => b.id === clean || b.qr_token === clean || b.booking_code.toUpperCase() === clean.toUpperCase()
+        b => b.id?.trim().toLowerCase() === cleanedPayload.toLowerCase() ||
+             b.qr_token?.trim().toLowerCase() === cleanedPayload.toLowerCase() ||
+             b.booking_code?.trim().toUpperCase() === upperPayload ||
+             (b as any).ticket_code?.trim().toUpperCase() === upperPayload
       ) || null;
     }
 

@@ -22,6 +22,12 @@ import {
 import { useAyyanStore } from '../../context/AppContext';
 import { Booking } from '../../types';
 import { formatDateReadable } from '../../lib/utils';
+import { 
+  stopAllCameraMediaTracks, 
+  cleanupScannerInstance, 
+  getCameraErrorMessage, 
+  extractCleanQrPayload 
+} from '../../lib/cameraUtils';
 
 // Synthesized Audio Feedback Helper (Zero external audio file dependencies)
 function playScanTone(type: 'success' | 'error' | 'warning', soundEnabled = true) {
@@ -228,12 +234,48 @@ export const PortalScannerPage: React.FC = () => {
   // Manual token verify submission
   const handleManualSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!manualInput.trim()) return;
+    const clean = extractCleanQrPayload(manualInput);
+    if (!clean) return;
     setIsManualVerifying(true);
-    await processVerification(manualInput.trim());
+    await processVerification(clean);
     setIsManualVerifying(false);
     setManualInput('');
   };
+
+  // Restart camera action
+  const restartCamera = useCallback(async () => {
+    setCameraError(null);
+    stopAllCameraMediaTracks();
+    if (html5QrCodeRef.current) {
+      try {
+        if (html5QrCodeRef.current.isScanning) {
+          await html5QrCodeRef.current.stop();
+        }
+      } catch (e) {}
+      try {
+        html5QrCodeRef.current.clear();
+      } catch (e) {}
+      html5QrCodeRef.current = null;
+    }
+    setCameraActive(false);
+    setTimeout(() => {
+      setCameraActive(true);
+    }, 150);
+  }, []);
+
+  // Safety page exit listener to always release camera hardware
+  useEffect(() => {
+    const handleExit = () => {
+      stopAllCameraMediaTracks();
+    };
+    window.addEventListener('beforeunload', handleExit);
+    window.addEventListener('pagehide', handleExit);
+    return () => {
+      window.removeEventListener('beforeunload', handleExit);
+      window.removeEventListener('pagehide', handleExit);
+      stopAllCameraMediaTracks();
+    };
+  }, []);
 
   // Initialize and attach camera stream
   useEffect(() => {
@@ -243,6 +285,9 @@ export const PortalScannerPage: React.FC = () => {
     const initScanner = async () => {
       try {
         setCameraError(null);
+
+        // Pre-emptively stop any stale camera tracks
+        stopAllCameraMediaTracks();
 
         // Get available camera video devices
         const devices = await Html5Qrcode.getCameras();
@@ -259,11 +304,17 @@ export const PortalScannerPage: React.FC = () => {
 
         // Clean up previous instance
         if (html5QrCodeRef.current) {
-          if (html5QrCodeRef.current.isScanning) {
-            await html5QrCodeRef.current.stop();
-          }
-          html5QrCodeRef.current.clear();
+          try {
+            if (html5QrCodeRef.current.isScanning) {
+              await html5QrCodeRef.current.stop();
+            }
+          } catch (e) {}
+          try {
+            html5QrCodeRef.current.clear();
+          } catch (e) {}
+          html5QrCodeRef.current = null;
         }
+        stopAllCameraMediaTracks();
 
         const html5QrCode = new Html5Qrcode(scannerElementId);
         html5QrCodeRef.current = html5QrCode;
@@ -285,7 +336,8 @@ export const PortalScannerPage: React.FC = () => {
           config,
           (decodedText) => {
             if (isMounted && !isProcessingRef.current) {
-              processVerification(decodedText);
+              const cleaned = extractCleanQrPayload(decodedText);
+              processVerification(cleaned || decodedText);
             }
           },
           () => {
@@ -293,9 +345,10 @@ export const PortalScannerPage: React.FC = () => {
           }
         );
       } catch (err: any) {
+        stopAllCameraMediaTracks();
         if (isMounted) {
           console.warn('Camera initiation notice:', err);
-          setCameraError(err.message || 'Camera permission denied or camera device busy.');
+          setCameraError(getCameraErrorMessage(err));
         }
       }
     };
@@ -308,24 +361,20 @@ export const PortalScannerPage: React.FC = () => {
       isMounted = false;
       if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
       if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
-      if (html5QrCodeRef.current) {
-        if (html5QrCodeRef.current.isScanning) {
-          html5QrCodeRef.current.stop().catch(() => {}).finally(() => {
-            html5QrCodeRef.current?.clear();
-          });
-        } else {
-          html5QrCodeRef.current.clear();
-        }
-      }
+      
+      const currentScanner = html5QrCodeRef.current;
+      html5QrCodeRef.current = null;
+      cleanupScannerInstance(currentScanner).catch(() => {});
+      stopAllCameraMediaTracks();
     };
   }, [cameraActive, selectedCameraId, processVerification]);
 
   const toggleCamera = async () => {
     if (cameraActive) {
-      if (html5QrCodeRef.current && html5QrCodeRef.current.isScanning) {
-        await html5QrCodeRef.current.stop();
-        html5QrCodeRef.current.clear();
-      }
+      const currentScanner = html5QrCodeRef.current;
+      html5QrCodeRef.current = null;
+      await cleanupScannerInstance(currentScanner);
+      stopAllCameraMediaTracks();
       setCameraActive(false);
     } else {
       setCameraActive(true);
@@ -444,10 +493,18 @@ export const PortalScannerPage: React.FC = () => {
 
               {/* Camera Error Message */}
               {cameraError && cameraActive && (
-                <div className="absolute inset-0 bg-red-950/90 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center space-y-3 z-10">
-                  <AlertTriangle className="w-10 h-10 text-red-400" />
-                  <p className="text-xs font-bold text-red-200">{cameraError}</p>
+                <div className="absolute inset-0 bg-red-950/95 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center space-y-3 z-30">
+                  <AlertTriangle className="w-10 h-10 text-red-400 animate-pulse" />
+                  <p className="text-xs font-bold text-red-200 leading-relaxed">{cameraError}</p>
                   <p className="text-[11px] text-red-300/80">Please grant camera permissions in your browser settings or use manual code entry below.</p>
+                  <button
+                    type="button"
+                    onClick={restartCamera}
+                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-lg active:scale-95 transition-all cursor-pointer"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5" />
+                    <span>Release & Restart Camera</span>
+                  </button>
                 </div>
               )}
             </div>

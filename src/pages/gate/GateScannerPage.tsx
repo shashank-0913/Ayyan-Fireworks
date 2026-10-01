@@ -20,6 +20,12 @@ import { useAyyanStore } from '../../context/AppContext';
 import { Booking } from '../../types';
 import { formatDateReadable } from '../../lib/utils';
 import { ThemeToggle } from '../../components/common/ThemeToggle';
+import { 
+  stopAllCameraMediaTracks, 
+  cleanupScannerInstance, 
+  getCameraErrorMessage, 
+  extractCleanQrPayload 
+} from '../../lib/cameraUtils';
 
 // Synthesized Web Audio Tones (No external audio file dependencies)
 function playScanTone(type: 'success' | 'error' | 'warning', soundEnabled = true) {
@@ -232,14 +238,51 @@ export const GateScannerPage: React.FC = () => {
   }, [verifyGateTicket, soundEnabled, resetScannerState]);
 
   // Manual fallback verification submission
+  // Manual code input verification
   const handleManualSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!manualInput.trim()) return;
+    const clean = extractCleanQrPayload(manualInput);
+    if (!clean) return;
     setIsManualVerifying(true);
-    await processVerification(manualInput.trim());
+    await processVerification(clean);
     setIsManualVerifying(false);
     setManualInput('');
   };
+
+  // Restart camera action
+  const restartCamera = useCallback(async () => {
+    setCameraError(null);
+    stopAllCameraMediaTracks();
+    if (html5QrCodeRef.current) {
+      try {
+        if (html5QrCodeRef.current.isScanning) {
+          await html5QrCodeRef.current.stop();
+        }
+      } catch (e) {}
+      try {
+        html5QrCodeRef.current.clear();
+      } catch (e) {}
+      html5QrCodeRef.current = null;
+    }
+    setCameraActive(false);
+    setTimeout(() => {
+      setCameraActive(true);
+    }, 150);
+  }, []);
+
+  // Safety page exit listener to always release camera hardware
+  useEffect(() => {
+    const handleExit = () => {
+      stopAllCameraMediaTracks();
+    };
+    window.addEventListener('beforeunload', handleExit);
+    window.addEventListener('pagehide', handleExit);
+    return () => {
+      window.removeEventListener('beforeunload', handleExit);
+      window.removeEventListener('pagehide', handleExit);
+      stopAllCameraMediaTracks();
+    };
+  }, []);
 
   // Initialize and attach camera stream
   useEffect(() => {
@@ -249,6 +292,9 @@ export const GateScannerPage: React.FC = () => {
     const initScanner = async () => {
       try {
         setCameraError(null);
+
+        // Pre-emptively stop any stale camera tracks
+        stopAllCameraMediaTracks();
 
         // Get available camera devices
         const devices = await Html5Qrcode.getCameras();
@@ -269,11 +315,17 @@ export const GateScannerPage: React.FC = () => {
 
         // Clean up previous instance
         if (html5QrCodeRef.current) {
-          if (html5QrCodeRef.current.isScanning) {
-            await html5QrCodeRef.current.stop();
-          }
-          html5QrCodeRef.current.clear();
+          try {
+            if (html5QrCodeRef.current.isScanning) {
+              await html5QrCodeRef.current.stop();
+            }
+          } catch (e) {}
+          try {
+            html5QrCodeRef.current.clear();
+          } catch (e) {}
+          html5QrCodeRef.current = null;
         }
+        stopAllCameraMediaTracks();
 
         const html5QrCode = new Html5Qrcode(scannerElementId);
         html5QrCodeRef.current = html5QrCode;
@@ -295,7 +347,8 @@ export const GateScannerPage: React.FC = () => {
           config,
           (decodedText) => {
             if (isMounted && !isProcessingRef.current) {
-              processVerification(decodedText);
+              const cleaned = extractCleanQrPayload(decodedText);
+              processVerification(cleaned || decodedText);
             }
           },
           () => {
@@ -303,9 +356,10 @@ export const GateScannerPage: React.FC = () => {
           }
         );
       } catch (err: any) {
+        stopAllCameraMediaTracks();
         if (isMounted) {
           console.warn('Gate camera initiation error:', err);
-          setCameraError(err.message || 'Camera permission denied or camera device busy.');
+          setCameraError(getCameraErrorMessage(err));
         }
       }
     };
@@ -318,24 +372,20 @@ export const GateScannerPage: React.FC = () => {
       isMounted = false;
       if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
       if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
-      if (html5QrCodeRef.current) {
-        if (html5QrCodeRef.current.isScanning) {
-          html5QrCodeRef.current.stop().catch(() => {}).finally(() => {
-            html5QrCodeRef.current?.clear();
-          });
-        } else {
-          html5QrCodeRef.current.clear();
-        }
-      }
+      
+      const currentScanner = html5QrCodeRef.current;
+      html5QrCodeRef.current = null;
+      cleanupScannerInstance(currentScanner).catch(() => {});
+      stopAllCameraMediaTracks();
     };
   }, [cameraActive, selectedCameraId, processVerification]);
 
   const toggleCamera = async () => {
     if (cameraActive) {
-      if (html5QrCodeRef.current && html5QrCodeRef.current.isScanning) {
-        await html5QrCodeRef.current.stop();
-        html5QrCodeRef.current.clear();
-      }
+      const currentScanner = html5QrCodeRef.current;
+      html5QrCodeRef.current = null;
+      await cleanupScannerInstance(currentScanner);
+      stopAllCameraMediaTracks();
       setCameraActive(false);
     } else {
       setCameraActive(true);
@@ -480,10 +530,18 @@ export const GateScannerPage: React.FC = () => {
 
             {/* Camera Error Overlay */}
             {cameraError && cameraActive && (
-              <div className="absolute inset-0 bg-red-950/90 backdrop-blur-sm flex flex-col items-center justify-center p-5 text-center space-y-2 z-20">
-                <AlertTriangle className="w-8 h-8 text-red-400" />
-                <p className="text-xs font-bold text-red-200">{cameraError}</p>
-                <p className="text-[10px] text-red-300/80">Check camera browser permissions or type the 6-digit booking code below.</p>
+              <div className="absolute inset-0 bg-red-950/95 backdrop-blur-md flex flex-col items-center justify-center p-5 text-center space-y-2.5 z-20">
+                <AlertTriangle className="w-8 h-8 text-red-400 animate-pulse" />
+                <p className="text-xs font-bold text-red-200 leading-relaxed">{cameraError}</p>
+                <p className="text-[10px] text-red-300/80">Check camera browser permissions or enter code manually below.</p>
+                <button
+                  type="button"
+                  onClick={restartCamera}
+                  className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Release & Restart Camera</span>
+                </button>
               </div>
             )}
           </div>
