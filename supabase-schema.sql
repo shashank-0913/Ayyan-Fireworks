@@ -203,6 +203,9 @@ create policy "Allow staff full access to slots"
 create policy "Allow staff full access to bookings"
   on public.bookings for all using (auth.role() = 'authenticated');
 
+create policy "Allow authenticated read for verification" 
+  on public.bookings for select to authenticated using (true);
+
 create policy "Allow public to read their own booking by code"
   on public.bookings for select using (true);
 

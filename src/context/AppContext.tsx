@@ -477,26 +477,40 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     let matchedBooking: Booking | null = null;
 
-    // a. Query Supabase: .from('bookings').select('*').eq('qr_token', decodedText).single()
+    // a. Query Supabase: Fast combined .or query across id, booking_code, and qr_token
     if (isSupabaseConfigured && supabase) {
       try {
+        const cleanedPayload = clean;
+        const upperPayload = clean.toUpperCase();
+
         const { data, error } = await supabase
           .from('bookings')
           .select('*')
-          .eq('qr_token', clean)
-          .single();
+          .or(`id.eq.${cleanedPayload},booking_code.eq.${upperPayload},qr_token.eq.${cleanedPayload}`)
+          .maybeSingle();
 
         if (!error && data) {
           matchedBooking = data as Booking;
-        } else {
-          // Fallback check by booking_code if scanned or typed
+        } else if (error) {
+          // Fallback individual queries if PostgreSQL UUID format error occurs on non-UUID string
           const { data: codeData } = await supabase
             .from('bookings')
             .select('*')
-            .eq('booking_code', clean.toUpperCase())
-            .single();
+            .eq('booking_code', upperPayload)
+            .maybeSingle();
+
           if (codeData) {
             matchedBooking = codeData as Booking;
+          } else {
+            const { data: tokenData } = await supabase
+              .from('bookings')
+              .select('*')
+              .eq('qr_token', cleanedPayload)
+              .maybeSingle();
+
+            if (tokenData) {
+              matchedBooking = tokenData as Booking;
+            }
           }
         }
       } catch (err) {
@@ -507,7 +521,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     // Local fallback check
     if (!matchedBooking) {
       matchedBooking = bookings.find(
-        b => b.qr_token === clean || b.booking_code.toUpperCase() === clean.toUpperCase()
+        b => b.id === clean || b.qr_token === clean || b.booking_code.toUpperCase() === clean.toUpperCase()
       ) || null;
     }
 
