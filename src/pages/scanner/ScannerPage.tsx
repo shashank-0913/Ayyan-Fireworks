@@ -17,7 +17,8 @@ import {
   Flashlight,
   ExternalLink,
   History,
-  Check
+  Check,
+  Clock
 } from 'lucide-react';
 import { useAyyanStore } from '../../context/AppContext';
 import { Booking } from '../../types';
@@ -51,6 +52,19 @@ function playScanTone(type: 'success' | 'error' | 'warning', soundEnabled = true
       gain.connect(ctx.destination);
       osc.start();
       osc.stop(ctx.currentTime + 0.35);
+    } else if (type === 'warning') {
+      // Amber warning tone (dual cautionary beep 440Hz -> 370Hz)
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(440, ctx.currentTime);
+      osc.frequency.setValueAtTime(370, ctx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.35);
     } else {
       // Double error buzz
       const osc = ctx.createOscillator();
@@ -78,7 +92,7 @@ interface ScanLogItem {
   customerPhone?: string;
   slotTime?: string;
   slotDate?: string;
-  status: 'confirmed' | 'completed' | 'invalid';
+  status: 'confirmed' | 'completed' | 'early_arrival' | 'expired' | 'invalid';
   message: string;
   timestamp: string;
 }
@@ -97,7 +111,7 @@ export const ScannerPage: React.FC = () => {
   const [hasTorchSupport, setHasTorchSupport] = useState<boolean>(false);
 
   // Verification & Modal Result State
-  const [scanState, setScanState] = useState<'idle' | 'processing' | 'confirmed' | 'completed' | 'invalid'>('idle');
+  const [scanState, setScanState] = useState<'idle' | 'processing' | 'confirmed' | 'completed' | 'early_arrival' | 'expired' | 'invalid'>('idle');
   const [activeBooking, setActiveBooking] = useState<Booking | null>(null);
   const [statusMessage, setStatusMessage] = useState<string>('');
   const [verifiedAtString, setVerifiedAtString] = useState<string>('');
@@ -151,14 +165,14 @@ export const ScannerPage: React.FC = () => {
       const result = await verifyGateTicket(tokenOrCode);
 
       if (result.status === 'confirmed') {
-        // First-Time Valid & Confirmed: Entry Verified & Slot Closed Permanently!
+        // First-Time Valid & Confirmed: Access Granted
         setScanState('confirmed');
         setActiveBooking(result.booking || null);
-        setStatusMessage(result.message || 'Entry Verified & Slot Closed Permanently');
+        setStatusMessage(result.message || 'Access Granted — Admission Verified');
         setVerifiedAtString(result.verified_at || new Date().toISOString());
         playScanTone('success', soundEnabled);
         if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-        showToast('✓ Verified & Marked Completed');
+        showToast('✓ Access Granted & Slot Checked-In');
 
         // Add to history
         setScanHistory(prev => [
@@ -168,10 +182,60 @@ export const ScannerPage: React.FC = () => {
             bookingCode: result.booking?.booking_code,
             customerName: result.booking?.customer_name,
             customerPhone: result.booking?.customer_phone,
-            slotTime: result.booking?.slot_time,
-            slotDate: result.booking?.slot_date,
+            slotTime: result.slot_time || result.booking?.slot_time,
+            slotDate: result.slot_date || result.booking?.slot_date,
             status: 'confirmed',
-            message: 'Entry Verified & Slot Closed Permanently',
+            message: result.message || 'Access Granted',
+            timestamp: new Date().toLocaleTimeString('en-IN')
+          },
+          ...prev.slice(0, 29)
+        ]);
+
+      } else if (result.status === 'early_arrival') {
+        // Too Early! Reject with status 'EARLY_ARRIVAL'
+        setScanState('early_arrival');
+        setActiveBooking(result.booking || null);
+        setStatusMessage(result.message);
+        setVerifiedAtString('');
+        playScanTone('warning', soundEnabled);
+        if (navigator.vibrate) navigator.vibrate([150, 100, 150]);
+
+        setScanHistory(prev => [
+          {
+            id: `log-${Date.now()}`,
+            token: tokenOrCode,
+            bookingCode: result.booking?.booking_code,
+            customerName: result.booking?.customer_name,
+            customerPhone: result.booking?.customer_phone,
+            slotTime: result.slot_time || result.booking?.slot_time,
+            slotDate: result.slot_date || result.booking?.slot_date,
+            status: 'early_arrival',
+            message: result.message,
+            timestamp: new Date().toLocaleTimeString('en-IN')
+          },
+          ...prev.slice(0, 29)
+        ]);
+
+      } else if (result.status === 'expired') {
+        // Slot Expired! Reject with status 'EXPIRED'
+        setScanState('expired');
+        setActiveBooking(result.booking || null);
+        setStatusMessage(result.message);
+        setVerifiedAtString('');
+        playScanTone('error', soundEnabled);
+        if (navigator.vibrate) navigator.vibrate([300]);
+
+        setScanHistory(prev => [
+          {
+            id: `log-${Date.now()}`,
+            token: tokenOrCode,
+            bookingCode: result.booking?.booking_code,
+            customerName: result.booking?.customer_name,
+            customerPhone: result.booking?.customer_phone,
+            slotTime: result.slot_time || result.booking?.slot_time,
+            slotDate: result.slot_date || result.booking?.slot_date,
+            status: 'expired',
+            message: result.message,
             timestamp: new Date().toLocaleTimeString('en-IN')
           },
           ...prev.slice(0, 29)
@@ -181,7 +245,7 @@ export const ScannerPage: React.FC = () => {
         // Re-entry / Already Completed: ALREADY CHECKED IN
         setScanState('completed');
         setActiveBooking(result.booking || null);
-        setStatusMessage(result.message || 'ALREADY CHECKED IN');
+        setStatusMessage(result.message || 'Already Scanned');
         setVerifiedAtString(result.verified_at || '');
         playScanTone('error', soundEnabled);
         if (navigator.vibrate) navigator.vibrate([250]);
@@ -193,10 +257,10 @@ export const ScannerPage: React.FC = () => {
             bookingCode: result.booking?.booking_code,
             customerName: result.booking?.customer_name,
             customerPhone: result.booking?.customer_phone,
-            slotTime: result.booking?.slot_time,
-            slotDate: result.booking?.slot_date,
+            slotTime: result.slot_time || result.booking?.slot_time,
+            slotDate: result.slot_date || result.booking?.slot_date,
             status: 'completed',
-            message: result.message || 'ALREADY CHECKED IN',
+            message: result.message || 'Already Scanned',
             timestamp: new Date().toLocaleTimeString('en-IN')
           },
           ...prev.slice(0, 29)
@@ -223,12 +287,12 @@ export const ScannerPage: React.FC = () => {
         ]);
       }
 
-      // Auto-reset timer (3 seconds)
-      setCountdown(3);
+      // Auto-reset timer (4 seconds for readable feedback)
+      setCountdown(4);
       if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
       if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
 
-      let timeLeft = 3;
+      let timeLeft = 4;
       countdownIntervalRef.current = setInterval(() => {
         timeLeft -= 1;
         setCountdown(timeLeft);
@@ -239,7 +303,7 @@ export const ScannerPage: React.FC = () => {
 
       resetTimerRef.current = setTimeout(() => {
         resetScannerState();
-      }, 3000);
+      }, 4000);
 
     } catch (err: any) {
       console.error('Scan processing error:', err);
@@ -645,7 +709,7 @@ export const ScannerPage: React.FC = () => {
         {/* VERIFICATION RESULT CARDS                                                 */}
         {/* ========================================================================= */}
 
-        {/* 1. SUCCESS: ENTRY VERIFIED & SLOT CLOSED PERMANENTLY */}
+        {/* 1. SUCCESS: ENTRY VERIFIED & ACCESS GRANTED (GREEN BANNER) */}
         {scanState === 'confirmed' && (
           <div className="rounded-3xl p-5 sm:p-6 bg-gradient-to-b from-emerald-950 via-slate-900 to-slate-950 border-2 border-emerald-500 text-white shadow-2xl space-y-4 animate-in zoom-in-95 duration-200">
             <div className="flex items-start justify-between gap-3">
@@ -655,13 +719,13 @@ export const ScannerPage: React.FC = () => {
                 </div>
                 <div>
                   <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest bg-emerald-500 text-slate-950">
-                    ADMISSION GRANTED
+                    ACCESS GRANTED
                   </span>
                   <h2 className="text-lg sm:text-xl font-black text-emerald-300 tracking-tight mt-0.5">
-                    Entry Verified & Slot Closed Permanently
+                    Access Granted — Admission Verified
                   </h2>
                   <p className="text-[11px] text-emerald-200/80 font-mono">
-                    Supabase slot marked completed • {verifiedAtString ? new Date(verifiedAtString).toLocaleTimeString('en-IN') : new Date().toLocaleTimeString('en-IN')}
+                    Supabase slot checked-in • {verifiedAtString ? new Date(verifiedAtString).toLocaleTimeString('en-IN') : new Date().toLocaleTimeString('en-IN')}
                   </p>
                 </div>
               </div>
@@ -723,20 +787,146 @@ export const ScannerPage: React.FC = () => {
           </div>
         )}
 
-        {/* 2. REJECTED: ALREADY CHECKED IN */}
+        {/* 2. REJECTED: TOO EARLY (AMBER BANNER) */}
+        {scanState === 'early_arrival' && (
+          <div className="rounded-3xl p-5 sm:p-6 bg-gradient-to-b from-amber-950 via-slate-900 to-slate-950 border-2 border-amber-500 text-white shadow-2xl space-y-4 animate-in zoom-in-95 duration-200">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400 flex items-center justify-center text-amber-400 shrink-0 shadow-lg">
+                  <Clock className="w-7 h-7 animate-pulse text-amber-400" />
+                </div>
+                <div>
+                  <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest bg-amber-500 text-slate-950">
+                    TOO EARLY
+                  </span>
+                  <h2 className="text-lg sm:text-xl font-black text-amber-300 tracking-tight mt-0.5">
+                    Too Early! Not Valid Yet
+                  </h2>
+                  <p className="text-[12px] text-amber-200 font-medium">
+                    {statusMessage}
+                  </p>
+                </div>
+              </div>
+
+              <div className="px-2.5 py-1 rounded-xl bg-black/40 border border-amber-400/40 text-[10px] font-mono font-bold text-amber-300 shrink-0">
+                <span>Reset {countdown}s</span>
+              </div>
+            </div>
+
+            {activeBooking && (
+              <div className="p-3.5 rounded-2xl bg-black/60 border border-amber-500/40 space-y-2 text-xs">
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider block">Customer Name</span>
+                    <p className="font-bold text-white">{activeBooking.customer_name}</p>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider block">Booking ID</span>
+                    <p className="font-mono font-bold text-amber-300">{activeBooking.booking_code}</p>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider block">Scheduled Slot</span>
+                    <p className="font-bold text-white">{activeBooking.slot_time}</p>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider block">Scheduled Date</span>
+                    <p className="font-bold text-white">{formatDateReadable(activeBooking.slot_date)}</p>
+                  </div>
+                </div>
+                <p className="text-[11px] text-amber-300/90 pt-1">
+                  ⏳ Entry is allowed starting 15 minutes before slot time. Please ask visitor to wait until their window begins.
+                </p>
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={resetScannerState}
+              className="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg"
+            >
+              <RotateCcw className="w-4 h-4" />
+              <span>Dismiss & Scan Next</span>
+            </button>
+          </div>
+        )}
+
+        {/* 3. REJECTED: SLOT EXPIRED (RED BANNER) */}
+        {scanState === 'expired' && (
+          <div className="rounded-3xl p-5 sm:p-6 bg-gradient-to-b from-rose-950 via-slate-900 to-slate-950 border-2 border-rose-500 text-white shadow-2xl space-y-4 animate-in zoom-in-95 duration-200">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-rose-500/20 border border-rose-500 flex items-center justify-center text-rose-400 shrink-0 shadow-lg">
+                  <Clock className="w-7 h-7 text-rose-400" />
+                </div>
+                <div>
+                  <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest bg-rose-600 text-white">
+                    SLOT EXPIRED
+                  </span>
+                  <h2 className="text-lg sm:text-xl font-black text-rose-400 tracking-tight mt-0.5">
+                    Slot Expired!
+                  </h2>
+                  <p className="text-[12px] text-rose-200 font-medium">
+                    {statusMessage}
+                  </p>
+                </div>
+              </div>
+
+              <div className="px-2.5 py-1 rounded-xl bg-black/40 border border-rose-400/40 text-[10px] font-mono font-bold text-rose-300 shrink-0">
+                <span>Reset {countdown}s</span>
+              </div>
+            </div>
+
+            {activeBooking && (
+              <div className="p-3.5 rounded-2xl bg-black/60 border border-rose-500/40 space-y-2 text-xs">
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <span className="text-[10px] text-rose-400 font-bold uppercase tracking-wider block">Customer Name</span>
+                    <p className="font-bold text-white">{activeBooking.customer_name}</p>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-rose-400 font-bold uppercase tracking-wider block">Booking ID</span>
+                    <p className="font-mono font-bold text-rose-300">{activeBooking.booking_code}</p>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-rose-400 font-bold uppercase tracking-wider block">Expired Slot</span>
+                    <p className="font-bold text-white">{activeBooking.slot_time}</p>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-rose-400 font-bold uppercase tracking-wider block">Scheduled Date</span>
+                    <p className="font-bold text-white">{formatDateReadable(activeBooking.slot_date)}</p>
+                  </div>
+                </div>
+                <p className="text-[11px] text-rose-300/90 pt-1">
+                  ⚠️ This visiting window has passed. Visitor must book a new active slot.
+                </p>
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={resetScannerState}
+              className="w-full py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black text-xs flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg"
+            >
+              <RotateCcw className="w-4 h-4" />
+              <span>Dismiss & Scan Next</span>
+            </button>
+          </div>
+        )}
+
+        {/* 4. REJECTED: ALREADY CHECKED IN (RED BANNER) */}
         {scanState === 'completed' && (
           <div className="rounded-3xl p-5 sm:p-6 bg-gradient-to-b from-red-950 via-slate-900 to-slate-950 border-2 border-red-500 text-white shadow-2xl space-y-4 animate-in zoom-in-95 duration-200">
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-2xl bg-red-500/20 border border-red-500 flex items-center justify-center text-red-400 shrink-0 shadow-lg">
-                  <XCircle className="w-7 h-7" />
+                  <XCircle className="w-7 h-7 text-red-400" />
                 </div>
                 <div>
                   <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest bg-red-600 text-white">
                     ENTRY REJECTED
                   </span>
                   <h2 className="text-lg sm:text-xl font-black text-red-400 tracking-tight mt-0.5">
-                    ALREADY CHECKED IN!
+                    Already Scanned!
                   </h2>
                   <p className="text-[11px] text-red-300 font-mono">
                     {statusMessage}
@@ -778,7 +968,7 @@ export const ScannerPage: React.FC = () => {
           </div>
         )}
 
-        {/* 3. INVALID / UNRECOGNIZED PASS */}
+        {/* 5. INVALID / UNRECOGNIZED PASS (RED BANNER) */}
         {scanState === 'invalid' && (
           <div className="rounded-3xl p-5 sm:p-6 bg-gradient-to-b from-red-950/90 via-slate-900 to-slate-950 border-2 border-red-600 text-white shadow-2xl space-y-4 animate-in zoom-in-95 duration-200">
             <div className="flex items-start justify-between gap-3">
@@ -873,6 +1063,10 @@ export const ScannerPage: React.FC = () => {
                   className={`p-2.5 rounded-xl border text-xs flex items-center justify-between gap-2 ${
                     item.status === 'confirmed'
                       ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-200'
+                      : item.status === 'early_arrival'
+                      ? 'bg-amber-950/30 border-amber-500/30 text-amber-200'
+                      : item.status === 'expired'
+                      ? 'bg-rose-950/30 border-rose-500/30 text-rose-200'
                       : item.status === 'completed'
                       ? 'bg-red-950/30 border-red-500/30 text-red-200'
                       : 'bg-slate-950 border-slate-800 text-slate-400'
@@ -882,7 +1076,15 @@ export const ScannerPage: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <span className="font-mono font-bold text-xs">{item.bookingCode || 'Token'}</span>
                       <span className="text-[9px] font-bold uppercase tracking-wider">
-                        {item.status === 'confirmed' ? '✓ Verified' : item.status === 'completed' ? '✗ Re-entry Denied' : '✗ Invalid'}
+                        {item.status === 'confirmed' 
+                          ? '✓ Verified' 
+                          : item.status === 'early_arrival'
+                          ? '⏳ Too Early'
+                          : item.status === 'expired'
+                          ? '✗ Expired'
+                          : item.status === 'completed' 
+                          ? '✗ Re-entry Denied' 
+                          : '✗ Invalid'}
                       </span>
                     </div>
                     {item.customerName && (
@@ -896,9 +1098,7 @@ export const ScannerPage: React.FC = () => {
               ))}
             </div>
           ) : (
-            <p className="text-xs text-slate-500 text-center py-2">
-              Ready for first visitor scan.
-            </p>
+            <p className="text-xs text-slate-500 text-center py-4">No passes scanned in this session yet.</p>
           )}
         </div>
       </main>

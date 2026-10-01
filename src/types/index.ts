@@ -73,15 +73,20 @@ export type BookingStatus = 'confirmed' | 'completed' | 'checked_in' | 'cancelle
 export interface Booking {
   id: string;
   booking_code: string;
+  ticket_code?: string;
   qr_token: string;
   slot_id?: string;
   customer_name: string;
   customer_phone: string;
   slot_date: string;
   slot_time: string;
+  visit_date?: string;
+  time_slot?: string;
   total_amount: number;
   visitor_count?: number;
   status: BookingStatus;
+  is_scanned?: boolean;
+  scanned_at?: string | null;
   verified_at?: string | null;
   notes?: string;
   created_at: string;

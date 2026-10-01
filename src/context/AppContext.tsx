@@ -2,14 +2,16 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import { Product, Slot, Booking, StaffUser, BookingRpcResponse, BookingStatus } from '../types';
 import { INITIAL_PRODUCTS, generateInitialSlots } from '../lib/initialData';
 import { supabase, isSupabaseConfigured, DEFAULT_PRODUCT_IMAGE } from '../lib/supabase';
-import { isAuthorizedAdminEmail, ADMIN_EMAIL, generateUUID, formatTime, formatDateReadable } from '../lib/utils';
+import { isAuthorizedAdminEmail, ADMIN_EMAIL, generateUUID, formatTime, formatDateReadable, validateSlotTiming } from '../lib/utils';
 import { extractCleanQrPayload } from '../lib/cameraUtils';
 
 export interface GateScanResult {
-  status: 'confirmed' | 'completed' | 'invalid';
+  status: 'confirmed' | 'completed' | 'early_arrival' | 'expired' | 'invalid';
   booking?: Booking;
   message: string;
   verified_at?: string;
+  slot_time?: string;
+  slot_date?: string;
 }
 
 interface AppContextType {
@@ -554,21 +556,58 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
     }
 
-    // c. If found AND status === 'completed':
-    if (matchedBooking.status === 'completed') {
-      const verifiedAtDate = matchedBooking.verified_at
-        ? `${formatDateReadable(matchedBooking.verified_at.split('T')[0])} at ${new Date(matchedBooking.verified_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })}`
+    // c. Prevent Re-Scanning: If found AND already used/scanned:
+    const isAlreadyScanned = matchedBooking.status === 'completed' ||
+      matchedBooking.status === 'checked_in' ||
+      matchedBooking.is_scanned === true;
+
+    if (isAlreadyScanned) {
+      const scannedTime = matchedBooking.verified_at || matchedBooking.scanned_at;
+      const verifiedAtDate = scannedTime
+        ? `${formatDateReadable(scannedTime.split('T')[0])} at ${new Date(scannedTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })}`
         : 'earlier today';
 
       return {
         status: 'completed',
         booking: matchedBooking,
-        verified_at: matchedBooking.verified_at || undefined,
-        message: `ALREADY CHECKED IN at ${verifiedAtDate}`
+        verified_at: scannedTime || undefined,
+        slot_time: matchedBooking.slot_time || matchedBooking.time_slot,
+        slot_date: matchedBooking.slot_date || matchedBooking.visit_date,
+        message: `Already Scanned at ${verifiedAtDate}`
       };
     }
 
-    // d. If found AND status === 'confirmed' (or active):
+    // d. Strict Time-Slot Validation:
+    const slotDate = matchedBooking.slot_date || matchedBooking.visit_date || (matchedBooking.slot?.slot_date) || '';
+    const slotTime = matchedBooking.slot_time || matchedBooking.time_slot || '';
+    const startTime = matchedBooking.slot?.start_time;
+    const endTime = matchedBooking.slot?.end_time;
+
+    const timingCheck = validateSlotTiming(slotDate, slotTime, startTime, endTime, 15);
+
+    if (!timingCheck.isValid) {
+      if (timingCheck.reason === 'early_arrival') {
+        return {
+          status: 'early_arrival',
+          booking: matchedBooking,
+          slot_time: timingCheck.formattedTime || slotTime,
+          slot_date: timingCheck.formattedDate || slotDate,
+          message: timingCheck.message || `Too Early! This slot is valid only at ${timingCheck.formattedTime || slotTime}.`
+        };
+      }
+
+      if (timingCheck.reason === 'expired') {
+        return {
+          status: 'expired',
+          booking: matchedBooking,
+          slot_time: timingCheck.formattedTime || slotTime,
+          slot_date: timingCheck.formattedDate || slotDate,
+          message: timingCheck.message || `Slot Expired! This pass was valid for ${timingCheck.formattedTime || slotTime}.`
+        };
+      }
+    }
+
+    // e. Access Granted: Within active window — Mark as scanned/completed
     const nowIso = new Date().toISOString();
 
     if (isSupabaseConfigured && supabase) {
@@ -577,18 +616,32 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           .from('bookings')
           .update({
             status: 'completed',
-            verified_at: nowIso
+            verified_at: nowIso,
+            is_scanned: true,
+            scanned_at: nowIso
           })
           .eq('id', matchedBooking.id);
       } catch (err) {
-        console.warn('Supabase status update error:', err);
+        try {
+          await supabase
+            .from('bookings')
+            .update({
+              status: 'completed',
+              verified_at: nowIso
+            })
+            .eq('id', matchedBooking.id);
+        } catch (err2) {
+          console.warn('Supabase status update error:', err2);
+        }
       }
     }
 
     const completedBooking: Booking = {
       ...matchedBooking,
       status: 'completed',
-      verified_at: nowIso
+      verified_at: nowIso,
+      is_scanned: true,
+      scanned_at: nowIso
     };
 
     setBookings(prev => prev.map(b => b.id === matchedBooking!.id ? completedBooking : b));
@@ -597,7 +650,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       status: 'confirmed',
       booking: completedBooking,
       verified_at: nowIso,
-      message: 'Entry Verified & Slot Closed Permanently'
+      slot_time: timingCheck.formattedTime || slotTime,
+      slot_date: timingCheck.formattedDate || slotDate,
+      message: 'Access Granted — Admission Verified'
     };
   }, [bookings]);
 

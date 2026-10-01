@@ -38,6 +38,146 @@ export function formatDateReadable(dateStr: string): string {
   });
 }
 
+export function parseTimeToMinutes(timeStr: string): number | null {
+  if (!timeStr) return null;
+  const str = timeStr.trim();
+  
+  // Check 12-hour format with AM/PM (e.g. "04:00 PM" or "4:30 pm")
+  const match12 = str.match(/(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM|am|pm)/i);
+  if (match12) {
+    let hours = parseInt(match12[1], 10);
+    const minutes = parseInt(match12[2], 10);
+    const meridiem = match12[3].toUpperCase();
+    if (meridiem === 'PM' && hours < 12) hours += 12;
+    if (meridiem === 'AM' && hours === 12) hours = 0;
+    return hours * 60 + minutes;
+  }
+
+  // Check 24-hour format (e.g. "16:00:00" or "16:00")
+  const match24 = str.match(/(\d{1,2}):(\d{2})/);
+  if (match24) {
+    const hours = parseInt(match24[1], 10);
+    const minutes = parseInt(match24[2], 10);
+    return hours * 60 + minutes;
+  }
+
+  return null;
+}
+
+export function parseSlotTimeString(slotTimeStr: string): { startMinutes: number; endMinutes: number } | null {
+  if (!slotTimeStr) return null;
+  // Splits on '–', '-', 'to', 'TO'
+  const parts = slotTimeStr.split(/[–\-]|to|TO/i);
+  if (parts.length >= 2) {
+    const start = parseTimeToMinutes(parts[0]);
+    const end = parseTimeToMinutes(parts[1]);
+    if (start !== null && end !== null) {
+      return { startMinutes: start, endMinutes: end };
+    }
+  }
+  return null;
+}
+
+export type SlotTimeValidationResult = 
+  | { isValid: true; message: string; formattedTime: string; formattedDate: string }
+  | { isValid: false; reason: 'early_arrival'; message: string; formattedTime: string; formattedDate: string }
+  | { isValid: false; reason: 'expired'; message: string; formattedTime: string; formattedDate: string };
+
+/**
+ * Validates whether the current local time falls within the scheduled slot date & time window.
+ * Includes an optional 15-minute early grace buffer prior to slot start time.
+ */
+export function validateSlotTiming(
+  slotDateStr: string | undefined | null,
+  slotTimeStr: string | undefined | null,
+  slotStartTime?: string | null,
+  slotEndTime?: string | null,
+  earlyGraceMinutes: number = 15
+): SlotTimeValidationResult {
+  const displayTime = slotTimeStr || (slotStartTime && slotEndTime ? `${formatTime(slotStartTime)} – ${formatTime(slotEndTime)}` : 'Scheduled Window');
+
+  if (!slotDateStr) {
+    return { isValid: true, message: 'Access Granted', formattedTime: displayTime, formattedDate: 'Today' };
+  }
+
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = String(now.getMonth() + 1).padStart(2, '0');
+  const currentDay = String(now.getDate()).padStart(2, '0');
+  const todayDateStr = `${currentYear}-${currentMonth}-${currentDay}`;
+
+  const cleanSlotDate = slotDateStr.split('T')[0].trim();
+  const displayDate = formatDateReadable(cleanSlotDate) || cleanSlotDate;
+
+  // 1. Date comparison
+  if (cleanSlotDate < todayDateStr) {
+    return {
+      isValid: false,
+      reason: 'expired',
+      message: `Slot Expired! This pass was valid on ${displayDate} for ${displayTime}.`,
+      formattedTime: displayTime,
+      formattedDate: displayDate,
+    };
+  }
+
+  if (cleanSlotDate > todayDateStr) {
+    return {
+      isValid: false,
+      reason: 'early_arrival',
+      message: `Too Early! This pass is scheduled for ${displayDate} at ${displayTime}.`,
+      formattedTime: displayTime,
+      formattedDate: displayDate,
+    };
+  }
+
+  // 2. Same-Day Time Window Checking (cleanSlotDate === todayDateStr)
+  let startMinutes: number | null = null;
+  let endMinutes: number | null = null;
+
+  if (slotStartTime && slotEndTime) {
+    startMinutes = parseTimeToMinutes(slotStartTime);
+    endMinutes = parseTimeToMinutes(slotEndTime);
+  }
+  
+  if (startMinutes === null || endMinutes === null) {
+    if (slotTimeStr) {
+      const parsed = parseSlotTimeString(slotTimeStr);
+      if (parsed) {
+        startMinutes = parsed.startMinutes;
+        endMinutes = parsed.endMinutes;
+      }
+    }
+  }
+
+  if (startMinutes !== null && endMinutes !== null) {
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+    // Early arrival: earlier than slot start minus early grace buffer
+    if (currentMinutes < startMinutes - earlyGraceMinutes) {
+      return {
+        isValid: false,
+        reason: 'early_arrival',
+        message: `Too Early! This slot is valid only at ${displayTime}.`,
+        formattedTime: displayTime,
+        formattedDate: displayDate,
+      };
+    }
+
+    // Expired: past slot end time
+    if (currentMinutes > endMinutes) {
+      return {
+        isValid: false,
+        reason: 'expired',
+        message: `Slot Expired! This pass was valid for ${displayTime}.`,
+        formattedTime: displayTime,
+        formattedDate: displayDate,
+      };
+    }
+  }
+
+  return { isValid: true, message: 'Access Granted — Admission Verified', formattedTime: displayTime, formattedDate: displayDate };
+}
+
 export type SlotAvailabilityStatus = 'available' | 'filling_fast' | 'fully_booked' | 'blocked';
 
 export function getSlotStatus(slot: Slot): SlotAvailabilityStatus {

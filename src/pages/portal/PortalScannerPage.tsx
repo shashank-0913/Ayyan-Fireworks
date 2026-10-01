@@ -17,7 +17,8 @@ import {
   ArrowRight,
   ShieldAlert,
   Zap,
-  Info
+  Info,
+  Clock
 } from 'lucide-react';
 import { useAyyanStore } from '../../context/AppContext';
 import { Booking } from '../../types';
@@ -44,6 +45,19 @@ function playScanTone(type: 'success' | 'error' | 'warning', soundEnabled = true
       osc.type = 'sine';
       osc.frequency.setValueAtTime(587.33, ctx.currentTime);
       osc.frequency.setValueAtTime(880, ctx.currentTime + 0.12);
+      gain.gain.setValueAtTime(0.25, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.35);
+    } else if (type === 'warning') {
+      // Amber warning tone (dual cautionary beep 440Hz -> 370Hz)
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(440, ctx.currentTime);
+      osc.frequency.setValueAtTime(370, ctx.currentTime + 0.15);
       gain.gain.setValueAtTime(0.25, ctx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
       osc.connect(gain);
@@ -77,7 +91,7 @@ interface ScanLogItem {
   customerPhone?: string;
   slotTime?: string;
   slotDate?: string;
-  status: 'confirmed' | 'completed' | 'invalid';
+  status: 'confirmed' | 'completed' | 'early_arrival' | 'expired' | 'invalid';
   message: string;
   timestamp: string;
 }
@@ -93,7 +107,7 @@ export const PortalScannerPage: React.FC = () => {
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
 
   // Verification Result State
-  const [scanState, setScanState] = useState<'idle' | 'processing' | 'confirmed' | 'completed' | 'invalid'>('idle');
+  const [scanState, setScanState] = useState<'idle' | 'processing' | 'confirmed' | 'completed' | 'early_arrival' | 'expired' | 'invalid'>('idle');
   const [activeBooking, setActiveBooking] = useState<Booking | null>(null);
   const [statusMessage, setStatusMessage] = useState<string>('');
   const [verifiedAtString, setVerifiedAtString] = useState<string>('');
@@ -124,10 +138,10 @@ export const PortalScannerPage: React.FC = () => {
       const result = await verifyGateTicket(tokenOrCode);
 
       if (result.status === 'confirmed') {
-        // d. Found and confirmed: Entry Verified & Slot Closed Permanently!
+        // Access Granted — Valid & Confirmed
         setScanState('confirmed');
         setActiveBooking(result.booking || null);
-        setStatusMessage(result.message || 'Entry Verified & Slot Closed Permanently');
+        setStatusMessage(result.message || 'Access Granted — Admission Verified');
         setVerifiedAtString(result.verified_at || new Date().toISOString());
         playScanTone('success', soundEnabled);
         if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
@@ -140,20 +154,70 @@ export const PortalScannerPage: React.FC = () => {
             bookingCode: result.booking?.booking_code,
             customerName: result.booking?.customer_name,
             customerPhone: result.booking?.customer_phone,
-            slotTime: result.booking?.slot_time,
-            slotDate: result.booking?.slot_date,
+            slotTime: result.slot_time || result.booking?.slot_time,
+            slotDate: result.slot_date || result.booking?.slot_date,
             status: 'confirmed',
-            message: 'Entry Verified & Slot Closed Permanently',
+            message: result.message || 'Access Granted',
+            timestamp: new Date().toLocaleTimeString('en-IN')
+          },
+          ...prev.slice(0, 24)
+        ]);
+
+      } else if (result.status === 'early_arrival') {
+        // Too Early! Reject with status 'EARLY_ARRIVAL'
+        setScanState('early_arrival');
+        setActiveBooking(result.booking || null);
+        setStatusMessage(result.message);
+        setVerifiedAtString('');
+        playScanTone('warning', soundEnabled);
+        if (navigator.vibrate) navigator.vibrate([150, 100, 150]);
+
+        setScanHistory(prev => [
+          {
+            id: `log-${Date.now()}`,
+            token: tokenOrCode,
+            bookingCode: result.booking?.booking_code,
+            customerName: result.booking?.customer_name,
+            customerPhone: result.booking?.customer_phone,
+            slotTime: result.slot_time || result.booking?.slot_time,
+            slotDate: result.slot_date || result.booking?.slot_date,
+            status: 'early_arrival',
+            message: result.message,
+            timestamp: new Date().toLocaleTimeString('en-IN')
+          },
+          ...prev.slice(0, 24)
+        ]);
+
+      } else if (result.status === 'expired') {
+        // Slot Expired! Reject with status 'EXPIRED'
+        setScanState('expired');
+        setActiveBooking(result.booking || null);
+        setStatusMessage(result.message);
+        setVerifiedAtString('');
+        playScanTone('error', soundEnabled);
+        if (navigator.vibrate) navigator.vibrate([300]);
+
+        setScanHistory(prev => [
+          {
+            id: `log-${Date.now()}`,
+            token: tokenOrCode,
+            bookingCode: result.booking?.booking_code,
+            customerName: result.booking?.customer_name,
+            customerPhone: result.booking?.customer_phone,
+            slotTime: result.slot_time || result.booking?.slot_time,
+            slotDate: result.slot_date || result.booking?.slot_date,
+            status: 'expired',
+            message: result.message,
             timestamp: new Date().toLocaleTimeString('en-IN')
           },
           ...prev.slice(0, 24)
         ]);
 
       } else if (result.status === 'completed') {
-        // c. Found and already completed: ALREADY CHECKED IN
+        // Already Scanned / Re-entry
         setScanState('completed');
         setActiveBooking(result.booking || null);
-        setStatusMessage(result.message || 'ALREADY CHECKED IN');
+        setStatusMessage(result.message || 'Already Scanned');
         setVerifiedAtString(result.verified_at || '');
         playScanTone('error', soundEnabled);
         if (navigator.vibrate) navigator.vibrate([250]);
@@ -165,17 +229,17 @@ export const PortalScannerPage: React.FC = () => {
             bookingCode: result.booking?.booking_code,
             customerName: result.booking?.customer_name,
             customerPhone: result.booking?.customer_phone,
-            slotTime: result.booking?.slot_time,
-            slotDate: result.booking?.slot_date,
+            slotTime: result.slot_time || result.booking?.slot_time,
+            slotDate: result.slot_date || result.booking?.slot_date,
             status: 'completed',
-            message: result.message || 'ALREADY CHECKED IN',
+            message: result.message || 'Already Scanned',
             timestamp: new Date().toLocaleTimeString('en-IN')
           },
           ...prev.slice(0, 24)
         ]);
 
       } else {
-        // b. Not found: Invalid or Fake Ticket!
+        // Invalid or Fake Ticket
         setScanState('invalid');
         setActiveBooking(null);
         setStatusMessage('Invalid or Fake Ticket!');
@@ -195,12 +259,12 @@ export const PortalScannerPage: React.FC = () => {
         ]);
       }
 
-      // e. Reset camera scanner after 3-second delay
-      setCountdown(3);
+      // Reset camera scanner after 4-second delay
+      setCountdown(4);
       if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
       if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
 
-      let timeLeft = 3;
+      let timeLeft = 4;
       countdownIntervalRef.current = setInterval(() => {
         timeLeft -= 1;
         setCountdown(timeLeft);
@@ -211,7 +275,7 @@ export const PortalScannerPage: React.FC = () => {
 
       resetTimerRef.current = setTimeout(() => {
         resetScannerState();
-      }, 3000);
+      }, 4000);
 
     } catch (err: any) {
       console.error('Verification error:', err);
@@ -562,7 +626,7 @@ export const PortalScannerPage: React.FC = () => {
         {/* Right Column: Live Result Cards & Detailed Gate Verdict (6 cols) */}
         <div className="lg:col-span-6 space-y-4">
           {/* ========================================================================= */}
-          {/* 1. STATE: SUCCESS / ENTRY VERIFIED & SLOT CLOSED                          */}
+          {/* 1. STATE: SUCCESS / ACCESS GRANTED (GREEN BANNER)                         */}
           {/* ========================================================================= */}
           {scanState === 'confirmed' && (
             <div className="rounded-3xl p-6 sm:p-8 bg-gradient-to-b from-emerald-950/90 via-slate-900 to-slate-950 border-2 border-emerald-500 text-white shadow-2xl space-y-6 animate-in zoom-in-95 duration-300">
@@ -573,13 +637,13 @@ export const PortalScannerPage: React.FC = () => {
                   </div>
                   <div>
                     <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-emerald-500 text-slate-950">
-                      ENTRY PERMITTED
+                      ACCESS GRANTED
                     </span>
                     <h2 className="text-xl sm:text-2xl font-black text-emerald-300 tracking-tight mt-1">
-                      Entry Verified & Slot Closed Permanently
+                      Access Granted — Admission Verified
                     </h2>
                     <p className="text-xs text-emerald-200/80 font-mono">
-                      Supabase slot marked completed • Verified at {verifiedAtString ? new Date(verifiedAtString).toLocaleTimeString('en-IN') : new Date().toLocaleTimeString('en-IN')}
+                      Supabase slot checked-in • Verified at {verifiedAtString ? new Date(verifiedAtString).toLocaleTimeString('en-IN') : new Date().toLocaleTimeString('en-IN')}
                     </p>
                   </div>
                 </div>
@@ -633,7 +697,137 @@ export const PortalScannerPage: React.FC = () => {
           )}
 
           {/* ========================================================================= */}
-          {/* 2. STATE: RE-ENTRY REJECTED (ALREADY COMPLETED)                            */}
+          {/* 2. STATE: REJECTED: TOO EARLY (AMBER BANNER)                              */}
+          {/* ========================================================================= */}
+          {scanState === 'early_arrival' && (
+            <div className="rounded-3xl p-6 sm:p-8 bg-gradient-to-b from-amber-950 via-slate-900 to-slate-950 border-2 border-amber-500 text-white shadow-2xl space-y-6 animate-in zoom-in-95 duration-300">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-14 h-14 rounded-2xl bg-amber-500/20 border-2 border-amber-500 flex items-center justify-center text-amber-400 shrink-0 shadow-lg">
+                    <Clock className="w-9 h-9 text-amber-400 animate-pulse" />
+                  </div>
+                  <div>
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-amber-500 text-slate-950">
+                      TOO EARLY
+                    </span>
+                    <h2 className="text-xl sm:text-2xl font-black text-amber-300 tracking-tight mt-1">
+                      Too Early! Not Valid Yet
+                    </h2>
+                    <p className="text-xs text-amber-200 font-mono">
+                      {statusMessage}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="px-3 py-1.5 rounded-xl bg-black/40 border border-amber-400/40 text-[11px] font-mono font-bold text-amber-300 text-center shrink-0">
+                  <span>Reset {countdown}s</span>
+                </div>
+              </div>
+
+              {activeBooking && (
+                <div className="p-4 rounded-2xl bg-black/60 border border-amber-500/40 space-y-3">
+                  <div className="grid grid-cols-2 gap-3 text-xs">
+                    <div>
+                      <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider block">Customer Name</span>
+                      <p className="text-sm font-bold text-white">{activeBooking.customer_name}</p>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider block">Booking ID</span>
+                      <p className="text-sm font-mono font-bold text-amber-300">{activeBooking.booking_code}</p>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider block">Scheduled Slot</span>
+                      <p className="font-bold text-white">{activeBooking.slot_time}</p>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider block">Scheduled Date</span>
+                      <p className="font-bold text-white">{formatDateReadable(activeBooking.slot_date)}</p>
+                    </div>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-xs text-amber-200">
+                    ⏳ Entry is permitted starting 15 minutes before slot start time. Please ask the visitor to wait.
+                  </div>
+                </div>
+              )}
+
+              <button
+                type="button"
+                onClick={resetScannerState}
+                className="w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg"
+              >
+                <RefreshCw className="w-4 h-4" />
+                <span>Dismiss & Scan Next</span>
+              </button>
+            </div>
+          )}
+
+          {/* ========================================================================= */}
+          {/* 3. STATE: REJECTED: SLOT EXPIRED (RED BANNER)                             */}
+          {/* ========================================================================= */}
+          {scanState === 'expired' && (
+            <div className="rounded-3xl p-6 sm:p-8 bg-gradient-to-b from-rose-950 via-slate-900 to-slate-950 border-2 border-rose-500 text-white shadow-2xl space-y-6 animate-in zoom-in-95 duration-300">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-14 h-14 rounded-2xl bg-rose-500/20 border-2 border-rose-500 flex items-center justify-center text-rose-400 shrink-0 shadow-lg">
+                    <Clock className="w-9 h-9 text-rose-400" />
+                  </div>
+                  <div>
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-rose-600 text-white">
+                      SLOT EXPIRED
+                    </span>
+                    <h2 className="text-xl sm:text-2xl font-black text-rose-400 tracking-tight mt-1">
+                      Slot Expired!
+                    </h2>
+                    <p className="text-xs text-rose-200 font-mono">
+                      {statusMessage}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="px-3 py-1.5 rounded-xl bg-black/40 border border-rose-400/40 text-[11px] font-mono font-bold text-rose-300 text-center shrink-0">
+                  <span>Reset {countdown}s</span>
+                </div>
+              </div>
+
+              {activeBooking && (
+                <div className="p-4 rounded-2xl bg-black/60 border border-rose-500/40 space-y-3">
+                  <div className="grid grid-cols-2 gap-3 text-xs">
+                    <div>
+                      <span className="text-[10px] text-rose-400 font-bold uppercase tracking-wider block">Customer Name</span>
+                      <p className="text-sm font-bold text-white">{activeBooking.customer_name}</p>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-rose-400 font-bold uppercase tracking-wider block">Booking ID</span>
+                      <p className="text-sm font-mono font-bold text-rose-300">{activeBooking.booking_code}</p>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-rose-400 font-bold uppercase tracking-wider block">Expired Slot</span>
+                      <p className="font-bold text-white">{activeBooking.slot_time}</p>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-rose-400 font-bold uppercase tracking-wider block">Scheduled Date</span>
+                      <p className="font-bold text-white">{formatDateReadable(activeBooking.slot_date)}</p>
+                    </div>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-rose-500/15 border border-rose-500/30 text-xs text-rose-200">
+                    ⚠️ This visiting window has passed. Visitor must book a new active slot.
+                  </div>
+                </div>
+              )}
+
+              <button
+                type="button"
+                onClick={resetScannerState}
+                className="w-full py-3.5 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-black text-xs flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg"
+              >
+                <RefreshCw className="w-4 h-4" />
+                <span>Dismiss & Scan Next</span>
+              </button>
+            </div>
+          )}
+
+          {/* ========================================================================= */}
+          {/* 4. STATE: RE-ENTRY REJECTED (ALREADY COMPLETED)                            */}
           {/* ========================================================================= */}
           {scanState === 'completed' && (
             <div className="rounded-3xl p-6 sm:p-8 bg-gradient-to-b from-red-950 via-slate-900 to-slate-950 border-2 border-red-500 text-white shadow-2xl space-y-6 animate-in zoom-in-95 duration-300">
@@ -647,7 +841,7 @@ export const PortalScannerPage: React.FC = () => {
                       ENTRY DENIED
                     </span>
                     <h2 className="text-xl sm:text-2xl font-black text-red-400 tracking-tight mt-1">
-                      ALREADY CHECKED IN!
+                      Already Scanned!
                     </h2>
                     <p className="text-xs text-red-300 font-mono">
                       {statusMessage}
@@ -690,7 +884,7 @@ export const PortalScannerPage: React.FC = () => {
           )}
 
           {/* ========================================================================= */}
-          {/* 3. STATE: INVALID OR FAKE TICKET                                         */}
+          {/* 5. STATE: INVALID OR FAKE TICKET (RED BANNER)                             */}
           {/* ========================================================================= */}
           {scanState === 'invalid' && (
             <div className="rounded-3xl p-6 sm:p-8 bg-gradient-to-b from-red-950/90 via-slate-900 to-slate-950 border-2 border-red-600 text-white shadow-2xl space-y-6 animate-in zoom-in-95 duration-300">
@@ -736,7 +930,7 @@ export const PortalScannerPage: React.FC = () => {
           )}
 
           {/* ========================================================================= */}
-          {/* 4. STATE: IDLE / STANDBY AWAITING SCANS                                  */}
+          {/* 6. STATE: IDLE / STANDBY AWAITING SCANS                                  */}
           {/* ========================================================================= */}
           {scanState === 'idle' && (
             <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
@@ -794,6 +988,10 @@ export const PortalScannerPage: React.FC = () => {
                     className={`p-3 rounded-2xl border text-xs flex items-center justify-between gap-3 ${
                       item.status === 'confirmed'
                         ? 'bg-emerald-50/60 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-500/30 text-emerald-900 dark:text-emerald-200'
+                        : item.status === 'early_arrival'
+                        ? 'bg-amber-50/60 dark:bg-amber-950/30 border-amber-300 dark:border-amber-500/30 text-amber-900 dark:text-amber-200'
+                        : item.status === 'expired'
+                        ? 'bg-rose-50/60 dark:bg-rose-950/30 border-rose-300 dark:border-rose-500/30 text-rose-900 dark:text-rose-200'
                         : item.status === 'completed'
                         ? 'bg-red-50/60 dark:bg-red-950/30 border-red-300 dark:border-red-500/30 text-red-900 dark:text-red-200'
                         : 'bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400'
@@ -803,7 +1001,15 @@ export const PortalScannerPage: React.FC = () => {
                       <div className="flex items-center gap-2">
                         <span className="font-mono font-bold text-xs">{item.bookingCode || 'Unknown ID'}</span>
                         <span className="text-[10px] font-bold uppercase tracking-wider">
-                          {item.status === 'confirmed' ? '✓ Verified' : item.status === 'completed' ? '✗ Re-entry Rejected' : '✗ Invalid'}
+                          {item.status === 'confirmed' 
+                            ? '✓ Verified' 
+                            : item.status === 'early_arrival'
+                            ? '⏳ Too Early'
+                            : item.status === 'expired'
+                            ? '✗ Expired'
+                            : item.status === 'completed' 
+                            ? '✗ Re-entry Rejected' 
+                            : '✗ Invalid'}
                         </span>
                       </div>
                       {item.customerName && (
