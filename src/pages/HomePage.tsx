@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Sparkles, 
-  MapPin, 
   BookOpen, 
   ArrowRight, 
   Flame, 
-  Clock
+  Clock,
+  Ticket
 } from 'lucide-react';
 import { useAyyanStore } from '../context/AppContext';
 import { ProductCard } from '../components/customer/ProductCard';
+import { ReserveSlotModal } from '../components/customer/ReserveSlotModal';
 import { Product } from '../types';
 
 export const HomePage: React.FC = () => {
   const { products } = useAyyanStore();
+  const [isSlotModalOpen, setIsSlotModalOpen] = useState(false);
 
   const featuredProducts = products.filter((p: Product) => p.is_active).slice(0, 6);
 
@@ -50,26 +52,35 @@ export const HomePage: React.FC = () => {
             </h1>
           </div>
 
-          {/* Dual Call to Actions */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Link
-              to="/catalogue"
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 dark:from-gold-500 dark:via-amber-400 dark:to-gold-500 hover:from-amber-400 hover:to-amber-300 text-obsidian-950 font-extrabold text-sm sm:text-base tracking-wide uppercase flex items-center justify-center gap-2.5 transition-all shadow-md dark:shadow-glow-gold hover:shadow-lg dark:hover:shadow-[0_0_30px_rgba(245,158,11,0.6)] transform hover:-translate-y-0.5"
+          {/* Hero CTA Button Group */}
+          <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
+            {/* Primary Button */}
+            <a
+              href="/catalogue"
+              className="flex items-center gap-2 px-6 py-3.5 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-600 hover:to-amber-500 text-black font-bold text-xs md:text-sm tracking-wider uppercase rounded-full shadow-lg hover:shadow-amber-500/20 active:scale-95 transition-all"
             >
-              <BookOpen className="w-5 h-5 text-obsidian-950" />
+              <BookOpen className="w-4 h-4" />
               <span>Explore 2026 Price List</span>
-            </Link>
+            </a>
 
-            <Link
-              to="/showroom"
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white dark:bg-obsidian-900/90 hover:bg-slate-50 dark:hover:bg-slate-900 border border-amber-400/50 dark:border-gold-500/40 text-amber-700 dark:text-gold-300 hover:text-slate-900 dark:hover:text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 transition-all hover:border-amber-500 shadow-sm dark:shadow-glass"
+            {/* Replaced: Showroom & Directions -> Reserve Visiting Slot */}
+            <button
+              type="button"
+              onClick={() => setIsSlotModalOpen(true)}
+              className="flex items-center gap-2 px-6 py-3.5 bg-black/70 hover:bg-black/90 text-amber-400 hover:text-amber-300 font-semibold text-xs md:text-sm tracking-wide rounded-full border border-amber-500/30 hover:border-amber-400 backdrop-blur-sm active:scale-95 transition-all cursor-pointer"
             >
-              <MapPin className="w-5 h-5 text-amber-600 dark:text-gold-400" />
-              <span>Showroom & Directions</span>
-            </Link>
+              <Ticket className="w-4 h-4 text-amber-400" />
+              <span>Reserve Visiting Slot</span>
+            </button>
           </div>
         </div>
       </section>
+
+      {/* Interactive Slot Booking Modal */}
+      <ReserveSlotModal
+        isOpen={isSlotModalOpen}
+        onClose={() => setIsSlotModalOpen(false)}
+      />
 
       {/* ========================================================================= */}
       {/* 2. FEATURED 2026 FESTIVE CATALOGUE SHOWCASE */}
