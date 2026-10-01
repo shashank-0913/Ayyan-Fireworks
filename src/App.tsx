@@ -17,18 +17,18 @@ import { BookSlotPage } from './pages/BookSlotPage';
 import { ShowroomPage } from './pages/ShowroomPage';
 
 // Standalone Dedicated Scanner Components & Pages (Owner OTP Secured)
-import { ScannerAuthGate } from './components/scanner/ScannerAuthGate';
-import { ScannerLoginPage } from './pages/scanner/ScannerLoginPage';
 import { ScannerPage } from './pages/scanner/ScannerPage';
 
 // Portal Components & Pages
-import { PortalAuthGate } from './components/portal/PortalAuthGate';
 import { PortalLayout } from './components/portal/PortalLayout';
-import { PortalLoginPage } from './pages/portal/PortalLoginPage';
 import { PortalDashboardPage } from './pages/portal/PortalDashboardPage';
 import { PortalProductsPage } from './pages/portal/PortalProductsPage';
 import { PortalSlotsPage } from './pages/portal/PortalSlotsPage';
 import { PortalBookingsPage } from './pages/portal/PortalBookingsPage';
+
+// Owner Auth Portal & Route Protection Gate
+import { OwnerAuthPortal } from './components/auth/OwnerAuthPortal';
+import { RequireOwnerAuth } from './components/auth/RequireOwnerAuth';
 
 // Customer Layout Wrapper
 const CustomerPortalLayout: React.FC = () => {
@@ -65,7 +65,7 @@ export const App: React.FC = () => {
           <BrowserRouter>
             <Routes>
               {/* ================================================================= */}
-              {/* 1. PUBLIC CUSTOMER PORTAL */}
+              {/* 1. PUBLIC WEBSITE & CUSTOMER PORTAL */}
               {/* ================================================================= */}
               <Route element={<CustomerPortalLayout />}>
                 <Route path="/" element={<HomePage />} />
@@ -78,62 +78,79 @@ export const App: React.FC = () => {
               <Route path="/antigravity" element={<Navigate to="/catalogue" replace />} />
 
               {/* ================================================================= */}
-              {/* 2. DEDICATED STANDALONE OWNER QR SCANNER PORTAL                   */}
+              {/* 2. ADMIN AUTHENTICATION & DASHBOARD */}
               {/* ================================================================= */}
-              <Route path="/scanner/login" element={<ScannerLoginPage />} />
+              <Route path="/admin" element={<OwnerAuthPortal defaultPortal="admin" />} />
+              <Route path="/admin/login" element={<OwnerAuthPortal defaultPortal="admin" />} />
+              <Route path="/portal/login" element={<OwnerAuthPortal defaultPortal="admin" />} />
+              <Route path="/portal" element={<Navigate to="/admin" replace />} />
+
+              {/* Protected Admin Routes */}
               <Route
-                path="/scanner"
+                path="/admin/dashboard"
                 element={
-                  <ScannerAuthGate>
+                  <RequireOwnerAuth type="admin">
+                    <PortalLayout />
+                  </RequireOwnerAuth>
+                }
+              >
+                <Route index element={<PortalDashboardPage />} />
+              </Route>
+
+              {/* Admin Operations Sub-Routes */}
+              <Route
+                path="/admin/products"
+                element={
+                  <RequireOwnerAuth type="admin">
+                    <PortalLayout />
+                  </RequireOwnerAuth>
+                }
+              >
+                <Route index element={<PortalProductsPage />} />
+              </Route>
+              
+              <Route
+                path="/admin/slots"
+                element={
+                  <RequireOwnerAuth type="admin">
+                    <PortalLayout />
+                  </RequireOwnerAuth>
+                }
+              >
+                <Route index element={<PortalSlotsPage />} />
+              </Route>
+
+              <Route
+                path="/admin/bookings"
+                element={
+                  <RequireOwnerAuth type="admin">
+                    <PortalLayout />
+                  </RequireOwnerAuth>
+                }
+              >
+                <Route index element={<PortalBookingsPage />} />
+              </Route>
+
+              {/* ================================================================= */}
+              {/* 3. STANDALONE SCANNER AUTHENTICATION & TERMINAL                   */}
+              {/* ================================================================= */}
+              <Route path="/scanner" element={<OwnerAuthPortal defaultPortal="scanner" />} />
+              <Route path="/scanner/login" element={<OwnerAuthPortal defaultPortal="scanner" />} />
+              <Route
+                path="/scanner/terminal"
+                element={
+                  <RequireOwnerAuth type="scanner">
                     <ScannerPage />
-                  </ScannerAuthGate>
+                  </RequireOwnerAuth>
                 }
               />
-              {/* Aliases for quick access */}
-              <Route path="/verify-qr" element={<Navigate to="/scanner" replace />} />
-              <Route path="/verify-qr/login" element={<Navigate to="/scanner/login" replace />} />
-              <Route path="/gate" element={<Navigate to="/scanner" replace />} />
-              <Route path="/gate/login" element={<Navigate to="/scanner/login" replace />} />
 
-              {/* ================================================================= */}
-              {/* 3. STANDALONE ADMIN & OPERATIONS PORTAL                           */}
-              {/* ================================================================= */}
-              <Route path="/admin/login" element={<PortalLoginPage />} />
-              <Route path="/portal/login" element={<PortalLoginPage />} />
-              
-              {/* Admin Routes */}
-              <Route
-                path="/admin"
-                element={
-                  <PortalAuthGate>
-                    <PortalLayout />
-                  </PortalAuthGate>
-                }
-              >
-                <Route index element={<Navigate to="/admin/dashboard" replace />} />
-                <Route path="dashboard" element={<PortalDashboardPage />} />
-                <Route path="scanner" element={<Navigate to="/scanner" replace />} />
-                <Route path="products" element={<PortalProductsPage />} />
-                <Route path="slots" element={<PortalSlotsPage />} />
-                <Route path="bookings" element={<PortalBookingsPage />} />
-              </Route>
-
-              {/* Portal Routes (Alias) */}
-              <Route
-                path="/portal"
-                element={
-                  <PortalAuthGate>
-                    <PortalLayout />
-                  </PortalAuthGate>
-                }
-              >
-                <Route index element={<Navigate to="/portal/dashboard" replace />} />
-                <Route path="dashboard" element={<PortalDashboardPage />} />
-                <Route path="scanner" element={<Navigate to="/scanner" replace />} />
-                <Route path="products" element={<PortalProductsPage />} />
-                <Route path="slots" element={<PortalSlotsPage />} />
-                <Route path="bookings" element={<PortalBookingsPage />} />
-              </Route>
+              {/* Quick Access Aliases */}
+              <Route path="/verify-qr" element={<Navigate to="/scanner/terminal" replace />} />
+              <Route path="/verify-qr/login" element={<Navigate to="/scanner" replace />} />
+              <Route path="/gate" element={<Navigate to="/scanner/terminal" replace />} />
+              <Route path="/gate/login" element={<Navigate to="/scanner" replace />} />
+              <Route path="/scanner/scan" element={<Navigate to="/scanner/terminal" replace />} />
 
               {/* Fallback */}
               <Route path="*" element={<Navigate to="/" replace />} />

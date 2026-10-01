@@ -5,7 +5,9 @@ import {
   MapPin, 
   Menu, 
   X, 
-  UserCheck, 
+  UserCheck,
+  UserCog,
+  QrCode, 
   Flame, 
   Phone, 
   Clock, 
@@ -18,6 +20,8 @@ import { SHOWROOM_CONTACT, WHATSAPP_CONTACT } from '../../lib/utils';
 export const CustomerNavbar: React.FC = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const location = useLocation();
+
+  const closeDrawer = () => setMobileDrawerOpen(false);
 
   const navLinks = [
     { name: 'Home', path: '/', icon: Flame },
@@ -275,25 +279,39 @@ export const CustomerNavbar: React.FC = () => {
             </div>
 
             {/* Drawer Bottom Actions */}
-            <div className="pt-6 border-t border-slate-200 dark:border-white/10 space-y-2.5 pb-safe">
+            <div className="pt-4 border-t border-slate-200 dark:border-white/10 space-y-3 pb-safe">
               <a
                 href={WHATSAPP_CONTACT.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3 px-4 rounded-2xl bg-[#25D366] hover:bg-[#20ba5a] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md shadow-[#25D366]/20 transition-all min-touch active:scale-95"
+                className="w-full py-3 px-4 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md shadow-[#25D366]/20 transition-all min-touch active:scale-95"
               >
                 <WhatsAppIcon className="w-4 h-4 text-white" />
                 <span>Chat on WhatsApp ({WHATSAPP_CONTACT.display})</span>
               </a>
 
-              <Link
-                to="/admin"
-                onClick={() => setMobileDrawerOpen(false)}
-                className="w-full py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold flex items-center justify-center gap-2 min-touch shadow-sm"
-              >
-                <UserCheck className="w-4 h-4 text-amber-500 dark:text-amber-400" />
-                <span>Admin & Management Workstation</span>
-              </Link>
+              {/* Management & Gate Operations Column */}
+              <div className="flex flex-col gap-2 pt-2 border-t border-slate-200 dark:border-white/10">
+                {/* Option 1: Admin Dashboard */}
+                <Link
+                  to="/admin"
+                  onClick={closeDrawer}
+                  className="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 bg-slate-50 dark:bg-obsidian-950 hover:bg-amber-50 dark:hover:bg-amber-950/40 hover:text-amber-800 dark:hover:text-amber-300 rounded-xl border border-slate-200 dark:border-slate-800 transition-colors"
+                >
+                  <UserCog className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                  <span>Admin Management Portal</span>
+                </Link>
+
+                {/* Option 2: Standalone QR Scanner */}
+                <Link
+                  to="/scanner"
+                  onClick={closeDrawer}
+                  className="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 bg-slate-50 dark:bg-obsidian-950 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:text-emerald-800 dark:hover:text-emerald-300 rounded-xl border border-slate-200 dark:border-slate-800 transition-colors"
+                >
+                  <QrCode className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                  <span>Gate Entry QR Scanner</span>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
