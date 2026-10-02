@@ -15,6 +15,7 @@ import { HomePage } from './pages/HomePage';
 import { CataloguePage } from './pages/CataloguePage';
 import { BookSlotPage } from './pages/BookSlotPage';
 import { ShowroomPage } from './pages/ShowroomPage';
+import { MyBookingsPage } from './pages/MyBookingsPage';
 
 // Standalone Dedicated Scanner Components & Pages (Owner OTP Secured)
 import { ScannerPage } from './pages/scanner/ScannerPage';
@@ -72,6 +73,8 @@ export const App: React.FC = () => {
                 <Route path="/catalogue" element={<CataloguePage />} />
                 <Route path="/book-slot" element={<BookSlotPage />} />
                 <Route path="/showroom" element={<ShowroomPage />} />
+                <Route path="/my-bookings" element={<MyBookingsPage />} />
+                <Route path="/passes" element={<MyBookingsPage />} />
               </Route>
 
               {/* Antigravity Route Redirect to Catalogue */}

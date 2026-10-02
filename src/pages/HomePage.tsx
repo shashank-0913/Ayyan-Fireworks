@@ -73,6 +73,18 @@ export const HomePage: React.FC = () => {
               <span>Reserve Visiting Slot</span>
             </button>
           </div>
+
+          {/* Quick link to retrieve existing pass */}
+          <div className="pt-2">
+            <Link
+              to="/my-bookings"
+              className="inline-flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-gold-300 transition"
+            >
+              <span>Already reserved a slot?</span>
+              <span className="font-bold underline text-amber-600 dark:text-gold-400">Find & View My Pass</span>
+              <ArrowRight className="w-3 h-3 text-amber-600 dark:text-gold-400" />
+            </Link>
+          </div>
         </div>
       </section>
 
