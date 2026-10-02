@@ -26,7 +26,7 @@ export const ShowroomPage: React.FC = () => {
           Showroom & Navigation Guide
         </h1>
         <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
-          Plan your festive visit to our flagship showroom in Visakhapatnam. Safe, air-conditioned viewing galleries with expert pyrotechnic guidance.
+          Plan your festive visit to our flagship showroom in Visakhapatnam. Safe, certified viewing galleries with expert pyrotechnic guidance.
         </p>
       </div>
 
@@ -226,7 +226,7 @@ export const ShowroomPage: React.FC = () => {
               <span>In-Store Visitor Safety Protocols</span>
             </h3>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-700 dark:text-slate-300">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-700 dark:text-slate-300">
               <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-obsidian-950 border border-slate-200 dark:border-white/5 space-y-1">
                 <strong className="text-amber-700 dark:text-gold-300 block">1. Priority Entry with VIP Pass ID</strong>
                 <p className="text-slate-600 dark:text-slate-400">Present your Unique Pass Code at the security desk to bypass general waiting queues.</p>
@@ -238,12 +238,7 @@ export const ShowroomPage: React.FC = () => {
               </div>
 
               <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-obsidian-950 border border-slate-200 dark:border-white/5 space-y-1">
-                <strong className="text-amber-700 dark:text-gold-300 block">3. Air-Conditioned Sample Gallery</strong>
-                <p className="text-slate-600 dark:text-slate-400">Inspect dummy effect mockups, box sizes, and video demonstrations comfortably.</p>
-              </div>
-
-              <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-obsidian-950 border border-slate-200 dark:border-white/5 space-y-1">
-                <strong className="text-amber-700 dark:text-gold-300 block">4. Direct Billing & Vehicle Dispatch</strong>
+                <strong className="text-amber-700 dark:text-gold-300 block">3. Direct Billing & Vehicle Dispatch</strong>
                 <p className="text-slate-600 dark:text-slate-400">Complete showroom billing directly at checkout with instant loading assistance.</p>
               </div>
             </div>
