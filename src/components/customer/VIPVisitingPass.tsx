@@ -24,7 +24,8 @@ import {
   formatTime, 
   formatINR,
   generateGoogleCalendarUrl, 
-  SHOWROOM_CONTACT 
+  SHOWROOM_CONTACT,
+  formatWhatsAppUrl
 } from '../../lib/utils';
 
 interface VIPVisitingPassProps {
@@ -62,8 +63,15 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
   };
 
   const handleShareWhatsApp = () => {
-    const text = `🎉 Ayyan Fireworks Showroom VIP Entry Pass Confirmed!\n\n🎟️ Booking ID: ${booking.booking_code}\n👤 Customer Name: ${booking.customer_name}\n📞 Phone: +91 ${booking.customer_phone}\n📅 Slot Date: ${formatDateReadable(slot.slot_date)}\n⏰ Slot Window: ${formatTime(slot.start_time)} – ${formatTime(slot.end_time)}\n💵 Amount: ${booking.total_amount ? formatINR(booking.total_amount) : '₹0.00 (Zero-Cost Pass)'}\n\n📍 Showroom: ${SHOWROOM_CONTACT.address}\n🗺️ Google Maps Navigation: ${googleMapsDirectionsUrl}\n\nScan QR Code at Gate to Enter - One-Time Pass`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    const customerPhone = booking.customer_phone || (booking as any).phone;
+    const text = `🎉 Ayyan Fireworks Showroom VIP Entry Pass Confirmed!\n\n🎟️ Booking ID: ${booking.booking_code}\n👤 Customer Name: ${booking.customer_name}\n📞 Phone: +91 ${customerPhone}\n📅 Slot Date: ${formatDateReadable(slot.slot_date)}\n⏰ Slot Window: ${formatTime(slot.start_time)} – ${formatTime(slot.end_time)}\n💵 Amount: ${booking.total_amount ? formatINR(booking.total_amount) : '₹0.00 (Zero-Cost Pass)'}\n\n📍 Showroom: ${SHOWROOM_CONTACT.address}\n🗺️ Google Maps Navigation: ${googleMapsDirectionsUrl}\n\nScan QR Code at Gate to Enter - One-Time Pass`;
+    
+    // Open chat directly using country code 91
+    if (customerPhone) {
+      window.open(formatWhatsAppUrl(customerPhone, text), '_blank');
+    } else {
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
   };
 
   // High-Resolution Pass PNG Image Exporter

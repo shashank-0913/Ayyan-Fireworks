@@ -241,6 +241,26 @@ export function generateGoogleCalendarUrl(
 }
 
 /**
+ * Cleans user phone input down to a standard 10-digit Indian mobile number.
+ * Strips non-digits, leading +91, 91, or 0.
+ * e.g. "7729992125" -> "7729992125"
+ * e.g. "+91 77299 92125" -> "7729992125"
+ * e.g. "07729992125" -> "7729992125"
+ * e.g. "917729992125" -> "7729992125"
+ */
+export function clean10DigitPhone(phone?: string | number | null): string {
+  if (!phone) return '';
+  let digits = String(phone).replace(/\D/g, '');
+  if (digits.startsWith('0') && digits.length === 11) {
+    digits = digits.substring(1);
+  }
+  if (digits.startsWith('91') && digits.length === 12) {
+    digits = digits.substring(2);
+  }
+  return digits.length > 10 ? digits.slice(-10) : digits;
+}
+
+/**
  * Formats a phone number for WhatsApp wa.me URLs.
  * Ensures the India country code (91) is prepended to 10-digit mobile numbers.
  * e.g. "7729992125" -> "917729992125"

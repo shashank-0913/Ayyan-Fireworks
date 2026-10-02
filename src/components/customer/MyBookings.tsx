@@ -6,7 +6,6 @@ import {
   Ticket, 
   Calendar, 
   Clock, 
-  Phone, 
   Users, 
   CheckCircle2, 
   AlertCircle, 
@@ -17,7 +16,7 @@ import {
 import { Link } from 'react-router-dom';
 import { useAyyanStore } from '../../context/AppContext';
 import { Booking } from '../../types';
-import { formatDateReadable, SHOWROOM_CONTACT } from '../../lib/utils';
+import { formatDateReadable, SHOWROOM_CONTACT, clean10DigitPhone, formatWhatsAppUrl } from '../../lib/utils';
 import { VIPVisitingPass } from './VIPVisitingPass';
 
 export default function MyBookings() {
@@ -31,59 +30,47 @@ export default function MyBookings() {
 
   const fetchBookings = async (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanPhone = phone.trim();
-    if (!cleanPhone) return;
+    const cleanDigits = clean10DigitPhone(phone) || phone.trim();
+    if (!cleanDigits) return;
 
     setLoading(true);
     setErrorMsg('');
     setSearched(true);
 
     let foundBookings: any[] = [];
+    const phoneWith91 = `91${cleanDigits}`;
 
     // Query Supabase 'bookings' table directly by phone number
     if (isSupabaseConfigured && supabase) {
       try {
-        // Primary query: .eq('phone', cleanPhone) ordered by created_at
+        // Query matching 10-digit clean phone or 91-prefixed phone
         const { data, error } = await supabase
           .from('bookings')
           .select('*')
-          .eq('phone', cleanPhone)
+          .or(`phone.eq.${cleanDigits},phone.eq.${phoneWith91},customer_phone.eq.${cleanDigits},customer_phone.eq.${phoneWith91}`)
           .order('created_at', { ascending: false });
 
         if (!error && data && data.length > 0) {
           foundBookings = data;
-        } else if (error) {
-          // If created_at order fails, order by id
-          const { data: idData, error: idErr } = await supabase
+        } else {
+          // Direct fallback .eq('phone', cleanDigits)
+          const { data: stdData, error: stdErr } = await supabase
             .from('bookings')
             .select('*')
-            .eq('phone', cleanPhone)
-            .order('id', { ascending: false });
-
-          if (!idErr && idData && idData.length > 0) {
-            foundBookings = idData;
-          }
-        }
-
-        // Secondary fallback for legacy schema column 'customer_phone'
-        if (foundBookings.length === 0) {
-          const { data: cpData, error: cpErr } = await supabase
-            .from('bookings')
-            .select('*')
-            .eq('customer_phone', cleanPhone)
+            .eq('phone', cleanDigits)
             .order('created_at', { ascending: false });
 
-          if (!cpErr && cpData && cpData.length > 0) {
-            foundBookings = cpData;
-          } else if (cpErr) {
-            const { data: cpIdData } = await supabase
+          if (!stdErr && stdData && stdData.length > 0) {
+            foundBookings = stdData;
+          } else if (stdErr) {
+            const { data: idData } = await supabase
               .from('bookings')
               .select('*')
-              .eq('customer_phone', cleanPhone)
+              .eq('phone', cleanDigits)
               .order('id', { ascending: false });
 
-            if (cpIdData && cpIdData.length > 0) {
-              foundBookings = cpIdData;
+            if (idData && idData.length > 0) {
+              foundBookings = idData;
             }
           }
         }
@@ -94,14 +81,14 @@ export default function MyBookings() {
 
     // Local in-memory / cache fallback
     if (foundBookings.length === 0 && localBookings.length > 0) {
-      const rawDigits = cleanPhone.replace(/\D/g, '');
+      const rawDigits = cleanDigits.replace(/\D/g, '');
       const localMatches = localBookings.filter(b => {
         const p1 = (b.customer_phone || '').replace(/\D/g, '');
         const p2 = ((b as any).phone || '').replace(/\D/g, '');
         return (
-          (b as any).phone === cleanPhone ||
-          b.customer_phone === cleanPhone ||
-          (rawDigits && (p1 === rawDigits || p2 === rawDigits))
+          (b as any).phone === cleanDigits ||
+          b.customer_phone === cleanDigits ||
+          (rawDigits && (p1.endsWith(rawDigits) || p2.endsWith(rawDigits)))
         );
       });
       if (localMatches.length > 0) {
@@ -121,7 +108,12 @@ export default function MyBookings() {
     const slotDate = booking.slot_date || booking.visit_date || 'Upcoming Date';
     const slotTime = booking.slot_time || booking.time_slot || 'Showroom Window';
     const text = `🎟️ Ayyan Fireworks Showroom VIP Pass\n\n👤 Name: ${booking.customer_name}\n🔑 Pass Code: ${booking.booking_code || booking.id}\n📅 Date: ${slotDate}\n⏰ Time: ${slotTime}\n👥 Visitors: ${booking.visitor_count || 1}\n\n📍 Showroom: ${SHOWROOM_CONTACT.address}\n\nScan QR Code at Gate to Enter!`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    const targetPhone = booking.phone || booking.customer_phone;
+    if (targetPhone) {
+      window.open(formatWhatsAppUrl(targetPhone, text), '_blank');
+    } else {
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
   };
 
   return (
@@ -136,21 +128,24 @@ export default function MyBookings() {
           My Bookings & Passes
         </h2>
         <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-          Enter your registered mobile number to retrieve your active visiting pass and QR entry token.
+          Enter your registered 10-digit mobile number to retrieve your active visiting pass and QR entry token.
         </p>
       </div>
       
       {/* Lookup Form */}
       <form onSubmit={fetchBookings} className="flex flex-col sm:flex-row gap-2.5 mb-8">
         <div className="relative flex-1">
-          <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-slate-500 dark:text-slate-400 font-mono font-bold">+91</span>
           <input
             type="tel"
-            placeholder="Enter registered mobile number (e.g. 9876543210)"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            maxLength={10}
+            placeholder="Enter 10-digit mobile number (e.g. 7729992125)"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             required
-            className="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-800 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 text-sm shadow-sm transition"
+            className="w-full pl-12 pr-4 py-3 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-800 text-slate-900 dark:text-white font-mono placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 text-sm shadow-sm transition"
           />
         </div>
         <button

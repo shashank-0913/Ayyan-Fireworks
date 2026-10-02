@@ -16,7 +16,7 @@ import {
 import { useAyyanStore } from '../../context/AppContext';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 import { Slot, Booking } from '../../types';
-import { formatDateReadable, formatTime, getSlotStatus } from '../../lib/utils';
+import { formatDateReadable, formatTime, getSlotStatus, clean10DigitPhone } from '../../lib/utils';
 import { InteractiveCalendar } from '../common/InteractiveCalendar';
 import { VIPVisitingPass } from './VIPVisitingPass';
 
@@ -144,11 +144,14 @@ export const SlotBookingFlow: React.FC = () => {
       return;
     }
 
-    const phone = guestPhone.trim();
-    if (!phone) {
-      setErrorMessage('Please enter a valid mobile number.');
+    // Automatically clean input down to 10-digit mobile number without requiring manual 91
+    const cleanedPhone = clean10DigitPhone(guestPhone) || guestPhone.trim();
+    if (!cleanedPhone || cleanedPhone.length < 10) {
+      setErrorMessage('Please enter a valid 10-digit Indian mobile number.');
       return;
     }
+
+    const phone = cleanedPhone.slice(-10);
 
     setIsSubmitting(true);
 
