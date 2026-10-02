@@ -119,13 +119,13 @@ export const PortalBookingsPage: React.FC = () => {
       if (isSupabaseConfigured && supabase) {
         const { data, error } = await supabase
           .from('bookings')
-          .select('*, slots(*)')
+          .select('*')
           .order('created_at', { ascending: false });
 
         if (!error && data && data.length > 0) {
           exportRecords = data.map((b: any) => ({
             ...b,
-            slot: b.slots || slots.find(s => s.id === b.slot_id)
+            slot: slots.find(s => s.id === b.slot_id)
           }));
         }
       }

@@ -38,58 +38,70 @@ export default function MyBookings() {
     setErrorMsg('');
     setSearched(true);
 
-    const rawDigits = cleanPhone.replace(/\D/g, '');
     let foundBookings: any[] = [];
 
-    // 1. Query Supabase 'bookings' table
+    // Query Supabase 'bookings' table directly by phone number
     if (isSupabaseConfigured && supabase) {
       try {
-        // Attempt query matching customer_phone or phone
+        // Primary query: .eq('phone', cleanPhone) ordered by created_at
         const { data, error } = await supabase
           .from('bookings')
           .select('*')
-          .or(`customer_phone.eq.${cleanPhone},phone.eq.${cleanPhone},customer_phone.ilike.%${rawDigits}%,phone.ilike.%${rawDigits}%`)
+          .eq('phone', cleanPhone)
           .order('created_at', { ascending: false });
 
         if (!error && data && data.length > 0) {
           foundBookings = data;
-        } else {
-          // Fallback exact match on customer_phone
-          const { data: d1, error: e1 } = await supabase
+        } else if (error) {
+          // If created_at order fails, order by id
+          const { data: idData, error: idErr } = await supabase
             .from('bookings')
             .select('*')
-            .eq('customer_phone', cleanPhone);
+            .eq('phone', cleanPhone)
+            .order('id', { ascending: false });
 
-          if (!e1 && d1 && d1.length > 0) {
-            foundBookings = d1;
-          } else {
-            // Fallback exact match on phone
-            const { data: d2, error: e2 } = await supabase
+          if (!idErr && idData && idData.length > 0) {
+            foundBookings = idData;
+          }
+        }
+
+        // Secondary fallback for legacy schema column 'customer_phone'
+        if (foundBookings.length === 0) {
+          const { data: cpData, error: cpErr } = await supabase
+            .from('bookings')
+            .select('*')
+            .eq('customer_phone', cleanPhone)
+            .order('created_at', { ascending: false });
+
+          if (!cpErr && cpData && cpData.length > 0) {
+            foundBookings = cpData;
+          } else if (cpErr) {
+            const { data: cpIdData } = await supabase
               .from('bookings')
               .select('*')
-              .eq('phone', cleanPhone);
+              .eq('customer_phone', cleanPhone)
+              .order('id', { ascending: false });
 
-            if (!e2 && d2 && d2.length > 0) {
-              foundBookings = d2;
-            } else if (error && !d1 && !d2) {
-              console.warn('Supabase bookings lookup notice:', error);
+            if (cpIdData && cpIdData.length > 0) {
+              foundBookings = cpIdData;
             }
           }
         }
       } catch (err) {
-        console.warn('Supabase lookup exception:', err);
+        console.warn('Supabase bookings query exception:', err);
       }
     }
 
-    // 2. Fallback to Local Persistent Store if online query returned empty
+    // Local in-memory / cache fallback
     if (foundBookings.length === 0 && localBookings.length > 0) {
+      const rawDigits = cleanPhone.replace(/\D/g, '');
       const localMatches = localBookings.filter(b => {
-        const bPhone = (b.customer_phone || (b as any).phone || '').replace(/\D/g, '');
+        const p1 = (b.customer_phone || '').replace(/\D/g, '');
+        const p2 = ((b as any).phone || '').replace(/\D/g, '');
         return (
-          bPhone.includes(rawDigits) ||
-          rawDigits.includes(bPhone) ||
-          b.customer_phone?.trim() === cleanPhone ||
-          (b as any).phone?.trim() === cleanPhone
+          (b as any).phone === cleanPhone ||
+          b.customer_phone === cleanPhone ||
+          (rawDigits && (p1 === rawDigits || p2 === rawDigits))
         );
       });
       if (localMatches.length > 0) {
@@ -99,8 +111,6 @@ export default function MyBookings() {
 
     if (foundBookings.length === 0 && !isSupabaseConfigured) {
       setErrorMsg('No bookings found for this phone number.');
-    } else if (foundBookings.length === 0) {
-      // Handled by empty results UI
     }
 
     setBookings(foundBookings);

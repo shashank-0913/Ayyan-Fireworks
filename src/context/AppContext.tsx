@@ -291,22 +291,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(INITIAL_PRODUCTS)));
         }
 
-        const { data: dbSlots, error: slotErr } = await client
-          .from('slots')
-          .select('*')
-          .order('slot_date', { ascending: true });
-
-        if (!slotErr && Array.isArray(dbSlots) && dbSlots.length > 0) {
-          setSlots(dbSlots as Slot[]);
-        }
-
+        // Query bookings directly from Supabase 'bookings' table
         const { data: dbBookings, error: bookErr } = await client
           .from('bookings')
           .select('*')
           .order('created_at', { ascending: false });
 
-        if (!bookErr && dbBookings !== null) {
+        if (!bookErr && dbBookings !== null && Array.isArray(dbBookings)) {
           setBookings(dbBookings as Booking[]);
+          safeSetItem(LOCAL_STORAGE_KEYS.BOOKINGS, JSON.stringify(dbBookings));
+
+          // Calculate slot occupancy directly from the live bookings table
+          setSlots(prevSlots => prevSlots.map(slot => {
+            const activeBookings = dbBookings.filter(b => 
+              (b.slot_id === slot.id || (b.slot_date === slot.slot_date && b.slot_time?.includes(slot.start_time.substring(0, 2)))) &&
+              b.status !== 'cancelled'
+            );
+            const count = activeBookings.reduce((sum, b) => sum + (b.visitor_count || 1), 0);
+            return {
+              ...slot,
+              booked_capacity: count
+            };
+          }));
         }
       } catch (err) {
         console.warn('Could not sync with Supabase cloud, operating with local persistent store:', err);
@@ -322,7 +328,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
   }, []);
 
-  // Atomic Slot Booking (Concurrency-safe implementation with permanent Supabase & localStorage persistence)
+  // Atomic Slot Booking (Using the 'bookings' table directly)
   const bookSlot = useCallback(async (
     slotId: string,
     name: string,
@@ -362,43 +368,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
     }
 
-    let newBookingId = generateUUID();
-    let bookingCode = `AYN-${Math.floor(100000 + Math.random() * 900000)}`;
-    let qrToken = generateUUID();
-    let slotTimeFormatted = `${formatTime(currentSlot.start_time)} – ${formatTime(currentSlot.end_time)}`;
-    let slotDate = currentSlot.slot_date;
-    let rpcInserted = false;
+    const newBookingId = generateUUID();
+    const bookingCode = `AYN-${Math.floor(100000 + Math.random() * 900000)}`;
+    const qrToken = generateUUID();
+    const slotTimeFormatted = `${formatTime(currentSlot.start_time)} – ${formatTime(currentSlot.end_time)}`;
+    const slotDate = currentSlot.slot_date;
 
-    // 1. If Supabase RPC is live, execute stored procedure
+    // Insert directly into Supabase 'bookings' table
     if (isSupabaseConfigured && supabase) {
-      try {
-        const { data, error } = await supabase.rpc('book_visiting_slot', {
-          p_slot_id: slotId,
-          p_name: name.trim(),
-          p_phone: phone.trim(),
-          p_visitors: visitors
-        });
-
-        if (!error && data && data.success) {
-          rpcInserted = true;
-          if (data.booking_id) newBookingId = data.booking_id;
-          if (data.booking_code) bookingCode = data.booking_code;
-          if (data.qr_token) qrToken = data.qr_token;
-          if (data.slot_date) slotDate = data.slot_date;
-          if (data.slot_time) slotTimeFormatted = data.slot_time;
-        } else if (data && !data.success && data.error) {
-          // If RPC returned capacity/safety error, return it
-          if (!data.error.includes('function') && !data.error.includes('not exist')) {
-            return { success: false, error: data.error };
-          }
-        }
-      } catch (e: any) {
-        console.warn('RPC network call fallback to direct table insert:', e);
-      }
-    }
-
-    // 2. Direct Supabase 'bookings' table permanent insertion (if RPC didn't already insert)
-    if (!rpcInserted && isSupabaseConfigured && supabase) {
       try {
         const dbRecord = {
           id: newBookingId,
@@ -418,7 +395,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           status: 'confirmed',
           booking_status: 'confirmed',
           verified_at: null,
-          notes: notes?.trim() || ''
+          notes: notes?.trim() || '',
+          created_at: new Date().toISOString()
         };
 
         const { error: insertErr } = await supabase.from('bookings').insert([dbRecord]);
@@ -431,6 +409,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             slot_id: slotId,
             customer_name: name.trim(),
             customer_phone: phone.trim(),
+            phone: phone.trim(),
             slot_date: slotDate,
             slot_time: slotTimeFormatted,
             total_amount: 0,
@@ -439,12 +418,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             notes: notes?.trim()
           }]);
         }
-
-        // Increment booked capacity in Supabase 'slots' table
-        await supabase
-          .from('slots')
-          .update({ booked_capacity: currentSlot.booked_capacity + visitors })
-          .eq('id', slotId);
       } catch (e) {
         console.warn('Supabase direct booking insert exception:', e);
       }
@@ -474,7 +447,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       slot: updatedSlot
     };
 
-    // 3. Save confirmed booking details to localStorage for page-refresh persistence
+    // Save confirmed booking details to localStorage for page-refresh persistence
     try {
       const activePassPayload = {
         booking: newBooking,
@@ -491,7 +464,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       console.warn('LocalStorage save notice:', lsErr);
     }
 
-    // 4. Atomic state update
+    // Atomic state update
     setSlots(prev => prev.map(s => {
       if (s.id === slotId) {
         return updatedSlot;
@@ -880,7 +853,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     await updateProduct(id, { is_active: !product.is_active });
   };
 
-  // Slot Actions
+  // Slot Actions (Operates directly on slot state without nonexistent slots table)
   const updateSlotCapacity = async (slotId: string, totalCapacity: number): Promise<void> => {
     setSlots(prev => prev.map(s => {
       if (s.id === slotId) {
@@ -888,33 +861,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
       return s;
     }));
-
-    if (isSupabaseConfigured && supabase) {
-      try {
-        await supabase.from('slots').update({ total_capacity: totalCapacity }).eq('id', slotId);
-      } catch (e) {
-        console.warn('Supabase slot update fallback:', e);
-      }
-    }
   };
 
   const toggleSlotBlock = async (slotId: string): Promise<void> => {
-    let newBlockedState = false;
     setSlots(prev => prev.map(s => {
       if (s.id === slotId) {
-        newBlockedState = !s.is_blocked;
-        return { ...s, is_blocked: newBlockedState };
+        return { ...s, is_blocked: !s.is_blocked };
       }
       return s;
     }));
-
-    if (isSupabaseConfigured && supabase) {
-      try {
-        await supabase.from('slots').update({ is_blocked: newBlockedState }).eq('id', slotId);
-      } catch (e) {
-        console.warn('Supabase slot block fallback:', e);
-      }
-    }
   };
 
   const batchGenerateSlots = async (
@@ -959,13 +914,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     if (newSlots.length > 0) {
       setSlots(prev => [...prev, ...newSlots]);
-      if (isSupabaseConfigured && supabase) {
-        try {
-          await supabase.from('slots').insert(newSlots);
-        } catch (e) {
-          console.warn('Supabase batch slots insert fallback:', e);
-        }
-      }
     }
 
     return newSlots.length;
