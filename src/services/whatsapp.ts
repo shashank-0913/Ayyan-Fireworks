@@ -90,17 +90,20 @@ export async function sendWhatsAppMessage(
     '';
   const apiVersion = config?.apiVersion || 'v19.0';
 
+  console.log(`[WhatsApp Outgoing API] Dispatching message to: ${payload.to} | Type: ${payload.type} | Interactive Subtype: ${payload.interactive?.type || 'N/A'}`);
+
   if (!phoneId || !token) {
-    console.warn('[WhatsApp Cloud API] Missing Phone ID or Access Token. Simulating dispatch:', payload);
+    console.warn('[WhatsApp Cloud API] Missing Phone ID or Access Token (Env vars not set). Simulating dispatch response (HTTP 200 Mock):', JSON.stringify(payload, null, 2));
     return {
       success: true,
-      data: { simulated: true, payload }
+      data: { simulated: true, status: 200, payload }
     };
   }
 
   const endpoint = `https://graph.facebook.com/${apiVersion}/${phoneId}/messages`;
 
   try {
+    console.log(`[WhatsApp Outgoing API] Sending POST to ${endpoint}...`);
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
@@ -111,14 +114,16 @@ export async function sendWhatsAppMessage(
     });
 
     const data = await response.json();
+    console.log(`[WhatsApp Outgoing API Response] HTTP Status: ${response.status} ${response.statusText}`, data);
+
     if (!response.ok) {
-      console.error('[WhatsApp Cloud API Error]:', data);
+      console.error(`[WhatsApp Cloud API Error HTTP ${response.status}]:`, data);
       return { success: false, error: data.error?.message || `HTTP ${response.status}` };
     }
 
     return { success: true, data };
   } catch (err: any) {
-    console.error('[WhatsApp Cloud API Exception]:', err);
+    console.error('[WhatsApp Cloud API Network Exception]:', err);
     return { success: false, error: err?.message || 'Network error' };
   }
 }

@@ -223,26 +223,48 @@ export async function handleWebhookMessage(parsed: WebhookMessageContext): Promi
  * 4. Express / Serverless Webhook Controller Handler
  */
 export async function webhookController(req: any, res: any) {
-  if (req.method === 'GET') {
-    const result = handleWebhookVerification(req.query || {});
+  const method = req.method || 'GET';
+  console.log(`[WhatsApp Webhook Controller] Incoming HTTP ${method} request received`);
+
+  if (method === 'GET') {
+    const query = req.query || {};
+    console.log('[WhatsApp Webhook Controller] Verification query params:', query);
+    const result = handleWebhookVerification(query);
+    console.log(`[WhatsApp Webhook Controller] Verification response status: ${result.status}`);
     res.status(result.status);
     return typeof result.body === 'string' ? res.send(result.body) : res.json(result.body);
   }
 
-  if (req.method === 'POST') {
+  if (method === 'POST') {
+    console.log('[WhatsApp Webhook Controller] Raw POST body:', JSON.stringify(req.body, null, 2));
     const parsed = parseIncomingMessage(req.body);
+
     if (!parsed) {
+      console.log('[WhatsApp Webhook Controller] Non-message event or delivery status update received. Acknowledged with HTTP 200.');
       return res.status(200).json({ status: 'ignored_non_message' });
     }
 
+    console.log(`[WhatsApp Webhook Controller] 📨 INCOMING MESSAGE:
+      From: ${parsed.from}
+      Sender: ${parsed.senderName || 'Anonymous'}
+      Type: ${parsed.type}
+      Button Reply ID: ${parsed.buttonReplyId || 'none'}
+      Button Reply Title: ${parsed.buttonReplyTitle || 'none'}
+      List Reply ID: ${parsed.listReplyId || 'none'}
+      List Reply Title: ${parsed.listReplyTitle || 'none'}
+      Text Body: ${parsed.textBody || 'none'}
+    `);
+
     try {
       const response = await handleWebhookMessage(parsed);
+      console.log(`[WhatsApp Webhook Controller] Action processed successfully: "${response.handledAction}". Responding with HTTP 200.`);
       return res.status(200).json(response);
     } catch (err: any) {
-      console.error('[WhatsApp Webhook] Handler error:', err);
+      console.error('[WhatsApp Webhook Controller Error]:', err);
       return res.status(500).json({ error: err?.message || 'Processing error' });
     }
   }
 
+  console.warn(`[WhatsApp Webhook Controller] Unhandled HTTP method: ${method}`);
   return res.status(405).json({ error: 'Method not allowed' });
 }

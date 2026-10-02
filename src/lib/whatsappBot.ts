@@ -174,22 +174,22 @@ export function buildMainMenuMessage(toPhone: string, customerName?: string): Wh
           {
             type: 'reply',
             reply: {
-              id: 'menu_book_slot',
-              title: '📅 Book VIP Slot'
+              id: 'btn_book_slot',
+              title: 'Book Slot 📅'
             }
           },
           {
             type: 'reply',
             reply: {
-              id: 'menu_view_catalogue',
-              title: '🎆 View Catalogue'
+              id: 'btn_location',
+              title: 'Store Location 📍'
             }
           },
           {
             type: 'reply',
             reply: {
-              id: 'menu_find_location',
-              title: '📍 Showrooms & Map'
+              id: 'btn_website',
+              title: 'Visit Website 🌐'
             }
           }
         ]
