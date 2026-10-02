@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Search, 
   SlidersHorizontal, 
@@ -8,7 +8,8 @@ import {
   X, 
   Flame,
   Tag,
-  CheckCircle2
+  CheckCircle2,
+  Loader2
 } from 'lucide-react';
 import { useAyyanStore } from '../context/AppContext';
 import { ProductCard } from '../components/customer/ProductCard';
@@ -33,7 +34,7 @@ export const CATEGORY_PILL_TABS = [
 export type CategoryTab = typeof CATEGORY_PILL_TABS[number];
 
 export const CataloguePage: React.FC = () => {
-  const { products } = useAyyanStore();
+  const { products, refreshProducts, isLoading } = useAyyanStore();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryTab>('All');
@@ -41,6 +42,11 @@ export const CataloguePage: React.FC = () => {
   const [maxPrice, setMaxPrice] = useState<number>(15000);
   const [sortBy, setSortBy] = useState<'default' | 'price_low' | 'price_high'>('default');
   const [lightboxProduct, setLightboxProduct] = useState<Product | null>(null);
+
+  // Fetch fresh products directly on mount with Supabase
+  useEffect(() => {
+    refreshProducts();
+  }, [refreshProducts]);
 
   // Category Matching Helper
   const matchesCategoryTab = (product: Product, tab: CategoryTab): boolean => {
@@ -319,7 +325,12 @@ export const CataloguePage: React.FC = () => {
       {/* ========================================================================= */}
       {/* 2. CATALOGUE PRODUCTS GRID OR ZERO STATE                                  */}
       {/* ========================================================================= */}
-      {filteredProducts.length > 0 ? (
+      {isLoading && products.length === 0 ? (
+        <div className="py-20 text-center flex flex-col items-center justify-center gap-3">
+          <Loader2 className="w-8 h-8 text-amber-500 animate-spin" />
+          <p className="text-xs font-bold text-slate-500 dark:text-slate-400">Loading live fireworks catalogue from Supabase...</p>
+        </div>
+      ) : filteredProducts.length > 0 ? (
         <div className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-600 dark:text-slate-400">
             <div className="flex items-center gap-2">

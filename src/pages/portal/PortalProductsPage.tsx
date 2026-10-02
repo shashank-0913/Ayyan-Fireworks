@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Package, 
   Plus, 
@@ -8,7 +8,8 @@ import {
   Eye, 
   EyeOff, 
   CheckCircle2, 
-  XCircle
+  XCircle,
+  RefreshCw
 } from 'lucide-react';
 import { useAyyanStore } from '../../context/AppContext';
 import { Product, ProductCategory, PRODUCT_CATEGORIES } from '../../types';
@@ -16,11 +17,16 @@ import { formatINR } from '../../lib/utils';
 import { ProductDrawer } from '../../components/portal/ProductDrawer';
 
 export const PortalProductsPage: React.FC = () => {
-  const { products, toggleProductActive, deleteProduct } = useAyyanStore();
+  const { products, toggleProductActive, deleteProduct, refreshProducts, isLoading } = useAyyanStore();
 
   // Search & Filter state for table
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<'All' | ProductCategory>('All');
+  
+  // Fetch fresh products directly on mount with Supabase
+  useEffect(() => {
+    refreshProducts();
+  }, [refreshProducts]);
   
   // Drawer editing state
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -79,14 +85,27 @@ export const PortalProductsPage: React.FC = () => {
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={handleAddNewFromDrawer}
-          className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-gold-400 hover:from-amber-400 hover:to-gold-300 text-slate-950 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-glow-gold active:scale-95 min-h-[44px]"
-        >
-          <Plus className="w-4 h-4" />
-          <span>+ Add New Product</span>
-        </button>
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <button
+            type="button"
+            onClick={() => refreshProducts()}
+            disabled={isLoading}
+            className="px-4 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all min-h-[44px] cursor-pointer disabled:opacity-50"
+            title="Refresh inventory from Supabase"
+          >
+            <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin text-amber-500' : ''}`} />
+            <span className="hidden sm:inline">Sync Cloud</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleAddNewFromDrawer}
+            className="flex-1 sm:flex-none px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-gold-400 hover:from-amber-400 hover:to-gold-300 text-slate-950 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-glow-gold active:scale-95 min-h-[44px]"
+          >
+            <Plus className="w-4 h-4" />
+            <span>+ Add New Product</span>
+          </button>
+        </div>
       </div>
 
       {/* Global Toast Notification */}

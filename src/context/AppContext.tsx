@@ -32,6 +32,7 @@ interface AppContextType {
   updateProduct: (id: string, updates: Partial<Product>) => Promise<Product>;
   deleteProduct: (id: string) => Promise<void>;
   toggleProductActive: (id: string) => Promise<void>;
+  refreshProducts: () => Promise<Product[]>;
   
   // Slots & Capacity Management
   updateSlotCapacity: (slotId: string, totalCapacity: number) => Promise<void>;
@@ -252,43 +253,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           .select('*')
           .order('id', { ascending: false });
 
-        if (!prodErr && Array.isArray(dbProducts) && dbProducts.length > 0) {
-          const mapped: Product[] = dbProducts.map(p => {
-            const initialMatch = INITIAL_PRODUCTS.find(
-              ip => (p.code && ip.code === p.code) || (p.name && ip.name.toLowerCase() === p.name.toLowerCase()) || String(p.id) === ip.id
-            );
-            return {
-              id: String(p.id || initialMatch?.id || `db-${p.name}`),
-              code: p.code || initialMatch?.code,
-              name: p.name || initialMatch?.name || 'Firework SKU',
-              category: p.category || initialMatch?.category || 'Sparklers',
-              price: Number(p.price) || initialMatch?.price || 0,
-              piece_count: p.piece_count || initialMatch?.piece_count || '1 Box',
-              unit_price: initialMatch?.unit_price,
-              unit_name: initialMatch?.unit_name,
-              bundle_rate: initialMatch?.bundle_rate,
-              bundle_unit: initialMatch?.bundle_unit,
-              unit_breakdown: initialMatch?.unit_breakdown,
-              description: p.description || initialMatch?.description || '',
-              safety_instructions: p.safety_instructions || initialMatch?.safety_instructions || 'Keep 10m clearance. Light with agarbatti.',
-              safety_tags: p.safety_tags || initialMatch?.safety_tags || ['Bunny Certified'],
-              sound_level: p.sound_level || initialMatch?.sound_level || 'Medium',
-              image_url: sanitizeProductImage(p.image_url || p.image || p.imageUrl || initialMatch?.image_url),
-              is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
-              created_at: p.created_at || new Date().toISOString()
-            };
-          });
+        if (!prodErr && Array.isArray(dbProducts)) {
+          const mapped: Product[] = dbProducts.map(p => ({
+            id: String(p.id),
+            code: p.code || undefined,
+            name: p.name || 'Firework SKU',
+            category: p.category || 'Sparklers',
+            price: Number(p.price) || 0,
+            piece_count: p.piece_count || '1 Box',
+            description: p.description || '',
+            safety_instructions: p.safety_instructions || 'Keep 10m clearance. Light with agarbatti.',
+            safety_tags: p.safety_tags || ['Bunny Certified'],
+            sound_level: p.sound_level || 'Medium',
+            video_url: p.video_url || '',
+            image_url: sanitizeProductImage(p.image_url || p.image || p.imageUrl),
+            is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
+            created_at: p.created_at || new Date().toISOString()
+          }));
 
-          // Merge live Supabase products over initial static list, giving DB records precedence
-          const dbNames = new Set(mapped.map(p => p.name.trim().toLowerCase()));
-          const remainingInitial = INITIAL_PRODUCTS.filter(p => !dbNames.has(p.name.trim().toLowerCase()));
-          const freshList = [...mapped, ...remainingInitial];
-          setProducts(freshList);
-          safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(freshList)));
-        } else if (!prodErr && (!dbProducts || dbProducts.length === 0)) {
-          // If remote table has 0 products, preserve local rich INITIAL_PRODUCTS
-          setProducts(INITIAL_PRODUCTS);
-          safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(INITIAL_PRODUCTS)));
+          setProducts(mapped);
+          safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(mapped)));
+        } else if (prodErr) {
+          console.error('Supabase fetch products error on initial load:', prodErr.message);
         }
 
         // Query bookings directly from Supabase 'bookings' table
@@ -682,145 +668,166 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Product Actions
   const addProduct = async (productData: Omit<Product, 'id' | 'created_at'>): Promise<Product> => {
     const sanitizedImage = sanitizeProductImage(productData.image_url);
-    const newProduct: Product = {
-      ...productData,
+    const dbPayload = {
+      name: productData.name.trim(),
+      category: productData.category,
+      price: Number(productData.price) || 0,
+      piece_count: productData.piece_count || '1 Box',
+      description: productData.description || '',
+      safety_instructions: productData.safety_instructions || 'Keep 10m clearance. Light with agarbatti.',
+      safety_tags: productData.safety_tags || ['Bunny Certified'],
+      sound_level: productData.sound_level || 'Medium',
+      video_url: productData.video_url || '',
       image_url: sanitizedImage,
-      id: `prod-${Date.now()}`,
-      created_at: new Date().toISOString()
+      is_active: productData.is_active !== undefined ? productData.is_active : true
     };
 
     if (isSupabaseConfigured && supabase) {
-      try {
-        // Only include columns that exist in the Supabase schema
-        const dbPayload = {
-          name: newProduct.name,
-          category: newProduct.category,
-          price: Number(newProduct.price) || 0,
-          description: newProduct.description || '',
-          image_url: sanitizedImage
+      const { data, error } = await supabase
+        .from('products')
+        .insert([dbPayload])
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Supabase product insert error:', error);
+        alert('Error adding product: ' + error.message);
+        throw new Error(error.message);
+      }
+
+      if (data) {
+        const createdFromDb: Product = {
+          ...data,
+          id: String(data.id),
+          price: Number(data.price) || 0,
+          is_active: data.is_active !== undefined ? Boolean(data.is_active) : true,
+          created_at: data.created_at || new Date().toISOString()
         };
-
-        const { data, error } = await supabase.from('products').insert([dbPayload]).select();
-
-        if (!error && data && data.length > 0) {
-          const dbRow = data[0];
-          const createdFromDb: Product = {
-            ...newProduct,
-            id: String(dbRow.id),
-            created_at: dbRow.created_at || newProduct.created_at
-          };
-          setProducts(prev => [createdFromDb, ...prev]);
-          return createdFromDb;
-        } else if (error) {
-          console.warn('Supabase product insert error, falling back locally:', error.message);
-        }
-      } catch (e) {
-        console.warn('Supabase product insert fallback:', e);
+        setProducts(prev => [createdFromDb, ...prev.filter(p => p.id !== createdFromDb.id)]);
+        return createdFromDb;
       }
     }
 
-    setProducts(prev => [newProduct, ...prev]);
-    return newProduct;
+    const localNewProduct: Product = {
+      ...productData,
+      id: `prod-${Date.now()}`,
+      image_url: sanitizedImage,
+      created_at: new Date().toISOString()
+    };
+    setProducts(prev => [localNewProduct, ...prev]);
+    return localNewProduct;
   };
 
   const updateProduct = async (id: string, updates: Partial<Product>): Promise<Product> => {
-    const sanitizedUpdates = { ...updates };
+    const sanitizedUpdates: any = { ...updates };
     if (sanitizedUpdates.image_url !== undefined) {
       sanitizedUpdates.image_url = sanitizeProductImage(sanitizedUpdates.image_url);
     }
+    if (sanitizedUpdates.price !== undefined) {
+      sanitizedUpdates.price = Number(sanitizedUpdates.price);
+    }
 
-    let updated: Product | null = null;
+    if (isSupabaseConfigured && supabase) {
+      const { data, error } = await supabase
+        .from('products')
+        .update(sanitizedUpdates)
+        .eq('id', id)
+        .select()
+        .single();
 
+      if (error) {
+        console.error('Supabase product update error:', error);
+        alert('Error updating product: ' + error.message);
+        throw new Error(error.message);
+      }
+
+      if (data) {
+        const updatedDbProd: Product = {
+          ...data,
+          id: String(data.id),
+          price: Number(data.price) || 0,
+          is_active: data.is_active !== undefined ? Boolean(data.is_active) : true
+        };
+        setProducts(prev => prev.map(p => p.id === id ? updatedDbProd : p));
+        return updatedDbProd;
+      }
+    }
+
+    let updatedProduct: Product | null = null;
     setProducts(prev => prev.map(p => {
       if (p.id === id) {
-        updated = { ...p, ...sanitizedUpdates };
-        return updated;
+        const item: Product = { ...p, ...sanitizedUpdates };
+        updatedProduct = item;
+        return item;
       }
       return p;
     }));
 
-    if (isSupabaseConfigured && supabase) {
-      try {
-        // Check if id is a numeric integer ID matching Supabase bigint schema
-        const isNumericId = /^\d+$/.test(id);
-
-        if (isNumericId) {
-          // Prepare payload containing only fields that exist in Supabase schema
-          const dbPayload: Record<string, any> = {};
-          if (sanitizedUpdates.name !== undefined) dbPayload.name = sanitizedUpdates.name;
-          if (sanitizedUpdates.category !== undefined) dbPayload.category = sanitizedUpdates.category;
-          if (sanitizedUpdates.price !== undefined) dbPayload.price = Number(sanitizedUpdates.price);
-          if (sanitizedUpdates.description !== undefined) dbPayload.description = sanitizedUpdates.description;
-          if (sanitizedUpdates.image_url !== undefined) dbPayload.image_url = sanitizedUpdates.image_url;
-
-          if (Object.keys(dbPayload).length > 0) {
-            const { error: updateError } = await supabase
-              .from('products')
-              .update(dbPayload)
-              .eq('id', parseInt(id, 10));
-
-            if (updateError) {
-              console.warn('Supabase product update error:', updateError.message);
-            }
-          }
-        } else if (updated) {
-          // Product was from initial catalogue list (non-numeric ID).
-          // Insert into Supabase so edits persist permanently across browser reloads.
-          const dbInsertPayload = {
-            name: (updated as Product).name,
-            category: (updated as Product).category,
-            price: Number((updated as Product).price) || 0,
-            description: (updated as Product).description || '',
-            image_url: (updated as Product).image_url
-          };
-
-          const { data, error: insertError } = await supabase
-            .from('products')
-            .insert([dbInsertPayload])
-            .select();
-
-          if (!insertError && data && data.length > 0) {
-            const newDbId = String(data[0].id);
-            const persistedProduct: Product = {
-              ...(updated as Product),
-              id: newDbId,
-              created_at: data[0].created_at || (updated as Product).created_at
-            };
-            updated = persistedProduct;
-            setProducts(prev => prev.map(p => (p.id === id ? persistedProduct : p)));
-          } else if (insertError) {
-            console.warn('Supabase product persistence notice:', insertError.message);
-          }
-        }
-      } catch (e) {
-        console.warn('Supabase product update fallback:', e);
-      }
-    }
-
-    if (!updated) throw new Error('Product not found');
-    return updated;
+    if (!updatedProduct) throw new Error('Product not found');
+    return updatedProduct;
   };
 
   const deleteProduct = async (id: string): Promise<void> => {
-    setProducts(prev => prev.filter(p => p.id !== id));
     if (isSupabaseConfigured && supabase) {
-      try {
-        const isNumericId = /^\d+$/.test(id);
-        if (isNumericId) {
-          const { error: deleteError } = await supabase
-            .from('products')
-            .delete()
-            .eq('id', parseInt(id, 10));
+      const { error } = await supabase
+        .from('products')
+        .delete()
+        .eq('id', id);
 
-          if (deleteError) {
-            console.warn('Supabase product delete error:', deleteError.message);
-          }
-        }
-      } catch (e) {
-        console.warn('Supabase product delete fallback:', e);
+      if (error) {
+        console.error('Supabase product delete error:', error);
+        alert('Error deleting product: ' + error.message);
+        throw new Error(error.message);
       }
     }
+
+    // Await the database response before removing it from UI state
+    setProducts(prev => prev.filter(p => p.id !== id));
   };
+
+  const refreshProducts = useCallback(async (): Promise<Product[]> => {
+    if (!isSupabaseConfigured || !supabase) return products;
+    try {
+      setIsLoading(true);
+      const { data: dbProducts, error: prodErr } = await supabase
+        .from('products')
+        .select('*')
+        .order('id', { ascending: false });
+
+      if (prodErr) {
+        console.error('Supabase fetch products error:', prodErr.message);
+        return products;
+      }
+
+      if (Array.isArray(dbProducts)) {
+        const mapped: Product[] = dbProducts.map(p => ({
+          id: String(p.id),
+          code: p.code || undefined,
+          name: p.name || 'Firework SKU',
+          category: p.category || 'Sparklers',
+          price: Number(p.price) || 0,
+          piece_count: p.piece_count || '1 Box',
+          description: p.description || '',
+          safety_instructions: p.safety_instructions || 'Keep 10m clearance. Light with agarbatti.',
+          safety_tags: p.safety_tags || ['Bunny Certified'],
+          sound_level: p.sound_level || 'Medium',
+          video_url: p.video_url || '',
+          image_url: sanitizeProductImage(p.image_url || p.image || p.imageUrl),
+          is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
+          created_at: p.created_at || new Date().toISOString()
+        }));
+
+        setProducts(mapped);
+        safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(mapped)));
+        return mapped;
+      }
+    } catch (err) {
+      console.error('refreshProducts exception:', err);
+    } finally {
+      setIsLoading(false);
+    }
+    return products;
+  }, [products]);
 
   const toggleProductActive = async (id: string): Promise<void> => {
     const product = products.find(p => p.id === id);
@@ -1008,6 +1015,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         updateProduct,
         deleteProduct,
         toggleProductActive,
+        refreshProducts,
         updateSlotCapacity,
         toggleSlotBlock,
         batchGenerateSlots,
