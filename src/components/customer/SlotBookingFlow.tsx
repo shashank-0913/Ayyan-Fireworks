@@ -22,12 +22,6 @@ import { VIPVisitingPass } from './VIPVisitingPass';
 export const SlotBookingFlow: React.FC = () => {
   const { slots, bookSlot, isEmergencyBlocked } = useAyyanStore();
 
-  // Booking Flow Steps:
-  // Step 1: Select Date & Time Slot
-  // Step 2: Customer Contact Details
-  // Step 3 (Confirmed): VIP Visiting Pass
-  const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
-
   // Form State
   const [selectedDate, setSelectedDate] = useState<string>(() => {
     // Default to today or first available date with slots
@@ -41,10 +35,41 @@ export const SlotBookingFlow: React.FC = () => {
   const [guestName, setGuestName] = useState<string>('');
   const [guestPhone, setGuestPhone] = useState<string>('');
 
-  // Submission State
+  // Submission & Confirmed Pass State (Restored from localStorage on page refresh)
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [confirmedBooking, setConfirmedBooking] = useState<{ booking: Booking; slot: Slot } | null>(null);
+  
+  const [confirmedBooking, setConfirmedBooking] = useState<{ booking: Booking; slot: Slot } | null>(() => {
+    try {
+      const savedPass = localStorage.getItem('ayyan_active_visiting_pass');
+      if (savedPass) {
+        const parsed = JSON.parse(savedPass);
+        if (parsed && parsed.booking && (parsed.booking.id || parsed.booking.booking_code)) {
+          return parsed;
+        }
+      }
+    } catch (e) {
+      console.warn('Could not restore saved pass from localStorage:', e);
+    }
+    return null;
+  });
+
+  // Booking Flow Steps:
+  // Step 1: Select Date & Time Slot
+  // Step 2: Customer Contact Details
+  // Step 3 (Confirmed): VIP Visiting Pass
+  const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(() => {
+    try {
+      const savedPass = localStorage.getItem('ayyan_active_visiting_pass');
+      if (savedPass) {
+        const parsed = JSON.parse(savedPass);
+        if (parsed && parsed.booking && (parsed.booking.id || parsed.booking.booking_code)) {
+          return 3;
+        }
+      }
+    } catch (e) {}
+    return 1;
+  });
 
   // Slots for the chosen date
   const dateSlots = useMemo(() => {
@@ -148,6 +173,7 @@ export const SlotBookingFlow: React.FC = () => {
         const dummyBooking: Booking = {
           id: res.booking_id || `book-${Date.now()}`,
           booking_code: res.booking_code,
+          ticket_code: res.booking_code,
           qr_token: res.qr_token || `qr-${Date.now()}`,
           slot_id: selectedSlotId,
           customer_name: guestName.trim(),
@@ -162,10 +188,20 @@ export const SlotBookingFlow: React.FC = () => {
           created_at: new Date().toISOString()
         };
 
-        setConfirmedBooking({
+        const passPayload = {
           booking: dummyBooking,
           slot: currentTargetSlot
-        });
+        };
+
+        // Persist confirmed pass to localStorage so it survives page reloads
+        try {
+          localStorage.setItem('ayyan_active_visiting_pass', JSON.stringify(passPayload));
+          localStorage.setItem('ayyan_confirmed_booking_id', dummyBooking.id);
+        } catch (storageErr) {
+          console.warn('LocalStorage save error:', storageErr);
+        }
+
+        setConfirmedBooking(passPayload);
         setCurrentStep(3);
       }
     } catch (err: any) {
@@ -176,6 +212,9 @@ export const SlotBookingFlow: React.FC = () => {
   };
 
   const handleReset = () => {
+    try {
+      localStorage.removeItem('ayyan_active_visiting_pass');
+    } catch (e) {}
     setCurrentStep(1);
     setSelectedSlotId('');
     setGuestName('');

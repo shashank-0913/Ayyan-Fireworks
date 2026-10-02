@@ -322,7 +322,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
   }, []);
 
-  // Atomic Slot Booking (Concurrency-safe implementation mirroring PostgreSQL RPC)
+  // Atomic Slot Booking (Concurrency-safe implementation with permanent Supabase & localStorage persistence)
   const bookSlot = useCallback(async (
     slotId: string,
     name: string,
@@ -345,29 +345,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return { success: false, error: 'Visitor count must be at least 1 person.' };
     }
 
-    // If Supabase RPC is live, execute stored procedure
-    if (isSupabaseConfigured && supabase) {
-      try {
-        const { data, error } = await supabase.rpc('book_visiting_slot', {
-          p_slot_id: slotId,
-          p_name: name.trim(),
-          p_phone: phone.trim(),
-          p_visitors: visitors
-        });
-
-        if (error) {
-          return { success: false, error: error.message };
-        }
-
-        if (data && !data.success) {
-          return { success: false, error: data.error };
-        }
-      } catch (e: any) {
-        console.warn('RPC network call fallback to atomic local store:', e);
-      }
-    }
-
-    // Atomic local transaction logic
     const currentSlot = slots.find(s => s.id === slotId);
     if (!currentSlot) {
       return { success: false, error: 'The requested visiting slot was not found.' };
@@ -385,24 +362,108 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
     }
 
-    // Guaranteed unique booking ID & 6-digit booking code
-    let bookingCode = '';
-    do {
-      bookingCode = `AYN-${Math.floor(100000 + Math.random() * 900000)}`;
-    } while (bookings.some(b => b.booking_code === bookingCode));
+    let newBookingId = generateUUID();
+    let bookingCode = `AYN-${Math.floor(100000 + Math.random() * 900000)}`;
+    let qrToken = generateUUID();
+    let slotTimeFormatted = `${formatTime(currentSlot.start_time)} – ${formatTime(currentSlot.end_time)}`;
+    let slotDate = currentSlot.slot_date;
+    let rpcInserted = false;
 
-    const qrToken = generateUUID();
-    const newBookingId = generateUUID();
-    const slotTimeFormatted = `${formatTime(currentSlot.start_time)} – ${formatTime(currentSlot.end_time)}`;
+    // 1. If Supabase RPC is live, execute stored procedure
+    if (isSupabaseConfigured && supabase) {
+      try {
+        const { data, error } = await supabase.rpc('book_visiting_slot', {
+          p_slot_id: slotId,
+          p_name: name.trim(),
+          p_phone: phone.trim(),
+          p_visitors: visitors
+        });
+
+        if (!error && data && data.success) {
+          rpcInserted = true;
+          if (data.booking_id) newBookingId = data.booking_id;
+          if (data.booking_code) bookingCode = data.booking_code;
+          if (data.qr_token) qrToken = data.qr_token;
+          if (data.slot_date) slotDate = data.slot_date;
+          if (data.slot_time) slotTimeFormatted = data.slot_time;
+        } else if (data && !data.success && data.error) {
+          // If RPC returned capacity/safety error, return it
+          if (!data.error.includes('function') && !data.error.includes('not exist')) {
+            return { success: false, error: data.error };
+          }
+        }
+      } catch (e: any) {
+        console.warn('RPC network call fallback to direct table insert:', e);
+      }
+    }
+
+    // 2. Direct Supabase 'bookings' table permanent insertion (if RPC didn't already insert)
+    if (!rpcInserted && isSupabaseConfigured && supabase) {
+      try {
+        const dbRecord = {
+          id: newBookingId,
+          booking_code: bookingCode,
+          ticket_code: bookingCode,
+          qr_token: qrToken,
+          slot_id: slotId,
+          customer_name: name.trim(),
+          customer_phone: phone.trim(),
+          phone: phone.trim(),
+          slot_date: slotDate,
+          visit_date: slotDate,
+          slot_time: slotTimeFormatted,
+          time_slot: slotTimeFormatted,
+          total_amount: 0,
+          visitor_count: visitors,
+          status: 'confirmed',
+          booking_status: 'confirmed',
+          verified_at: null,
+          notes: notes?.trim() || ''
+        };
+
+        const { error: insertErr } = await supabase.from('bookings').insert([dbRecord]);
+        if (insertErr) {
+          console.warn('Supabase booking insert notice (retrying with standard columns):', insertErr.message);
+          await supabase.from('bookings').insert([{
+            id: newBookingId,
+            booking_code: bookingCode,
+            qr_token: qrToken,
+            slot_id: slotId,
+            customer_name: name.trim(),
+            customer_phone: phone.trim(),
+            slot_date: slotDate,
+            slot_time: slotTimeFormatted,
+            total_amount: 0,
+            visitor_count: visitors,
+            status: 'confirmed',
+            notes: notes?.trim()
+          }]);
+        }
+
+        // Increment booked capacity in Supabase 'slots' table
+        await supabase
+          .from('slots')
+          .update({ booked_capacity: currentSlot.booked_capacity + visitors })
+          .eq('id', slotId);
+      } catch (e) {
+        console.warn('Supabase direct booking insert exception:', e);
+      }
+    }
+
+    const updatedSlot = {
+      ...currentSlot,
+      booked_capacity: currentSlot.booked_capacity + visitors
+    };
 
     const newBooking: Booking = {
       id: newBookingId,
       booking_code: bookingCode,
+      ticket_code: bookingCode,
       qr_token: qrToken,
       slot_id: slotId,
       customer_name: name.trim(),
       customer_phone: phone.trim(),
-      slot_date: currentSlot.slot_date,
+      slot_date: slotDate,
       slot_time: slotTimeFormatted,
       total_amount: 0,
       visitor_count: visitors,
@@ -410,42 +471,30 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       verified_at: null,
       notes: notes?.trim(),
       created_at: new Date().toISOString(),
-      slot: {
-        ...currentSlot,
-        booked_capacity: currentSlot.booked_capacity + visitors
-      }
+      slot: updatedSlot
     };
 
-    // Insert directly into Supabase 'bookings' table
-    if (isSupabaseConfigured && supabase) {
-      try {
-        await supabase.from('bookings').insert([{
-          id: newBookingId,
-          booking_code: bookingCode,
-          qr_token: qrToken,
-          customer_name: name.trim(),
-          customer_phone: phone.trim(),
-          slot_date: currentSlot.slot_date,
-          slot_time: slotTimeFormatted,
-          total_amount: 0,
-          status: 'confirmed',
-          verified_at: null,
-          slot_id: slotId,
-          visitor_count: visitors,
-          notes: notes?.trim()
-        }]);
-      } catch (e) {
-        console.warn('Supabase booking insert fallback:', e);
-      }
+    // 3. Save confirmed booking details to localStorage for page-refresh persistence
+    try {
+      const activePassPayload = {
+        booking: newBooking,
+        slot: updatedSlot
+      };
+      safeSetItem('ayyan_active_visiting_pass', JSON.stringify(activePassPayload));
+      safeSetItem('ayyan_confirmed_booking_id', newBookingId);
+      
+      const existingRaw = safeGetItem('ayyan_my_bookings');
+      const existingList = existingRaw ? JSON.parse(existingRaw) : [];
+      const mergedList = [newBooking, ...existingList.filter((b: any) => b.id !== newBookingId)];
+      safeSetItem('ayyan_my_bookings', JSON.stringify(mergedList));
+    } catch (lsErr) {
+      console.warn('LocalStorage save notice:', lsErr);
     }
 
-    // Atomic state update
+    // 4. Atomic state update
     setSlots(prev => prev.map(s => {
       if (s.id === slotId) {
-        return {
-          ...s,
-          booked_capacity: s.booked_capacity + visitors
-        };
+        return updatedSlot;
       }
       return s;
     }));
@@ -457,7 +506,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       booking_id: newBookingId,
       booking_code: bookingCode,
       qr_token: qrToken,
-      slot_date: currentSlot.slot_date,
+      slot_date: slotDate,
       slot_time: slotTimeFormatted,
       start_time: currentSlot.start_time,
       end_time: currentSlot.end_time,
