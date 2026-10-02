@@ -105,7 +105,8 @@ export default function MyBookings() {
   };
 
   const handleShareWhatsApp = (booking: any) => {
-    const slotDate = booking.slot_date || booking.visit_date || 'Upcoming Date';
+    const rawDate = booking.slot_date || booking.visit_date || booking.booking_date || booking.date || '';
+    const slotDate = formatDateReadable(rawDate) || 'Scheduled Date';
     const slotTime = booking.slot_time || booking.time_slot || 'Showroom Window';
     const text = `🎟️ Ayyan Fireworks Showroom VIP Pass\n\n👤 Name: ${booking.customer_name}\n🔑 Pass Code: ${booking.booking_code || booking.id}\n📅 Date: ${slotDate}\n⏰ Time: ${slotTime}\n👥 Visitors: ${booking.visitor_count || 1}\n\n📍 Showroom: ${SHOWROOM_CONTACT.address}\n\nScan QR Code at Gate to Enter!`;
     const targetPhone = booking.phone || booking.customer_phone;
@@ -241,15 +242,17 @@ export default function MyBookings() {
 
                 <div className="grid grid-cols-2 gap-2 text-xs pt-1 border-t border-slate-100 dark:border-slate-800/80">
                   <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300">
-                    <Calendar className="w-3.5 h-3.5 text-amber-500" />
-                    <span>{formatDateReadable(booking.slot_date || booking.visit_date || '') || 'Scheduled Date'}</span>
+                    <Calendar className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                    <span className="font-semibold text-slate-900 dark:text-slate-100">
+                      {formatDateReadable(booking.slot_date || booking.visit_date || booking.booking_date || booking.date || '') || 'Scheduled Date'}
+                    </span>
                   </div>
                   <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300">
-                    <Clock className="w-3.5 h-3.5 text-amber-500" />
+                    <Clock className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                     <span className="truncate">{booking.slot_time || booking.time_slot || 'Showroom Window'}</span>
                   </div>
                   <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300">
-                    <Users className="w-3.5 h-3.5 text-amber-500" />
+                    <Users className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                     <span>{booking.visitor_count || 1} Visitor(s)</span>
                   </div>
                   <div className="text-[11px] text-slate-400 font-mono truncate">
@@ -311,10 +314,10 @@ export default function MyBookings() {
               booking={activePassBooking}
               slot={{
                 id: activePassBooking.slot_id || 'slot-1',
-                slot_date: activePassBooking.slot_date || activePassBooking.visit_date || '',
-                start_time: '10:00',
-                end_time: '11:00',
-                total_capacity: 15,
+                slot_date: activePassBooking.slot_date || activePassBooking.visit_date || (activePassBooking as any).booking_date || (activePassBooking as any).date || '',
+                start_time: '09:00',
+                end_time: '10:00',
+                total_capacity: 120,
                 booked_capacity: 1,
                 is_blocked: false
               }}

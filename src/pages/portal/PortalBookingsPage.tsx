@@ -38,9 +38,10 @@ export const PortalBookingsPage: React.FC = () => {
   // Helper to determine whether a booking is Present (Today), Upcoming (Future), or Past
   const getBookingTimeline = (b: Booking): 'present' | 'upcoming' | 'past' => {
     const s = b.slot || slots.find(slot => slot.id === b.slot_id);
-    if (!s?.slot_date) return 'present';
-    if (s.slot_date === todayStr) return 'present';
-    if (s.slot_date > todayStr) return 'upcoming';
+    const date = b.slot_date || s?.slot_date || (b as any).visit_date || (b as any).booking_date;
+    if (!date) return 'present';
+    if (date === todayStr) return 'present';
+    if (date > todayStr) return 'upcoming';
     return 'past';
   };
 
@@ -49,7 +50,8 @@ export const PortalBookingsPage: React.FC = () => {
     const set = new Set<string>();
     bookings.forEach(b => {
       const s = b.slot || slots.find(slot => slot.id === b.slot_id);
-      if (s?.slot_date) set.add(s.slot_date);
+      const date = b.slot_date || s?.slot_date || (b as any).visit_date || (b as any).booking_date;
+      if (date) set.add(date);
     });
     return Array.from(set).sort();
   }, [bookings, slots]);
@@ -68,7 +70,7 @@ export const PortalBookingsPage: React.FC = () => {
     return bookings
       .filter(b => {
         const s = b.slot || slots.find(slot => slot.id === b.slot_id);
-        const slotDate = s?.slot_date;
+        const slotDate = b.slot_date || s?.slot_date || (b as any).visit_date || (b as any).booking_date;
         const timeline = getBookingTimeline(b);
 
         // Timeline Filter Tab
@@ -79,9 +81,9 @@ export const PortalBookingsPage: React.FC = () => {
         // Search text
         if (search.trim()) {
           const q = search.toLowerCase();
-          const matchCode = b.booking_code.toLowerCase().includes(q);
-          const matchName = b.customer_name.toLowerCase().includes(q);
-          const matchPhone = b.customer_phone.includes(q);
+          const matchCode = (b.booking_code || '').toLowerCase().includes(q);
+          const matchName = (b.customer_name || '').toLowerCase().includes(q);
+          const matchPhone = (b.customer_phone || (b as any).phone || '').includes(q);
           if (!matchCode && !matchName && !matchPhone) return false;
         }
 
@@ -100,13 +102,13 @@ export const PortalBookingsPage: React.FC = () => {
       .sort((a, b) => {
         const sA = a.slot || slots.find(slot => slot.id === a.slot_id);
         const sB = b.slot || slots.find(slot => slot.id === b.slot_id);
-        const dateA = sA?.slot_date || '';
-        const dateB = sB?.slot_date || '';
+        const dateA = a.slot_date || sA?.slot_date || (a as any).visit_date || '';
+        const dateB = b.slot_date || sB?.slot_date || (b as any).visit_date || '';
         // If sorting within tabs, sort by slot date ascending for future, descending for past
         if (timelineTab === 'past') {
           return dateB.localeCompare(dateA) || new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         }
-        return dateA.localeCompare(dateB) || (sA?.start_time || '').localeCompare(sB?.start_time || '');
+        return dateA.localeCompare(dateB) || (sA?.start_time || a.slot_time || '').localeCompare(sB?.start_time || b.slot_time || '');
       });
   }, [bookings, slots, search, selectedDate, selectedStatus, timelineTab, todayStr]);
 

@@ -367,6 +367,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           .insert([{
             customer_name: name.trim(),
             phone: phone.trim(),
+            customer_phone: phone.trim(),
+            slot_date: slotDate,
             slot_time: slotTimeFormatted,
             status: 'confirmed'
           }])

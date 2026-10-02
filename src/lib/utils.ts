@@ -28,14 +28,56 @@ export function formatTime(timeStr: string): string {
 
 export function formatDateReadable(dateStr: string): string {
   if (!dateStr) return '';
-  const [year, month, day] = dateStr.split('-').map(Number);
-  const date = new Date(year, month - 1, day);
-  return date.toLocaleDateString('en-IN', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric'
-  });
+  const clean = String(dateStr).trim();
+  
+  // Handle ISO strings with time component
+  if (clean.includes('T')) {
+    const onlyDatePart = clean.split('T')[0];
+    const parts = onlyDatePart.split('-');
+    if (parts.length === 3) {
+      const year = parseInt(parts[0], 10);
+      const month = parseInt(parts[1], 10);
+      const day = parseInt(parts[2], 10);
+      if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+        const date = new Date(year, month - 1, day);
+        return date.toLocaleDateString('en-IN', {
+          weekday: 'short',
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric'
+        });
+      }
+    }
+  }
+
+  // Handle standard YYYY-MM-DD
+  const parts = clean.split('-');
+  if (parts.length === 3) {
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10);
+    const day = parseInt(parts[2], 10);
+    if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+      const date = new Date(year, month - 1, day);
+      return date.toLocaleDateString('en-IN', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+    }
+  }
+
+  const d = new Date(clean);
+  if (!isNaN(d.getTime())) {
+    return d.toLocaleDateString('en-IN', {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    });
+  }
+
+  return clean;
 }
 
 export function parseTimeToMinutes(timeStr: string): number | null {

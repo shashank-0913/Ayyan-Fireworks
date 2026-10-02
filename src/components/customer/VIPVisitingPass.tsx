@@ -42,8 +42,23 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
   // Use data.id directly from the inserted row for the QR code pass
   const qrValue = String(booking.id || booking.qr_token || booking.booking_code || '').trim();
 
+  // Scheduled date & time window from database record
+  const effectiveSlotDate = 
+    booking.slot_date || 
+    slot.slot_date || 
+    (booking as any).visit_date || 
+    (booking as any).booking_date || 
+    (booking as any).date || 
+    '';
+
+  const effectiveSlotTime = 
+    booking.slot_time || 
+    (booking as any).time_slot || 
+    (slot.start_time && slot.end_time ? `${formatTime(slot.start_time)} – ${formatTime(slot.end_time)}` : '') ||
+    '09:00 AM – 10:00 AM';
+
   const calUrl = generateGoogleCalendarUrl(
-    slot.slot_date,
+    effectiveSlotDate || slot.slot_date,
     slot.start_time,
     slot.end_time,
     booking.booking_code,
@@ -64,7 +79,7 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
 
   const handleShareWhatsApp = () => {
     const customerPhone = booking.customer_phone || (booking as any).phone;
-    const text = `🎉 Ayyan Fireworks Showroom VIP Entry Pass Confirmed!\n\n🎟️ Booking ID: ${booking.booking_code}\n👤 Customer Name: ${booking.customer_name}\n📞 Phone: +91 ${customerPhone}\n📅 Slot Date: ${formatDateReadable(slot.slot_date)}\n⏰ Slot Window: ${formatTime(slot.start_time)} – ${formatTime(slot.end_time)}\n💵 Amount: ${booking.total_amount ? formatINR(booking.total_amount) : '₹0.00 (Zero-Cost Pass)'}\n\n📍 Showroom: ${SHOWROOM_CONTACT.address}\n🗺️ Google Maps Navigation: ${googleMapsDirectionsUrl}\n\nScan QR Code at Gate to Enter - One-Time Pass`;
+    const text = `🎉 Ayyan Fireworks Showroom VIP Entry Pass Confirmed!\n\n🎟️ Booking ID: ${booking.booking_code}\n👤 Customer Name: ${booking.customer_name}\n📞 Phone: +91 ${customerPhone}\n📅 Slot Date: ${formatDateReadable(effectiveSlotDate)}\n⏰ Slot Window: ${effectiveSlotTime}\n💵 Amount: ${booking.total_amount ? formatINR(booking.total_amount) : '₹0.00 (Zero-Cost Pass)'}\n\n📍 Showroom: ${SHOWROOM_CONTACT.address}\n🗺️ Google Maps Navigation: ${googleMapsDirectionsUrl}\n\nScan QR Code at Gate to Enter - One-Time Pass`;
     
     // Open chat directly using country code 91
     if (customerPhone) {
@@ -140,14 +155,14 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
       ctx.fillText('📅 SLOT DATE', 50, 180);
       ctx.fillStyle = '#ffffff';
       ctx.font = 'bold 20px system-ui, -apple-system, sans-serif';
-      ctx.fillText(formatDateReadable(slot.slot_date), 50, 210);
+      ctx.fillText(formatDateReadable(effectiveSlotDate), 50, 210);
 
       ctx.fillStyle = '#f59e0b';
       ctx.font = 'bold 12px system-ui, -apple-system, sans-serif';
       ctx.fillText('⏰ SLOT WINDOW', 380, 180);
       ctx.fillStyle = '#ffffff';
       ctx.font = 'bold 20px system-ui, -apple-system, sans-serif';
-      ctx.fillText(`${formatTime(slot.start_time)} – ${formatTime(slot.end_time)}`, 380, 210);
+      ctx.fillText(effectiveSlotTime, 380, 210);
 
       // Row 2
       ctx.fillStyle = '#f59e0b';
@@ -372,7 +387,7 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
                   <span>Slot Date</span>
                 </div>
                 <p className="text-base font-extrabold text-white">
-                  {formatDateReadable(slot.slot_date)}
+                  {formatDateReadable(effectiveSlotDate)}
                 </p>
               </div>
 
@@ -383,7 +398,7 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
                   <span>Slot Window</span>
                 </div>
                 <p className="text-base font-extrabold text-white">
-                  {formatTime(slot.start_time)} – {formatTime(slot.end_time)}
+                  {effectiveSlotTime}
                 </p>
               </div>
             </div>

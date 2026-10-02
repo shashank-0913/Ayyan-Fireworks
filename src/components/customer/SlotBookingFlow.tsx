@@ -161,6 +161,7 @@ export const SlotBookingFlow: React.FC = () => {
         ? `${formatTime(currentTargetSlot.start_time)} – ${formatTime(currentTargetSlot.end_time)}`
         : '09:00 AM – 10:00 AM';
 
+      const bookingDate = selectedDate || currentTargetSlot?.slot_date || new Date().toISOString().split('T')[0];
       let insertedRow: any = null;
 
       if (isSupabaseConfigured && supabase) {
@@ -169,6 +170,8 @@ export const SlotBookingFlow: React.FC = () => {
           .insert([{
             customer_name: name,
             phone: phone.trim(),
+            customer_phone: phone.trim(),
+            slot_date: bookingDate,
             slot_time: selectedSlot,
             status: 'confirmed'
           }])
