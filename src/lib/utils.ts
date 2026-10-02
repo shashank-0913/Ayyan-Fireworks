@@ -240,6 +240,30 @@ export function generateGoogleCalendarUrl(
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startIso}/${endIso}&details=${details}&location=${location}`;
 }
 
+/**
+ * Formats a phone number for WhatsApp wa.me URLs.
+ * Ensures the India country code (91) is prepended to 10-digit mobile numbers.
+ * e.g. "7729992125" -> "917729992125"
+ * e.g. "+91 77299 92125" -> "917729992125"
+ * e.g. "07729992125" -> "917729992125"
+ */
+export function formatWhatsAppPhone(phone?: string | number | null): string {
+  if (!phone) return '917729992125';
+  let cleaned = String(phone).replace(/\D/g, '');
+
+  // Remove leading 0 if 11-digit domestic dialing format
+  if (cleaned.startsWith('0') && cleaned.length === 11) {
+    cleaned = cleaned.substring(1);
+  }
+
+  // Prepend 91 country code to 10-digit Indian phone numbers
+  if (cleaned.length === 10) {
+    cleaned = `91${cleaned}`;
+  }
+
+  return cleaned || '917729992125';
+}
+
 const envWhatsAppNumber = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_WHATSAPP_NUMBER) ||
   (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_WHATSAPP_NUMBER) ||
   '917729992125';
@@ -248,9 +272,22 @@ const envDisplayPhone = (typeof import.meta !== 'undefined' && import.meta.env?.
   (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_DISPLAY_PHONE) ||
   '+91 77299 92125';
 
-const cleanWhatsAppNumber = String(envWhatsAppNumber).replace(/[^0-9]/g, '') || '917729992125';
+const cleanWhatsAppNumber = formatWhatsAppPhone(envWhatsAppNumber);
 const cleanDisplayPhone = String(envDisplayPhone) || '+91 77299 92125';
 const defaultWhatsAppMessage = 'Hi! I want to inquire about Ayyan Fireworks crackers and gift boxes.';
+
+/**
+ * Generates a direct wa.me WhatsApp URL ensuring the 91 country code is present.
+ * e.g. 7729992125 becomes https://wa.me/917729992125
+ */
+export function formatWhatsAppUrl(phoneNumber?: string | number | null, customMessage?: string): string {
+  const targetNumber = formatWhatsAppPhone(phoneNumber || cleanWhatsAppNumber);
+  const msg = customMessage !== undefined && customMessage !== null
+    ? encodeURIComponent(customMessage)
+    : encodeURIComponent(defaultWhatsAppMessage);
+
+  return msg ? `https://wa.me/${targetNumber}?text=${msg}` : `https://wa.me/${targetNumber}`;
+}
 
 export const WHATSAPP_CONTACT = {
   businessName: 'Ayyan Fireworks',
@@ -280,10 +317,8 @@ export const SHOWROOM_CONTACT = {
   operationalHours: 'Mon - Sun: 05:00 AM – 10:00 PM IST (All 7 Days during Festive Season)'
 };
 
-export function getWhatsAppUrl(customMessage?: string): string {
-  if (!customMessage) return WHATSAPP_CONTACT.url;
-  const message = encodeURIComponent(customMessage);
-  return `https://wa.me/${WHATSAPP_CONTACT.number}?text=${message}`;
+export function getWhatsAppUrl(customMessage?: string, phoneNumber?: string | number | null): string {
+  return formatWhatsAppUrl(phoneNumber || WHATSAPP_CONTACT.number, customMessage);
 }
 
 const envAdminEmail = (typeof import.meta !== 'undefined' && (import.meta.env?.VITE_OWNER_EMAIL || import.meta.env?.VITE_ADMIN_EMAIL)) ||

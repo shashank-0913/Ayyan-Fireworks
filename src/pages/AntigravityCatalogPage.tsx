@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { Link } from 'react-router-dom';
-import { WHATSAPP_CONTACT } from '../lib/utils';
+import { getWhatsAppUrl } from '../lib/utils';
 
 import { INITIAL_PRODUCTS } from '../lib/initialData';
 
@@ -656,7 +656,7 @@ export const AntigravityCatalogPage: React.FC = () => {
             {/* Action Buttons */}
             <div className="grid grid-cols-2 gap-3 pt-2">
               <a
-                href={`https://wa.me/${WHATSAPP_CONTACT.number}?text=${encodeURIComponent(`Hi! I am inquiring about ${activeModalProduct.name} (Code: #${activeModalProduct.code}, Rate: ₹${activeModalProduct.rate} / ${activeModalProduct.per}) from Ayyan Fireworks.`)}`}
+                href={getWhatsAppUrl(`Hi! I am inquiring about ${activeModalProduct.name} (Code: #${activeModalProduct.code}, Rate: ₹${activeModalProduct.rate} / ${activeModalProduct.per}) from Ayyan Fireworks.`)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all"
