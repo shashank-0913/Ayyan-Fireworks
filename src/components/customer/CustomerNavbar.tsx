@@ -26,7 +26,7 @@ export const CustomerNavbar: React.FC = () => {
 
   const navLinks = [
     { name: 'Home', path: '/', icon: Flame },
-    { name: '2026 Catalogue', path: '/catalogue', icon: BookOpen },
+    { name: 'Catalogue', path: '/catalogue', icon: BookOpen },
     { name: 'Showroom Visit', path: '/showroom', icon: MapPin },
     { name: 'My Bookings', path: '/my-bookings', icon: Ticket },
   ];
