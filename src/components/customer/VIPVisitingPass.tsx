@@ -38,8 +38,8 @@ export const VIPVisitingPass: React.FC<VIPVisitingPassProps> = ({ booking, slot,
   const [copiedCode, setCopiedCode] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
 
-  // Use the unique qr_token or fallback to id
-  const qrValue = booking.qr_token || booking.id;
+  // Use data.id directly from the inserted row for the QR code pass
+  const qrValue = String(booking.id || booking.qr_token || booking.booking_code || '').trim();
 
   const calUrl = generateGoogleCalendarUrl(
     slot.slot_date,

@@ -368,55 +368,29 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
     }
 
-    const newBookingId = generateUUID();
+    let newBookingId = generateUUID();
     const bookingCode = `AYN-${Math.floor(100000 + Math.random() * 900000)}`;
-    const qrToken = generateUUID();
     const slotTimeFormatted = `${formatTime(currentSlot.start_time)} – ${formatTime(currentSlot.end_time)}`;
     const slotDate = currentSlot.slot_date;
 
     // Insert directly into Supabase 'bookings' table
     if (isSupabaseConfigured && supabase) {
       try {
-        const dbRecord = {
-          id: newBookingId,
-          booking_code: bookingCode,
-          ticket_code: bookingCode,
-          qr_token: qrToken,
-          slot_id: slotId,
-          customer_name: name.trim(),
-          customer_phone: phone.trim(),
-          phone: phone.trim(),
-          slot_date: slotDate,
-          visit_date: slotDate,
-          slot_time: slotTimeFormatted,
-          time_slot: slotTimeFormatted,
-          total_amount: 0,
-          visitor_count: visitors,
-          status: 'confirmed',
-          booking_status: 'confirmed',
-          verified_at: null,
-          notes: notes?.trim() || '',
-          created_at: new Date().toISOString()
-        };
-
-        const { error: insertErr } = await supabase.from('bookings').insert([dbRecord]);
-        if (insertErr) {
-          console.warn('Supabase booking insert notice (retrying with standard columns):', insertErr.message);
-          await supabase.from('bookings').insert([{
-            id: newBookingId,
-            booking_code: bookingCode,
-            qr_token: qrToken,
-            slot_id: slotId,
+        const { data, error: insertErr } = await supabase
+          .from('bookings')
+          .insert([{
             customer_name: name.trim(),
-            customer_phone: phone.trim(),
             phone: phone.trim(),
-            slot_date: slotDate,
             slot_time: slotTimeFormatted,
-            total_amount: 0,
-            visitor_count: visitors,
-            status: 'confirmed',
-            notes: notes?.trim()
-          }]);
+            status: 'confirmed'
+          }])
+          .select()
+          .single();
+
+        if (insertErr) {
+          console.error('Supabase booking error:', insertErr);
+        } else if (data?.id) {
+          newBookingId = data.id;
         }
       } catch (e) {
         console.warn('Supabase direct booking insert exception:', e);
@@ -432,10 +406,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       id: newBookingId,
       booking_code: bookingCode,
       ticket_code: bookingCode,
-      qr_token: qrToken,
+      qr_token: newBookingId,
       slot_id: slotId,
       customer_name: name.trim(),
       customer_phone: phone.trim(),
+      phone: phone.trim(),
       slot_date: slotDate,
       slot_time: slotTimeFormatted,
       total_amount: 0,
@@ -478,7 +453,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       success: true,
       booking_id: newBookingId,
       booking_code: bookingCode,
-      qr_token: qrToken,
+      qr_token: newBookingId,
       slot_date: slotDate,
       slot_time: slotTimeFormatted,
       start_time: currentSlot.start_time,

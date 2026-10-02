@@ -78,6 +78,7 @@ export interface Booking {
   slot_id?: string;
   customer_name: string;
   customer_phone: string;
+  phone?: string;
   slot_date: string;
   slot_time: string;
   visit_date?: string;

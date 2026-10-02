@@ -14,13 +14,14 @@ import {
   Lock
 } from 'lucide-react';
 import { useAyyanStore } from '../../context/AppContext';
+import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 import { Slot, Booking } from '../../types';
 import { formatDateReadable, formatTime, getSlotStatus } from '../../lib/utils';
 import { InteractiveCalendar } from '../common/InteractiveCalendar';
 import { VIPVisitingPass } from './VIPVisitingPass';
 
 export const SlotBookingFlow: React.FC = () => {
-  const { slots, bookSlot, isEmergencyBlocked } = useAyyanStore();
+  const { slots, isEmergencyBlocked } = useAyyanStore();
 
   // Form State
   const [selectedDate, setSelectedDate] = useState<string>(() => {
@@ -137,27 +138,48 @@ export const SlotBookingFlow: React.FC = () => {
       return;
     }
 
-    if (!guestName.trim()) {
+    const name = guestName.trim();
+    if (!name) {
       setErrorMessage('Please enter the primary visitor name.');
       return;
     }
 
-    const cleanPhone = guestPhone.replace(/\D/g, '');
-    if (cleanPhone.length < 10) {
-      setErrorMessage('Please enter a valid 10-digit Indian mobile number.');
+    const phone = guestPhone.trim();
+    if (!phone) {
+      setErrorMessage('Please enter a valid mobile number.');
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      // 1 booking = 1 slot reservation for family/group (visitor_count = 1)
-      const res = await bookSlot(selectedSlotId, guestName, cleanPhone, 1, '');
+      const currentTargetSlot = slots.find(s => s.id === selectedSlotId);
+      const selectedSlot = currentTargetSlot 
+        ? `${formatTime(currentTargetSlot.start_time)} – ${formatTime(currentTargetSlot.end_time)}`
+        : '09:00 AM – 10:00 AM';
 
-      if (!res.success) {
-        setErrorMessage(res.error || 'Failed to reserve slot. Please try another time.');
-        setIsSubmitting(false);
-        return;
+      let insertedRow: any = null;
+
+      if (isSupabaseConfigured && supabase) {
+        const { data, error } = await supabase
+          .from('bookings')
+          .insert([{
+            customer_name: name,
+            phone: phone.trim(),
+            slot_time: selectedSlot,
+            status: 'confirmed'
+          }])
+          .select()
+          .single();
+
+        if (error) {
+          console.error('Supabase booking error:', error);
+          alert('Error booking slot: ' + error.message);
+          setIsSubmitting(false);
+          return;
+        }
+
+        insertedRow = data;
       }
 
       // Confetti Celebration
@@ -168,44 +190,56 @@ export const SlotBookingFlow: React.FC = () => {
         colors: ['#fbbf24', '#f59e0b', '#ff4d00', '#ffffff', '#10b981']
       });
 
-      const currentTargetSlot = slots.find(s => s.id === selectedSlotId);
-      if (currentTargetSlot && res.booking_code) {
-        const dummyBooking: Booking = {
-          id: res.booking_id || `book-${Date.now()}`,
-          booking_code: res.booking_code,
-          ticket_code: res.booking_code,
-          qr_token: res.qr_token || `qr-${Date.now()}`,
-          slot_id: selectedSlotId,
-          customer_name: guestName.trim(),
-          customer_phone: cleanPhone,
-          slot_date: res.slot_date || currentTargetSlot.slot_date,
-          slot_time: res.slot_time || `${formatTime(currentTargetSlot.start_time)} – ${formatTime(currentTargetSlot.end_time)}`,
-          total_amount: res.total_amount || 0,
-          visitor_count: 1,
-          status: 'confirmed',
-          verified_at: null,
-          notes: '',
+      // Use data.id directly from the inserted row
+      const bookingId = insertedRow?.id || `book-${Date.now()}`;
+      const bookingCode = insertedRow?.booking_code || `AYN-${String(bookingId).substring(0, 8).toUpperCase()}`;
+
+      const dummyBooking: Booking = {
+        id: bookingId,
+        booking_code: bookingCode,
+        ticket_code: bookingCode,
+        qr_token: bookingId, // Use data.id directly for QR payload
+        slot_id: selectedSlotId,
+        customer_name: name,
+        customer_phone: phone.trim(),
+        phone: phone.trim(),
+        slot_date: insertedRow?.slot_date || selectedDate || currentTargetSlot?.slot_date || new Date().toISOString().split('T')[0],
+        slot_time: insertedRow?.slot_time || selectedSlot,
+        total_amount: insertedRow?.total_amount || 0,
+        visitor_count: 1,
+        status: 'confirmed',
+        verified_at: null,
+        notes: '',
+        created_at: insertedRow?.created_at || new Date().toISOString()
+      };
+
+      const passPayload = {
+        booking: dummyBooking,
+        slot: currentTargetSlot || {
+          id: selectedSlotId,
+          slot_date: dummyBooking.slot_date,
+          start_time: '09:00',
+          end_time: '10:00',
+          total_capacity: 120,
+          booked_capacity: 1,
+          is_blocked: false,
           created_at: new Date().toISOString()
-        };
-
-        const passPayload = {
-          booking: dummyBooking,
-          slot: currentTargetSlot
-        };
-
-        // Persist confirmed pass to localStorage so it survives page reloads
-        try {
-          localStorage.setItem('ayyan_active_visiting_pass', JSON.stringify(passPayload));
-          localStorage.setItem('ayyan_confirmed_booking_id', dummyBooking.id);
-        } catch (storageErr) {
-          console.warn('LocalStorage save error:', storageErr);
         }
+      };
 
-        setConfirmedBooking(passPayload);
-        setCurrentStep(3);
+      // Persist confirmed pass to localStorage so it survives page reloads
+      try {
+        localStorage.setItem('ayyan_active_visiting_pass', JSON.stringify(passPayload));
+        localStorage.setItem('ayyan_confirmed_booking_id', dummyBooking.id);
+      } catch (storageErr) {
+        console.warn('LocalStorage save error:', storageErr);
       }
+
+      setConfirmedBooking(passPayload);
+      setCurrentStep(3);
     } catch (err: any) {
-      setErrorMessage(err.message || 'An unexpected error occurred. Please try again.');
+      console.error('Booking submission exception:', err);
+      alert('Error booking slot: ' + (err.message || 'Unknown error occurred. Please try again.'));
     } finally {
       setIsSubmitting(false);
     }
