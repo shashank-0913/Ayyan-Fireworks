@@ -53,7 +53,7 @@ export interface Product {
   image_url: string;
   image?: string;
   imageUrl?: string;
-  is_active: boolean;
+  is_active?: boolean;
   created_at?: string;
 }
 

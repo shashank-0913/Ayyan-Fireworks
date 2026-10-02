@@ -668,6 +668,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Product Actions
   const addProduct = async (productData: Omit<Product, 'id' | 'created_at'>): Promise<Product> => {
     const sanitizedImage = sanitizeProductImage(productData.image_url);
+    // Insert payload strictly omitting is_active to match database columns
     const dbPayload = {
       name: productData.name.trim(),
       category: productData.category,
@@ -678,8 +679,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       safety_tags: productData.safety_tags || ['Bunny Certified'],
       sound_level: productData.sound_level || 'Medium',
       video_url: productData.video_url || '',
-      image_url: sanitizedImage,
-      is_active: productData.is_active !== undefined ? productData.is_active : true
+      image_url: sanitizedImage
     };
 
     if (isSupabaseConfigured && supabase) {

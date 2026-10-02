@@ -49,7 +49,7 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
           ? PRESET_IMAGES[0].url 
           : (productToEdit.image_url || PRESET_IMAGES[0].url)
       );
-      setIsActive(productToEdit.is_active);
+      setIsActive(productToEdit.is_active !== undefined ? Boolean(productToEdit.is_active) : true);
     } else {
       setName('');
       setCategory('Sparklers');
@@ -118,8 +118,7 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
           piece_count: pieceCount.trim() || '1 Box',
           description: description.trim() || 'Authentic Sivakasi fireworks creation.',
           safety_instructions: safetyInstructions.trim() || 'Keep safe clearance. Place on hard flat ground.',
-          image_url: cleanImageUrl,
-          is_active: isActive
+          image_url: cleanImageUrl
         });
         setToastMessage({ type: 'success', text: 'Product published to catalogue!' });
       }
