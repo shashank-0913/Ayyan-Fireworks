@@ -109,7 +109,7 @@ export const ShowroomPage: React.FC = () => {
                   <Building className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400" />
                   <span>Facility Type</span>
                 </span>
-                <p className="text-xs text-slate-600 dark:text-slate-300">Authorized Bunny Brand Flagship Showroom</p>
+                <p className="text-xs text-slate-600 dark:text-slate-300">Authorised dealers for Ayyan Fireworks Brand</p>
               </div>
             </div>
 
@@ -226,19 +226,14 @@ export const ShowroomPage: React.FC = () => {
               <span>In-Store Visitor Safety Protocols</span>
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-700 dark:text-slate-300">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-700 dark:text-slate-300">
               <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-obsidian-950 border border-slate-200 dark:border-white/5 space-y-1">
                 <strong className="text-amber-700 dark:text-gold-300 block">1. Priority Entry with VIP Pass ID</strong>
                 <p className="text-slate-600 dark:text-slate-400">Present your Unique Pass Code at the security desk to bypass general waiting queues.</p>
               </div>
 
               <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-obsidian-950 border border-slate-200 dark:border-white/5 space-y-1">
-                <strong className="text-amber-700 dark:text-gold-300 block">2. Strict Safety Compliance</strong>
-                <p className="text-slate-600 dark:text-slate-400">Matchboxes, lighters, and inflammable items must remain outside the exhibition premises.</p>
-              </div>
-
-              <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-obsidian-950 border border-slate-200 dark:border-white/5 space-y-1">
-                <strong className="text-amber-700 dark:text-gold-300 block">3. Direct Billing & Vehicle Dispatch</strong>
+                <strong className="text-amber-700 dark:text-gold-300 block">2. Direct Billing & Vehicle Dispatch</strong>
                 <p className="text-slate-600 dark:text-slate-400">Complete showroom billing directly at checkout with instant loading assistance.</p>
               </div>
             </div>

@@ -159,7 +159,7 @@ export const HomePage: React.FC = () => {
                 <span>2026 Festive Season Master Collection</span>
               </div>
               <h2 className="text-2xl sm:text-4xl font-display font-black text-white tracking-tight">
-                Explore 100+ Authentic Sivakasi Pyrotechnic Formulations
+                Authentic Sivakasi Green Cracker
               </h2>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 Browse complete piece counts, safety instructions, high-definition videos, sound decibel classifications, and direct factory pricing.
