@@ -13,6 +13,8 @@ import {
 import { SHOWROOM_CONTACT, WHATSAPP_CONTACT } from '../lib/utils';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 
+import { StatutoryComplianceBanner } from '../components/common/StatutoryComplianceBanner';
+
 export const ShowroomPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 space-y-10 sm:space-y-12 pb-24 sm:pb-12">
@@ -23,12 +25,15 @@ export const ShowroomPage: React.FC = () => {
           <span>Visakhapatnam Flagship Experience Center</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-display font-extrabold text-slate-900 dark:text-white tracking-tight">
-          Showroom & Navigation Guide
+          Showroom &amp; Navigation Guide
         </h1>
         <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
-          Plan your festive visit to our flagship showroom in Visakhapatnam. Safe, certified viewing galleries with expert pyrotechnic guidance.
+          Plan your festive visit to our flagship showroom in Visakhapatnam. Safe, certified viewing galleries with expert Green Cracker guidance.
         </p>
       </div>
+
+      {/* Statutory Compliance Notice Banner */}
+      <StatutoryComplianceBanner variant="compact" />
 
       {/* Main Grid: Showroom Details & Map Simulation */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

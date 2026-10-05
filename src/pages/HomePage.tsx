@@ -14,13 +14,14 @@ import {
   Navigation 
 } from 'lucide-react';
 import { ReserveSlotModal } from '../components/customer/ReserveSlotModal';
+import { StatutoryComplianceBanner } from '../components/common/StatutoryComplianceBanner';
 import { SHOWROOM_CONTACT, getWhatsAppUrl } from '../lib/utils';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 
 export const HomePage: React.FC = () => {
   const [isSlotModalOpen, setIsSlotModalOpen] = useState(false);
 
-  const pyrotechnicCategories = [
+  const crackerCategories = [
     {
       title: 'Grand Aerial Display Cakes',
       subtitle: 'Multi-shot sky spectacles with vivid aerial breaks',
@@ -52,7 +53,7 @@ export const HomePage: React.FC = () => {
     {
       title: 'Sound Maroons & Crackers',
       subtitle: 'Crisp, rhythmic traditional Sivakasi festive sound',
-      tag: 'Heritage Formulation',
+      tag: 'Green Cracker Certified',
       icon: ShieldCheck,
       color: 'from-red-500/20 to-rose-500/10'
     },
@@ -97,7 +98,7 @@ export const HomePage: React.FC = () => {
               </span>
             </h1>
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
-              Explore authentic Sivakasi formulations, direct factory pricing, and priority showroom visiting passes at our Visakhapatnam flagship store.
+              Explore authentic Sivakasi Green Crackers &amp; Novelties, direct factory pricing, and priority showroom visiting passes at our Visakhapatnam flagship store.
             </p>
           </div>
 
@@ -144,6 +145,11 @@ export const HomePage: React.FC = () => {
         onClose={() => setIsSlotModalOpen(false)}
       />
 
+      {/* Statutory Compliance Notice Banner on Homepage */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <StatutoryComplianceBanner variant="compact" />
+      </section>
+
       {/* ========================================================================= */}
       {/* 2. PROMINENT 2026 CATALOGUE GATEWAY BANNER                                */}
       {/* ========================================================================= */}
@@ -159,7 +165,7 @@ export const HomePage: React.FC = () => {
                 <span>2026 Festive Season Master Collection</span>
               </div>
               <h2 className="text-2xl sm:text-4xl font-display font-black text-white tracking-tight">
-                Authentic Sivakasi Green Cracker
+                Authentic Sivakasi Green Crackers &amp; Novelties
               </h2>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 Browse complete piece counts, safety instructions, high-definition videos, sound decibel classifications, and direct factory pricing.
@@ -181,13 +187,13 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* ========================================================================= */}
-      {/* 3. PYROTECHNIC CATEGORIES SHOWCASE                                        */}
+      {/* 3. SIVAKASI GREEN CRACKER CATEGORIES SHOWCASE                             */}
       {/* ========================================================================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <div className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 dark:text-gold-400 uppercase tracking-wider">
             <Flame className="w-4 h-4" />
-            <span>Master Formulations</span>
+            <span>Green Crackers &amp; Sivakasi Novelties</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-display font-extrabold text-slate-900 dark:text-white tracking-tight">
             Curated Festive Range
@@ -198,7 +204,7 @@ export const HomePage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {pyrotechnicCategories.map((cat, idx) => {
+          {crackerCategories.map((cat, idx) => {
             const Icon = cat.icon;
             return (
               <Link

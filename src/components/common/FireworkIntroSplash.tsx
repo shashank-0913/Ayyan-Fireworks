@@ -428,7 +428,7 @@ export const FireworkIntroSplash: React.FC<FireworkIntroSplashProps> = ({ onComp
             <span>
               {phase === 1 && 'Bunny Brand • Since 1987'}
               {phase === 2 && 'Cracker Symphony • Festive 2026'}
-              {phase === 3 && 'Grand Pyrotechnic Finale'}
+              {phase === 3 && 'Grand Festive Green Crackers Finale'}
             </span>
             <Flame className="w-3 h-3 text-amber-400 animate-pulse" />
           </div>

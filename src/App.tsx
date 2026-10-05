@@ -2,11 +2,13 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { EstimateProvider } from './context/EstimateContext';
 import { SparkleCanvas } from './components/common/SparkleCanvas';
 import { WhatsAppFloatingButton } from './components/common/WhatsAppFloatingButton';
 import { FireworkIntroSplash } from './components/common/FireworkIntroSplash';
 import { CustomerNavbar } from './components/customer/CustomerNavbar';
 import { CustomerFooter } from './components/customer/CustomerFooter';
+import { EstimateDrawer } from './components/customer/EstimateDrawer';
 
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 
@@ -53,6 +55,7 @@ const CustomerPortalLayout: React.FC = () => {
         <Outlet />
       </main>
       <CustomerFooter />
+      <EstimateDrawer />
       <WhatsAppFloatingButton />
     </div>
   );
@@ -63,7 +66,8 @@ export const App: React.FC = () => {
     <ErrorBoundary>
       <ThemeProvider>
         <AppProvider>
-          <BrowserRouter>
+          <EstimateProvider>
+            <BrowserRouter>
             <Routes>
               {/* ================================================================= */}
               {/* 1. PUBLIC WEBSITE & CUSTOMER PORTAL */}
@@ -159,6 +163,7 @@ export const App: React.FC = () => {
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </BrowserRouter>
+          </EstimateProvider>
         </AppProvider>
       </ThemeProvider>
     </ErrorBoundary>

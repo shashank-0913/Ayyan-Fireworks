@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { X, Ticket, Sparkles } from 'lucide-react';
+import { StatutoryComplianceBanner } from '../common/StatutoryComplianceBanner';
 import { SlotBookingFlow } from './SlotBookingFlow';
 
 export interface ReserveSlotModalProps {
@@ -43,9 +44,9 @@ export const ReserveSlotModal: React.FC<ReserveSlotModalProps> = ({ isOpen, onCl
       />
 
       {/* Modal Dialog Content */}
-      <div className="relative w-full max-w-4xl max-h-[92vh] bg-slate-50 dark:bg-obsidian-950 border border-slate-200 dark:border-white/10 rounded-3xl p-4 sm:p-6 sm:pb-8 overflow-y-auto shadow-2xl z-10 animate-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-4xl max-h-[92vh] bg-slate-50 dark:bg-obsidian-950 border border-slate-200 dark:border-white/10 rounded-3xl p-4 sm:p-6 sm:pb-8 overflow-y-auto shadow-2xl z-10 animate-in zoom-in-95 duration-200 space-y-4">
         {/* Modal Header */}
-        <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-200 dark:border-white/10">
+        <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-white/10">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-gold-600 p-0.5 shadow-sm flex items-center justify-center shrink-0">
               <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center text-amber-400">
@@ -77,6 +78,9 @@ export const ReserveSlotModal: React.FC<ReserveSlotModalProps> = ({ isOpen, onCl
             <X className="w-5 h-5" />
           </button>
         </div>
+
+        {/* Statutory Compliance Notice Banner */}
+        <StatutoryComplianceBanner variant="modal" />
 
         {/* 3-Step Interactive Booking Engine */}
         <SlotBookingFlow />

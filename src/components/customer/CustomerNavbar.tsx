@@ -12,13 +12,16 @@ import {
   Phone, 
   Clock, 
   ChevronRight,
-  Ticket
+  Ticket,
+  FileText
 } from 'lucide-react';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
+import { useEstimate } from '../../context/EstimateContext';
 import { SHOWROOM_CONTACT, WHATSAPP_CONTACT } from '../../lib/utils';
 
 export const CustomerNavbar: React.FC = () => {
+  const { totalItemsCount, setIsEstimateDrawerOpen } = useEstimate();
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const location = useLocation();
 
@@ -100,6 +103,27 @@ export const CustomerNavbar: React.FC = () => {
 
             {/* Right Quick Actions */}
             <div className="flex items-center gap-2 sm:gap-2.5">
+              {/* Showroom Estimate Inquiry Trigger */}
+              <button
+                type="button"
+                onClick={() => setIsEstimateDrawerOpen(true)}
+                className={`p-2 sm:px-3 sm:py-2 rounded-xl border text-xs font-bold transition-all flex items-center gap-1.5 min-touch justify-center cursor-pointer ${
+                  totalItemsCount > 0
+                    ? 'bg-amber-500/20 dark:bg-gold-500/20 border-amber-500/50 text-amber-800 dark:text-gold-300 shadow-sm'
+                    : 'bg-slate-100 hover:bg-slate-200 dark:bg-obsidian-900/80 dark:hover:bg-slate-800 border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300'
+                }`}
+                title="Showroom Estimate & Inquiry List"
+                aria-label="View Showroom Estimate List"
+              >
+                <FileText className="w-4 h-4 text-amber-600 dark:text-gold-400" />
+                <span className="hidden sm:inline text-[11px]">Estimate</span>
+                {totalItemsCount > 0 && (
+                  <span className="px-1.5 py-0.2 rounded-full bg-amber-500 text-slate-950 font-mono text-[10px] font-black">
+                    {totalItemsCount}
+                  </span>
+                )}
+              </button>
+
               {/* Theme Toggle Button */}
               <ThemeToggle />
 
@@ -260,6 +284,28 @@ export const CustomerNavbar: React.FC = () => {
                     </Link>
                   );
                 })}
+
+                {/* Showroom Estimate Inquiry Item in Mobile Drawer */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileDrawerOpen(false);
+                    setIsEstimateDrawerOpen(true);
+                  }}
+                  className="w-full flex items-center justify-between p-3.5 rounded-2xl text-sm font-bold transition-all bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-gold-300 border border-amber-500/30 min-touch text-left cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <FileText className="w-4 h-4 text-amber-600 dark:text-gold-400" />
+                    <span>Showroom Estimate List</span>
+                  </div>
+                  {totalItemsCount > 0 ? (
+                    <span className="px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 font-mono text-xs font-black">
+                      {totalItemsCount} items
+                    </span>
+                  ) : (
+                    <ChevronRight className="w-4 h-4 text-slate-400" />
+                  )}
+                </button>
               </nav>
 
               {/* Showroom Quick Info */}

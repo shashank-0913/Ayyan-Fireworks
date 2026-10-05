@@ -650,7 +650,7 @@ export const AntigravityCatalogPage: React.FC = () => {
 
             {/* Description */}
             <p className="text-xs text-slate-300 leading-relaxed">
-              {activeModalProduct.description || 'Authentic Sivakasi Bunny Brand formulation manufactured by Ayyan Fireworks under strict quality control.'}
+              {activeModalProduct.description || 'Authentic Sivakasi Bunny Brand Green Cracker manufactured by Ayyan Fireworks under strict quality control.'}
             </p>
 
             {/* Action Buttons */}

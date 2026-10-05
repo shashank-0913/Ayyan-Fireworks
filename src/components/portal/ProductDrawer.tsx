@@ -362,7 +362,7 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
                 rows={3}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Describe pyrotechnic performance, colors, sparkles, burn duration..."
+                placeholder="Describe Green Cracker performance, colors, sparkles, burn duration..."
                 className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-base sm:text-xs text-slate-900 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-amber-500 leading-relaxed"
               />
             </div>

@@ -23,3 +23,6 @@ dist-ssr
 .idea
 .DS_Store
 Thumbs.db
+
+sync_ayyan_images.py
+
