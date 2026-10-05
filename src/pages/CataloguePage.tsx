@@ -168,7 +168,7 @@ export const CataloguePage: React.FC = () => {
             <span>Official 2026 CSIR-NEERI Green Crackers Price Master</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-display font-extrabold text-slate-900 dark:text-white tracking-tight">
-            Sivakasi Green Crackers Catalogue
+            Catalogue
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
             Explore genuine Bunny Brand Sivakasi Sparklers &amp; Novelties, piece breakdowns, dynamic INR rates, and safety handling instructions.
