@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   Search, 
   SlidersHorizontal, 
@@ -442,6 +443,24 @@ export const CataloguePage: React.FC = () => {
               ))}
             </div>
           )}
+        </div>
+      ) : products.length === 0 ? (
+        <div className="py-20 text-center bg-white dark:bg-obsidian-900/60 border border-slate-200 dark:border-white/10 rounded-3xl p-8 space-y-4 shadow-sm max-w-xl mx-auto">
+          <div className="w-16 h-16 rounded-full bg-amber-500/10 dark:bg-gold-500/10 border border-amber-500/20 dark:border-gold-500/20 flex items-center justify-center mx-auto text-amber-600 dark:text-gold-400">
+            <Package className="w-8 h-8" />
+          </div>
+          <h3 className="text-xl font-bold text-slate-900 dark:text-white">Catalogue Clean Slate (0 Products)</h3>
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            All catalogue items have been cleared. Authorized showroom owners can add and publish certified cracker products directly via the Owner Portal.
+          </p>
+          <div className="pt-2 flex items-center justify-center gap-3">
+            <Link
+              to="/admin/products"
+              className="px-6 py-3 rounded-2xl bg-amber-500 dark:bg-gold-500 text-slate-950 font-extrabold text-xs shadow-md dark:shadow-glow-gold min-h-[44px] active:scale-95 cursor-pointer inline-flex items-center gap-2"
+            >
+              + Add Product in Owner Portal
+            </Link>
+          </div>
         </div>
       ) : (
         <div className="py-16 text-center bg-white dark:bg-obsidian-900/60 border border-slate-200 dark:border-white/10 rounded-3xl p-8 space-y-4 shadow-sm">
