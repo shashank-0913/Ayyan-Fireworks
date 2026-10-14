@@ -100,12 +100,12 @@ export const ProductRow: React.FC<ProductRowProps> = ({
               }}
             >
               <img
-                src={product.image_url || product.image || product.imageUrl || "https://images.unsplash.com/photo-1514565131-fce0801e5785?w=500&auto=format&fit=crop&q=60"}
+                src={product.image_url || product.image || product.imageUrl || "https://ayyansworld.com/wp-content/uploads/2024/02/Ganesh-Crackers-10-Pkt.png"}
                 alt={product.name}
                 className="h-full w-full object-cover object-center transition-transform duration-300 group-hover/img:scale-105"
                 loading="lazy"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=500&auto=format&fit=crop&q=60';
+                  (e.target as HTMLImageElement).src = 'https://ayyansworld.com/wp-content/uploads/2024/02/Ganesh-Crackers-10-Pkt.png';
                 }}
               />
               <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">

@@ -78,11 +78,11 @@ export const CataloguePage: React.FC = () => {
       case 'Colour Fountains':
         return cat.includes('colour') || cat.includes('fountain') || name.includes('fountain') || name.includes('jadugar') || name.includes('peacock') || name.includes('drops') || name.includes('patrol') || name.includes('manoranjan') || name.includes('roopkhela') || name.includes('varnajal');
       case 'Rockets & Novelties':
-        return cat.includes('rocket') || cat.includes('novelties') || cat.includes('missile') || name.includes('rocket') || name.includes('missile') || name.includes('drone') || name.includes('pop');
+        return cat.includes('rocket') || cat.includes('novelt') || cat.includes('missile') || cat.includes('cap') || cat.includes('gun') || name.includes('rocket') || name.includes('missile') || name.includes('drone') || name.includes('pop') || name.includes('toy') || name.includes('cap') || name.includes('gun') || name.includes('trident');
       case 'Aerial Cakes':
         return cat.includes('cake') || cat.includes('shot') || cat.includes('aerial') || name.includes('shot') || name.includes('cake') || name.includes('star') || name.includes('mangal');
       case 'Safety Matches':
-        return cat.includes('match') || name.includes('match') || name.includes('pops') || name.includes('ninja') || name.includes('twyla');
+        return cat.includes('match') || name.includes('match') || name.includes('pops') || name.includes('ninja') || name.includes('twyla') || name.includes('vadivel') || name.includes('josh') || name.includes('camel');
       case 'Gift Boxes':
         return cat.includes('gift') || cat.includes('hamper') || cat.includes('box') || name.includes('hamper') || name.includes('box');
       default:

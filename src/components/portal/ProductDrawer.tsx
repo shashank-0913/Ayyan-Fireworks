@@ -11,14 +11,15 @@ interface ProductDrawerProps {
 }
 
 const PRESET_IMAGES = [
-  { label: 'Sparklers', url: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=800&q=80' },
-  { label: 'Emerald Sparklers', url: 'https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?auto=format&fit=crop&w=800&q=80' },
-  { label: 'Ground Chakkars', url: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800&q=80' },
-  { label: 'Flower Pots', url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=80' },
-  { label: 'Conical Fountains', url: 'https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?auto=format&fit=crop&w=800&q=80' },
-  { label: 'Sky Rockets', url: 'https://images.unsplash.com/photo-1569317002804-ab77bcf1bce4?auto=format&fit=crop&w=800&q=80' },
-  { label: 'Aerial Multi-Shots', url: 'https://images.unsplash.com/photo-1521478706270-f6e9b2d59e3a?auto=format&fit=crop&w=800&q=80' },
-  { label: 'Gift Boxes', url: 'https://images.unsplash.com/photo-1533230807127-716665511457?auto=format&fit=crop&w=800&q=80' },
+  { label: 'Sparklers', url: 'https://ayyansworld.com/wp-content/uploads/2024/02/15cm-Coloured-Sparklers-10-box.png' },
+  { label: 'Ruby Sparklers', url: 'https://ayyansworld.com/wp-content/uploads/2024/02/10cm-Ruby-Sparklers-10-box.png' },
+  { label: 'Ground Chakkars', url: 'https://ayyansworld.com/wp-content/uploads/2024/02/Ground-Chakkar-Special-10-box.png' },
+  { label: 'Giant Wheel', url: 'https://ayyansworld.com/wp-content/uploads/2024/02/Giant-Wheel-5-box.png' },
+  { label: 'Flower Pots', url: 'https://ayyansworld.com/wp-content/uploads/2024/02/Flower-Pots-Special-10-box.png' },
+  { label: 'Colour Fountains', url: 'https://ayyansworld.com/wp-content/uploads/2024/02/tri-colour-fountain-ayyanfire-copy.png' },
+  { label: 'Sky Rockets', url: 'https://ayyansworld.com/wp-content/uploads/2024/02/Colour-Rockets-10-box.png' },
+  { label: 'Aerial Multi-Shots', url: 'https://ayyansworld.com/wp-content/uploads/2024/02/12-Star-Sky-Storms-1-Box.png' },
+  { label: 'Gift Boxes', url: 'https://ayyansworld.com/wp-content/uploads/2024/02/Gift-Box-Dino-40-items.png' },
 ];
 
 export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, productToEdit }) => {

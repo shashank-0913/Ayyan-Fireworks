@@ -1,7 +1,7 @@
 import { Product, Slot, Booking } from '../types';
 
 // =============================================================================
-// AYYAN FIREWORKS FACTORY — OFFICIAL SHOWROOM INVENTORY (141 SKUs)
+// AYYAN FIREWORKS FACTORY — OFFICIAL SHOWROOM INVENTORY (153 SKUs)
 // Bunny Brand Sivakasi Green Cracker Catalogue
 // =============================================================================
 export const INITIAL_PRODUCTS: Product[] = [
@@ -22,7 +22,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Ganesh-Crackers-10-Pkt.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.503Z"
+    "created_at": "2026-10-14T09:29:01.393Z"
   },
   {
     "id": "ayyan-002",
@@ -41,7 +41,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/lakshmi-crackers.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.510Z"
+    "created_at": "2026-10-14T09:29:01.397Z"
   },
   {
     "id": "ayyan-003",
@@ -60,7 +60,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Bird-Crackers-10-Pkt.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.510Z"
+    "created_at": "2026-10-14T09:29:01.397Z"
   },
   {
     "id": "ayyan-004",
@@ -79,7 +79,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/7-cm-Electric-Sparklers-10-box.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.515Z"
+    "created_at": "2026-10-14T09:29:01.400Z"
   },
   {
     "id": "ayyan-005",
@@ -98,7 +98,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/50-cm-Coloured-Sparklers-10-box.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.518Z"
+    "created_at": "2026-10-14T09:29:01.402Z"
   },
   {
     "id": "ayyan-006",
@@ -117,7 +117,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/10cm-Ruby-Sparklers-10-box.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.520Z"
+    "created_at": "2026-10-14T09:29:01.404Z"
   },
   {
     "id": "ayyan-007",
@@ -136,7 +136,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/50cm-electric-sparklers.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.524Z"
+    "created_at": "2026-10-14T09:29:01.405Z"
   },
   {
     "id": "ayyan-008",
@@ -155,7 +155,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/50-cm-Coloured-Sparklers-10-box.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.527Z"
+    "created_at": "2026-10-14T09:29:01.407Z"
   },
   {
     "id": "ayyan-009",
@@ -174,7 +174,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/50cm-electric-sparklers.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.529Z"
+    "created_at": "2026-10-14T09:29:01.409Z"
   },
   {
     "id": "ayyan-010",
@@ -193,7 +193,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/50-cm-Coloured-Sparklers-10-box.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.531Z"
+    "created_at": "2026-10-14T09:29:01.410Z"
   },
   {
     "id": "ayyan-011",
@@ -212,7 +212,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/10cm-Ruby-Sparklers-10-box.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.533Z"
+    "created_at": "2026-10-14T09:29:01.411Z"
   },
   {
     "id": "ayyan-012",
@@ -231,7 +231,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2025/06/IMG-20250601-WA0020.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.535Z"
+    "created_at": "2026-10-14T09:29:01.413Z"
   },
   {
     "id": "ayyan-013",
@@ -250,7 +250,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/50cm-electric-sparklers.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.538Z"
+    "created_at": "2026-10-14T09:29:01.414Z"
   },
   {
     "id": "ayyan-014",
@@ -269,7 +269,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/50-cm-Coloured-Sparklers-10-box.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.540Z"
+    "created_at": "2026-10-14T09:29:01.416Z"
   },
   {
     "id": "ayyan-015",
@@ -288,7 +288,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/50cm-electric-sparklers.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.541Z"
+    "created_at": "2026-10-14T09:29:01.417Z"
   },
   {
     "id": "ayyan-016",
@@ -307,7 +307,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/50-cm-Coloured-Sparklers-10-box.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.543Z"
+    "created_at": "2026-10-14T09:29:01.418Z"
   },
   {
     "id": "ayyan-017",
@@ -326,7 +326,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/50cm-electric-sparklers.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.545Z"
+    "created_at": "2026-10-14T09:29:01.419Z"
   },
   {
     "id": "ayyan-018",
@@ -345,7 +345,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/50-cm-Coloured-Sparklers-10-box.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.547Z"
+    "created_at": "2026-10-14T09:29:01.420Z"
   },
   {
     "id": "ayyan-019",
@@ -364,7 +364,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Ground-Chakkar-Big-25-pcs.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.547Z"
+    "created_at": "2026-10-14T09:29:01.420Z"
   },
   {
     "id": "ayyan-020",
@@ -383,7 +383,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/1696660841-AYYAN-Ground-Super-Deluxe.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.548Z"
+    "created_at": "2026-10-14T09:29:01.421Z"
   },
   {
     "id": "ayyan-021",
@@ -402,7 +402,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/1696660841-AYYAN-Ground-Super-Deluxe.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.550Z"
+    "created_at": "2026-10-14T09:29:01.423Z"
   },
   {
     "id": "ayyan-022",
@@ -421,7 +421,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0002_Untitled-1-12_0005_Layer-8-1-1.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.551Z"
+    "created_at": "2026-10-14T09:29:01.424Z"
   },
   {
     "id": "ayyan-023",
@@ -440,7 +440,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0002_Untitled-1-12_0005_Layer-8-1-1.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.553Z"
+    "created_at": "2026-10-14T09:29:01.425Z"
   },
   {
     "id": "ayyan-024",
@@ -459,7 +459,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2026/09/Screenshot_2026-09-06-11-13-18-82_e5d3893ac03954c6bb675ef2555b879b.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.554Z"
+    "created_at": "2026-10-14T09:29:01.426Z"
   },
   {
     "id": "ayyan-025",
@@ -478,7 +478,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2025/06/IMG-20250401-WA0023.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.556Z"
+    "created_at": "2026-10-14T09:29:01.427Z"
   },
   {
     "id": "ayyan-026",
@@ -497,7 +497,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0012_Untitled-1-12_0008_Layer-5.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.556Z"
+    "created_at": "2026-10-14T09:29:01.427Z"
   },
   {
     "id": "ayyan-027",
@@ -516,7 +516,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Classic-Night-240-shot-four-colour.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.558Z"
+    "created_at": "2026-10-14T09:29:01.428Z"
   },
   {
     "id": "ayyan-028",
@@ -535,7 +535,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Whistling-Wheel.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.558Z"
+    "created_at": "2026-10-14T09:29:01.429Z"
   },
   {
     "id": "ayyan-029",
@@ -554,7 +554,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Screenshot_2026-05-20-14-14-57-94_680d03679600f7af0b4c700c6b270fe7.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.558Z"
+    "created_at": "2026-10-14T09:29:01.429Z"
   },
   {
     "id": "ayyan-030",
@@ -573,7 +573,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/rio-wheel-1.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.559Z"
+    "created_at": "2026-10-14T09:29:01.430Z"
   },
   {
     "id": "ayyan-031",
@@ -592,7 +592,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/rio-wheel-1.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.560Z"
+    "created_at": "2026-10-14T09:29:01.430Z"
   },
   {
     "id": "ayyan-032",
@@ -611,7 +611,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/lotus.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.560Z"
+    "created_at": "2026-10-14T09:29:01.431Z"
   },
   {
     "id": "ayyan-033",
@@ -630,7 +630,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Cocktail-Spinners.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.562Z"
+    "created_at": "2026-10-14T09:29:01.432Z"
   },
   {
     "id": "ayyan-034",
@@ -649,7 +649,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Screenshot_2026-05-20-14-17-44-14_680d03679600f7af0b4c700c6b270fe7.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.563Z"
+    "created_at": "2026-10-14T09:29:01.433Z"
   },
   {
     "id": "ayyan-035",
@@ -668,7 +668,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Screenshot_2026-05-20-14-17-44-14_680d03679600f7af0b4c700c6b270fe7.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.565Z"
+    "created_at": "2026-10-14T09:29:01.434Z"
   },
   {
     "id": "ayyan-036",
@@ -687,7 +687,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Screenshot_2026-05-20-14-17-44-14_680d03679600f7af0b4c700c6b270fe7.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.565Z"
+    "created_at": "2026-10-14T09:29:01.434Z"
   },
   {
     "id": "ayyan-037",
@@ -706,7 +706,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Flower-Pots-Red-1.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.565Z"
+    "created_at": "2026-10-14T09:29:01.434Z"
   },
   {
     "id": "ayyan-038",
@@ -725,7 +725,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Tri-Colour-Fountain-5-Pcs.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.565Z"
+    "created_at": "2026-10-14T09:29:01.434Z"
   },
   {
     "id": "ayyan-039",
@@ -744,7 +744,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Rangoli-5-Pcs.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.565Z"
+    "created_at": "2026-10-14T09:29:01.435Z"
   },
   {
     "id": "ayyan-040",
@@ -763,7 +763,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0005_Untitled-1-12_0002_Layer-12.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.566Z"
+    "created_at": "2026-10-14T09:29:01.435Z"
   },
   {
     "id": "ayyan-041",
@@ -782,7 +782,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/tri-colour-fountain-ayyanfire-copy.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.567Z"
+    "created_at": "2026-10-14T09:29:01.436Z"
   },
   {
     "id": "ayyan-042",
@@ -801,7 +801,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Manoranjan.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.569Z"
+    "created_at": "2026-10-14T09:29:01.438Z"
   },
   {
     "id": "ayyan-043",
@@ -820,7 +820,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Roopkela.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.571Z"
+    "created_at": "2026-10-14T09:29:01.439Z"
   },
   {
     "id": "ayyan-044",
@@ -839,7 +839,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/varnajal.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.572Z"
+    "created_at": "2026-10-14T09:29:01.441Z"
   },
   {
     "id": "ayyan-045",
@@ -858,7 +858,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Kiddys-Joy-5-in-One.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.574Z"
+    "created_at": "2026-10-14T09:29:01.443Z"
   },
   {
     "id": "ayyan-046",
@@ -877,7 +877,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.575Z"
+    "created_at": "2026-10-14T09:29:01.445Z"
   },
   {
     "id": "ayyan-047",
@@ -896,7 +896,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2025/06/IMG-20250601-WA0019.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.576Z"
+    "created_at": "2026-10-14T09:29:01.445Z"
   },
   {
     "id": "ayyan-048",
@@ -915,7 +915,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2026/02/IMG-20260204-WA0020.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.577Z"
+    "created_at": "2026-10-14T09:29:01.446Z"
   },
   {
     "id": "ayyan-049",
@@ -934,7 +934,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.579Z"
+    "created_at": "2026-10-14T09:29:01.447Z"
   },
   {
     "id": "ayyan-050",
@@ -953,7 +953,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Chota-Bhai-Mini-Siren-5-Pcs.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.580Z"
+    "created_at": "2026-10-14T09:29:01.449Z"
   },
   {
     "id": "ayyan-051",
@@ -972,7 +972,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0003_Untitled-1-12_0004_Layer-10.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.582Z"
+    "created_at": "2026-10-14T09:29:01.450Z"
   },
   {
     "id": "ayyan-052",
@@ -991,7 +991,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/08/IMG-20240822-WA0004.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.582Z"
+    "created_at": "2026-10-14T09:29:01.450Z"
   },
   {
     "id": "ayyan-053",
@@ -1010,7 +1010,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0000_Layer-1.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.582Z"
+    "created_at": "2026-10-14T09:29:01.450Z"
   },
   {
     "id": "ayyan-054",
@@ -1029,7 +1029,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Mega-Peacock.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.582Z"
+    "created_at": "2026-10-14T09:29:01.450Z"
   },
   {
     "id": "ayyan-055",
@@ -1048,7 +1048,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Screenshot_2026-05-20-14-23-43-75_680d03679600f7af0b4c700c6b270fe7.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.582Z"
+    "created_at": "2026-10-14T09:29:01.450Z"
   },
   {
     "id": "ayyan-056",
@@ -1067,7 +1067,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Twinkling-Star-120-cms.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.585Z"
+    "created_at": "2026-10-14T09:29:01.452Z"
   },
   {
     "id": "ayyan-057",
@@ -1086,7 +1086,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Twinkling-Star-120-cms.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.588Z"
+    "created_at": "2026-10-14T09:29:01.453Z"
   },
   {
     "id": "ayyan-058",
@@ -1105,7 +1105,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Electric-Diamond.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.588Z"
+    "created_at": "2026-10-14T09:29:01.453Z"
   },
   {
     "id": "ayyan-059",
@@ -1124,7 +1124,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Pencil.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.589Z"
+    "created_at": "2026-10-14T09:29:01.453Z"
   },
   {
     "id": "ayyan-060",
@@ -1143,7 +1143,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Pencil.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.590Z"
+    "created_at": "2026-10-14T09:29:01.454Z"
   },
   {
     "id": "ayyan-061",
@@ -1162,7 +1162,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/mint-candle-copy.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.590Z"
+    "created_at": "2026-10-14T09:29:01.454Z"
   },
   {
     "id": "ayyan-062",
@@ -1181,7 +1181,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Rainbow-Candle.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.591Z"
+    "created_at": "2026-10-14T09:29:01.455Z"
   },
   {
     "id": "ayyan-063",
@@ -1200,7 +1200,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Hydrogen-bomb-Foils.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.593Z"
+    "created_at": "2026-10-14T09:29:01.456Z"
   },
   {
     "id": "ayyan-064",
@@ -1216,10 +1216,10 @@ export const INITIAL_PRODUCTS: Product[] = [
       "Green Cracker",
       "Sivakasi Authentic"
     ],
-    "sound_level": "High Spectacle",
+    "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Shogun-Bomb.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.593Z"
+    "created_at": "2026-10-14T09:29:01.456Z"
   },
   {
     "id": "ayyan-065",
@@ -1238,7 +1238,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Double-Sound-Crackers-10-Pkt.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.594Z"
+    "created_at": "2026-10-14T09:29:01.458Z"
   },
   {
     "id": "ayyan-066",
@@ -1257,7 +1257,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/1696590285-DOUBLE-SOUND-BIG-AYYAN.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.596Z"
+    "created_at": "2026-10-14T09:29:01.459Z"
   },
   {
     "id": "ayyan-067",
@@ -1276,7 +1276,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Three-Sound-with-Colour-10-Pkt.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.596Z"
+    "created_at": "2026-10-14T09:29:01.459Z"
   },
   {
     "id": "ayyan-068",
@@ -1295,7 +1295,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Flower-Pots-Deluxe-5-Pcs.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.598Z"
+    "created_at": "2026-10-14T09:29:01.460Z"
   },
   {
     "id": "ayyan-069",
@@ -1314,7 +1314,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Flower-Pots-Special-600x600-1.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.600Z"
+    "created_at": "2026-10-14T09:29:01.461Z"
   },
   {
     "id": "ayyan-070",
@@ -1333,7 +1333,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Ulta-Pulta-Flower-Bomb-5-Pcs.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.600Z"
+    "created_at": "2026-10-14T09:29:01.461Z"
   },
   {
     "id": "ayyan-071",
@@ -1352,7 +1352,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2026/02/IMG-20260204-WA0038.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.602Z"
+    "created_at": "2026-10-14T09:29:01.463Z"
   },
   {
     "id": "ayyan-072",
@@ -1371,7 +1371,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Crimson-Red.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.603Z"
+    "created_at": "2026-10-14T09:29:01.465Z"
   },
   {
     "id": "ayyan-073",
@@ -1390,7 +1390,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Multi-colour-Rocket-or-Flower-Missle.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.605Z"
+    "created_at": "2026-10-14T09:29:01.466Z"
   },
   {
     "id": "ayyan-074",
@@ -1409,7 +1409,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Rocket-Bomb.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.605Z"
+    "created_at": "2026-10-14T09:29:01.466Z"
   },
   {
     "id": "ayyan-075",
@@ -1428,7 +1428,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Multi-colour-Rocket-or-Flower-Missle.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.607Z"
+    "created_at": "2026-10-14T09:29:01.468Z"
   },
   {
     "id": "ayyan-076",
@@ -1447,7 +1447,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/40116629_1-ayyan-fireworks-crackers-classic-rocket-sound.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.608Z"
+    "created_at": "2026-10-14T09:29:01.469Z"
   },
   {
     "id": "ayyan-077",
@@ -1466,7 +1466,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/40116629_1-ayyan-fireworks-crackers-classic-rocket-sound.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.610Z"
+    "created_at": "2026-10-14T09:29:01.470Z"
   },
   {
     "id": "ayyan-078",
@@ -1485,7 +1485,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Multi-colour-Rocket-or-Flower-Missle.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.611Z"
+    "created_at": "2026-10-14T09:29:01.472Z"
   },
   {
     "id": "ayyan-079",
@@ -1504,7 +1504,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/40116629_1-ayyan-fireworks-crackers-classic-rocket-sound.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.614Z"
+    "created_at": "2026-10-14T09:29:01.473Z"
   },
   {
     "id": "ayyan-080",
@@ -1523,7 +1523,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Parachute-Rocket.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.614Z"
+    "created_at": "2026-10-14T09:29:01.473Z"
   },
   {
     "id": "ayyan-081",
@@ -1542,7 +1542,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Screenshot_2025-04-04-18-58-59-46_e5d3893ac03954c6bb675ef2555b879b.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.614Z"
+    "created_at": "2026-10-14T09:29:01.473Z"
   },
   {
     "id": "ayyan-082",
@@ -1561,7 +1561,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0003_Untitled-1-12_0004_Layer-10.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.616Z"
+    "created_at": "2026-10-14T09:29:01.474Z"
   },
   {
     "id": "ayyan-083",
@@ -1580,7 +1580,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Pop-Pop.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.616Z"
+    "created_at": "2026-10-14T09:29:01.474Z"
   },
   {
     "id": "ayyan-084",
@@ -1599,7 +1599,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/03/7-shots-red.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.616Z"
+    "created_at": "2026-10-14T09:29:01.474Z"
   },
   {
     "id": "ayyan-085",
@@ -1618,7 +1618,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Seven-Shot-Gold-5-Pcs.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.616Z"
+    "created_at": "2026-10-14T09:29:01.474Z"
   },
   {
     "id": "ayyan-086",
@@ -1637,7 +1637,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2026/02/IMG-20260204-WA0027.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.618Z"
+    "created_at": "2026-10-14T09:29:01.476Z"
   },
   {
     "id": "ayyan-087",
@@ -1656,7 +1656,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2025/06/IMG-20250401-WA0015-rotated.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.618Z"
+    "created_at": "2026-10-14T09:29:01.476Z"
   },
   {
     "id": "ayyan-088",
@@ -1675,7 +1675,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Super-Drone.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.618Z"
+    "created_at": "2026-10-14T09:29:01.476Z"
   },
   {
     "id": "ayyan-089",
@@ -1694,7 +1694,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Funny-Bunny-10-Pcs.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.620Z"
+    "created_at": "2026-10-14T09:29:01.477Z"
   },
   {
     "id": "ayyan-090",
@@ -1713,7 +1713,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Magic-Mystery-10-Pcs.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.620Z"
+    "created_at": "2026-10-14T09:29:01.477Z"
   },
   {
     "id": "ayyan-091",
@@ -1732,7 +1732,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Chori-Chori-10-Pcs.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.620Z"
+    "created_at": "2026-10-14T09:29:01.477Z"
   },
   {
     "id": "ayyan-092",
@@ -1751,7 +1751,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/min-mini-copy.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.622Z"
+    "created_at": "2026-10-14T09:29:01.479Z"
   },
   {
     "id": "ayyan-093",
@@ -1770,7 +1770,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Ninja-Chakkar.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.622Z"
+    "created_at": "2026-10-14T09:29:01.479Z"
   },
   {
     "id": "ayyan-094",
@@ -1789,7 +1789,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Pogo-Silvergoldredviolet-2Pcs.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.624Z"
+    "created_at": "2026-10-14T09:29:01.480Z"
   },
   {
     "id": "ayyan-095",
@@ -1808,7 +1808,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Helicopter-5-Pcs.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.624Z"
+    "created_at": "2026-10-14T09:29:01.480Z"
   },
   {
     "id": "ayyan-096",
@@ -1827,7 +1827,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/12-Star-Sky-Storms-1-Box.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.626Z"
+    "created_at": "2026-10-14T09:29:01.481Z"
   },
   {
     "id": "ayyan-097",
@@ -1846,7 +1846,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/12-Star-Sky-Storms-1-Box.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.628Z"
+    "created_at": "2026-10-14T09:29:01.482Z"
   },
   {
     "id": "ayyan-098",
@@ -1865,7 +1865,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/12-Star-Sky-Storms-1-Box.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.630Z"
+    "created_at": "2026-10-14T09:29:01.483Z"
   },
   {
     "id": "ayyan-099",
@@ -1884,7 +1884,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Paw-PatrolZoomaRocky-5Pcs-1.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.632Z"
+    "created_at": "2026-10-14T09:29:01.485Z"
   },
   {
     "id": "ayyan-100",
@@ -1903,7 +1903,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/12-Star-Sky-Storms-1-Box.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.634Z"
+    "created_at": "2026-10-14T09:29:01.486Z"
   },
   {
     "id": "ayyan-101",
@@ -1922,7 +1922,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Dekhe-Man-12-stars.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.634Z"
+    "created_at": "2026-10-14T09:29:01.486Z"
   },
   {
     "id": "ayyan-102",
@@ -1941,7 +1941,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Daisy-Bees-12-shot-yellow.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.636Z"
+    "created_at": "2026-10-14T09:29:01.487Z"
   },
   {
     "id": "ayyan-103",
@@ -1960,7 +1960,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Pink-Panther-12-shot-pink.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.636Z"
+    "created_at": "2026-10-14T09:29:01.487Z"
   },
   {
     "id": "ayyan-104",
@@ -1979,7 +1979,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Zetabetasigmaalphaomega-12-star-crackling-with-colors.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.638Z"
+    "created_at": "2026-10-14T09:29:01.489Z"
   },
   {
     "id": "ayyan-105",
@@ -1998,7 +1998,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Sky-Storm-12-shot-crackling.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.640Z"
+    "created_at": "2026-10-14T09:29:01.490Z"
   },
   {
     "id": "ayyan-106",
@@ -2017,7 +2017,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Chal-Mere-Sath-25-shot.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.640Z"
+    "created_at": "2026-10-14T09:29:01.490Z"
   },
   {
     "id": "ayyan-107",
@@ -2036,7 +2036,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Thor-Multi-Colour-Cracklings.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.640Z"
+    "created_at": "2026-10-14T09:29:01.490Z"
   },
   {
     "id": "ayyan-108",
@@ -2055,7 +2055,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Dil-Maange-More-50-shot.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.641Z"
+    "created_at": "2026-10-14T09:29:01.492Z"
   },
   {
     "id": "ayyan-109",
@@ -2074,7 +2074,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Balle-balle-soneri-barsath-25-shots-cracklin.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.643Z"
+    "created_at": "2026-10-14T09:29:01.494Z"
   },
   {
     "id": "ayyan-110",
@@ -2093,7 +2093,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Balle-balle-soneri-barsath-25-shots-cracklin.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.645Z"
+    "created_at": "2026-10-14T09:29:01.495Z"
   },
   {
     "id": "ayyan-111",
@@ -2112,7 +2112,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Singing-birs-12-shot-whistle.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.646Z"
+    "created_at": "2026-10-14T09:29:01.496Z"
   },
   {
     "id": "ayyan-112",
@@ -2131,7 +2131,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Singing-birs-12-shot-whistle.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.648Z"
+    "created_at": "2026-10-14T09:29:01.498Z"
   },
   {
     "id": "ayyan-113",
@@ -2150,7 +2150,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0011_Untitled-1-12_0009_Layer-4.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.648Z"
+    "created_at": "2026-10-14T09:29:01.498Z"
   },
   {
     "id": "ayyan-114",
@@ -2169,7 +2169,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/05/Untitled-1_0011_Untitled-1-12_0009_Layer-4.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.648Z"
+    "created_at": "2026-10-14T09:29:01.498Z"
   },
   {
     "id": "ayyan-115",
@@ -2188,7 +2188,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Wonder-night-60-shot-four-colour.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.649Z"
+    "created_at": "2026-10-14T09:29:01.498Z"
   },
   {
     "id": "ayyan-116",
@@ -2207,7 +2207,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/673beb43707bb-38d7b522-4a7f-f4a1-f8d4-22f350c3c272.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.649Z"
+    "created_at": "2026-10-14T09:29:01.498Z"
   },
   {
     "id": "ayyan-117",
@@ -2226,7 +2226,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Low / Silent",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Orange-Bloom.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.650Z"
+    "created_at": "2026-10-14T09:29:01.500Z"
   },
   {
     "id": "ayyan-118",
@@ -2245,7 +2245,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Sky-Storm-12-shot-crackling.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.652Z"
+    "created_at": "2026-10-14T09:29:01.501Z"
   },
   {
     "id": "ayyan-119",
@@ -2264,7 +2264,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Classic-Night-240-shot-four-colour.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.652Z"
+    "created_at": "2026-10-14T09:29:01.501Z"
   },
   {
     "id": "ayyan-120",
@@ -2283,7 +2283,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Untitled-1_0005_Layer-6.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.654Z"
+    "created_at": "2026-10-14T09:29:01.502Z"
   },
   {
     "id": "ayyan-121",
@@ -2302,7 +2302,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Classic-Night-240-shot-four-colour.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.655Z"
+    "created_at": "2026-10-14T09:29:01.503Z"
   },
   {
     "id": "ayyan-122",
@@ -2321,7 +2321,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/wonder-nights.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.657Z"
+    "created_at": "2026-10-14T09:29:01.504Z"
   },
   {
     "id": "ayyan-123",
@@ -2340,7 +2340,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/12-Star-Sky-Storms-1-Box.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.659Z"
+    "created_at": "2026-10-14T09:29:01.506Z"
   },
   {
     "id": "ayyan-124",
@@ -2359,7 +2359,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/12-Star-Sky-Storms-1-Box.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.661Z"
+    "created_at": "2026-10-14T09:29:01.507Z"
   },
   {
     "id": "ayyan-125",
@@ -2378,7 +2378,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/12-Star-Sky-Storms-1-Box.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.663Z"
+    "created_at": "2026-10-14T09:29:01.508Z"
   },
   {
     "id": "ayyan-126",
@@ -2397,7 +2397,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/12-Star-Sky-Storms-1-Box.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.664Z"
+    "created_at": "2026-10-14T09:29:01.509Z"
   },
   {
     "id": "ayyan-127",
@@ -2416,7 +2416,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Screenshot_2025-04-04-19-03-45-75_e5d3893ac03954c6bb675ef2555b879b.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.666Z"
+    "created_at": "2026-10-14T09:29:01.510Z"
   },
   {
     "id": "ayyan-128",
@@ -2435,7 +2435,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Screenshot_2025-04-04-19-03-45-75_e5d3893ac03954c6bb675ef2555b879b.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.668Z"
+    "created_at": "2026-10-14T09:29:01.512Z"
   },
   {
     "id": "ayyan-129",
@@ -2454,7 +2454,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.669Z"
+    "created_at": "2026-10-14T09:29:01.513Z"
   },
   {
     "id": "ayyan-130",
@@ -2473,7 +2473,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Funny-Bunny-10-Pcs.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.671Z"
+    "created_at": "2026-10-14T09:29:01.514Z"
   },
   {
     "id": "ayyan-131",
@@ -2492,7 +2492,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/AS-CI-1730.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.672Z"
+    "created_at": "2026-10-14T09:29:01.516Z"
   },
   {
     "id": "ayyan-132",
@@ -2511,7 +2511,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2026/02/IMG-20260204-WA0043.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.674Z"
+    "created_at": "2026-10-14T09:29:01.517Z"
   },
   {
     "id": "ayyan-133",
@@ -2530,7 +2530,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Paris-Paris-3-inch-10-shots.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.674Z"
+    "created_at": "2026-10-14T09:29:01.517Z"
   },
   {
     "id": "ayyan-134",
@@ -2549,7 +2549,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/12-Star-Sky-Storms-1-Box.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.676Z"
+    "created_at": "2026-10-14T09:29:01.518Z"
   },
   {
     "id": "ayyan-135",
@@ -2568,7 +2568,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Untitled-1_0005_Layer-6.jpg",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.678Z"
+    "created_at": "2026-10-14T09:29:01.519Z"
   },
   {
     "id": "ayyan-136",
@@ -2587,7 +2587,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "High Spectacle",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Silk-Show.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.679Z"
+    "created_at": "2026-10-14T09:29:01.521Z"
   },
   {
     "id": "ayyan-137",
@@ -2606,7 +2606,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Gift-Box-Dino-40-items.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.681Z"
+    "created_at": "2026-10-14T09:29:01.522Z"
   },
   {
     "id": "ayyan-138",
@@ -2625,7 +2625,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Gift-Box-Dino-40-items.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.683Z"
+    "created_at": "2026-10-14T09:29:01.523Z"
   },
   {
     "id": "ayyan-139",
@@ -2644,7 +2644,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Gift-Box-Dino-40-items.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.684Z"
+    "created_at": "2026-10-14T09:29:01.524Z"
   },
   {
     "id": "ayyan-140",
@@ -2663,7 +2663,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Gift-Box-Dino-40-items.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.686Z"
+    "created_at": "2026-10-14T09:29:01.526Z"
   },
   {
     "id": "ayyan-141",
@@ -2682,7 +2682,235 @@ export const INITIAL_PRODUCTS: Product[] = [
     "sound_level": "Medium",
     "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Gift-Box-Dino-40-items.png",
     "is_active": true,
-    "created_at": "2026-10-13T15:52:38.687Z"
+    "created_at": "2026-10-14T09:29:01.527Z"
+  },
+  {
+    "id": "ayyan-142",
+    "code": "142",
+    "name": "Camel Red & Green",
+    "category": "Colour Matches",
+    "price": 25,
+    "piece_count": "1 Box",
+    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
+    "safety_tags": [
+      "Bunny Brand",
+      "Green Cracker",
+      "Sivakasi Authentic"
+    ],
+    "sound_level": "Low / Silent",
+    "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg",
+    "is_active": true,
+    "created_at": "2026-10-14T09:29:01.527Z"
+  },
+  {
+    "id": "ayyan-143",
+    "code": "143",
+    "name": "Camel (5 & 3 match)",
+    "category": "Colour Matches Pack",
+    "price": 45,
+    "piece_count": "Pack",
+    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
+    "safety_tags": [
+      "Bunny Brand",
+      "Green Cracker",
+      "Sivakasi Authentic"
+    ],
+    "sound_level": "Low / Silent",
+    "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Camel-Dasara-10-colors-10-box.png",
+    "is_active": true,
+    "created_at": "2026-10-14T09:29:01.527Z"
+  },
+  {
+    "id": "ayyan-144",
+    "code": "144",
+    "name": "Pops (5 colour)",
+    "category": "Combination Colour Matches",
+    "price": 125,
+    "piece_count": "5 Colour Box",
+    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
+    "safety_tags": [
+      "Bunny Brand",
+      "Green Cracker",
+      "Sivakasi Authentic"
+    ],
+    "sound_level": "Low / Silent",
+    "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/WhatsApp-Image-2024-05-09-at-21.31.38_dd8e4ece.jpg",
+    "is_active": true,
+    "created_at": "2026-10-14T09:29:01.527Z"
+  },
+  {
+    "id": "ayyan-145",
+    "code": "145",
+    "name": "Josh",
+    "category": "Combination Colour Matches",
+    "price": 95,
+    "piece_count": "Combination Pack",
+    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
+    "safety_tags": [
+      "Bunny Brand",
+      "Green Cracker",
+      "Sivakasi Authentic"
+    ],
+    "sound_level": "Low / Silent",
+    "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg",
+    "is_active": true,
+    "created_at": "2026-10-14T09:29:01.527Z"
+  },
+  {
+    "id": "ayyan-146",
+    "code": "146",
+    "name": "Ninja",
+    "category": "Combination Colour Matches",
+    "price": 110,
+    "piece_count": "Combination Pack",
+    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
+    "safety_tags": [
+      "Bunny Brand",
+      "Green Cracker",
+      "Sivakasi Authentic"
+    ],
+    "sound_level": "Low / Silent",
+    "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg",
+    "is_active": true,
+    "created_at": "2026-10-14T09:29:01.527Z"
+  },
+  {
+    "id": "ayyan-147",
+    "code": "147",
+    "name": "Rainbow (5 colour)",
+    "category": "Combination Colour Matches",
+    "price": 135,
+    "piece_count": "5 Colour Box",
+    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
+    "safety_tags": [
+      "Bunny Brand",
+      "Green Cracker",
+      "Sivakasi Authentic"
+    ],
+    "sound_level": "Low / Silent",
+    "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg",
+    "is_active": true,
+    "created_at": "2026-10-14T09:29:01.527Z"
+  },
+  {
+    "id": "ayyan-148",
+    "code": "148",
+    "name": "Vadivel (10 colours)",
+    "category": "Colour Matches / Sparkler",
+    "price": 150,
+    "piece_count": "10 Colours Box",
+    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
+    "safety_tags": [
+      "Bunny Brand",
+      "Green Cracker",
+      "Sivakasi Authentic"
+    ],
+    "sound_level": "Low / Silent",
+    "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Camel-Dasara-10-colors-10-box.png",
+    "is_active": true,
+    "created_at": "2026-10-14T09:29:01.527Z"
+  },
+  {
+    "id": "ayyan-149",
+    "code": "149",
+    "name": "Ayyan Toy Car (5 colour)",
+    "category": "Novelty Fireworks",
+    "price": 180,
+    "piece_count": "5 Colour Piece",
+    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
+    "safety_tags": [
+      "Bunny Brand",
+      "Green Cracker",
+      "Sivakasi Authentic"
+    ],
+    "sound_level": "Low / Silent",
+    "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/Super-Drone.png",
+    "is_active": true,
+    "created_at": "2026-10-14T09:29:01.527Z"
+  },
+  {
+    "id": "ayyan-150",
+    "code": "150",
+    "name": "Ayyan Trident (3 colour)",
+    "category": "Novelty Fireworks",
+    "price": 140,
+    "piece_count": "3 Colour Piece",
+    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
+    "safety_tags": [
+      "Bunny Brand",
+      "Green Cracker",
+      "Sivakasi Authentic"
+    ],
+    "sound_level": "Low / Silent",
+    "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/tri-colour-fountain-ayyanfire-copy.png",
+    "is_active": true,
+    "created_at": "2026-10-14T09:29:01.527Z"
+  },
+  {
+    "id": "ayyan-151",
+    "code": "151",
+    "name": "Ayyan Roll Cap",
+    "category": "Paper Roll Caps",
+    "price": 90,
+    "piece_count": "Roll Cap Box",
+    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
+    "safety_tags": [
+      "Bunny Brand",
+      "Green Cracker",
+      "Sivakasi Authentic"
+    ],
+    "sound_level": "Medium",
+    "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/amorces-roll-caps-ayyanfire-copy.png",
+    "is_active": true,
+    "created_at": "2026-10-14T09:29:01.527Z"
+  },
+  {
+    "id": "ayyan-152",
+    "code": "152",
+    "name": "Ayyan Ring / Sheet Cap",
+    "category": "Toy Gun Caps",
+    "price": 120,
+    "piece_count": "Cap Pack",
+    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
+    "safety_tags": [
+      "Bunny Brand",
+      "Green Cracker",
+      "Sivakasi Authentic"
+    ],
+    "sound_level": "Medium",
+    "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/ayyan-ring-acp-with-gun-copy.png",
+    "is_active": true,
+    "created_at": "2026-10-14T09:29:01.527Z"
+  },
+  {
+    "id": "ayyan-153",
+    "code": "153",
+    "name": "Ayyan Hunter Gun",
+    "category": "Toy Cap Gun",
+    "price": 180,
+    "piece_count": "1 Piece",
+    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
+    "safety_tags": [
+      "Bunny Brand",
+      "Green Cracker",
+      "Sivakasi Authentic"
+    ],
+    "sound_level": "Medium",
+    "image_url": "https://ayyansworld.com/wp-content/uploads/2024/02/ayyan-ring-acp-with-gun-copy.png",
+    "is_active": true,
+    "created_at": "2026-10-14T09:29:01.527Z"
   }
 ];
 

@@ -31,7 +31,7 @@ export const ProductImageLightbox: React.FC<ProductImageLightboxProps> = ({ prod
 
   if (!product) return null;
 
-  const imgSrc = product.image_url || product.image || product.imageUrl || "https://images.unsplash.com/photo-1514565131-fce0801e5785?w=1200&auto=format&fit=crop&q=80";
+  const imgSrc = product.image_url || product.image || product.imageUrl || "https://ayyansworld.com/wp-content/uploads/2024/02/Ganesh-Crackers-10-Pkt.png";
 
   return (
     <div

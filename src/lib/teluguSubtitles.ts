@@ -175,6 +175,12 @@ export function getTeluguSubtitle(product: Partial<Product>): string {
     return 'సేఫ్టీ మ్యాచ్ బాక్స్ (Safety Matches)';
   }
 
+  // Caps and Toy Cap Guns
+  if (name.includes('gun') || category.includes('gun') || name.includes('cap') || category.includes('cap')) {
+    if (name.includes('gun')) return 'టాయ్ క్యాప్ గన్ (Toy Cap Gun)';
+    return 'రోల్ & రింగ్ క్యాప్స్ (Roll & Ring Caps)';
+  }
+
   // Novelties / Kids Specials
   if (name.includes('pop') || name.includes('drone') || name.includes('helicopter') || name.includes('star') || name.includes('snake') || category.includes('novelt')) {
     if (name.includes('drone') || name.includes('helicopter')) return 'డ్రోన్ & హెలికాప్టర్ ఫ్యాన్సీ (Drone Novelty)';

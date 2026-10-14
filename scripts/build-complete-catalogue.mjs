@@ -143,7 +143,19 @@ const RAW_TABLE = `| S.No. | Item Description | Packing / Unit | Rate / Price (â
 | 131 | Assorted Gift Box - B | 28 Items | 1085.00 |
 | 132 | Assorted Gift Box - C | 30 Items | 1581.00 |
 | 133 | Assorted Gift Box - D | 36 Items | 1813.50 |
-| 134 | Dino Gift Box | 40 Items | 1821.00 |`;
+| 134 | Dino Gift Box | 40 Items | 1821.00 |
+| 135 | Camel Red & Green | 1 Box | 25.00 |
+| 136 | Camel (5 & 3 match) | Pack | 45.00 |
+| 137 | Pops (5 colour) | 5 Colour Box | 125.00 |
+| 138 | Josh | Combination Pack | 95.00 |
+| 139 | Ninja | Combination Pack | 110.00 |
+| 140 | Rainbow (5 colour) | 5 Colour Box | 135.00 |
+| 141 | Vadivel (10 colours) | 10 Colours Box | 150.00 |
+| 142 | Ayyan Toy Car (5 colour) | 5 Colour Piece | 180.00 |
+| 143 | Ayyan Trident (3 colour) | 3 Colour Piece | 140.00 |
+| 144 | Ayyan Roll Cap | Roll Cap Box | 90.00 |
+| 145 | Ayyan Ring / Sheet Cap | Cap Pack | 120.00 |
+| 146 | Ayyan Hunter Gun | 1 Piece | 180.00 |`;
 
 // Load media and scraped products
 const wpMedia = JSON.parse(fs.readFileSync('scripts/wp-media.json', 'utf8'));
@@ -200,6 +212,36 @@ const CATEGORY_FALLBACKS = {
   'Gift Boxes': 'https://ayyansworld.com/wp-content/uploads/2024/02/Assorted-Gift-Boxes-Ayyan.png'
 };
 
+const EXACT_ITEM_CATEGORIES = {
+  'Camel Red & Green': 'Colour Matches',
+  'Camel (5 & 3 match)': 'Colour Matches Pack',
+  'Pops (5 colour)': 'Combination Colour Matches',
+  'Josh': 'Combination Colour Matches',
+  'Ninja': 'Combination Colour Matches',
+  'Rainbow (5 colour)': 'Combination Colour Matches',
+  'Vadivel (10 colours)': 'Colour Matches / Sparkler',
+  'Ayyan Toy Car (5 colour)': 'Novelty Fireworks',
+  'Ayyan Trident (3 colour)': 'Novelty Fireworks',
+  'Ayyan Roll Cap': 'Paper Roll Caps',
+  'Ayyan Ring / Sheet Cap': 'Toy Gun Caps',
+  'Ayyan Hunter Gun': 'Toy Cap Gun'
+};
+
+const EXACT_ITEM_IMAGES = {
+  'Camel Red & Green': 'https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg',
+  'Camel (5 & 3 match)': 'https://ayyansworld.com/wp-content/uploads/2024/02/Camel-Dasara-10-colors-10-box.png',
+  'Pops (5 colour)': 'https://ayyansworld.com/wp-content/uploads/2024/02/WhatsApp-Image-2024-05-09-at-21.31.38_dd8e4ece.jpg',
+  'Josh': 'https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg',
+  'Ninja': 'https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg',
+  'Rainbow (5 colour)': 'https://ayyansworld.com/wp-content/uploads/2024/02/camel-star.jpg',
+  'Vadivel (10 colours)': 'https://ayyansworld.com/wp-content/uploads/2024/02/Camel-Dasara-10-colors-10-box.png',
+  'Ayyan Toy Car (5 colour)': 'https://ayyansworld.com/wp-content/uploads/2024/02/Super-Drone.png',
+  'Ayyan Trident (3 colour)': 'https://ayyansworld.com/wp-content/uploads/2024/02/tri-colour-fountain-ayyanfire-copy.png',
+  'Ayyan Roll Cap': 'https://ayyansworld.com/wp-content/uploads/2024/02/amorces-roll-caps-ayyanfire-copy.png',
+  'Ayyan Ring / Sheet Cap': 'https://ayyansworld.com/wp-content/uploads/2024/02/ayyan-ring-acp-with-gun-copy.png',
+  'Ayyan Hunter Gun': 'https://ayyansworld.com/wp-content/uploads/2024/02/ayyan-ring-acp-with-gun-copy.png'
+};
+
 function normalizeName(str) {
   return str
     .toLowerCase()
@@ -210,6 +252,10 @@ function normalizeName(str) {
 }
 
 function findBestImage(name, category) {
+  if (EXACT_ITEM_IMAGES[name]) {
+    return EXACT_ITEM_IMAGES[name];
+  }
+
   const normName = normalizeName(name);
   const keywords = normName.split(' ').filter(w => w.length > 2);
 
@@ -246,6 +292,9 @@ function findBestImage(name, category) {
 }
 
 function inferCategory(name) {
+  if (EXACT_ITEM_CATEGORIES[name]) {
+    return EXACT_ITEM_CATEGORIES[name];
+  }
   const n = name.toLowerCase();
   if (n.includes('sparkler')) return 'Sparklers';
   if (n.includes('chakkar')) return 'Ground Chakkars';
@@ -262,6 +311,10 @@ function inferCategory(name) {
 
 function inferSoundLevel(category, name) {
   const n = name.toLowerCase();
+  const cat = (category || '').toLowerCase();
+  if (cat.includes('match') || n.includes('match')) return 'Low / Silent';
+  if (cat.includes('cap') || cat.includes('gun') || n.includes('cap') || n.includes('gun')) return 'Medium';
+  if (cat.includes('novelty') || n.includes('toy')) return 'Low / Silent';
   if (category === 'Maroons' || n.includes('bomb') || n.includes('siren') || n.includes('whistle') || n.includes('double sound') || n.includes('three sound')) return 'High Spectacle';
   if (category === 'Aerial Multi-Shots') return 'High Spectacle';
   if (category === 'Sparklers' || n.includes('sparkler') || n.includes('flower pot') || n.includes('candle')) return 'Low / Silent';

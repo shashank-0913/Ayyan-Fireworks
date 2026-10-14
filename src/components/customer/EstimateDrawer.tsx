@@ -144,7 +144,7 @@ export const EstimateDrawer: React.FC = () => {
                     {/* Thumbnail */}
                     <div className="w-14 h-14 rounded-xl overflow-hidden bg-slate-200 dark:bg-slate-800 shrink-0 border border-slate-200 dark:border-white/10">
                       <img 
-                        src={p.image_url || p.image || p.imageUrl || "https://images.unsplash.com/photo-1514565131-fce0801e5785?w=500&auto=format&fit=crop&q=60"} 
+                        src={p.image_url || p.image || p.imageUrl || "https://ayyansworld.com/wp-content/uploads/2024/02/Ganesh-Crackers-10-Pkt.png"} 
                         alt={p.name}
                         className="w-full h-full object-cover"
                       />

@@ -11,7 +11,7 @@ export const isSupabaseConfigured = Boolean(
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-export const DEFAULT_PRODUCT_IMAGE = 'https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=800&q=80';
+export const DEFAULT_PRODUCT_IMAGE = 'https://ayyansworld.com/wp-content/uploads/2024/02/Ganesh-Crackers-10-Pkt.png';
 
 /**
  * Upload product image to Supabase Storage bucket 'products'

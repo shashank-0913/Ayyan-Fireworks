@@ -1,4 +1,3 @@
-import type { IncomingMessage, ServerResponse } from 'http';
 import { handleWhatsAppWebhookRequest } from '../src/lib/whatsappWebhookHandler';
 
 /**

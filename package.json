@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "sync:db": "npx tsx scripts/sync-images-to-db.ts"
+    "sync:db": "npx tsx scripts/sync-images-to-db.ts",
+    "test:whatsapp": "node scripts/test-whatsapp.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.48.1",

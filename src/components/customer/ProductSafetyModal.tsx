@@ -67,7 +67,7 @@ export const ProductSafetyModal: React.FC<ProductSafetyModalProps> = ({ product,
         <div className="flex flex-col sm:flex-row gap-5 items-start pb-5 border-b border-slate-200 dark:border-white/10">
           <div className="w-full sm:w-48 h-48 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/10 shrink-0 relative group">
             <img
-              src={product.image_url || product.image || product.imageUrl || "https://images.unsplash.com/photo-1514565131-fce0801e5785?w=500&auto=format&fit=crop&q=60"}
+              src={product.image_url || product.image || product.imageUrl || "https://ayyansworld.com/wp-content/uploads/2024/02/Ganesh-Crackers-10-Pkt.png"}
               alt={product.name}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
