@@ -93,11 +93,20 @@ export type WhatsAppInteractivePayload =
   | WhatsAppCtaUrlInteractive
   | WhatsAppLocationRequestInteractive;
 
+export interface WhatsAppTemplatePayload {
+  name: string;
+  language: {
+    code: string;
+  };
+  components?: any[];
+}
+
 export interface WhatsAppMessageEnvelope {
   messaging_product: 'whatsapp';
-  recipient_type: 'individual';
+  recipient_type?: 'individual';
   to: string;
   type: 'interactive' | 'text' | 'location' | 'template';
+  template?: WhatsAppTemplatePayload;
   interactive?: WhatsAppInteractivePayload;
   text?: {
     preview_url?: boolean;
@@ -148,9 +157,9 @@ const WEBSITE_BASE_URL = 'https://vizagayyan.com';
 /**
  * 3.1 Main Menu Interactive Message (Quick Reply Buttons)
  * 3 Options in order:
- * 1. Visit Website (btn_website)
- * 2. Showroom Visit (btn_showroom)
- * 3. Slot Booking (btn_book_slot)
+ * 1. Book VIP Slot (id: "btn_book_slot")
+ * 2. Visit Website (id: "btn_visit_website")
+ * 3. Showroom Visit (id: "btn_showroom_visit")
  */
 export function buildMainMenuMessage(toPhone: string, customerName?: string): WhatsAppMessageEnvelope {
   const greeting = customerName ? `Hello ${customerName}! ` : 'Namaste! ';
@@ -166,7 +175,7 @@ export function buildMainMenuMessage(toPhone: string, customerName?: string): Wh
         text: '🎆 Ayyan Fireworks • Vizag'
       },
       body: {
-        text: `${greeting}Welcome to Ayyan Fireworks (Bunny Brand, Since 1987).\n\nExperience India's premier certified green fireworks showroom with live demos & direct manufacturer pricing.\n\nPlease select an option below:\n1️⃣ Visit Website\n2️⃣ Showroom Visit\n3️⃣ Slot Booking`
+        text: `${greeting}Welcome to Ayyan Fireworks (Bunny Brand, Since 1987).\n\nExperience India's premier certified green fireworks showroom with live demos & direct manufacturer pricing.\n\nPlease select an option below:\n1️⃣ Book VIP Slot\n2️⃣ Visit Website\n3️⃣ Showroom Visit`
       },
       footer: {
         text: DEFAULT_FOOTER
@@ -176,22 +185,22 @@ export function buildMainMenuMessage(toPhone: string, customerName?: string): Wh
           {
             type: 'reply',
             reply: {
-              id: 'btn_website',
-              title: 'Visit Website 🌐'
-            }
-          },
-          {
-            type: 'reply',
-            reply: {
-              id: 'btn_showroom',
-              title: 'Showroom Visit 📍'
-            }
-          },
-          {
-            type: 'reply',
-            reply: {
               id: 'btn_book_slot',
-              title: 'Slot Booking 📅'
+              title: 'Book VIP Slot'
+            }
+          },
+          {
+            type: 'reply',
+            reply: {
+              id: 'btn_visit_website',
+              title: 'Visit Website'
+            }
+          },
+          {
+            type: 'reply',
+            reply: {
+              id: 'btn_showroom_visit',
+              title: 'Showroom Visit'
             }
           }
         ]
@@ -526,6 +535,24 @@ export function buildTextMessage(toPhone: string, text: string): WhatsAppMessage
   };
 }
 
+/**
+ * 3.10 Approved Meta WhatsApp Welcome Greeting Template Message
+ * Sends approved "ayyan_welcome_menu" template
+ */
+export function buildWelcomeTemplateMessage(toPhone: string): WhatsAppMessageEnvelope {
+  return {
+    messaging_product: 'whatsapp',
+    to: formatWhatsAppPhone(toPhone),
+    type: 'template',
+    template: {
+      name: 'ayyan_welcome_menu',
+      language: {
+        code: 'en'
+      }
+    }
+  };
+}
+
 // ============================================================================
 // 4. Incoming Webhook Parser
 // ============================================================================
@@ -667,9 +694,8 @@ export async function handleWhatsAppWebhookEvent(
   event: ParsedIncomingWhatsAppMessage,
   ctx?: WebhookRouterContext
 ): Promise<WhatsAppBotResponse> {
-  const { from, actionId, textBody, senderName, type } = event;
+  const { from, actionId, textBody, type } = event;
   const webUrl = ctx?.websiteUrl || WEBSITE_BASE_URL;
-  const todayStr = ctx?.currentDate || new Date().toISOString().split('T')[0];
 
   // --------------------------------------------------------------------------
   // A. INTERACTIVE ACTION ID ROUTING
@@ -677,26 +703,63 @@ export async function handleWhatsAppWebhookEvent(
   if (actionId) {
     console.log(`[WhatsApp Bot] Processing Interactive Action ID: "${actionId}" from ${from}`);
 
-    // 1. Main Menu Navigation: Option 1 - Visit Website
+    // 1. Main Menu Navigation: Option 1 - Book VIP Slot
     if (
-      actionId === 'btn_website' ||
-      actionId === 'menu_website' ||
-      actionId === 'menu_view_catalogue'
+      actionId === 'btn_book_slot' ||
+      actionId === 'btn_slot_booking' ||
+      actionId === 'menu_book_slot'
     ) {
       return {
         messages: [
-          buildCatalogueCtaMessage(from, `${webUrl}/catalogue`),
           buildTextMessage(
             from,
-            `🌐 *Ayyan Fireworks Official Website*\n\nExplore our latest 2026 festive collection, certified green crackers, live product videos, and direct manufacturer pricing:\n\n👉 *Visit Website:* ${webUrl}\n👉 *Browse Catalogue:* ${webUrl}/catalogue\n👉 *Slot Booking:* ${webUrl}/book-slot`
+            `✨ Reserve your VIP Showroom visiting slot here:\n👉 https://vizagayyan.com/#booking`
           )
         ],
-        metadata: { action: 'website_sent' }
+        metadata: { action: 'book_vip_slot_sent' }
       };
     }
 
-    // 2. Main Menu Navigation: Option 2 - Showroom Visit
+    // View Catalogue Button Callback (from template button or interactive button)
     if (
+      actionId === 'view_catalogue' ||
+      actionId === 'btn_view_catalogue' ||
+      actionId === 'menu_view_catalogue' ||
+      actionId.toLowerCase() === 'view catalogue' ||
+      event.actionTitle?.toLowerCase() === 'view catalogue' ||
+      event.actionTitle?.toLowerCase().includes('catalogue')
+    ) {
+      return {
+        messages: [
+          buildTextMessage(
+            from,
+            'Explore our full catalogue here: https://vizagayyan.com'
+          )
+        ],
+        metadata: { action: 'view_catalogue_sent' }
+      };
+    }
+
+    // 2. Main Menu Navigation: Option 2 - Visit Website
+    if (
+      actionId === 'btn_visit_website' ||
+      actionId === 'btn_website' ||
+      actionId === 'menu_website'
+    ) {
+      return {
+        messages: [
+          buildTextMessage(
+            from,
+            `🎆 Explore our full Sivakasi cracker collection and price list:\n👉 https://vizagayyan.com`
+          )
+        ],
+        metadata: { action: 'visit_website_sent' }
+      };
+    }
+
+    // 3. Main Menu Navigation: Option 3 - Showroom Visit
+    if (
+      actionId === 'btn_showroom_visit' ||
       actionId === 'btn_showroom' ||
       actionId === 'btn_location' ||
       actionId === 'menu_find_location' ||
@@ -704,33 +767,16 @@ export async function handleWhatsAppWebhookEvent(
     ) {
       return {
         messages: [
-          buildBranchLocationsListMessage(from),
-          buildLocationRequestInteractiveMessage(from)
+          buildTextMessage(
+            from,
+            `📍 Visit our Ayyan Fireworks Showroom in Visakhapatnam:\n👉 ${SHOWROOM_CONTACT.googleMapsUrl || 'https://maps.app.goo.gl/agWQFufKjWkwFbVs7'}`
+          )
         ],
         metadata: { action: 'showroom_visit_sent' }
       };
     }
 
-    // 3. Main Menu Navigation: Option 3 - Slot Booking
-    if (
-      actionId === 'btn_book_slot' ||
-      actionId === 'btn_slot_booking' ||
-      actionId === 'menu_book_slot'
-    ) {
-      const dates = [
-        { dateStr: todayStr, label: 'Today (Priority Entry)', subtext: 'Immediate showroom admission slots' },
-        { dateStr: getNextDateStr(todayStr, 1), label: 'Tomorrow', subtext: 'Pre-book morning & evening slots' },
-        { dateStr: getNextDateStr(todayStr, 2), label: 'Day After Tomorrow', subtext: 'Festive weekend booking' },
-        { dateStr: getNextDateStr(todayStr, 3), label: 'Next Weekend', subtext: 'Peak Diwali season access' }
-      ];
-      return {
-        messages: [
-          buildDateSelectionListMessage(from, dates),
-          buildWebBookingCtaMessage(from, `${webUrl}/book-slot`)
-        ],
-        metadata: { action: 'slot_booking_sent' }
-      };
-    }
+
 
     // 4. Time-of-Day Quick Reply Buttons
     if (actionId === 'slot_morning') {
@@ -901,38 +947,75 @@ export async function handleWhatsAppWebhookEvent(
 
   // --------------------------------------------------------------------------
   // C. FALLBACK HANDLING FOR STANDARD TEXT MESSAGES
-  // Ordered by 1. Visit Website, 2. Showroom Visit, 3. Slot Booking
   // --------------------------------------------------------------------------
   const normalizedText = (textBody || '').trim().toLowerCase();
 
-  // Reply 1: Visit Website
+  // Reply: View Catalogue Text (Priority matching)
+  if (
+    normalizedText === 'view catalogue' ||
+    normalizedText.includes('view catalogue') ||
+    normalizedText === 'catalogue' ||
+    normalizedText === 'catalog' ||
+    normalizedText.includes('catalogue') ||
+    normalizedText.includes('catalog')
+  ) {
+    return {
+      messages: [
+        buildTextMessage(
+          from,
+          'Explore our full catalogue here: https://vizagayyan.com'
+        )
+      ],
+      metadata: { fallbackTrigger: 'view_catalogue' }
+    };
+  }
+
+  // Reply 1: Book VIP Slot
   if (
     normalizedText === '1' ||
+    normalizedText.includes('slot') ||
+    normalizedText.includes('book') ||
+    normalizedText.includes('ticket') ||
+    normalizedText.includes('pass') ||
+    normalizedText.includes('reservation') ||
+    normalizedText.includes('vip')
+  ) {
+    return {
+      messages: [
+        buildTextMessage(
+          from,
+          `✨ Reserve your VIP Showroom visiting slot here:\n👉 https://vizagayyan.com/#booking`
+        )
+      ],
+      metadata: { fallbackTrigger: '1_book_vip_slot' }
+    };
+  }
+
+  // Reply 2: Visit Website
+  if (
+    normalizedText === '2' ||
     normalizedText.includes('website') ||
     normalizedText.includes('web') ||
     normalizedText.includes('site') ||
     normalizedText.includes('online') ||
-    normalizedText.includes('catalogue') ||
-    normalizedText.includes('catalog') ||
     normalizedText.includes('price') ||
     normalizedText.includes('rate') ||
     normalizedText.includes('cracker')
   ) {
     return {
       messages: [
-        buildCatalogueCtaMessage(from, `${webUrl}/catalogue`),
         buildTextMessage(
           from,
-          `🌐 *Ayyan Fireworks Official Website*\n\nExplore our 2026 festive collection, certified green crackers, live product videos, and direct manufacturer pricing:\n\n👉 *Visit Website:* ${webUrl}\n👉 *Browse Catalogue:* ${webUrl}/catalogue\n👉 *Slot Booking:* ${webUrl}/book-slot`
+          `🎆 Explore our full Sivakasi cracker collection and price list:\n👉 https://vizagayyan.com`
         )
       ],
-      metadata: { fallbackTrigger: '1_visit_website' }
+      metadata: { fallbackTrigger: '2_visit_website' }
     };
   }
 
-  // Reply 2: Showroom Visit
+  // Reply 3: Showroom Visit
   if (
-    normalizedText === '2' ||
+    normalizedText === '3' ||
     normalizedText.includes('showroom') ||
     normalizedText.includes('visit') ||
     normalizedText.includes('location') ||
@@ -945,43 +1028,21 @@ export async function handleWhatsAppWebhookEvent(
   ) {
     return {
       messages: [
-        buildBranchLocationsListMessage(from),
-        buildLocationRequestInteractiveMessage(from)
+        buildTextMessage(
+          from,
+          `📍 Visit our Ayyan Fireworks Showroom in Visakhapatnam:\n👉 ${SHOWROOM_CONTACT.googleMapsUrl || 'https://maps.app.goo.gl/agWQFufKjWkwFbVs7'}`
+        )
       ],
-      metadata: { fallbackTrigger: '2_showroom_visit' }
+      metadata: { fallbackTrigger: '3_showroom_visit' }
     };
   }
 
-  // Reply 3: Slot Booking
-  if (
-    normalizedText === '3' ||
-    normalizedText.includes('slot') ||
-    normalizedText.includes('book') ||
-    normalizedText.includes('ticket') ||
-    normalizedText.includes('pass') ||
-    normalizedText.includes('reservation') ||
-    normalizedText.includes('timing')
-  ) {
-    const dates = [
-      { dateStr: todayStr, label: 'Today (Priority Entry)', subtext: 'Immediate showroom admission slots' },
-      { dateStr: getNextDateStr(todayStr, 1), label: 'Tomorrow', subtext: 'Pre-book morning & evening slots' },
-      { dateStr: getNextDateStr(todayStr, 2), label: 'Day After Tomorrow', subtext: 'Festive weekend booking' }
-    ];
-    return {
-      messages: [
-        buildDateSelectionListMessage(from, dates),
-        buildWebBookingCtaMessage(from, `${webUrl}/book-slot`)
-      ],
-      metadata: { fallbackTrigger: '3_slot_booking' }
-    };
-  }
-
-  // Fallback: Greetings / Main Menu
+  // Welcome Greeting Handler Fallback -> Approved WhatsApp Template: ayyan_welcome_menu
   return {
     messages: [
-      buildMainMenuMessage(from, senderName)
+      buildWelcomeTemplateMessage(from)
     ],
-    metadata: { fallbackTrigger: 'main_menu' }
+    metadata: { fallbackTrigger: 'welcome_template_ayyan_welcome_menu' }
   };
 }
 
@@ -1050,7 +1111,7 @@ export async function sendWhatsAppCloudMessage(
 // Helper Utilities
 // ============================================================================
 
-function getNextDateStr(baseDateStr: string, dayOffset: number): string {
+export function getNextDateStr(baseDateStr: string, dayOffset: number): string {
   try {
     const d = new Date(baseDateStr);
     d.setDate(d.getDate() + dayOffset);

@@ -18,9 +18,12 @@ import {
   buildLocationRequestInteractiveMessage,
   buildBookingConfirmationInteractiveMessage,
   buildTextMessage,
+  buildWelcomeTemplateMessage,
   ParsedIncomingWhatsAppMessage,
   WhatsAppBotResponse,
-  WhatsAppMessageEnvelope
+  WhatsAppMessageEnvelope,
+  WhatsAppButtonInteractive,
+  WhatsAppTemplatePayload
 } from './whatsappBot';
 
 export {
@@ -35,44 +38,85 @@ export {
   buildCatalogueCtaMessage,
   buildLocationRequestInteractiveMessage,
   buildBookingConfirmationInteractiveMessage,
-  buildTextMessage
+  buildTextMessage,
+  buildWelcomeTemplateMessage
 };
 
 export type {
   ParsedIncomingWhatsAppMessage,
   WhatsAppBotResponse,
-  WhatsAppMessageEnvelope
+  WhatsAppMessageEnvelope,
+  WhatsAppButtonInteractive,
+  WhatsAppTemplatePayload
 };
 
 /** Default website URL for slot booking and pass verification links */
 export const DEFAULT_WEBSITE_URL = 'https://vizagayyan.com';
-export const SLOT_BOOKING_URL = 'https://vizagayyan.com/book-slot';
+export const SLOT_BOOKING_URL = 'https://vizagayyan.com/#booking';
 export const PASS_MANAGEMENT_URL = 'https://vizagayyan.com/my-bookings';
 
+/** Approved Meta WhatsApp Template name for welcome greeting menu */
+export const WELCOME_TEMPLATE_NAME = 'ayyan_welcome_menu';
+
+/** Reply text when user clicks "View Catalogue" or sends catalogue enquiry */
+export const CATALOGUE_REPLY_TEXT = 'Explore our full catalogue here: https://vizagayyan.com';
+
 /**
- * 3 Interactive Main Menu Options & Reply Ordering:
- * 1. Visit Website (btn_website)
- * 2. Showroom Visit (btn_showroom / btn_location)
- * 3. Slot Booking (btn_book_slot)
+ * Builds the approved Meta WhatsApp welcome greeting template payload:
+ * {
+ *   "messaging_product": "whatsapp",
+ *   "to": from,
+ *   "type": "template",
+ *   "template": {
+ *     "name": "ayyan_welcome_menu",
+ *     "language": {
+ *       "code": "en"
+ *     }
+ *   }
+ * }
+ */
+export function buildWelcomeGreetingPayload(toPhone: string): WhatsAppMessageEnvelope {
+  return buildWelcomeTemplateMessage(toPhone);
+}
+
+/**
+ * Immediate reply text responses for button taps:
+ * - View Catalogue: Full online catalogue link
+ * - btn_book_slot: VIP Slot reservation link
+ * - btn_visit_website: Full collection & price list link
+ * - btn_showroom_visit: Google Maps showroom link
+ */
+export const BOT_RESPONSES = {
+  VIEW_CATALOGUE: CATALOGUE_REPLY_TEXT,
+  BOOK_SLOT: `✨ Reserve your VIP Showroom visiting slot here:\n👉 https://vizagayyan.com/#booking`,
+  VISIT_WEBSITE: `🎆 Explore our full Sivakasi cracker collection and price list:\n👉 https://vizagayyan.com`,
+  SHOWROOM_VISIT: `📍 Visit our Ayyan Fireworks Showroom in Visakhapatnam:\n👉 https://maps.app.goo.gl/agWQFufKjWkwFbVs7`
+} as const;
+
+/**
+ * 3 Interactive Main Menu Reply Buttons Setup:
+ * 1. Book VIP Slot (id: "btn_book_slot")
+ * 2. Visit Website (id: "btn_visit_website")
+ * 3. Showroom Visit (id: "btn_showroom_visit")
  */
 export const WHATSAPP_INTERACTIVE_OPTIONS = [
   {
     replyNumber: '1',
-    id: 'btn_website',
-    title: 'Visit Website 🌐',
-    description: 'Browse official website and 2026 cracker catalogue'
+    id: 'btn_book_slot',
+    title: 'Book VIP Slot',
+    description: 'Reserve your VIP Showroom visiting slot'
   },
   {
     replyNumber: '2',
-    id: 'btn_showroom',
-    title: 'Showroom Visit 📍',
-    description: 'Showroom address, Google Maps directions, and store timings'
+    id: 'btn_visit_website',
+    title: 'Visit Website',
+    description: 'Explore our full Sivakasi cracker collection and price list'
   },
   {
     replyNumber: '3',
-    id: 'btn_book_slot',
-    title: 'Slot Booking 📅',
-    description: 'Reserve priority showroom slot and generate VIP QR pass'
+    id: 'btn_showroom_visit',
+    title: 'Showroom Visit',
+    description: 'Ayyan Fireworks Showroom address & Google Maps navigation'
   }
 ] as const;
 

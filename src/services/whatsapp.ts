@@ -129,9 +129,9 @@ export async function sendWhatsAppMessage(
 /**
  * 1. Main Menu Message (Interactive Buttons)
  * 3 Interactive Options:
- * - Button 1: "Visit Website 🌐" (ID: btn_website)
- * - Button 2: "Showroom Visit 📍" (ID: btn_showroom)
- * - Button 3: "Slot Booking 📅" (ID: btn_book_slot)
+ * - Button 1: "Book VIP Slot" (ID: btn_book_slot)
+ * - Button 2: "Visit Website" (ID: btn_visit_website)
+ * - Button 3: "Showroom Visit" (ID: btn_showroom_visit)
  */
 export function buildMainMenuPayload(toPhone: string, customerName?: string): WhatsAppMessagePayload {
   const greeting = customerName ? `Hello ${customerName}! ` : 'Namaste! ';
@@ -147,7 +147,7 @@ export function buildMainMenuPayload(toPhone: string, customerName?: string): Wh
         text: '🎆 Ayyan Fireworks (Bunny Brand)'
       },
       body: {
-        text: `${greeting}Welcome to Ayyan Fireworks — authentic Sivakasi fireworks manufacturer showroom since 1987.\n\nPlease select an option below:\n1️⃣ Visit Website\n2️⃣ Showroom Visit\n3️⃣ Slot Booking`
+        text: `${greeting}Welcome to Ayyan Fireworks — authentic Sivakasi fireworks manufacturer showroom since 1987.\n\nPlease select an option below:\n1️⃣ Book VIP Slot\n2️⃣ Visit Website\n3️⃣ Showroom Visit`
       },
       footer: {
         text: DEFAULT_FOOTER
@@ -157,22 +157,22 @@ export function buildMainMenuPayload(toPhone: string, customerName?: string): Wh
           {
             type: 'reply',
             reply: {
-              id: 'btn_website',
-              title: 'Visit Website 🌐'
-            }
-          },
-          {
-            type: 'reply',
-            reply: {
-              id: 'btn_showroom',
-              title: 'Showroom Visit 📍'
-            }
-          },
-          {
-            type: 'reply',
-            reply: {
               id: 'btn_book_slot',
-              title: 'Slot Booking 📅'
+              title: 'Book VIP Slot'
+            }
+          },
+          {
+            type: 'reply',
+            reply: {
+              id: 'btn_visit_website',
+              title: 'Visit Website'
+            }
+          },
+          {
+            type: 'reply',
+            reply: {
+              id: 'btn_showroom_visit',
+              title: 'Showroom Visit'
             }
           }
         ]

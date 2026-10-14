@@ -13,9 +13,7 @@
 
 import {
   sendMainMenu,
-  sendSlotSelectionList,
   sendStoreLocation,
-  sendWebsiteLink,
   sendTextMessage
 } from '../services/whatsapp';
 import { formatWhatsAppPhone } from '../lib/utils';
@@ -131,22 +129,31 @@ export async function handleWebhookMessage(parsed: WebhookMessageContext): Promi
   // A. INTERACTIVE COMPONENT ACTION ID ROUTING
   // ==========================================================================
   if (actionId) {
-    // 1. Main Menu Button 1: Visit Website
-    if (actionId === 'btn_website') {
-      await sendWebsiteLink(from);
-      return { success: true, handledAction: 'btn_website' };
-    }
-
-    // 2. Main Menu Button 2: Showroom Visit
-    if (actionId === 'btn_showroom' || actionId === 'btn_location') {
-      await sendStoreLocation(from);
-      return { success: true, handledAction: 'btn_showroom' };
-    }
-
-    // 3. Main Menu Button 3: Slot Booking
+    // 1. Main Menu Button 1: Book VIP Slot
     if (actionId === 'btn_book_slot') {
-      await sendSlotSelectionList(from);
+      await sendTextMessage(
+        from,
+        `✨ Reserve your VIP Showroom visiting slot here:\n👉 https://vizagayyan.com/#booking`
+      );
       return { success: true, handledAction: 'btn_book_slot' };
+    }
+
+    // 2. Main Menu Button 2: Visit Website
+    if (actionId === 'btn_visit_website' || actionId === 'btn_website') {
+      await sendTextMessage(
+        from,
+        `🎆 Explore our full Sivakasi cracker collection and price list:\n👉 https://vizagayyan.com`
+      );
+      return { success: true, handledAction: 'btn_visit_website' };
+    }
+
+    // 3. Main Menu Button 3: Showroom Visit
+    if (actionId === 'btn_showroom_visit' || actionId === 'btn_showroom' || actionId === 'btn_location') {
+      await sendTextMessage(
+        from,
+        `📍 Visit our Ayyan Fireworks Showroom in Visakhapatnam:\n👉 https://maps.app.goo.gl/agWQFufKjWkwFbVs7`
+      );
+      return { success: true, handledAction: 'btn_showroom_visit' };
     }
 
     // 4. Time Slot Selection Rows (from interactive list)
@@ -193,26 +200,35 @@ export async function handleWebhookMessage(parsed: WebhookMessageContext): Promi
 
   // ==========================================================================
   // C. FALLBACK HANDLING FOR STANDARD TEXT MESSAGES
-  // Ordered by 1. Visit Website, 2. Showroom Visit, 3. Slot Booking
+  // Ordered by 1. Book VIP Slot, 2. Visit Website, 3. Showroom Visit
   // ==========================================================================
   const text = (textBody || '').toLowerCase();
 
-  // 1. Text number "1" or keyword "website" / "catalogue" / "price" / "online"
-  if (text === '1' || text.includes('website') || text.includes('catalogue') || text.includes('catalog') || text.includes('price') || text.includes('online')) {
-    await sendWebsiteLink(from);
+  // 1. Text number "1" or keyword "slot" / "book" / "vip" / "pass"
+  if (text === '1' || text.includes('slot') || text.includes('book') || text.includes('ticket') || text.includes('pass') || text.includes('vip')) {
+    await sendTextMessage(
+      from,
+      `✨ Reserve your VIP Showroom visiting slot here:\n👉 https://vizagayyan.com/#booking`
+    );
+    return { success: true, handledAction: 'fallback_text_slot' };
+  }
+
+  // 2. Text number "2" or keyword "website" / "catalogue" / "price" / "online"
+  if (text === '2' || text.includes('website') || text.includes('catalogue') || text.includes('catalog') || text.includes('price') || text.includes('online')) {
+    await sendTextMessage(
+      from,
+      `🎆 Explore our full Sivakasi cracker collection and price list:\n👉 https://vizagayyan.com`
+    );
     return { success: true, handledAction: 'fallback_text_website' };
   }
 
-  // 2. Text number "2" or keyword "showroom" / "location" / "address" / "map" / "where" / "visit"
-  if (text === '2' || text.includes('showroom') || text.includes('visit') || text.includes('location') || text.includes('address') || text.includes('map') || text.includes('where')) {
-    await sendStoreLocation(from);
+  // 3. Text number "3" or keyword "showroom" / "location" / "address" / "map" / "where" / "visit"
+  if (text === '3' || text.includes('showroom') || text.includes('visit') || text.includes('location') || text.includes('address') || text.includes('map') || text.includes('where')) {
+    await sendTextMessage(
+      from,
+      `📍 Visit our Ayyan Fireworks Showroom in Visakhapatnam:\n👉 https://maps.app.goo.gl/agWQFufKjWkwFbVs7`
+    );
     return { success: true, handledAction: 'fallback_text_location' };
-  }
-
-  // 3. Text number "3" or keyword "slot" / "book" / "pass" / "ticket"
-  if (text === '3' || text.includes('slot') || text.includes('book') || text.includes('ticket') || text.includes('pass') || text.includes('timing')) {
-    await sendSlotSelectionList(from);
-    return { success: true, handledAction: 'fallback_text_slot' };
   }
 
   // 4. Greetings / Menu Request Fallback
