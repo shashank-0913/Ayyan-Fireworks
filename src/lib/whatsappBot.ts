@@ -143,12 +143,14 @@ export interface WhatsAppBotResponse {
 // ============================================================================
 
 const DEFAULT_FOOTER = 'Ayyan Fireworks • Bunny Brand Official';
-const WEBSITE_BASE_URL = typeof window !== 'undefined' && window.location.origin
-  ? window.location.origin
-  : 'https://ayyanfireworks.com';
+const WEBSITE_BASE_URL = 'https://vizagayyan.com';
 
 /**
  * 3.1 Main Menu Interactive Message (Quick Reply Buttons)
+ * 3 Options in order:
+ * 1. Visit Website (btn_website)
+ * 2. Showroom Visit (btn_showroom)
+ * 3. Slot Booking (btn_book_slot)
  */
 export function buildMainMenuMessage(toPhone: string, customerName?: string): WhatsAppMessageEnvelope {
   const greeting = customerName ? `Hello ${customerName}! ` : 'Namaste! ';
@@ -161,10 +163,10 @@ export function buildMainMenuMessage(toPhone: string, customerName?: string): Wh
       type: 'button',
       header: {
         type: 'text',
-        text: '🎆 Ayyan Fireworks • Sivakasi'
+        text: '🎆 Ayyan Fireworks • Vizag'
       },
       body: {
-        text: `${greeting}Welcome to Ayyan Fireworks (Bunny Brand, Since 1987).\n\nExperience India's premier certified green fireworks showroom with live demos & direct manufacturer pricing.\n\nPlease select an option below:`
+        text: `${greeting}Welcome to Ayyan Fireworks (Bunny Brand, Since 1987).\n\nExperience India's premier certified green fireworks showroom with live demos & direct manufacturer pricing.\n\nPlease select an option below:\n1️⃣ Visit Website\n2️⃣ Showroom Visit\n3️⃣ Slot Booking`
       },
       footer: {
         text: DEFAULT_FOOTER
@@ -174,22 +176,22 @@ export function buildMainMenuMessage(toPhone: string, customerName?: string): Wh
           {
             type: 'reply',
             reply: {
-              id: 'btn_book_slot',
-              title: 'Book Slot 📅'
-            }
-          },
-          {
-            type: 'reply',
-            reply: {
-              id: 'btn_location',
-              title: 'Store Location 📍'
-            }
-          },
-          {
-            type: 'reply',
-            reply: {
               id: 'btn_website',
               title: 'Visit Website 🌐'
+            }
+          },
+          {
+            type: 'reply',
+            reply: {
+              id: 'btn_showroom',
+              title: 'Showroom Visit 📍'
+            }
+          },
+          {
+            type: 'reply',
+            reply: {
+              id: 'btn_book_slot',
+              title: 'Slot Booking 📅'
             }
           }
         ]
@@ -361,7 +363,7 @@ export function buildWebBookingCtaMessage(
   toPhone: string,
   customBookingUrl?: string
 ): WhatsAppMessageEnvelope {
-  const bookingUrl = customBookingUrl || `${WEBSITE_BASE_URL}/book`;
+  const bookingUrl = customBookingUrl || `${WEBSITE_BASE_URL}/book-slot`;
   return {
     messaging_product: 'whatsapp',
     recipient_type: 'individual',
@@ -675,8 +677,46 @@ export async function handleWhatsAppWebhookEvent(
   if (actionId) {
     console.log(`[WhatsApp Bot] Processing Interactive Action ID: "${actionId}" from ${from}`);
 
-    // 1. Main Menu Navigation
-    if (actionId === 'menu_book_slot') {
+    // 1. Main Menu Navigation: Option 1 - Visit Website
+    if (
+      actionId === 'btn_website' ||
+      actionId === 'menu_website' ||
+      actionId === 'menu_view_catalogue'
+    ) {
+      return {
+        messages: [
+          buildCatalogueCtaMessage(from, `${webUrl}/catalogue`),
+          buildTextMessage(
+            from,
+            `🌐 *Ayyan Fireworks Official Website*\n\nExplore our latest 2026 festive collection, certified green crackers, live product videos, and direct manufacturer pricing:\n\n👉 *Visit Website:* ${webUrl}\n👉 *Browse Catalogue:* ${webUrl}/catalogue\n👉 *Slot Booking:* ${webUrl}/book-slot`
+          )
+        ],
+        metadata: { action: 'website_sent' }
+      };
+    }
+
+    // 2. Main Menu Navigation: Option 2 - Showroom Visit
+    if (
+      actionId === 'btn_showroom' ||
+      actionId === 'btn_location' ||
+      actionId === 'menu_find_location' ||
+      actionId === 'menu_showroom'
+    ) {
+      return {
+        messages: [
+          buildBranchLocationsListMessage(from),
+          buildLocationRequestInteractiveMessage(from)
+        ],
+        metadata: { action: 'showroom_visit_sent' }
+      };
+    }
+
+    // 3. Main Menu Navigation: Option 3 - Slot Booking
+    if (
+      actionId === 'btn_book_slot' ||
+      actionId === 'btn_slot_booking' ||
+      actionId === 'menu_book_slot'
+    ) {
       const dates = [
         { dateStr: todayStr, label: 'Today (Priority Entry)', subtext: 'Immediate showroom admission slots' },
         { dateStr: getNextDateStr(todayStr, 1), label: 'Tomorrow', subtext: 'Pre-book morning & evening slots' },
@@ -686,36 +726,13 @@ export async function handleWhatsAppWebhookEvent(
       return {
         messages: [
           buildDateSelectionListMessage(from, dates),
-          buildWebBookingCtaMessage(from, `${webUrl}/book`)
+          buildWebBookingCtaMessage(from, `${webUrl}/book-slot`)
         ],
-        metadata: { action: 'date_selection_sent' }
+        metadata: { action: 'slot_booking_sent' }
       };
     }
 
-    if (actionId === 'menu_view_catalogue') {
-      return {
-        messages: [
-          buildCatalogueCtaMessage(from, `${webUrl}/catalogue`),
-          buildTextMessage(
-            from,
-            '🎆 *Ayyan Fireworks Highlights:*\n• 100% Certified Green Crackers\n• Low Smoke & Reduced Decibel Formula\n• Original Sivakasi Factory Fresh Packaging\n• Wholesale Box Rates for Festive Gifting'
-          )
-        ],
-        metadata: { action: 'catalogue_cta_sent' }
-      };
-    }
-
-    if (actionId === 'menu_find_location') {
-      return {
-        messages: [
-          buildBranchLocationsListMessage(from),
-          buildLocationRequestInteractiveMessage(from)
-        ],
-        metadata: { action: 'branch_list_sent' }
-      };
-    }
-
-    // 2. Time-of-Day Quick Reply Buttons
+    // 4. Time-of-Day Quick Reply Buttons
     if (actionId === 'slot_morning') {
       return {
         messages: [
@@ -723,7 +740,7 @@ export async function handleWhatsAppWebhookEvent(
             from,
             '🌅 *Morning Window Selected (09:00 AM – 01:00 PM)*\n\nTo complete your reservation and generate your VIP QR Pass, please confirm online or enter your name:'
           ),
-          buildWebBookingCtaMessage(from, `${webUrl}/book?window=morning`)
+          buildWebBookingCtaMessage(from, `${webUrl}/book-slot?window=morning`)
         ],
         metadata: { selectedWindow: 'morning' }
       };
@@ -736,7 +753,7 @@ export async function handleWhatsAppWebhookEvent(
             from,
             '☀️ *Afternoon Window Selected (01:00 PM – 05:00 PM)*\n\nComfortable indoor shopping with dedicated support staff. Click below to confirm your pass:'
           ),
-          buildWebBookingCtaMessage(from, `${webUrl}/book?window=afternoon`)
+          buildWebBookingCtaMessage(from, `${webUrl}/book-slot?window=afternoon`)
         ],
         metadata: { selectedWindow: 'afternoon' }
       };
@@ -749,7 +766,7 @@ export async function handleWhatsAppWebhookEvent(
             from,
             '🌙 *Evening Spectacle Window Selected (05:00 PM – 10:00 PM)*\n\nIncludes live outdoor fireworks demonstration & night illuminations. Click below to lock your pass:'
           ),
-          buildWebBookingCtaMessage(from, `${webUrl}/book?window=evening`)
+          buildWebBookingCtaMessage(from, `${webUrl}/book-slot?window=evening`)
         ],
         metadata: { selectedWindow: 'evening' }
       };
@@ -884,11 +901,67 @@ export async function handleWhatsAppWebhookEvent(
 
   // --------------------------------------------------------------------------
   // C. FALLBACK HANDLING FOR STANDARD TEXT MESSAGES
+  // Ordered by 1. Visit Website, 2. Showroom Visit, 3. Slot Booking
   // --------------------------------------------------------------------------
   const normalizedText = (textBody || '').trim().toLowerCase();
 
-  // 1. Numbered Replies Fallback (1 for slot, 2 for catalogue, 3 for location)
-  if (normalizedText === '1' || normalizedText.includes('slot') || normalizedText.includes('book') || normalizedText.includes('ticket') || normalizedText.includes('pass')) {
+  // Reply 1: Visit Website
+  if (
+    normalizedText === '1' ||
+    normalizedText.includes('website') ||
+    normalizedText.includes('web') ||
+    normalizedText.includes('site') ||
+    normalizedText.includes('online') ||
+    normalizedText.includes('catalogue') ||
+    normalizedText.includes('catalog') ||
+    normalizedText.includes('price') ||
+    normalizedText.includes('rate') ||
+    normalizedText.includes('cracker')
+  ) {
+    return {
+      messages: [
+        buildCatalogueCtaMessage(from, `${webUrl}/catalogue`),
+        buildTextMessage(
+          from,
+          `🌐 *Ayyan Fireworks Official Website*\n\nExplore our 2026 festive collection, certified green crackers, live product videos, and direct manufacturer pricing:\n\n👉 *Visit Website:* ${webUrl}\n👉 *Browse Catalogue:* ${webUrl}/catalogue\n👉 *Slot Booking:* ${webUrl}/book-slot`
+        )
+      ],
+      metadata: { fallbackTrigger: '1_visit_website' }
+    };
+  }
+
+  // Reply 2: Showroom Visit
+  if (
+    normalizedText === '2' ||
+    normalizedText.includes('showroom') ||
+    normalizedText.includes('visit') ||
+    normalizedText.includes('location') ||
+    normalizedText.includes('address') ||
+    normalizedText.includes('map') ||
+    normalizedText.includes('directions') ||
+    normalizedText.includes('where') ||
+    normalizedText.includes('store') ||
+    normalizedText.includes('branch')
+  ) {
+    return {
+      messages: [
+        buildBranchLocationsListMessage(from),
+        buildLocationRequestInteractiveMessage(from)
+      ],
+      metadata: { fallbackTrigger: '2_showroom_visit' }
+    };
+  }
+
+  // Reply 3: Slot Booking
+  if (
+    normalizedText === '3' ||
+    normalizedText.includes('slot') ||
+    normalizedText.includes('book') ||
+    normalizedText.includes('ticket') ||
+    normalizedText.includes('pass') ||
+    normalizedText.includes('reservation') ||
+    normalizedText.includes('timing')
+  ) {
     const dates = [
       { dateStr: todayStr, label: 'Today (Priority Entry)', subtext: 'Immediate showroom admission slots' },
       { dateStr: getNextDateStr(todayStr, 1), label: 'Tomorrow', subtext: 'Pre-book morning & evening slots' },
@@ -897,32 +970,13 @@ export async function handleWhatsAppWebhookEvent(
     return {
       messages: [
         buildDateSelectionListMessage(from, dates),
-        buildWebBookingCtaMessage(from, `${webUrl}/book`)
+        buildWebBookingCtaMessage(from, `${webUrl}/book-slot`)
       ],
-      metadata: { fallbackTrigger: '1_slot' }
+      metadata: { fallbackTrigger: '3_slot_booking' }
     };
   }
 
-  if (normalizedText === '2' || normalizedText.includes('catalogue') || normalizedText.includes('catalog') || normalizedText.includes('price') || normalizedText.includes('cracker') || normalizedText.includes('item')) {
-    return {
-      messages: [
-        buildCatalogueCtaMessage(from, `${webUrl}/catalogue`)
-      ],
-      metadata: { fallbackTrigger: '2_catalogue' }
-    };
-  }
-
-  if (normalizedText === '3' || normalizedText.includes('location') || normalizedText.includes('address') || normalizedText.includes('map') || normalizedText.includes('directions') || normalizedText.includes('where')) {
-    return {
-      messages: [
-        buildBranchLocationsListMessage(from),
-        buildLocationRequestInteractiveMessage(from)
-      ],
-      metadata: { fallbackTrigger: '3_location' }
-    };
-  }
-
-  // 2. Greetings / Menu Request Fallback
+  // Fallback: Greetings / Main Menu
   return {
     messages: [
       buildMainMenuMessage(from, senderName)

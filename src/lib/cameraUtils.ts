@@ -148,7 +148,7 @@ export function extractCleanQrPayload(raw: string | null | undefined): string {
   // 4. Handle URLs (e.g. https://domain.com/verify?id=UUID or https://domain.com/gate/UUID)
   if (str.includes('http://') || str.includes('https://') || str.includes('?') || str.includes('&')) {
     try {
-      const url = new URL(str, typeof window !== 'undefined' ? window.location.origin : 'https://ayyanfireworks.com');
+      const url = new URL(str, typeof window !== 'undefined' ? window.location.origin : 'https://vizagayyan.com');
       const param =
         url.searchParams.get('id') ||
         url.searchParams.get('bookingId') ||

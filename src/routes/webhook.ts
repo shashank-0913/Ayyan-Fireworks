@@ -131,29 +131,29 @@ export async function handleWebhookMessage(parsed: WebhookMessageContext): Promi
   // A. INTERACTIVE COMPONENT ACTION ID ROUTING
   // ==========================================================================
   if (actionId) {
-    // 1. Main Menu Button 1: Book Slot
-    if (actionId === 'btn_book_slot') {
-      await sendSlotSelectionList(from);
-      return { success: true, handledAction: 'btn_book_slot' };
-    }
-
-    // 2. Main Menu Button 2: Store Location
-    if (actionId === 'btn_location') {
-      await sendStoreLocation(from);
-      return { success: true, handledAction: 'btn_location' };
-    }
-
-    // 3. Main Menu Button 3: Visit Website
+    // 1. Main Menu Button 1: Visit Website
     if (actionId === 'btn_website') {
       await sendWebsiteLink(from);
       return { success: true, handledAction: 'btn_website' };
+    }
+
+    // 2. Main Menu Button 2: Showroom Visit
+    if (actionId === 'btn_showroom' || actionId === 'btn_location') {
+      await sendStoreLocation(from);
+      return { success: true, handledAction: 'btn_showroom' };
+    }
+
+    // 3. Main Menu Button 3: Slot Booking
+    if (actionId === 'btn_book_slot') {
+      await sendSlotSelectionList(from);
+      return { success: true, handledAction: 'btn_book_slot' };
     }
 
     // 4. Time Slot Selection Rows (from interactive list)
     if (actionId === 'slot_morning') {
       await sendTextMessage(
         from,
-        `🌅 *Morning Slot Reserved (09:00 AM – 01:00 PM)*\n\nTo lock your VIP gate pass and avoid queue wait times, please complete your reservation details:\n👉 https://ayyanfireworks.com/book?window=morning`
+        `🌅 *Morning Slot Reserved (09:00 AM – 01:00 PM)*\n\nTo lock your VIP gate pass and avoid queue wait times, please complete your reservation details:\n👉 https://vizagayyan.com/book-slot?window=morning`
       );
       return { success: true, handledAction: 'slot_morning' };
     }
@@ -161,7 +161,7 @@ export async function handleWebhookMessage(parsed: WebhookMessageContext): Promi
     if (actionId === 'slot_afternoon') {
       await sendTextMessage(
         from,
-        `☀️ *Afternoon Slot Reserved (01:00 PM – 05:00 PM)*\n\nIndoor showroom shopping with dedicated customer support. Complete reservation details:\n👉 https://ayyanfireworks.com/book?window=afternoon`
+        `☀️ *Afternoon Slot Reserved (01:00 PM – 05:00 PM)*\n\nIndoor showroom shopping with dedicated customer support. Complete reservation details:\n👉 https://vizagayyan.com/book-slot?window=afternoon`
       );
       return { success: true, handledAction: 'slot_afternoon' };
     }
@@ -169,7 +169,7 @@ export async function handleWebhookMessage(parsed: WebhookMessageContext): Promi
     if (actionId === 'slot_evening') {
       await sendTextMessage(
         from,
-        `🌙 *Evening Spectacle Slot Reserved (05:00 PM – 10:00 PM)*\n\nIncludes live outdoor fireworks demonstration. Complete reservation details:\n👉 https://ayyanfireworks.com/book?window=evening`
+        `🌙 *Evening Spectacle Slot Reserved (05:00 PM – 10:00 PM)*\n\nIncludes live outdoor fireworks demonstration. Complete reservation details:\n👉 https://vizagayyan.com/book-slot?window=evening`
       );
       return { success: true, handledAction: 'slot_evening' };
     }
@@ -177,7 +177,7 @@ export async function handleWebhookMessage(parsed: WebhookMessageContext): Promi
     if (actionId === 'slot_vip_instant') {
       await sendTextMessage(
         from,
-        `🎟️ *VIP Instant Pass*\n\nGet direct entrance gate admission for today:\n👉 https://ayyanfireworks.com/book?type=instant`
+        `🎟️ *VIP Instant Pass*\n\nGet direct entrance gate admission for today:\n👉 https://vizagayyan.com/book-slot?type=instant`
       );
       return { success: true, handledAction: 'slot_vip_instant' };
     }
@@ -193,25 +193,26 @@ export async function handleWebhookMessage(parsed: WebhookMessageContext): Promi
 
   // ==========================================================================
   // C. FALLBACK HANDLING FOR STANDARD TEXT MESSAGES
+  // Ordered by 1. Visit Website, 2. Showroom Visit, 3. Slot Booking
   // ==========================================================================
   const text = (textBody || '').toLowerCase();
 
-  // 1. Text number "1" or keyword "slot" / "book"
-  if (text === '1' || text.includes('slot') || text.includes('book') || text.includes('ticket') || text.includes('pass')) {
-    await sendSlotSelectionList(from);
-    return { success: true, handledAction: 'fallback_text_slot' };
+  // 1. Text number "1" or keyword "website" / "catalogue" / "price" / "online"
+  if (text === '1' || text.includes('website') || text.includes('catalogue') || text.includes('catalog') || text.includes('price') || text.includes('online')) {
+    await sendWebsiteLink(from);
+    return { success: true, handledAction: 'fallback_text_website' };
   }
 
-  // 2. Text number "2" or keyword "location" / "address" / "map" / "where"
-  if (text === '2' || text.includes('location') || text.includes('address') || text.includes('map') || text.includes('where')) {
+  // 2. Text number "2" or keyword "showroom" / "location" / "address" / "map" / "where" / "visit"
+  if (text === '2' || text.includes('showroom') || text.includes('visit') || text.includes('location') || text.includes('address') || text.includes('map') || text.includes('where')) {
     await sendStoreLocation(from);
     return { success: true, handledAction: 'fallback_text_location' };
   }
 
-  // 3. Text number "3" or keyword "website" / "catalogue" / "price" / "online"
-  if (text === '3' || text.includes('website') || text.includes('catalogue') || text.includes('catalog') || text.includes('price')) {
-    await sendWebsiteLink(from);
-    return { success: true, handledAction: 'fallback_text_website' };
+  // 3. Text number "3" or keyword "slot" / "book" / "pass" / "ticket"
+  if (text === '3' || text.includes('slot') || text.includes('book') || text.includes('ticket') || text.includes('pass') || text.includes('timing')) {
+    await sendSlotSelectionList(from);
+    return { success: true, handledAction: 'fallback_text_slot' };
   }
 
   // 4. Greetings / Menu Request Fallback

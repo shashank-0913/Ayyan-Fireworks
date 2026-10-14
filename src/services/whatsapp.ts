@@ -71,9 +71,7 @@ export interface WhatsAppMessagePayload {
 }
 
 const DEFAULT_FOOTER = 'Ayyan Fireworks • Official Showroom';
-const WEBSITE_URL = typeof window !== 'undefined' && window.location.origin
-  ? window.location.origin
-  : 'https://ayyanfireworks.com';
+const WEBSITE_URL = 'https://vizagayyan.com';
 
 /**
  * Sends any formatted payload to the WhatsApp Business Cloud API
@@ -130,10 +128,10 @@ export async function sendWhatsAppMessage(
 
 /**
  * 1. Main Menu Message (Interactive Buttons)
- * Replaces "Reply 1 for slot, 2 for location..."
- * - Button 1: "Book Slot 📅" (ID: btn_book_slot)
- * - Button 2: "Store Location 📍" (ID: btn_location)
- * - Button 3: "Visit Website 🌐" (ID: btn_website)
+ * 3 Interactive Options:
+ * - Button 1: "Visit Website 🌐" (ID: btn_website)
+ * - Button 2: "Showroom Visit 📍" (ID: btn_showroom)
+ * - Button 3: "Slot Booking 📅" (ID: btn_book_slot)
  */
 export function buildMainMenuPayload(toPhone: string, customerName?: string): WhatsAppMessagePayload {
   const greeting = customerName ? `Hello ${customerName}! ` : 'Namaste! ';
@@ -149,7 +147,7 @@ export function buildMainMenuPayload(toPhone: string, customerName?: string): Wh
         text: '🎆 Ayyan Fireworks (Bunny Brand)'
       },
       body: {
-        text: `${greeting}Welcome to Ayyan Fireworks — authentic Sivakasi fireworks manufacturer showroom since 1987.\n\nPlease select an option below:`
+        text: `${greeting}Welcome to Ayyan Fireworks — authentic Sivakasi fireworks manufacturer showroom since 1987.\n\nPlease select an option below:\n1️⃣ Visit Website\n2️⃣ Showroom Visit\n3️⃣ Slot Booking`
       },
       footer: {
         text: DEFAULT_FOOTER
@@ -159,22 +157,22 @@ export function buildMainMenuPayload(toPhone: string, customerName?: string): Wh
           {
             type: 'reply',
             reply: {
-              id: 'btn_book_slot',
-              title: 'Book Slot 📅'
-            }
-          },
-          {
-            type: 'reply',
-            reply: {
-              id: 'btn_location',
-              title: 'Store Location 📍'
-            }
-          },
-          {
-            type: 'reply',
-            reply: {
               id: 'btn_website',
               title: 'Visit Website 🌐'
+            }
+          },
+          {
+            type: 'reply',
+            reply: {
+              id: 'btn_showroom',
+              title: 'Showroom Visit 📍'
+            }
+          },
+          {
+            type: 'reply',
+            reply: {
+              id: 'btn_book_slot',
+              title: 'Slot Booking 📅'
             }
           }
         ]
@@ -327,7 +325,7 @@ export async function sendWebsiteLink(toPhone: string) {
     type: 'text',
     text: {
       preview_url: true,
-      body: `🌐 *Ayyan Fireworks Online Portal*\n\nExplore our 2026 digital cracker catalogue, check live prices, and generate your VIP Showroom Pass:\n\n👉 *Visit Website:* ${WEBSITE_URL}\n👉 *Browse Catalogue:* ${WEBSITE_URL}/catalogue\n👉 *Book Slot Online:* ${WEBSITE_URL}/book`
+      body: `🌐 *Ayyan Fireworks Online Portal*\n\nExplore our 2026 digital cracker catalogue, check live prices, and generate your VIP Showroom Pass:\n\n👉 *Visit Website:* ${WEBSITE_URL}\n👉 *Browse Catalogue:* ${WEBSITE_URL}/catalogue\n👉 *Book Slot Online:* ${WEBSITE_URL}/book-slot`
     }
   });
 }

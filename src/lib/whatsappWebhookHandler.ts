@@ -9,8 +9,72 @@ import {
   parseWhatsAppWebhookPayload,
   handleWhatsAppWebhookEvent,
   sendWhatsAppCloudMessage,
-  ParsedIncomingWhatsAppMessage
+  buildMainMenuMessage,
+  buildSlotTimeOfDayButtonMessage,
+  buildBranchLocationsListMessage,
+  buildDateSelectionListMessage,
+  buildWebBookingCtaMessage,
+  buildCatalogueCtaMessage,
+  buildLocationRequestInteractiveMessage,
+  buildBookingConfirmationInteractiveMessage,
+  buildTextMessage,
+  ParsedIncomingWhatsAppMessage,
+  WhatsAppBotResponse,
+  WhatsAppMessageEnvelope
 } from './whatsappBot';
+
+export {
+  parseWhatsAppWebhookPayload,
+  handleWhatsAppWebhookEvent,
+  sendWhatsAppCloudMessage,
+  buildMainMenuMessage,
+  buildSlotTimeOfDayButtonMessage,
+  buildBranchLocationsListMessage,
+  buildDateSelectionListMessage,
+  buildWebBookingCtaMessage,
+  buildCatalogueCtaMessage,
+  buildLocationRequestInteractiveMessage,
+  buildBookingConfirmationInteractiveMessage,
+  buildTextMessage
+};
+
+export type {
+  ParsedIncomingWhatsAppMessage,
+  WhatsAppBotResponse,
+  WhatsAppMessageEnvelope
+};
+
+/** Default website URL for slot booking and pass verification links */
+export const DEFAULT_WEBSITE_URL = 'https://vizagayyan.com';
+export const SLOT_BOOKING_URL = 'https://vizagayyan.com/book-slot';
+export const PASS_MANAGEMENT_URL = 'https://vizagayyan.com/my-bookings';
+
+/**
+ * 3 Interactive Main Menu Options & Reply Ordering:
+ * 1. Visit Website (btn_website)
+ * 2. Showroom Visit (btn_showroom / btn_location)
+ * 3. Slot Booking (btn_book_slot)
+ */
+export const WHATSAPP_INTERACTIVE_OPTIONS = [
+  {
+    replyNumber: '1',
+    id: 'btn_website',
+    title: 'Visit Website 🌐',
+    description: 'Browse official website and 2026 cracker catalogue'
+  },
+  {
+    replyNumber: '2',
+    id: 'btn_showroom',
+    title: 'Showroom Visit 📍',
+    description: 'Showroom address, Google Maps directions, and store timings'
+  },
+  {
+    replyNumber: '3',
+    id: 'btn_book_slot',
+    title: 'Slot Booking 📅',
+    description: 'Reserve priority showroom slot and generate VIP QR pass'
+  }
+] as const;
 
 export interface WebhookHttpRequest {
   method: string;
@@ -42,6 +106,8 @@ export async function handleWhatsAppWebhookRequest(
     options?.verifyToken ||
     (typeof process !== 'undefined' && (process.env?.WHATSAPP_WEBHOOK_VERIFY_TOKEN || process.env?.WEBHOOK_VERIFY_TOKEN)) ||
     'ayyan_fireworks_secure_token_2026';
+
+  const websiteUrl = options?.websiteUrl || DEFAULT_WEBSITE_URL;
 
   // 1. GET Request: Meta Webhook Subscription Verification
   if (req.method === 'GET') {
@@ -85,7 +151,7 @@ export async function handleWhatsAppWebhookRequest(
     try {
       // Route event to get bot responses
       const botResponse = await handleWhatsAppWebhookEvent(parsedEvent, {
-        websiteUrl: options?.websiteUrl,
+        websiteUrl,
         supabaseClient: options?.supabaseClient
       });
 
