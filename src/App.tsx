@@ -5,6 +5,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { EstimateProvider } from './context/EstimateContext';
 import { SparkleCanvas } from './components/common/SparkleCanvas';
 import { WhatsAppFloatingButton } from './components/common/WhatsAppFloatingButton';
+import { FloatingPriceListDownload } from './components/FloatingPriceListDownload';
 import { FireworkIntroSplash } from './components/common/FireworkIntroSplash';
 import { CustomerNavbar } from './components/customer/CustomerNavbar';
 import { CustomerFooter } from './components/customer/CustomerFooter';
@@ -56,6 +57,7 @@ const CustomerPortalLayout: React.FC = () => {
       </main>
       <CustomerFooter />
       <EstimateDrawer />
+      <FloatingPriceListDownload />
       <WhatsAppFloatingButton />
     </div>
   );
