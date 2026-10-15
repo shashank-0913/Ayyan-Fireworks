@@ -105,7 +105,7 @@ export interface WhatsAppMessageEnvelope {
   messaging_product: 'whatsapp';
   recipient_type?: 'individual';
   to: string;
-  type: 'interactive' | 'text' | 'location' | 'template';
+  type: 'interactive' | 'text' | 'location' | 'template' | 'document';
   template?: WhatsAppTemplatePayload;
   interactive?: WhatsAppInteractivePayload;
   text?: {
@@ -117,6 +117,11 @@ export interface WhatsAppMessageEnvelope {
     latitude: number;
     name?: string;
     address?: string;
+  };
+  document?: {
+    link: string;
+    caption?: string;
+    filename?: string;
   };
 }
 
@@ -553,6 +558,31 @@ export function buildWelcomeTemplateMessage(toPhone: string, templateName: strin
   };
 }
 
+/** Default public URL to 2026 Price List PDF */
+export const DEFAULT_PRICE_LIST_PDF_URL = `${WEBSITE_BASE_URL}/Ayyan_Fireworks_PriceList_2026.pdf`;
+
+/**
+ * 3.11 WhatsApp Document Attachment Message (Price List Catalog PDF)
+ */
+export function buildCatalogPdfDocumentMessage(
+  toPhone: string,
+  pdfUrl: string = DEFAULT_PRICE_LIST_PDF_URL,
+  filename: string = 'Ayyan_Fireworks_PriceList_2026.pdf',
+  caption: string = '📄 Ayyan Fireworks Sivakasi 2026 Wholesale & Retail Price List'
+): WhatsAppMessageEnvelope {
+  return {
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    to: formatWhatsAppPhone(toPhone),
+    type: 'document',
+    document: {
+      link: pdfUrl,
+      filename,
+      caption
+    }
+  };
+}
+
 // ============================================================================
 // 4. Incoming Webhook Parser
 // ============================================================================
@@ -737,6 +767,25 @@ export async function handleWhatsAppWebhookEvent(
           )
         ],
         metadata: { action: 'view_catalogue_sent' }
+      };
+    }
+
+    // Download Price List PDF / Catalog Document Attachment Button Callback
+    if (
+      actionId === 'btn_download_pdf' ||
+      actionId === 'btn_pricelist_pdf' ||
+      actionId === 'download_pdf' ||
+      actionId === 'view_pricelist'
+    ) {
+      return {
+        messages: [
+          buildCatalogPdfDocumentMessage(from),
+          buildTextMessage(
+            from,
+            `📄 Here is the official Ayyan Fireworks 2026 Price List PDF.\n👉 Download direct: ${DEFAULT_PRICE_LIST_PDF_URL}`
+          )
+        ],
+        metadata: { action: 'pricelist_pdf_document_sent' }
       };
     }
 
@@ -967,6 +1016,27 @@ export async function handleWhatsAppWebhookEvent(
         )
       ],
       metadata: { fallbackTrigger: 'view_catalogue' }
+    };
+  }
+
+  // Reply: PDF Price List & Catalog Document
+  if (
+    normalizedText.includes('pdf') ||
+    normalizedText.includes('price list') ||
+    normalizedText.includes('pricelist') ||
+    normalizedText.includes('rate list') ||
+    normalizedText.includes('rates') ||
+    normalizedText.includes('download')
+  ) {
+    return {
+      messages: [
+        buildCatalogPdfDocumentMessage(from),
+        buildTextMessage(
+          from,
+          `📄 Here is our official 2026 Ayyan Fireworks Price List PDF with 100% verified Sivakasi rates.\n\nDirect Download Link:\n👉 ${DEFAULT_PRICE_LIST_PDF_URL}\n\nBrowse live inventory online:\n👉 https://vizagayyan.com`
+        )
+      ],
+      metadata: { fallbackTrigger: 'pdf_pricelist_document' }
     };
   }
 
