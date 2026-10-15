@@ -537,15 +537,15 @@ export function buildTextMessage(toPhone: string, text: string): WhatsAppMessage
 
 /**
  * 3.10 Approved Meta WhatsApp Welcome Greeting Template Message
- * Sends approved "ayyan_welcome_menu" template
+ * Sends approved "ayyan_store_connect" template
  */
-export function buildWelcomeTemplateMessage(toPhone: string): WhatsAppMessageEnvelope {
+export function buildWelcomeTemplateMessage(toPhone: string, templateName: string = 'ayyan_store_connect'): WhatsAppMessageEnvelope {
   return {
     messaging_product: 'whatsapp',
     to: formatWhatsAppPhone(toPhone),
     type: 'template',
     template: {
-      name: 'ayyan_welcome_menu',
+      name: templateName,
       language: {
         code: 'en'
       }
@@ -1037,12 +1037,12 @@ export async function handleWhatsAppWebhookEvent(
     };
   }
 
-  // Welcome Greeting Handler Fallback -> Approved WhatsApp Template: ayyan_welcome_menu
+  // Welcome Greeting Handler Fallback -> Approved WhatsApp Template: ayyan_store_connect
   return {
     messages: [
-      buildWelcomeTemplateMessage(from)
+      buildWelcomeTemplateMessage(from, 'ayyan_store_connect')
     ],
-    metadata: { fallbackTrigger: 'welcome_template_ayyan_welcome_menu' }
+    metadata: { fallbackTrigger: 'welcome_template_ayyan_store_connect' }
   };
 }
 

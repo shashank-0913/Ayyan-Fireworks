@@ -56,7 +56,7 @@ export const SLOT_BOOKING_URL = 'https://vizagayyan.com/#booking';
 export const PASS_MANAGEMENT_URL = 'https://vizagayyan.com/my-bookings';
 
 /** Approved Meta WhatsApp Template name for welcome greeting menu */
-export const WELCOME_TEMPLATE_NAME = 'ayyan_welcome_menu';
+export const WELCOME_TEMPLATE_NAME = 'ayyan_store_connect';
 
 /** Reply text when user clicks "View Catalogue" or sends catalogue enquiry */
 export const CATALOGUE_REPLY_TEXT = 'Explore our full catalogue here: https://vizagayyan.com';
@@ -68,15 +68,15 @@ export const CATALOGUE_REPLY_TEXT = 'Explore our full catalogue here: https://vi
  *   "to": from,
  *   "type": "template",
  *   "template": {
- *     "name": "ayyan_welcome_menu",
+ *     "name": "ayyan_store_connect",
  *     "language": {
  *       "code": "en"
  *     }
  *   }
  * }
  */
-export function buildWelcomeGreetingPayload(toPhone: string): WhatsAppMessageEnvelope {
-  return buildWelcomeTemplateMessage(toPhone);
+export function buildWelcomeGreetingPayload(toPhone: string, templateName: string = WELCOME_TEMPLATE_NAME): WhatsAppMessageEnvelope {
+  return buildWelcomeTemplateMessage(toPhone, templateName);
 }
 
 /**
