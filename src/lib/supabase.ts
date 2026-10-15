@@ -1,5 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 
+if (typeof globalThis !== 'undefined' && !(globalThis as any).WebSocket) {
+  (globalThis as any).WebSocket = class WebSocket {};
+}
+
 const SUPABASE_URL = "https://bdvrcpisjatvbbqffswp.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJkdnJjcGlzamF0dmJicWZmc3dwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAyMzUxMDQsImV4cCI6MjEwNTgxMTEwNH0.amQFqHKdkcHNFFa-HNFSXL-uFvDkGzJA9NyPErSRKOI";
 

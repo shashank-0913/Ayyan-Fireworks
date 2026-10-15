@@ -220,9 +220,42 @@ export function validateSlotTiming(
   return { isValid: true, message: 'Access Granted — Admission Verified', formattedTime: displayTime, formattedDate: displayDate };
 }
 
-export type SlotAvailabilityStatus = 'available' | 'filling_fast' | 'fully_booked' | 'blocked';
+export function getSlotStartDateTime(
+  slotDateStr: string | undefined | null,
+  startTimeStr: string | undefined | null
+): Date | null {
+  if (!slotDateStr || !startTimeStr) return null;
+  const cleanDate = String(slotDateStr).split('T')[0].trim();
+  const dateParts = cleanDate.split('-');
+  if (dateParts.length !== 3) return null;
 
-export function getSlotStatus(slot: Slot): SlotAvailabilityStatus {
+  const year = parseInt(dateParts[0], 10);
+  const month = parseInt(dateParts[1], 10) - 1; // 0-indexed month
+  const day = parseInt(dateParts[2], 10);
+  if (isNaN(year) || isNaN(month) || isNaN(day)) return null;
+
+  const minutes = parseTimeToMinutes(String(startTimeStr));
+  if (minutes === null) return null;
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+
+  return new Date(year, month, day, hours, mins, 0, 0);
+}
+
+export function isSlotExpired(
+  slotDateStr: string | undefined | null,
+  startTimeStr: string | undefined | null,
+  referenceTime: Date = new Date()
+): boolean {
+  const slotDateTime = getSlotStartDateTime(slotDateStr, startTimeStr);
+  if (!slotDateTime) return false;
+  return slotDateTime.getTime() <= referenceTime.getTime();
+}
+
+export type SlotAvailabilityStatus = 'available' | 'filling_fast' | 'fully_booked' | 'blocked' | 'expired';
+
+export function getSlotStatus(slot: Slot, referenceTime: Date = new Date()): SlotAvailabilityStatus {
+  if (isSlotExpired(slot.slot_date, slot.start_time, referenceTime)) return 'expired';
   if (slot.is_blocked) return 'blocked';
   const booked = slot.booked_capacity || 0;
   const total = slot.total_capacity || 120;

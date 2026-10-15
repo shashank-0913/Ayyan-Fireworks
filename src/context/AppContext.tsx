@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import { Product, Slot, Booking, StaffUser, BookingRpcResponse, BookingStatus } from '../types';
 import { INITIAL_PRODUCTS, generateInitialSlots } from '../lib/initialData';
 import { supabase, isSupabaseConfigured, DEFAULT_PRODUCT_IMAGE } from '../lib/supabase';
-import { isAuthorizedAdminEmail, ADMIN_EMAIL, generateUUID, formatTime, formatDateReadable, validateSlotTiming } from '../lib/utils';
+import { isAuthorizedAdminEmail, ADMIN_EMAIL, generateUUID, formatTime, formatDateReadable, validateSlotTiming, getSlotStartDateTime } from '../lib/utils';
 import { extractCleanQrPayload } from '../lib/cameraUtils';
 
 export interface GateScanResult {
@@ -340,6 +340,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const currentSlot = slots.find(s => s.id === slotId);
     if (!currentSlot) {
       return { success: false, error: 'The requested visiting slot was not found.' };
+    }
+
+    const slotDateTime = getSlotStartDateTime(currentSlot.slot_date, currentSlot.start_time);
+    const requestedDateTime = slotDateTime ? slotDateTime.getTime() : 0;
+    if (!requestedDateTime || requestedDateTime <= Date.now()) {
+      return {
+        success: false,
+        error: 'This time slot has passed and cannot be booked.'
+      };
     }
 
     if (currentSlot.is_blocked) {

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { 
   Clock, 
@@ -16,7 +16,7 @@ import {
 import { useAyyanStore } from '../../context/AppContext';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 import { Slot, Booking } from '../../types';
-import { formatDateReadable, formatTime, getSlotStatus, clean10DigitPhone } from '../../lib/utils';
+import { formatDateReadable, formatTime, getSlotStatus, clean10DigitPhone, getSlotStartDateTime, isSlotExpired } from '../../lib/utils';
 import { InteractiveCalendar } from '../common/InteractiveCalendar';
 import { VIPVisitingPass } from './VIPVisitingPass';
 
@@ -72,6 +72,30 @@ export const SlotBookingFlow: React.FC = () => {
     return 1;
   });
 
+  // 30-second tick interval to automatically expire active slots in real time
+  const [currentTime, setCurrentTime] = useState<Date>(() => new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 30000); // 30-second tick interval
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // Real-time auto-deselection if selected slot expires
+  useEffect(() => {
+    if (!selectedSlotId) return;
+    const currentSlot = slots.find(s => s.id === selectedSlotId);
+    if (currentSlot && isSlotExpired(currentSlot.slot_date, currentSlot.start_time, currentTime)) {
+      setSelectedSlotId('');
+      if (currentStep === 2) {
+        setCurrentStep(1);
+      }
+      setErrorMessage('This time slot has passed and cannot be booked. Please choose an upcoming slot.');
+    }
+  }, [currentTime, selectedSlotId, slots, currentStep]);
+
   // Slots for the chosen date
   const dateSlots = useMemo(() => {
     if (!selectedDate) return [];
@@ -80,16 +104,17 @@ export const SlotBookingFlow: React.FC = () => {
       .sort((a, b) => a.start_time.localeCompare(b.start_time));
   }, [slots, selectedDate]);
 
-  // Check if every slot for the selected date is blocked or fully booked
+  // Check if every slot for the selected date is blocked, fully booked, or expired
   const isAllDateSlotsBooked = useMemo(() => {
     if (dateSlots.length === 0) return false;
     return dateSlots.every(slot => {
+      const isExpired = isSlotExpired(slot.slot_date, slot.start_time, currentTime);
       const booked = slot.booked_capacity || 0;
       const total = slot.total_capacity || 120;
       const remaining = total - booked;
-      return slot.is_blocked || remaining <= 0 || booked >= total;
+      return isExpired || slot.is_blocked || remaining <= 0 || booked >= total;
     });
-  }, [dateSlots]);
+  }, [dateSlots, currentTime]);
 
   const selectedSlot = useMemo(() => {
     return slots.find(s => s.id === selectedSlotId);
@@ -103,6 +128,11 @@ export const SlotBookingFlow: React.FC = () => {
   };
 
   const handleSlotSelect = (slot: Slot) => {
+    const isExpired = isSlotExpired(slot.slot_date, slot.start_time, currentTime);
+    if (isExpired) {
+      setErrorMessage('This time slot has passed and cannot be booked.');
+      return;
+    }
     const booked = slot.booked_capacity || 0;
     const total = slot.total_capacity || 120;
     const remaining = total - booked;
@@ -120,7 +150,17 @@ export const SlotBookingFlow: React.FC = () => {
       return;
     }
     const slot = slots.find(s => s.id === selectedSlotId);
-    if (!slot || slot.is_blocked || (slot.total_capacity - slot.booked_capacity) <= 0) {
+    if (!slot) {
+      setErrorMessage('The selected slot was not found.');
+      return;
+    }
+    const isExpired = isSlotExpired(slot.slot_date, slot.start_time, currentTime);
+    if (isExpired) {
+      setErrorMessage('This time slot has passed and cannot be booked. Please choose an upcoming slot.');
+      setSelectedSlotId('');
+      return;
+    }
+    if (slot.is_blocked || (slot.total_capacity - slot.booked_capacity) <= 0) {
       setErrorMessage('The selected slot is fully booked or unavailable. Please choose another slot.');
       setSelectedSlotId('');
       return;
@@ -135,6 +175,25 @@ export const SlotBookingFlow: React.FC = () => {
 
     if (!selectedSlotId) {
       setErrorMessage('Please select a valid time slot.');
+      return;
+    }
+
+    const currentTargetSlot = slots.find(s => s.id === selectedSlotId);
+    if (!currentTargetSlot) {
+      setErrorMessage('Selected time slot not found. Please choose an available time.');
+      return;
+    }
+
+    const bookingDate = selectedDate || currentTargetSlot.slot_date || new Date().toISOString().split('T')[0];
+    const startTime = currentTargetSlot.start_time;
+    const slotDateTime = getSlotStartDateTime(bookingDate, startTime);
+    const requestedDateTime = slotDateTime ? slotDateTime.getTime() : 0;
+
+    // Client-side past slot validation check
+    if (!requestedDateTime || requestedDateTime <= Date.now()) {
+      setErrorMessage('This time slot has passed and cannot be booked.');
+      setSelectedSlotId('');
+      setCurrentStep(1);
       return;
     }
 
@@ -156,36 +215,80 @@ export const SlotBookingFlow: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      const currentTargetSlot = slots.find(s => s.id === selectedSlotId);
-      const selectedSlot = currentTargetSlot 
-        ? `${formatTime(currentTargetSlot.start_time)} – ${formatTime(currentTargetSlot.end_time)}`
-        : '09:00 AM – 10:00 AM';
-
-      const bookingDate = selectedDate || currentTargetSlot?.slot_date || new Date().toISOString().split('T')[0];
+      const selectedSlot = `${formatTime(currentTargetSlot.start_time)} – ${formatTime(currentTargetSlot.end_time)}`;
       let insertedRow: any = null;
 
-      if (isSupabaseConfigured && supabase) {
-        const { data, error } = await supabase
-          .from('bookings')
-          .insert([{
-            customer_name: name,
-            phone: phone.trim(),
-            customer_phone: phone.trim(),
+      // Call Backend Booking Submission Endpoint
+      try {
+        const response = await fetch('/api/book-slot', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            slot_id: selectedSlotId,
             slot_date: bookingDate,
+            start_time: startTime,
             slot_time: selectedSlot,
-            status: 'confirmed'
-          }])
-          .select()
-          .single();
+            customer_name: name,
+            phone: phone,
+            requestedDateTime
+          })
+        });
 
-        if (error) {
-          console.error('Supabase booking error:', error);
-          alert('Error booking slot: ' + error.message);
-          setIsSubmitting(false);
-          return;
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          if (response.status === 400) {
+            const apiError = errData.error || 'This time slot has passed and cannot be booked.';
+            setErrorMessage(apiError);
+            if (apiError.includes('passed') || apiError.includes('expired')) {
+              setSelectedSlotId('');
+              setCurrentStep(1);
+            }
+            setIsSubmitting(false);
+            return;
+          }
+          throw new Error(errData.error || `HTTP ${response.status}`);
         }
 
-        insertedRow = data;
+        const resData = await response.json();
+        if (resData?.booking) {
+          insertedRow = resData.booking;
+        }
+      } catch (apiErr: any) {
+        console.warn('API endpoint notice (checking direct Supabase fallback):', apiErr?.message);
+        if (isSupabaseConfigured && supabase) {
+          // Re-verify requestedDateTime before inserting
+          if (requestedDateTime <= Date.now()) {
+            setErrorMessage('This time slot has passed and cannot be booked.');
+            setSelectedSlotId('');
+            setCurrentStep(1);
+            setIsSubmitting(false);
+            return;
+          }
+
+          const { data, error } = await supabase
+            .from('bookings')
+            .insert([{
+              customer_name: name,
+              phone: phone.trim(),
+              customer_phone: phone.trim(),
+              slot_date: bookingDate,
+              slot_time: selectedSlot,
+              status: 'confirmed'
+            }])
+            .select()
+            .single();
+
+          if (error) {
+            console.error('Supabase booking error:', error);
+            setErrorMessage('Error booking slot: ' + error.message);
+            setIsSubmitting(false);
+            return;
+          }
+
+          insertedRow = data;
+        }
       }
 
       // Confetti Celebration
@@ -392,25 +495,47 @@ export const SlotBookingFlow: React.FC = () => {
                       const booked = slot.booked_capacity || 0;
                       const total = slot.total_capacity || 120;
                       const remaining = Math.max(0, total - booked);
-                      const status = getSlotStatus(slot);
+                      const status = getSlotStatus(slot, currentTime);
                       const isSelected = selectedSlotId === slot.id;
+
+                      // 1. Slot Expiration Rule:
+                      // Calculate slot datetime using selected date and slot start time.
+                      // If slotDateTime <= new Date(), set the slot state to "expired".
+                      const isExpired = isSlotExpired(slot.slot_date, slot.start_time, currentTime);
+
+                      // 2. Availability Rule:
+                      // If slot is in the future but already booked in state/DB, disable it and mark as "Booked".
+                      // Only present and future unbooked slots must remain clickable and active.
                       const isFull = booked >= total || remaining <= 0;
                       const isBlocked = Boolean(slot.is_blocked);
-                      const isAvailable = !isBlocked && !isFull;
+                      const isBooked = !isExpired && (isFull || isBlocked);
+                      const isAvailable = !isExpired && !isBooked;
 
                       return (
                         <button
                           key={slot.id}
                           type="button"
-                          disabled={!isAvailable}
-                          aria-disabled={!isAvailable}
+                          disabled={isExpired || !isAvailable}
+                          aria-disabled={isExpired || !isAvailable}
                           onClick={() => {
-                            if (isAvailable) {
+                            if (isAvailable && !isExpired) {
                               handleSlotSelect(slot);
                             }
                           }}
+                          style={
+                            isExpired
+                              ? {
+                                  backgroundColor: '#E5E7EB',
+                                  color: '#9CA3AF',
+                                  cursor: 'not-allowed',
+                                  pointerEvents: 'none',
+                                }
+                              : undefined
+                          }
                           className={`p-4 rounded-2xl border text-left transition-all duration-200 relative overflow-hidden min-h-[96px] flex flex-col justify-between ${
-                            !isAvailable
+                            isExpired
+                              ? 'border-gray-300 select-none'
+                              : isBooked
                               ? 'bg-slate-100/90 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800/80 opacity-60 cursor-not-allowed select-none'
                               : isSelected
                               ? 'bg-amber-500/20 dark:bg-amber-500/25 border-amber-500 dark:border-amber-400 ring-2 ring-amber-400/50 shadow-md'
@@ -418,27 +543,46 @@ export const SlotBookingFlow: React.FC = () => {
                           }`}
                         >
                           <div className="flex items-center justify-between">
-                            <span className={`font-extrabold text-sm sm:text-base ${!isAvailable ? 'text-slate-500 dark:text-slate-400' : 'text-slate-900 dark:text-white'}`}>
+                            <span 
+                              className={`font-extrabold text-sm sm:text-base ${
+                                isExpired
+                                  ? 'text-[#9CA3AF]'
+                                  : isBooked
+                                  ? 'text-slate-500 dark:text-slate-400'
+                                  : 'text-slate-900 dark:text-white'
+                              }`}
+                              style={isExpired ? { color: '#9CA3AF' } : undefined}
+                            >
                               {formatTime(slot.start_time)} – {formatTime(slot.end_time)}
                             </span>
-                            {isSelected && isAvailable && (
-                              <CheckCircle2 className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
-                            )}
-                            {!isAvailable && (
+
+                            {isExpired ? (
+                              <div className="flex items-center gap-1 text-[11px] font-bold" style={{ color: '#9CA3AF' }}>
+                                <Clock className="w-3.5 h-3.5" />
+                                <span>Expired</span>
+                              </div>
+                            ) : isBooked ? (
                               <div className="flex items-center gap-1 text-red-600 dark:text-red-400 text-[11px] font-bold">
                                 <Lock className="w-3.5 h-3.5" />
-                                <span>{isBlocked ? 'Blocked' : 'Fully Booked'}</span>
+                                <span>Booked</span>
                               </div>
-                            )}
+                            ) : isSelected && isAvailable ? (
+                              <CheckCircle2 className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
+                            ) : null}
                           </div>
 
                           {/* Slot Status & Dynamic Remaining Capacity */}
                           <div className="pt-2 flex items-center justify-between text-xs">
-                            <span className="font-semibold text-[11px] text-slate-600 dark:text-slate-400">
-                              {isBlocked ? (
-                                <span className="text-red-600 dark:text-red-400 font-bold">Slot Blocked</span>
-                              ) : isFull ? (
-                                <span className="text-red-600 dark:text-red-400 font-bold">Blocked / Fully Booked (0 left)</span>
+                            <span 
+                              className="font-semibold text-[11px]"
+                              style={isExpired ? { color: '#9CA3AF' } : undefined}
+                            >
+                              {isExpired ? (
+                                <span style={{ color: '#9CA3AF' }}>Slot Expired</span>
+                              ) : isBooked ? (
+                                <span className="text-red-600 dark:text-red-400 font-bold">
+                                  {isBlocked ? 'Slot Blocked' : 'Booked (0 left)'}
+                                </span>
                               ) : (
                                 <span className="text-slate-700 dark:text-slate-300 font-medium">
                                   {remaining} slots left
@@ -447,15 +591,26 @@ export const SlotBookingFlow: React.FC = () => {
                             </span>
 
                             <span
+                              style={
+                                isExpired
+                                  ? {
+                                      backgroundColor: '#E5E7EB',
+                                      color: '#9CA3AF',
+                                      borderColor: '#D1D5DB'
+                                    }
+                                  : undefined
+                              }
                               className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${
-                                !isAvailable
+                                isExpired
+                                  ? 'border-gray-300'
+                                  : isBooked
                                   ? 'bg-red-100 dark:bg-red-950/60 border-red-300 dark:border-red-500/30 text-red-700 dark:text-red-300'
                                   : status === 'filling_fast'
                                   ? 'bg-amber-500/15 border-amber-500/30 text-amber-800 dark:text-amber-300'
                                   : 'bg-emerald-500/15 border-emerald-500/30 text-emerald-800 dark:text-emerald-300'
                               }`}
                             >
-                              {isBlocked ? 'Blocked' : isFull ? 'Blocked / Fully Booked' : status === 'filling_fast' ? 'Filling Fast' : 'Available'}
+                              {isExpired ? 'Expired' : isBooked ? 'Booked' : status === 'filling_fast' ? 'Filling Fast' : 'Available'}
                             </span>
                           </div>
                         </button>
