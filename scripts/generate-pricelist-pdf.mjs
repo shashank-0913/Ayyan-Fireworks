@@ -16,23 +16,137 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: { persistSession: false }
 });
 
+const TELUGU_TO_ENGLISH_PAIRS = [
+  ['గణేష్', 'Ganesh'],
+  ['లక్ష్మీ', 'Lakshmi'],
+  ['బెంగాల్ ప్రిన్స్', 'Bengal Prince'],
+  ['హైడ్రో బాంబులు', 'Hydro Bombs'],
+  ['హైడ్రో', 'Hydro'],
+  ['ఆటం బాంబులు', 'Atom Bombs'],
+  ['ఆటం', 'Atom'],
+  ['మెగా డిజిటల్ బాంబు', 'Mega Digital Bomb'],
+  ['మెగా', 'Mega'],
+  ['డిజిటల్', 'Digital'],
+  ['బుల్లెట్ బాంబులు', 'Bullet Bombs'],
+  ['బుల్లెట్', 'Bullet'],
+  ['కురువి', 'Kuruvi'],
+  ['రైఫిల్', 'Rifle'],
+  ['బాంబులు', 'Bombs'],
+  ['బాంబు', 'Bomb'],
+  ['సౌండ్', 'Sound'],
+  ['టపాసులు', 'Crackers'],
+  ['కాకరపువ్వొత్తులు', 'Sparklers'],
+  ['మతాబులు', 'Colour Sparklers'],
+  ['ఆకుపచ్చ', 'Green'],
+  ['ఎరుపు', 'Red'],
+  ['రంగుల', 'Colour'],
+  ['ఎలక్ట్రిక్', 'Electric'],
+  ['భూచక్రాలు', 'Ground Chakkars'],
+  ['స్పెషల్', 'Special'],
+  ['డీలక్స్', 'Deluxe'],
+  ['అశోక', 'Asoka'],
+  ['పెద్ద', 'Big'],
+  ['విష్ణు', 'Vishnu'],
+  ['చక్రాలు', 'Chakkars'],
+  ['వీల్', 'Wheel'],
+  ['చిచ్చుబుడ్లు', 'Flower Pots'],
+  ['జెయింట్', 'Giant'],
+  ['కోటి', 'Koti Pots'],
+  ['ఫౌంటెన్', 'Fountain'],
+  ['మయూరి', 'Peacock'],
+  ['పీకాక్', 'Peacock'],
+  ['ట్రిపుల్', 'Triple'],
+  ['జాదుగర్', 'Jadugar'],
+  ['రాకెట్లు', 'Rockets'],
+  ['రాకెట్', 'Rocket'],
+  ['విజిలింగ్', 'Whistling'],
+  ['లూనార్', 'Lunar'],
+  ['బాణసంచా', 'Aerial Display'],
+  ['షాట్స్', 'Shots'],
+  ['కేక్', 'Cake'],
+  ['రాయల్', 'Royal'],
+  ['స్పెక్టాకిల్', 'Spectacle'],
+  ['స్పార్క్లర్', 'Sparkler'],
+  ['స్పార్క్లర్స్', 'Sparklers'],
+  ['మ్యాచ్ బాక్స్', 'Match Box'],
+  ['పాప్-పాప్', 'Pop-Pops'],
+  ['ట్వింక్లింగ్', 'Twinkling'],
+  ['హెలికాప్టర్', 'Helicopter'],
+  ['డ్రోన్', 'Drone'],
+  ['పాము బిళ్ళలు', 'Snake Eggs'],
+  ['గిఫ్ట్ బాక్స్', 'Gift Box'],
+  ['గిఫ్ట్', 'Gift'],
+  ['బాక్స్', 'Box'],
+  ['హ్యాంపర్', 'Hamper'],
+  ['కిడ్స్', 'Kids'],
+  ['సెలబ్రేషన్', 'Celebration'],
+  ['హరిత', 'Green Cracker'],
+  ['సెం.మీ', 'cm']
+];
+
+function sanitizeTextForPdf(input) {
+  if (input === null || input === undefined) return '';
+  let str = String(input).trim();
+  if (!str) return '';
+
+  if (/[\u0C00-\u0C7F]/.test(str)) {
+    for (const [tel, eng] of TELUGU_TO_ENGLISH_PAIRS) {
+      if (str.includes(tel)) {
+        str = str.split(tel).join(eng);
+      }
+    }
+    str = str.replace(/[\u0C00-\u0C7F]+/g, ' ');
+  }
+
+  str = str
+    .replace(/[\u2018\u2019\u201A\u201B]/g, "'")
+    .replace(/[\u201C\u201D\u201E\u201F]/g, '"')
+    .replace(/[\u2013\u2014\u2015]/g, '-')
+    .replace(/\u2026/g, '...')
+    .replace(/\u00A0/g, ' ')
+    .replace(/[\u200B-\u200D\uFEFF]/g, '');
+
+  str = str.replace(/[^\x20-\x7E\u00A0-\u00FF]/g, ' ');
+  str = str.replace(/\s+/g, ' ').trim();
+
+  return str;
+}
+
 /**
  * Defensive data normalization for product rows.
  * Guarantees fallbacks for name, item_code, category, packing, actual_price, and discount_price.
  */
 function normalizeProduct(raw, index) {
-  const rawName = String(raw.name || raw.item_name || raw.product_name || raw.title || '').trim();
-  const name = rawName || `Ayyan Special Cracker #${index + 1}`;
-
-  const rawCode = String(raw.item_code || raw.code || raw.sku || raw.product_code || '').trim();
+  const rawCode = String(raw.code || raw.item_code || raw.sku || raw.product_code || raw.id || '').trim();
   const idDigits = raw.id ? String(raw.id).replace(/\D/g, '').slice(-3) : '';
   const item_code = rawCode || idDigits || String(index + 1).padStart(3, '0');
 
-  const rawCat = String(raw.category || raw.category_name || raw.group || raw.type || '').trim();
-  const category = rawCat || 'Sivakasi Sparklers & Crackers';
+  const rawCandidate =
+    raw.name ||
+    raw.product_name ||
+    raw.item_name ||
+    raw.title ||
+    raw.english_name ||
+    raw.description ||
+    `Cracker Item #${item_code}`;
 
-  const rawPack = String(raw.packing || raw.piece_count || raw.unit || raw.pack_size || '').trim();
-  const packing = rawPack || '1 Box';
+  let name = sanitizeTextForPdf(rawCandidate);
+  if (!name || name === 'undefined' || name === 'null') {
+    const fallbackTitle = raw.english_name || raw.title || raw.product_name || '';
+    name = sanitizeTextForPdf(fallbackTitle) || `Cracker Item #${item_code}`;
+  }
+
+  const rawCat = raw.category || raw.category_name || raw.group || 'Sparklers & Fountains';
+  let category = sanitizeTextForPdf(rawCat);
+  if (!category || category === 'undefined' || category === 'null') {
+    category = 'Sparklers & Fountains';
+  }
+
+  const rawPack = raw.packing || raw.piece_count || raw.unit || raw.pack_size || '1 Box';
+  let packing = sanitizeTextForPdf(rawPack);
+  if (!packing || packing === 'undefined' || packing === 'null') {
+    packing = '1 Box';
+  }
 
   const parsedDiscount = parseFloat(String(raw.discount_price ?? raw.price ?? raw.sale_price ?? raw.rate ?? '0'));
   const discount_price = !isNaN(parsedDiscount) && parsedDiscount > 0 ? parsedDiscount : 50;
@@ -59,16 +173,36 @@ function normalizeProduct(raw, index) {
 function filterAndNormalizeProducts(rawList) {
   if (!Array.isArray(rawList)) return [];
 
-  const validEntries = rawList.filter(item => {
-    if (!item || typeof item !== 'object') return false;
-    return Boolean(
-      item.name || item.item_name || item.product_name || item.title ||
-      item.code || item.item_code || item.sku || item.id ||
-      item.price !== undefined || item.actual_price !== undefined || item.rate !== undefined
-    );
-  });
+  const results = [];
+  let validIndex = 0;
 
-  return validEntries.map((item, idx) => normalizeProduct(item, idx));
+  for (let i = 0; i < rawList.length; i++) {
+    const item = rawList[i];
+    if (!item || typeof item !== 'object') continue;
+
+    const hasAnyField = Object.entries(item).some(([_, val]) => {
+      if (val === null || val === undefined) return false;
+      return String(val).trim() !== '';
+    });
+    if (!hasAnyField) continue;
+
+    const hasNameField = Boolean(
+      item.name || item.product_name || item.item_name || item.title || item.english_name || item.description
+    );
+    const hasCategoryField = Boolean(
+      item.category || item.category_name || item.group
+    );
+
+    if (!hasNameField && !hasCategoryField) {
+      const code = item.code || item.item_code || item.id || (validIndex + 1);
+      console.warn(`[Catalog PDF Warning] Item at index ${i} has no name and no category. Applying placeholder matching code: #${code}`);
+    }
+
+    results.push(normalizeProduct(item, validIndex));
+    validIndex++;
+  }
+
+  return results;
 }
 
 async function fetchAllProductsFromSupabase() {
