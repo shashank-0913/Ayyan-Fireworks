@@ -16,8 +16,10 @@ import {
 import { ReserveSlotModal } from '../components/customer/ReserveSlotModal';
 import { SHOWROOM_CONTACT, getWhatsAppUrl } from '../lib/utils';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
+import { useStoreSettings } from '../hooks/useStoreSettings';
 
 export const HomePage: React.FC = () => {
+  const { vip_booking_enabled } = useStoreSettings();
   const [isSlotModalOpen, setIsSlotModalOpen] = useState(false);
 
   const crackerCategories = [
@@ -113,36 +115,42 @@ export const HomePage: React.FC = () => {
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
 
-            {/* Secondary Button: Reserve Visiting Slot */}
-            <button
-              type="button"
-              onClick={() => setIsSlotModalOpen(true)}
-              className="flex items-center gap-2 px-7 py-4 bg-white/80 dark:bg-obsidian-900/80 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-900 dark:text-amber-300 font-bold text-xs md:text-sm tracking-wide rounded-2xl border border-slate-300 dark:border-amber-500/30 hover:border-amber-500 backdrop-blur-sm active:scale-95 transition-all cursor-pointer shadow-md"
-            >
-              <Ticket className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-              <span>Reserve VIP Visiting Slot</span>
-            </button>
+            {/* Secondary Button: Reserve Visiting Slot (Completely hidden when disabled) */}
+            {vip_booking_enabled && (
+              <button
+                type="button"
+                onClick={() => setIsSlotModalOpen(true)}
+                className="flex items-center gap-2 px-7 py-4 bg-white/80 dark:bg-obsidian-900/80 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-900 dark:text-amber-300 font-bold text-xs md:text-sm tracking-wide rounded-2xl border border-slate-300 dark:border-amber-500/30 hover:border-amber-500 backdrop-blur-sm active:scale-95 transition-all cursor-pointer shadow-md"
+              >
+                <Ticket className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <span>Reserve VIP Visiting Slot</span>
+              </button>
+            )}
           </div>
 
-          {/* Quick link to retrieve existing pass */}
-          <div className="pt-2">
-            <Link
-              to="/my-bookings"
-              className="inline-flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-gold-300 transition"
-            >
-              <span>Already reserved a slot?</span>
-              <span className="font-bold underline text-amber-600 dark:text-gold-400">Find & View My Pass</span>
-              <ArrowRight className="w-3 h-3 text-amber-600 dark:text-gold-400" />
-            </Link>
-          </div>
+          {/* Quick link to retrieve existing pass - only shown when booking is enabled */}
+          {vip_booking_enabled && (
+            <div className="pt-2">
+              <Link
+                to="/my-bookings"
+                className="inline-flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-gold-300 transition"
+              >
+                <span>Already reserved a slot?</span>
+                <span className="font-bold underline text-amber-600 dark:text-gold-400">Find & View My Pass</span>
+                <ArrowRight className="w-3 h-3 text-amber-600 dark:text-gold-400" />
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Interactive Slot Booking Modal */}
-      <ReserveSlotModal
-        isOpen={isSlotModalOpen}
-        onClose={() => setIsSlotModalOpen(false)}
-      />
+      {/* Interactive Slot Booking Modal - Only rendered when enabled */}
+      {vip_booking_enabled && (
+        <ReserveSlotModal
+          isOpen={isSlotModalOpen}
+          onClose={() => setIsSlotModalOpen(false)}
+        />
+      )}
 
 
       {/* ========================================================================= */}

@@ -228,3 +228,28 @@ create policy "Allow authenticated update on product images"
 
 create policy "Allow authenticated delete on product images"
   on storage.objects for delete using (bucket_id = 'product-images' and auth.role() = 'authenticated');
+
+-- ==============================================================================
+-- STORE SETTINGS TABLE (VIP Slot Booking Toggle & Operational Controls)
+-- ==============================================================================
+create table if not exists public.store_settings (
+  key text primary key,
+  value jsonb not null default 'false'::jsonb,
+  updated_at timestamptz default timezone('utc'::text, now()) not null
+);
+
+-- Enable RLS
+alter table public.store_settings enable row level security;
+
+-- Allow public read access to store settings
+create policy "Allow public read on store settings"
+  on public.store_settings for select using (true);
+
+-- Allow authenticated admin/staff full access to store settings
+create policy "Allow staff full access to store settings"
+  on public.store_settings for all using (auth.role() = 'authenticated');
+
+-- Insert default row for vip_booking_enabled (defaults to false)
+insert into public.store_settings (key, value)
+values ('vip_booking_enabled', 'false'::jsonb)
+on conflict (key) do nothing;

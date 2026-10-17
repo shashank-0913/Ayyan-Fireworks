@@ -9,9 +9,13 @@ import {
   CheckCircle2, 
   Clock, 
   FileSpreadsheet,
-  QrCode
+  QrCode,
+  Ticket,
+  Loader2,
+  X
 } from 'lucide-react';
 import { useAyyanStore } from '../../context/AppContext';
+import { useStoreSettings } from '../../hooks/useStoreSettings';
 import { KPICards } from '../../components/portal/KPICards';
 import { ProductDrawer } from '../../components/portal/ProductDrawer';
 import { BatchSlotGeneratorModal } from '../../components/portal/BatchSlotGeneratorModal';
@@ -29,6 +33,13 @@ export const PortalDashboardPage: React.FC = () => {
     updateBookingStatus 
   } = useAyyanStore();
 
+  const {
+    vip_booking_enabled,
+    isLoading: isSettingsLoading,
+    updateVipBookingEnabled
+  } = useStoreSettings();
+
+  const [isUpdatingSetting, setIsUpdatingSetting] = useState(false);
   const [isProductDrawerOpen, setIsProductDrawerOpen] = useState(false);
   const [isBatchSlotModalOpen, setIsBatchSlotModalOpen] = useState(false);
 
@@ -125,6 +136,96 @@ export const PortalDashboardPage: React.FC = () => {
 
       {/* Real-time KPI Cards */}
       <KPICards />
+
+      {/* ========================================================================= */}
+      {/* VIP SLOT BOOKING SYSTEM CONTROLLER CARD                                   */}
+      {/* ========================================================================= */}
+      <div className={`p-5 sm:p-6 rounded-3xl border transition-all duration-300 ${
+        vip_booking_enabled
+          ? 'bg-gradient-to-r from-emerald-500/10 via-emerald-500/5 to-transparent dark:from-emerald-950/40 dark:via-obsidian-900 dark:to-obsidian-950 border-emerald-500/40 shadow-sm'
+          : 'bg-gradient-to-r from-amber-500/10 via-slate-100 to-transparent dark:from-amber-950/30 dark:via-obsidian-900 dark:to-obsidian-950 border-amber-500/30 shadow-sm'
+      }`}>
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="flex items-start gap-4">
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border transition-all ${
+              vip_booking_enabled
+                ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/40'
+                : 'bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/40'
+            }`}>
+              <Ticket className="w-6 h-6" />
+            </div>
+
+            <div className="space-y-1.5">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                  VIP Slot Booking Status
+                </h2>
+
+                {vip_booking_enabled ? (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-black bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                    </span>
+                    ENABLED • ACCEPTING PASSES
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-black bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700">
+                    <span className="w-2 h-2 rounded-full bg-slate-400 dark:bg-slate-500" />
+                    DISABLED • BOOKING CLOSED
+                  </span>
+                )}
+              </div>
+
+              <p className="text-xs text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
+                {vip_booking_enabled
+                  ? 'VIP visiting pass reservations are currently LIVE. Customers can select visiting windows, generate entrance passes, and view time slots across the website.'
+                  : 'Slot booking is strictly DISABLED. The "Reserve VIP Visiting Slot" CTA and booking banners are completely hidden from customer views. Any direct /booking access shows a closed notice.'}
+              </p>
+            </div>
+          </div>
+
+          {/* Interactive Switch Toggle */}
+          <div className="flex items-center gap-3 self-end md:self-center shrink-0">
+            <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+              {vip_booking_enabled ? 'Active' : 'Paused'}
+            </span>
+
+            <button
+              type="button"
+              role="switch"
+              aria-checked={vip_booking_enabled}
+              disabled={isSettingsLoading || isUpdatingSetting}
+              onClick={async () => {
+                setIsUpdatingSetting(true);
+                try {
+                  await updateVipBookingEnabled(!vip_booking_enabled);
+                } finally {
+                  setIsUpdatingSetting(false);
+                }
+              }}
+              className={`relative inline-flex h-8 w-16 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 ${
+                vip_booking_enabled ? 'bg-emerald-600' : 'bg-slate-300 dark:bg-slate-700'
+              } ${isSettingsLoading || isUpdatingSetting ? 'opacity-50 cursor-wait' : ''}`}
+            >
+              <span className="sr-only">Toggle VIP Slot Booking</span>
+              <span
+                className={`pointer-events-none inline-block h-7 w-7 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out flex items-center justify-center ${
+                  vip_booking_enabled ? 'translate-x-8' : 'translate-x-0'
+                }`}
+              >
+                {isUpdatingSetting ? (
+                  <Loader2 className="w-3.5 h-3.5 text-slate-600 animate-spin" />
+                ) : vip_booking_enabled ? (
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                ) : (
+                  <X className="w-3.5 h-3.5 text-slate-400" />
+                )}
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
 
       {/* Grid: Slot Utilization Visualizer + Today's Incoming Manifest */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
