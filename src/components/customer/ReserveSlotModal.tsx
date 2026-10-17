@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { X, Ticket, Sparkles } from 'lucide-react';
-import { StatutoryComplianceBanner } from '../common/StatutoryComplianceBanner';
 import { SlotBookingFlow } from './SlotBookingFlow';
 
 export interface ReserveSlotModalProps {
@@ -78,9 +77,6 @@ export const ReserveSlotModal: React.FC<ReserveSlotModalProps> = ({ isOpen, onCl
             <X className="w-5 h-5" />
           </button>
         </div>
-
-        {/* Statutory Compliance Notice Banner */}
-        <StatutoryComplianceBanner variant="modal" />
 
         {/* 3-Step Interactive Booking Engine */}
         <SlotBookingFlow />

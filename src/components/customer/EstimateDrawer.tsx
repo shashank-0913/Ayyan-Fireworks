@@ -6,7 +6,6 @@ import {
   Minus, 
   FileText, 
   Ticket, 
-  AlertTriangle,
   Package
 } from 'lucide-react';
 import { useEstimate } from '../../context/EstimateContext';
@@ -108,16 +107,6 @@ export const EstimateDrawer: React.FC = () => {
             </div>
           </div>
 
-          {/* Statutory Compliance Warning in Drawer */}
-          <div className="my-3 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-900 dark:text-amber-200 text-[11px] space-y-1 shrink-0">
-            <div className="flex items-center gap-1.5 font-bold text-amber-800 dark:text-amber-300">
-              <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
-              <span>Informational Showroom Estimate Only</span>
-            </div>
-            <p className="text-[10px] leading-relaxed text-slate-700 dark:text-amber-100/80">
-              Per Supreme Court directives, no online transactions or doorstep shipping take place. This estimate assists in planning your visit to our Visakhapatnam showroom.
-            </p>
-          </div>
 
           {/* Item List Scroll Area */}
           <div className="flex-1 overflow-y-auto space-y-3 pr-1 py-2">

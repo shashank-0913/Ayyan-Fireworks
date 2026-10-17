@@ -1,6 +1,5 @@
 import React from 'react';
 import { SlotBookingFlow } from '../components/customer/SlotBookingFlow';
-import { StatutoryComplianceBanner } from '../components/common/StatutoryComplianceBanner';
 import { Calendar, Clock, ShieldCheck, MapPin } from 'lucide-react';
 
 export const BookSlotPage: React.FC = () => {
@@ -19,9 +18,6 @@ export const BookSlotPage: React.FC = () => {
           Avoid festive queues. Secure a dedicated 1-hour in-store visiting pass with personalized Green Cracker advisory, direct factory pricing, and priority entry.
         </p>
       </div>
-
-      {/* Statutory Compliance Notice */}
-      <StatutoryComplianceBanner variant="compact" />
 
       {/* The 3-Step Interactive Booking Engine */}
       <SlotBookingFlow />

@@ -14,7 +14,6 @@ import {
   Navigation 
 } from 'lucide-react';
 import { ReserveSlotModal } from '../components/customer/ReserveSlotModal';
-import { StatutoryComplianceBanner } from '../components/common/StatutoryComplianceBanner';
 import { SHOWROOM_CONTACT, getWhatsAppUrl } from '../lib/utils';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 
@@ -67,7 +66,7 @@ export const HomePage: React.FC = () => {
   ];
 
   return (
-    <div className="relative space-y-16 sm:space-y-24 pb-20 overflow-hidden">
+    <div className="relative space-y-16 sm:space-y-24 overflow-hidden">
       {/* ========================================================================= */}
       {/* 1. HERO SECTION                                                           */}
       {/* ========================================================================= */}
@@ -145,10 +144,6 @@ export const HomePage: React.FC = () => {
         onClose={() => setIsSlotModalOpen(false)}
       />
 
-      {/* Statutory Compliance Notice Banner on Homepage */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <StatutoryComplianceBanner variant="compact" />
-      </section>
 
       {/* ========================================================================= */}
       {/* 2. PROMINENT 2026 CATALOGUE GATEWAY BANNER                                */}
@@ -314,6 +309,15 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Front Page Bottom Disclaimer */}
+      <section className="w-full border-t border-neutral-800 bg-neutral-950 py-6 px-4 text-center">
+        <div className="mx-auto max-w-4xl">
+          <p className="text-[11px] leading-relaxed text-neutral-400">
+            <span className="font-semibold text-neutral-300">Disclaimer:</span> As per Supreme Court directives and local regulations, fireworks are sold strictly within permissible festive retail guidelines. Online ordering is for inquiry, catalog reference, and slot reservation only. Delivery and collection follow standard safety compliances at our Visakhapatnam showroom.
+          </p>
         </div>
       </section>
     </div>

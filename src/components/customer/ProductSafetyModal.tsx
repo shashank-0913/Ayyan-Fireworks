@@ -7,7 +7,6 @@ import {
   Package, 
   CheckCircle2, 
   Leaf, 
-  AlertTriangle,
   Plus,
   Check
 } from 'lucide-react';
@@ -121,16 +120,7 @@ export const ProductSafetyModal: React.FC<ProductSafetyModalProps> = ({ product,
           </div>
         </div>
 
-        {/* Supreme Court Compliance Notice */}
-        <div className="my-4 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-900 dark:text-amber-200 text-[11px] space-y-1">
-          <div className="flex items-center gap-1.5 font-bold text-amber-800 dark:text-amber-300">
-            <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
-            <span>Statutory Compliance Notice</span>
-          </div>
-          <p className="text-[10px] leading-relaxed text-slate-700 dark:text-amber-100/80">
-            Per Supreme Court of India directives, online transactions and shipping are prohibited. This item is available exclusively for in-person inspection and direct purchase at our Visakhapatnam physical showroom.
-          </p>
-        </div>
+
 
         {/* Safety Badges & Decibels */}
         <div className="py-3 border-b border-slate-200 dark:border-white/10">

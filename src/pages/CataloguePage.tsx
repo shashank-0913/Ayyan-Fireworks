@@ -20,7 +20,6 @@ import { ProductCard } from '../components/customer/ProductCard';
 import { ProductRow } from '../components/customer/ProductRow';
 import { ProductImageLightbox } from '../components/customer/ProductImageLightbox';
 import { ProductSafetyModal } from '../components/customer/ProductSafetyModal';
-import { StatutoryComplianceBanner } from '../components/common/StatutoryComplianceBanner';
 import { useEstimate } from '../context/EstimateContext';
 import { EstimateDrawer } from '../components/customer/EstimateDrawer';
 import { Product, SoundLevel } from '../types';
@@ -195,10 +194,6 @@ export const CataloguePage: React.FC = () => {
         )}
       </div>
 
-      {/* ========================================================================= */}
-      {/* 2. PROMINENT SUPREME COURT STATUTORY COMPLIANCE BANNER                    */}
-      {/* ========================================================================= */}
-      <StatutoryComplianceBanner variant="prominent" />
 
       {/* ========================================================================= */}
       {/* 3. SEARCH & QUICK FILTERS CONTROL PANEL                                   */}
