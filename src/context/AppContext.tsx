@@ -857,12 +857,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const toggleSlotBlock = async (slotId: string): Promise<void> => {
+    let nextBlocked = false;
     setSlots(prev => prev.map(s => {
       if (s.id === slotId) {
-        return { ...s, is_blocked: !s.is_blocked };
+        nextBlocked = !s.is_blocked;
+        return { ...s, is_blocked: nextBlocked };
       }
       return s;
     }));
+
+    if (isSupabaseConfigured && supabase) {
+      try {
+        await supabase.from('slots').update({ is_blocked: nextBlocked }).eq('id', slotId);
+      } catch (e) {
+        console.warn('[AppContext] Supabase slot block update error:', e);
+      }
+    }
   };
 
   const batchGenerateSlots = async (

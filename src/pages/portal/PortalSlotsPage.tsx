@@ -4,15 +4,20 @@ import {
   Plus, 
   Lock, 
   Unlock, 
-  Clock
+  Clock,
+  Check,
+  X,
+  Ticket
 } from 'lucide-react';
 import { useAyyanStore } from '../../context/AppContext';
+import { useStoreSettings } from '../../hooks/useStoreSettings';
 import { Slot } from '../../types';
 import { formatTime, formatDateReadable } from '../../lib/utils';
 import { BatchSlotGeneratorModal } from '../../components/portal/BatchSlotGeneratorModal';
 
 export const PortalSlotsPage: React.FC = () => {
   const { slots, updateSlotCapacity, toggleSlotBlock } = useAyyanStore();
+  const { vip_booking_enabled, updateVipBookingEnabled } = useStoreSettings();
 
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [isBatchModalOpen, setIsBatchModalOpen] = useState(false);
@@ -64,7 +69,37 @@ export const PortalSlotsPage: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Master VIP Slot Booking Toggle */}
+          <div className={`flex items-center gap-2.5 px-3.5 py-2 rounded-xl border text-xs font-bold transition-all shadow-xs ${
+            vip_booking_enabled
+              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-800 dark:text-emerald-300'
+              : 'bg-amber-500/10 border-amber-500/30 text-amber-800 dark:text-amber-300'
+          }`}>
+            <Ticket className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+            <span>VIP Booking:</span>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={vip_booking_enabled}
+              onClick={() => updateVipBookingEnabled(!vip_booking_enabled)}
+              className={`relative inline-flex h-5 w-10 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500 ${
+                vip_booking_enabled ? 'bg-emerald-600' : 'bg-slate-300 dark:bg-slate-700'
+              }`}
+              title="Toggle public website slot booking globally"
+            >
+              <span className="sr-only">Toggle Global VIP Booking</span>
+              <span
+                className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ${
+                  vip_booking_enabled ? 'translate-x-5' : 'translate-x-0'
+                }`}
+              />
+            </button>
+            <span className="text-[10px] font-black uppercase">
+              {vip_booking_enabled ? 'Enabled' : 'Disabled'}
+            </span>
+          </div>
+
           <button
             onClick={() => setIsBatchModalOpen(true)}
             className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center gap-2 transition-all shadow-md min-h-[40px]"
@@ -139,7 +174,7 @@ export const PortalSlotsPage: React.FC = () => {
                 <th className="px-4 py-4">Max Capacity</th>
                 <th className="px-4 py-4">Occupancy</th>
                 <th className="px-4 py-4">Status Threshold</th>
-                <th className="px-6 py-4 text-right">Quick Controls</th>
+                <th className="px-6 py-4 text-right">Slot Controls (Enable / Disable)</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-800/60">
@@ -236,7 +271,7 @@ export const PortalSlotsPage: React.FC = () => {
                     <td className="px-4 py-4">
                       {slot.is_blocked ? (
                         <span className="px-2.5 py-1 rounded-md bg-red-100 dark:bg-red-950/60 border border-red-300 dark:border-red-500/30 text-red-700 dark:text-red-300 font-bold text-[10px]">
-                          LOCKED / CLOSED
+                          DISABLED / CLOSED
                         </span>
                       ) : isFull ? (
                         <span className="px-2.5 py-1 rounded-md bg-red-100 dark:bg-red-950/60 border border-red-300 dark:border-red-500/30 text-red-700 dark:text-red-300 font-bold text-[10px]">
@@ -253,20 +288,59 @@ export const PortalSlotsPage: React.FC = () => {
                       )}
                     </td>
 
-                    {/* Quick Lock / Unlock Toggle */}
+                    {/* Slot Availability (Enable / Disable) Controls */}
                     <td className="px-6 py-4 text-right">
-                      <button
-                        onClick={() => toggleSlotBlock(slot.id)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 ml-auto transition-colors min-h-[36px] ${
-                          slot.is_blocked
-                            ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
-                            : 'bg-red-50 hover:bg-red-100 dark:bg-red-950/40 dark:hover:bg-red-900/60 border border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-300'
-                        }`}
-                        title={slot.is_blocked ? 'Reopen this slot to the public' : 'Lock this slot to prevent public booking'}
-                      >
-                        {slot.is_blocked ? <Unlock className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
-                        <span>{slot.is_blocked ? 'Unlock Slot' : 'Lock Slot'}</span>
-                      </button>
+                      <div className="flex items-center justify-end gap-3">
+                        {/* Interactive Toggle Switch */}
+                        <div className="flex items-center gap-1.5">
+                          <span className={`text-[11px] font-bold ${
+                            slot.is_blocked 
+                              ? 'text-slate-400 dark:text-slate-500' 
+                              : 'text-emerald-700 dark:text-emerald-400 font-extrabold'
+                          }`}>
+                            {slot.is_blocked ? 'Disabled' : 'Enabled'}
+                          </span>
+
+                          <button
+                            type="button"
+                            role="switch"
+                            aria-checked={!slot.is_blocked}
+                            onClick={() => toggleSlotBlock(slot.id)}
+                            title={slot.is_blocked ? 'Click to Enable this slot' : 'Click to Disable this slot'}
+                            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-1 ${
+                              !slot.is_blocked ? 'bg-emerald-600 hover:bg-emerald-500' : 'bg-slate-300 dark:bg-slate-700 hover:bg-slate-400'
+                            }`}
+                          >
+                            <span className="sr-only">Toggle Slot Availability</span>
+                            <span
+                              className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out flex items-center justify-center ${
+                                !slot.is_blocked ? 'translate-x-5' : 'translate-x-0'
+                              }`}
+                            >
+                              {!slot.is_blocked ? (
+                                <Check className="w-3 h-3 text-emerald-600" />
+                              ) : (
+                                <X className="w-3 h-3 text-slate-400" />
+                              )}
+                            </span>
+                          </button>
+                        </div>
+
+                        {/* Direct Action Button: "Enable Slot" / "Disable Slot" */}
+                        <button
+                          type="button"
+                          onClick={() => toggleSlotBlock(slot.id)}
+                          className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs min-h-[34px] active:scale-95 ${
+                            slot.is_blocked
+                              ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-500/20'
+                              : 'bg-red-50 hover:bg-red-100 dark:bg-red-950/40 dark:hover:bg-red-900/60 border border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-300'
+                          }`}
+                          title={slot.is_blocked ? 'Enable this slot for customer bookings' : 'Disable this slot to stop bookings'}
+                        >
+                          {slot.is_blocked ? <Unlock className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
+                          <span>{slot.is_blocked ? 'Enable Slot' : 'Disable Slot'}</span>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
