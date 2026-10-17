@@ -102,6 +102,28 @@ async function test() {
     rawPayload: {}
   });
   console.log('\nReply "Hi" (Welcome Greeting Template Response):\n' + JSON.stringify(tGreeting.messages[0], null, 2));
+
+  // Text: "hello"
+  const tHello = await handleWhatsAppWebhookEvent({
+    from: '917729992125',
+    messageId: 'm_hello',
+    timestamp: '7',
+    type: 'text',
+    textBody: 'hello',
+    rawPayload: {}
+  });
+  console.log('\nReply "hello" (Welcome Greeting Template Response):\n' + JSON.stringify(tHello.messages[0], null, 2));
+
+  // Text: Generic greeting / starter
+  const tStarter = await handleWhatsAppWebhookEvent({
+    from: '917729992125',
+    messageId: 'm_start',
+    timestamp: '8',
+    type: 'text',
+    textBody: 'start',
+    rawPayload: {}
+  });
+  console.log('\nReply "start" (Welcome Greeting Template Response):\n' + JSON.stringify(tStarter.messages[0], null, 2));
 }
 
 test().catch(console.error);

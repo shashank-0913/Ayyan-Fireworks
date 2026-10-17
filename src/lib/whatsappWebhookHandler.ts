@@ -56,8 +56,7 @@ export const SLOT_BOOKING_URL = 'https://vizagayyan.com/#booking';
 export const PASS_MANAGEMENT_URL = 'https://vizagayyan.com/my-bookings';
 
 /** Approved Meta WhatsApp Template name for welcome greeting menu */
-export const WELCOME_TEMPLATE_NAME = 'ayyan_welcome_menu';
-export const WELCOME_TEMPLATE_HEADER_IMAGE = 'https://vizagayyan.com/ayyan_images/bunny_brand_logo.png';
+export const WELCOME_TEMPLATE_NAME = 'ayyan_welcome_v2';
 
 /** Reply text when user clicks "View Catalogue" or sends catalogue enquiry */
 export const CATALOGUE_REPLY_TEXT = 'Explore our full catalogue here: https://vizagayyan.com';
@@ -70,32 +69,18 @@ export const CATALOGUE_REPLY_TEXT = 'Explore our full catalogue here: https://vi
  *   "to": recipientPhone,
  *   "type": "template",
  *   "template": {
- *     "name": "ayyan_welcome_menu",
+ *     "name": "ayyan_welcome_v2",
  *     "language": {
  *       "code": "en"
- *     },
- *     "components": [
- *       {
- *         "type": "header",
- *         "parameters": [
- *           {
- *             "type": "image",
- *             "image": {
- *               "link": "https://vizagayyan.com/ayyan_images/bunny_brand_logo.png"
- *             }
- *           }
- *         ]
- *       }
- *     ]
+ *     }
  *   }
  * }
  */
 export function buildWelcomeGreetingPayload(
   toPhone: string,
-  templateName: string = WELCOME_TEMPLATE_NAME,
-  headerImageUrl: string = WELCOME_TEMPLATE_HEADER_IMAGE
+  templateName: string = WELCOME_TEMPLATE_NAME
 ): WhatsAppMessageEnvelope {
-  return buildWelcomeTemplateMessage(toPhone, templateName, headerImageUrl);
+  return buildWelcomeTemplateMessage(toPhone, templateName);
 }
 
 /**
@@ -218,9 +203,12 @@ export async function handleWhatsAppWebhookRequest(
         supabaseClient: options?.supabaseClient
       });
 
-      // Dispatch outgoing interactive messages back to the user
+      // Dispatch outgoing messages back to the user
       for (const msg of botResponse.messages) {
-        await sendWhatsAppCloudMessage(msg);
+        const dispatchResult = await sendWhatsAppCloudMessage(msg);
+        if (!dispatchResult.success) {
+          console.error('[WhatsApp Webhook Dispatch Error] FULL ERROR RESPONSE BODY FROM META:', JSON.stringify(dispatchResult.data || dispatchResult.error, null, 2));
+        }
       }
 
       return {
@@ -232,10 +220,10 @@ export async function handleWhatsAppWebhookRequest(
         }
       };
     } catch (err: any) {
-      console.error('[WhatsApp Webhook] Processing error:', err);
+      console.error('[WhatsApp Webhook] Processing error - FULL ERROR BODY FROM META/SERVER:', err);
       return {
         status: 500,
-        body: { error: 'Failed to process incoming webhook event', details: err?.message }
+        body: { error: 'Failed to process incoming webhook event', details: err?.message, fullError: err }
       };
     }
   }

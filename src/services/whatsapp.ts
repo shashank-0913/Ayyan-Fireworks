@@ -34,7 +34,14 @@ export interface WhatsAppMessagePayload {
   messaging_product: 'whatsapp';
   recipient_type: 'individual';
   to: string;
-  type: 'interactive' | 'text' | 'location';
+  type: 'interactive' | 'text' | 'location' | 'template';
+  template?: {
+    name: string;
+    language: {
+      code: string;
+    };
+    components?: any[];
+  };
   interactive?: {
     type: 'button' | 'list' | 'cta_url' | 'location_request_message';
     header?: {
@@ -111,17 +118,24 @@ export async function sendWhatsAppMessage(
       body: JSON.stringify(payload)
     });
 
-    const data = await response.json();
+    let data: any;
+    try {
+      data = await response.json();
+    } catch (_jsonErr) {
+      const rawText = await response.text().catch(() => '');
+      data = { rawBody: rawText };
+    }
+
     console.log(`[WhatsApp Outgoing API Response] HTTP Status: ${response.status} ${response.statusText}`, data);
 
     if (!response.ok) {
-      console.error(`[WhatsApp Cloud API Error HTTP ${response.status}]:`, data);
-      return { success: false, error: data.error?.message || `HTTP ${response.status}` };
+      console.error(`[WhatsApp Cloud API Error HTTP ${response.status}] FULL ERROR RESPONSE BODY FROM META:`, JSON.stringify(data, null, 2));
+      return { success: false, error: data?.error?.message || `HTTP ${response.status}`, data };
     }
 
     return { success: true, data };
   } catch (err: any) {
-    console.error('[WhatsApp Cloud API Network Exception]:', err);
+    console.error('[WhatsApp Cloud API Network Exception] FULL ERROR DETAILS:', err);
     return { success: false, error: err?.message || 'Network error' };
   }
 }
@@ -147,7 +161,7 @@ export function buildMainMenuPayload(toPhone: string, customerName?: string): Wh
         text: '🎆 Ayyan Fireworks (Bunny Brand)'
       },
       body: {
-        text: `${greeting}Welcome to Ayyan Fireworks — authentic Sivakasi fireworks manufacturer showroom since 1987.\n\nPlease select an option below:\n1️⃣ Book VIP Slot\n2️⃣ Visit Website\n3️⃣ Showroom Visit`
+        text: `${greeting}Welcome to Ayyan Fireworks (Bunny Brand, Sivakasi).\n\nPlease select an option below:`
       },
       footer: {
         text: DEFAULT_FOOTER
@@ -181,9 +195,43 @@ export function buildMainMenuPayload(toPhone: string, customerName?: string): Wh
   };
 }
 
-export async function sendMainMenu(toPhone: string, customerName?: string) {
-  const payload = buildMainMenuPayload(toPhone, customerName);
+/**
+ * Builds the approved Meta WhatsApp welcome greeting template payload:
+ * {
+ *   "messaging_product": "whatsapp",
+ *   "recipient_type": "individual",
+ *   "to": toPhone,
+ *   "type": "template",
+ *   "template": {
+ *     "name": "ayyan_welcome_v2",
+ *     "language": {
+ *       "code": "en"
+ *     }
+ *   }
+ * }
+ */
+export function buildWelcomeTemplatePayload(toPhone: string): WhatsAppMessagePayload {
+  return {
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    to: formatWhatsAppPhone(toPhone),
+    type: 'template',
+    template: {
+      name: 'ayyan_welcome_v2',
+      language: {
+        code: 'en'
+      }
+    }
+  };
+}
+
+export async function sendWelcomeTemplate(toPhone: string) {
+  const payload = buildWelcomeTemplatePayload(toPhone);
   return sendWhatsAppMessage(payload);
+}
+
+export async function sendMainMenu(toPhone: string, _customerName?: string) {
+  return sendWelcomeTemplate(toPhone);
 }
 
 /**

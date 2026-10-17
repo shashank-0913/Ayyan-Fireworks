@@ -180,7 +180,7 @@ export function buildMainMenuMessage(toPhone: string, customerName?: string): Wh
         text: '🎆 Ayyan Fireworks • Vizag'
       },
       body: {
-        text: `${greeting}Welcome to Ayyan Fireworks (Bunny Brand, Since 1987).\n\nExperience India's premier certified green fireworks showroom with live demos & direct manufacturer pricing.\n\nPlease select an option below:\n1️⃣ Book VIP Slot\n2️⃣ Visit Website\n3️⃣ Showroom Visit`
+        text: `${greeting}Welcome to Ayyan Fireworks (Bunny Brand, Since 1987).\n\nExperience India's premier certified green fireworks showroom with live demos & direct manufacturer pricing.\n\nPlease select an option below:`
       },
       footer: {
         text: DEFAULT_FOOTER
@@ -542,12 +542,11 @@ export function buildTextMessage(toPhone: string, text: string): WhatsAppMessage
 
 /**
  * 3.10 Approved Meta WhatsApp Welcome Greeting Template Message
- * Sends approved "ayyan_welcome_menu" template with Bunny Brand logo header image
+ * Sends approved "ayyan_welcome_v2" utility template (no components/image header required)
  */
 export function buildWelcomeTemplateMessage(
   toPhone: string,
-  templateName: string = 'ayyan_welcome_menu',
-  headerImageUrl: string = 'https://vizagayyan.com/ayyan_images/bunny_brand_logo.png'
+  templateName: string = 'ayyan_welcome_v2'
 ): WhatsAppMessageEnvelope {
   return {
     messaging_product: 'whatsapp',
@@ -558,20 +557,7 @@ export function buildWelcomeTemplateMessage(
       name: templateName,
       language: {
         code: 'en'
-      },
-      components: [
-        {
-          type: 'header',
-          parameters: [
-            {
-              type: 'image',
-              image: {
-                link: headerImageUrl
-              }
-            }
-          ]
-        }
-      ]
+      }
     }
   };
 }
@@ -1017,6 +1003,28 @@ export async function handleWhatsAppWebhookEvent(
   // --------------------------------------------------------------------------
   const normalizedText = (textBody || '').trim().toLowerCase();
 
+  // 1. Direct Greetings & Conversation Starters ("hi", "hello", "hey", etc.)
+  // Send approved Meta template "ayyan_welcome_v2" directly
+  if (
+    normalizedText === 'hi' ||
+    normalizedText === 'hello' ||
+    normalizedText === 'hey' ||
+    normalizedText === 'namaste' ||
+    normalizedText === 'vanakkam' ||
+    normalizedText === 'start' ||
+    normalizedText === 'menu' ||
+    normalizedText === 'help' ||
+    normalizedText === 'welcome' ||
+    normalizedText === ''
+  ) {
+    return {
+      messages: [
+        buildWelcomeTemplateMessage(from, 'ayyan_welcome_v2')
+      ],
+      metadata: { action: 'welcome_template_ayyan_welcome_v2' }
+    };
+  }
+
   // Reply: View Catalogue Text (Priority matching)
   if (
     normalizedText === 'view catalogue' ||
@@ -1125,12 +1133,12 @@ export async function handleWhatsAppWebhookEvent(
     };
   }
 
-  // Welcome Greeting Handler Fallback -> Approved WhatsApp Template: ayyan_welcome_menu
+  // Welcome Greeting Handler Fallback -> Approved WhatsApp Template: ayyan_welcome_v2
   return {
     messages: [
-      buildWelcomeTemplateMessage(from, 'ayyan_welcome_menu')
+      buildWelcomeTemplateMessage(from, 'ayyan_welcome_v2')
     ],
-    metadata: { fallbackTrigger: 'welcome_template_ayyan_welcome_menu' }
+    metadata: { fallbackTrigger: 'welcome_template_ayyan_welcome_v2' }
   };
 }
 
@@ -1179,18 +1187,26 @@ export async function sendWhatsAppCloudMessage(
       body: JSON.stringify(payload)
     });
 
-    const result = await response.json();
+    let result: any;
+    try {
+      result = await response.json();
+    } catch (_jsonErr) {
+      const rawText = await response.text().catch(() => '');
+      result = { rawBody: rawText };
+    }
+
     if (!response.ok) {
-      console.error('[WhatsApp Cloud API Error]:', result);
+      console.error('[WhatsApp Cloud API Error] FULL ERROR RESPONSE BODY FROM META:', JSON.stringify(result, null, 2));
       return {
         success: false,
-        error: result.error?.message || `HTTP ${response.status}: Failed to send WhatsApp message`
+        error: result?.error?.message || `HTTP ${response.status}: Failed to send WhatsApp message`,
+        data: result
       };
     }
 
     return { success: true, data: result };
   } catch (err: any) {
-    console.error('[WhatsApp Cloud API Network Error]:', err);
+    console.error('[WhatsApp Cloud API Exception] FULL ERROR RESPONSE BODY / DETAILS:', err);
     return { success: false, error: err?.message || 'Network exception' };
   }
 }

@@ -12,9 +12,9 @@
  */
 
 import {
-  sendMainMenu,
   sendStoreLocation,
-  sendTextMessage
+  sendTextMessage,
+  sendWelcomeTemplate
 } from '../services/whatsapp';
 import { formatWhatsAppPhone } from '../lib/utils';
 
@@ -120,7 +120,7 @@ export function parseIncomingMessage(body: any): WebhookMessageContext | null {
  * 3. Webhook Message Event Router (POST)
  */
 export async function handleWebhookMessage(parsed: WebhookMessageContext): Promise<{ success: boolean; handledAction: string }> {
-  const { from, senderName, buttonReplyId, listReplyId, textBody, type } = parsed;
+  const { from, senderName: _senderName, buttonReplyId, listReplyId, textBody, type } = parsed;
   const actionId = buttonReplyId || listReplyId;
 
   console.log(`[WhatsApp Webhook Router] Message from ${from} | Type: ${type} | ActionID: ${actionId || 'none'}`);
@@ -202,9 +202,25 @@ export async function handleWebhookMessage(parsed: WebhookMessageContext): Promi
   // C. FALLBACK HANDLING FOR STANDARD TEXT MESSAGES
   // Ordered by 1. Book VIP Slot, 2. Visit Website, 3. Showroom Visit
   // ==========================================================================
-  const text = (textBody || '').toLowerCase();
+  const text = (textBody || '').trim().toLowerCase();
 
-  // 1. Text number "1" or keyword "slot" / "book" / "vip" / "pass"
+  // 1. Direct Greetings ("hi", "hello", "hey", etc.) -> Send Approved Meta Template
+  if (
+    text === 'hi' ||
+    text === 'hello' ||
+    text === 'hey' ||
+    text === 'start' ||
+    text === 'menu' ||
+    text === 'namaste' ||
+    text === 'vanakkam' ||
+    text === 'welcome' ||
+    text === ''
+  ) {
+    await sendWelcomeTemplate(from);
+    return { success: true, handledAction: 'welcome_template_ayyan_welcome_v2' };
+  }
+
+  // 2. Text number "1" or keyword "slot" / "book" / "vip" / "pass"
   if (text === '1' || text.includes('slot') || text.includes('book') || text.includes('ticket') || text.includes('pass') || text.includes('vip')) {
     await sendTextMessage(
       from,
@@ -213,7 +229,7 @@ export async function handleWebhookMessage(parsed: WebhookMessageContext): Promi
     return { success: true, handledAction: 'fallback_text_slot' };
   }
 
-  // 2. Text number "2" or keyword "website" / "catalogue" / "price" / "online"
+  // 3. Text number "2" or keyword "website" / "catalogue" / "price" / "online"
   if (text === '2' || text.includes('website') || text.includes('catalogue') || text.includes('catalog') || text.includes('price') || text.includes('online')) {
     await sendTextMessage(
       from,
@@ -222,7 +238,7 @@ export async function handleWebhookMessage(parsed: WebhookMessageContext): Promi
     return { success: true, handledAction: 'fallback_text_website' };
   }
 
-  // 3. Text number "3" or keyword "showroom" / "location" / "address" / "map" / "where" / "visit"
+  // 4. Text number "3" or keyword "showroom" / "location" / "address" / "map" / "where" / "visit"
   if (text === '3' || text.includes('showroom') || text.includes('visit') || text.includes('location') || text.includes('address') || text.includes('map') || text.includes('where')) {
     await sendTextMessage(
       from,
@@ -231,9 +247,9 @@ export async function handleWebhookMessage(parsed: WebhookMessageContext): Promi
     return { success: true, handledAction: 'fallback_text_location' };
   }
 
-  // 4. Greetings / Menu Request Fallback
-  await sendMainMenu(from, senderName);
-  return { success: true, handledAction: 'fallback_main_menu' };
+  // 5. Fallback -> Send Approved Meta Template directly
+  await sendWelcomeTemplate(from);
+  return { success: true, handledAction: 'fallback_welcome_template' };
 }
 
 /**
