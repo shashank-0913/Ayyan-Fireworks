@@ -542,18 +542,36 @@ export function buildTextMessage(toPhone: string, text: string): WhatsAppMessage
 
 /**
  * 3.10 Approved Meta WhatsApp Welcome Greeting Template Message
- * Sends approved "ayyan_store_connect" template
+ * Sends approved "ayyan_welcome_menu" template with Bunny Brand logo header image
  */
-export function buildWelcomeTemplateMessage(toPhone: string, templateName: string = 'ayyan_store_connect'): WhatsAppMessageEnvelope {
+export function buildWelcomeTemplateMessage(
+  toPhone: string,
+  templateName: string = 'ayyan_welcome_menu',
+  headerImageUrl: string = 'https://vizagayyan.com/ayyan_images/bunny_brand_logo.png'
+): WhatsAppMessageEnvelope {
   return {
     messaging_product: 'whatsapp',
+    recipient_type: 'individual',
     to: formatWhatsAppPhone(toPhone),
     type: 'template',
     template: {
       name: templateName,
       language: {
         code: 'en'
-      }
+      },
+      components: [
+        {
+          type: 'header',
+          parameters: [
+            {
+              type: 'image',
+              image: {
+                link: headerImageUrl
+              }
+            }
+          ]
+        }
+      ]
     }
   };
 }
@@ -1107,12 +1125,12 @@ export async function handleWhatsAppWebhookEvent(
     };
   }
 
-  // Welcome Greeting Handler Fallback -> Approved WhatsApp Template: ayyan_store_connect
+  // Welcome Greeting Handler Fallback -> Approved WhatsApp Template: ayyan_welcome_menu
   return {
     messages: [
-      buildWelcomeTemplateMessage(from, 'ayyan_store_connect')
+      buildWelcomeTemplateMessage(from, 'ayyan_welcome_menu')
     ],
-    metadata: { fallbackTrigger: 'welcome_template_ayyan_store_connect' }
+    metadata: { fallbackTrigger: 'welcome_template_ayyan_welcome_menu' }
   };
 }
 

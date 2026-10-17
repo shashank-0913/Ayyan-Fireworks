@@ -56,7 +56,8 @@ export const SLOT_BOOKING_URL = 'https://vizagayyan.com/#booking';
 export const PASS_MANAGEMENT_URL = 'https://vizagayyan.com/my-bookings';
 
 /** Approved Meta WhatsApp Template name for welcome greeting menu */
-export const WELCOME_TEMPLATE_NAME = 'ayyan_store_connect';
+export const WELCOME_TEMPLATE_NAME = 'ayyan_welcome_menu';
+export const WELCOME_TEMPLATE_HEADER_IMAGE = 'https://vizagayyan.com/ayyan_images/bunny_brand_logo.png';
 
 /** Reply text when user clicks "View Catalogue" or sends catalogue enquiry */
 export const CATALOGUE_REPLY_TEXT = 'Explore our full catalogue here: https://vizagayyan.com';
@@ -65,18 +66,36 @@ export const CATALOGUE_REPLY_TEXT = 'Explore our full catalogue here: https://vi
  * Builds the approved Meta WhatsApp welcome greeting template payload:
  * {
  *   "messaging_product": "whatsapp",
- *   "to": from,
+ *   "recipient_type": "individual",
+ *   "to": recipientPhone,
  *   "type": "template",
  *   "template": {
- *     "name": "ayyan_store_connect",
+ *     "name": "ayyan_welcome_menu",
  *     "language": {
  *       "code": "en"
- *     }
+ *     },
+ *     "components": [
+ *       {
+ *         "type": "header",
+ *         "parameters": [
+ *           {
+ *             "type": "image",
+ *             "image": {
+ *               "link": "https://vizagayyan.com/ayyan_images/bunny_brand_logo.png"
+ *             }
+ *           }
+ *         ]
+ *       }
+ *     ]
  *   }
  * }
  */
-export function buildWelcomeGreetingPayload(toPhone: string, templateName: string = WELCOME_TEMPLATE_NAME): WhatsAppMessageEnvelope {
-  return buildWelcomeTemplateMessage(toPhone, templateName);
+export function buildWelcomeGreetingPayload(
+  toPhone: string,
+  templateName: string = WELCOME_TEMPLATE_NAME,
+  headerImageUrl: string = WELCOME_TEMPLATE_HEADER_IMAGE
+): WhatsAppMessageEnvelope {
+  return buildWelcomeTemplateMessage(toPhone, templateName, headerImageUrl);
 }
 
 /**
