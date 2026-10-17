@@ -166,54 +166,33 @@ const WEBSITE_BASE_URL = 'https://vizagayyan.com';
  * 2. Visit Website (id: "btn_visit_website")
  * 3. Showroom Visit (id: "btn_showroom_visit")
  */
-export function buildMainMenuMessage(toPhone: string, customerName?: string): WhatsAppMessageEnvelope {
-  const greeting = customerName ? `Hello ${customerName}! ` : 'Namaste! ';
+export function buildMainMenuMessage(toPhone: string): WhatsAppMessageEnvelope {
   return {
     messaging_product: 'whatsapp',
     recipient_type: 'individual',
     to: formatWhatsAppPhone(toPhone),
-    type: 'interactive',
-    interactive: {
-      type: 'button',
-      header: {
-        type: 'text',
-        text: '🎆 Ayyan Fireworks • Vizag'
+    type: 'template',
+    template: {
+      name: 'ayyan_welcome_menu',
+      language: {
+        code: 'en'
       },
-      body: {
-        text: `${greeting}Welcome to Ayyan Fireworks (Bunny Brand, Since 1987).\n\nExperience India's premier certified green fireworks showroom with live demos & direct manufacturer pricing.\n\nPlease select an option below:`
-      },
-      footer: {
-        text: DEFAULT_FOOTER
-      },
-      action: {
-        buttons: [
-          {
-            type: 'reply',
-            reply: {
-              id: 'btn_book_slot',
-              title: 'Book VIP Slot'
+      components: [
+        {
+          type: 'header',
+          parameters: [
+            {
+              type: 'image',
+              image: {
+                link: 'https://vizagayyan.com/ayyan_images/bunny_brand_logo.png'
+              }
             }
-          },
-          {
-            type: 'reply',
-            reply: {
-              id: 'btn_visit_website',
-              title: 'Visit Website'
-            }
-          },
-          {
-            type: 'reply',
-            reply: {
-              id: 'btn_showroom_visit',
-              title: 'Showroom Visit'
-            }
-          }
-        ]
-      }
+          ]
+        }
+      ]
     }
   };
 }
-
 /**
  * 3.2 Time of Day Slot Options (type: "interactive", subtype: "button" quick replies)
  * Replaces old "Reply 1 for Morning, 2 for Afternoon" text messages
