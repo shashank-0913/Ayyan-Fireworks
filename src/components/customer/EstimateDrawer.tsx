@@ -143,14 +143,14 @@ export const EstimateDrawer: React.FC = () => {
                     <div className="flex-1 min-w-0 space-y-1">
                       <div className="flex items-center gap-1.5 flex-wrap">
                         <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-800 dark:text-gold-300 font-bold">
-                          #{p.code || 'AY'}
+                          #{p.item_code || p.code || 'AY'}
                         </span>
                         <h4 className="font-bold text-slate-900 dark:text-white text-xs sm:text-sm truncate">
                           {p.name}
                         </h4>
                       </div>
                       <div className="flex items-center justify-between gap-2 text-[11px] pt-0.5">
-                        <span className="text-slate-500 dark:text-slate-400">{p.piece_count}</span>
+                        <span className="text-slate-500 dark:text-slate-400">{p.pieces_per_box || p.piece_count}</span>
                         <span className="font-mono font-bold text-slate-800 dark:text-slate-200">
                           {formatINR(p.price)} ea
                         </span>

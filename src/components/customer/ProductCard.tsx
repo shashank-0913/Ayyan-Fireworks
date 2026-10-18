@@ -116,9 +116,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               <span className="px-3 py-1 rounded-xl bg-white/95 dark:bg-obsidian-950/90 backdrop-blur-md border border-amber-400/50 dark:border-gold-500/40 text-amber-700 dark:text-gold-300 font-bold text-[11px] uppercase tracking-wider shadow-md">
                 {product.category}
               </span>
-              {product.code && (
+              {(product.item_code || product.code) && (
                 <span className="px-2 py-1 rounded-xl bg-black/80 backdrop-blur-md border border-white/20 text-slate-200 font-mono font-bold text-[10px] shadow-md">
-                  #{product.code}
+                  #{product.item_code || product.code}
                 </span>
               )}
             </div>
@@ -185,7 +185,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   </span>
                   <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-white/5 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-white/10 shadow-xs">
                     <Package className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400 shrink-0" />
-                    <span>{product.piece_count}</span>
+                    <span>{product.pieces_per_box || product.piece_count || '1 Box'}</span>
                   </span>
                 </div>
               </div>

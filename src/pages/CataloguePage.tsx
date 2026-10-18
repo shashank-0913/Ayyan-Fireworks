@@ -25,18 +25,16 @@ import { EstimateDrawer } from '../components/customer/EstimateDrawer';
 import { Product, SoundLevel } from '../types';
 import { formatINR } from '../lib/utils';
 
-// Official Ayyan Category Pill Tabs
+// Official Standard Ayyan Category Pill Tabs
 export const CATEGORY_PILL_TABS = [
   'All',
-  'Maroons',
   'Sparklers',
-  'Chakkars & Wheels',
-  'Flower Pots',
-  'Colour Fountains',
-  'Rockets & Novelties',
-  'Aerial Cakes',
-  'Safety Matches',
-  'Gift Boxes'
+  'Ground Chakkars',
+  'Colourful Fountains',
+  'Sky Rockets',
+  'Aerial Multi-Shots',
+  'Gift Boxes',
+  'Novelties'
 ] as const;
 
 export type CategoryTab = typeof CATEGORY_PILL_TABS[number];
@@ -48,7 +46,7 @@ export const CataloguePage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryTab>('All');
   const [selectedSound, setSelectedSound] = useState<'All' | SoundLevel>('All');
-  const [maxPrice, setMaxPrice] = useState<number>(15000);
+  const [maxPrice, setMaxPrice] = useState<number>(30000);
   const [sortBy, setSortBy] = useState<'default' | 'price_low' | 'price_high'>('default');
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
   const [lightboxProduct, setLightboxProduct] = useState<Product | null>(null);
@@ -62,31 +60,7 @@ export const CataloguePage: React.FC = () => {
   // Category Matching Helper
   const matchesCategoryTab = (product: Product, tab: CategoryTab): boolean => {
     if (tab === 'All') return true;
-    const cat = (product.category || '').toLowerCase();
-    const name = (product.name || '').toLowerCase();
-
-    switch (tab) {
-      case 'Maroons':
-        return cat.includes('maroon') || name.includes('maroon') || name.includes('cracker') || name.includes('sound');
-      case 'Sparklers':
-        return cat.includes('sparkler') || name.includes('sparkler');
-      case 'Chakkars & Wheels':
-        return cat.includes('chakkar') || cat.includes('wheel') || cat.includes('spinner') || name.includes('chakkar') || name.includes('wheel') || name.includes('spinner') || name.includes('lotus');
-      case 'Flower Pots':
-        return (cat.includes('pot') || cat.includes('flower') || name.includes('pot')) && !cat.includes('colourful');
-      case 'Colour Fountains':
-        return cat.includes('colour') || cat.includes('fountain') || name.includes('fountain') || name.includes('jadugar') || name.includes('peacock') || name.includes('drops') || name.includes('patrol') || name.includes('manoranjan') || name.includes('roopkhela') || name.includes('varnajal');
-      case 'Rockets & Novelties':
-        return cat.includes('rocket') || cat.includes('novelt') || cat.includes('missile') || cat.includes('cap') || cat.includes('gun') || name.includes('rocket') || name.includes('missile') || name.includes('drone') || name.includes('pop') || name.includes('toy') || name.includes('cap') || name.includes('gun') || name.includes('trident');
-      case 'Aerial Cakes':
-        return cat.includes('cake') || cat.includes('shot') || cat.includes('aerial') || name.includes('shot') || name.includes('cake') || name.includes('star') || name.includes('mangal');
-      case 'Safety Matches':
-        return cat.includes('match') || name.includes('match') || name.includes('pops') || name.includes('ninja') || name.includes('twyla') || name.includes('vadivel') || name.includes('josh') || name.includes('camel');
-      case 'Gift Boxes':
-        return cat.includes('gift') || cat.includes('hamper') || cat.includes('box') || name.includes('hamper') || name.includes('box');
-      default:
-        return true;
-    }
+    return product.category?.toLowerCase() === tab.toLowerCase();
   };
 
   // Filter and Sort Logic

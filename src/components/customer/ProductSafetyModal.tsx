@@ -72,9 +72,9 @@ export const ProductSafetyModal: React.FC<ProductSafetyModalProps> = ({ product,
             <div className="absolute top-2 left-2 px-2.5 py-1 rounded-xl bg-black/80 backdrop-blur-md border border-white/20 text-gold-300 text-[10px] font-bold">
               {product.category}
             </div>
-            {product.code && (
+            {(product.item_code || product.code) && (
               <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded-lg bg-black/80 text-white font-mono text-[9px] font-bold">
-                #{product.code}
+                #{product.item_code || product.code}
               </div>
             )}
           </div>
@@ -112,7 +112,7 @@ export const ProductSafetyModal: React.FC<ProductSafetyModalProps> = ({ product,
               </div>
               <div className="flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-obsidian-900 border border-slate-200 dark:border-white/10 font-medium">
                 <Package className="w-4 h-4 text-amber-600 dark:text-gold-400" />
-                <span>{product.piece_count}</span>
+                <span>{product.pieces_per_box || product.piece_count || '1 Box'}</span>
               </div>
             </div>
 

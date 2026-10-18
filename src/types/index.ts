@@ -1,45 +1,36 @@
 export type ProductCategory = 
-  | 'Maroons'
   | 'Sparklers'
   | 'Ground Chakkars'
-  | 'Chakkars'
-  | 'Wheels'
-  | 'Flower Pots'
   | 'Colourful Fountains'
-  | 'Fountains'
   | 'Sky Rockets'
-  | 'Rockets'
-  | 'Novelties'
   | 'Aerial Multi-Shots'
-  | 'Cakes'
-  | 'Safety Matches'
-  | 'Matches'
   | 'Gift Boxes'
+  | 'Novelties'
   | string;
 
 export const PRODUCT_CATEGORIES: ProductCategory[] = [
-  'Maroons',
   'Sparklers',
   'Ground Chakkars',
-  'Wheels',
-  'Flower Pots',
   'Colourful Fountains',
   'Sky Rockets',
-  'Novelties',
   'Aerial Multi-Shots',
-  'Safety Matches',
-  'Gift Boxes'
+  'Gift Boxes',
+  'Novelties'
 ];
 
 export type SoundLevel = 'Low / Silent' | 'Medium' | 'High Spectacle';
 
 export interface Product {
   id: string;
-  code?: string;
+  item_code: string;
   name: string;
-  category: ProductCategory;
+  category: string;
   price: number;
-  piece_count: string;
+  original_price?: number;
+  pieces_per_box?: string;
+  video_url?: string;
+  code?: string;
+  piece_count?: string;
   unit_price?: number;
   unit_name?: string;
   bundle_rate?: number;
@@ -47,11 +38,10 @@ export interface Product {
   unit_breakdown?: string;
   description?: string;
   telugu_name?: string;
-  safety_instructions: string;
+  safety_instructions?: string;
   safety_tags?: string[];
   sound_level?: SoundLevel;
-  video_url?: string;
-  image_url: string;
+  image_url?: string;
   image?: string;
   imageUrl?: string;
   is_active?: boolean;

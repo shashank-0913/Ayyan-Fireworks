@@ -162,7 +162,7 @@ export function sanitizeTextForPdf(input: any, _codeHint?: string): string {
  */
 export function normalizeProduct(raw: RawProductInput, index: number): NormalizedCatalogProduct {
   // 1. Item Code fallback
-  const rawCode = String(raw.code || raw.item_code || raw.sku || raw.product_code || raw.id || '').trim();
+  const rawCode = String(raw.item_code || raw.code || raw.sku || raw.product_code || raw.id || '').trim();
   const idDigits = raw.id ? String(raw.id).replace(/\D/g, '').slice(-3) : '';
   const item_code = rawCode || idDigits || String(index + 1).padStart(3, '0');
 
@@ -174,7 +174,6 @@ export function normalizeProduct(raw: RawProductInput, index: number): Normalize
     raw.item_name ||
     raw.title ||
     raw.english_name ||
-    raw.description ||
     `Cracker Item #${item_code}`;
 
   // Sanitize for jsPDF standard font compatibility (converts Telugu & strips unsupported Unicode)
@@ -186,15 +185,15 @@ export function normalizeProduct(raw: RawProductInput, index: number): Normalize
     name = sanitizeTextForPdf(fallbackTitle) || `Cracker Item #${item_code}`;
   }
 
-  // 3. Category fallback (checks category || category_name || group || 'Sparklers & Fountains')
-  const rawCat = raw.category || raw.category_name || raw.group || 'Sparklers & Fountains';
+  // 3. Category fallback
+  const rawCat = raw.category || raw.category_name || raw.group || 'Sparklers';
   let category = sanitizeTextForPdf(rawCat);
   if (!category || category === 'undefined' || category === 'null') {
-    category = 'Sparklers & Fountains';
+    category = 'Sparklers';
   }
 
-  // 4. Packing fallback
-  const rawPack = raw.packing || raw.piece_count || raw.unit || raw.pack_size || '1 Box';
+  // 4. Packing fallback (pieces_per_box prioritized)
+  const rawPack = raw.pieces_per_box || raw.packing || raw.piece_count || raw.unit || raw.pack_size || '1 Box';
   let packing = sanitizeTextForPdf(rawPack);
   if (!packing || packing === 'undefined' || packing === 'null') {
     packing = '1 Box';
