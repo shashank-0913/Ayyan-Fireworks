@@ -347,7 +347,7 @@ export function buildCatalogPdfDocument(products: NormalizedCatalogProduct[]): j
   ]);
 
   autoTable(doc, {
-    head: [['CODE', 'ITEM DESCRIPTION', 'CATEGORY', 'PACKING', 'MRP (₹)', 'PRICE (₹)']],
+    head: [['CODE', 'CRACKER NAME', 'CATEGORY', 'PACKING', 'MRP (₹)', 'PRICE (₹)']],
     body: tableRows,
     startY: 36,
     margin: { top: 36, left: marginLeft, right: marginRight, bottom: 18 },

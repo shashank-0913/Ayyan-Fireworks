@@ -45,7 +45,8 @@ export interface Product {
   bundle_rate?: number;
   bundle_unit?: string;
   unit_breakdown?: string;
-  description: string;
+  description?: string;
+  telugu_name?: string;
   safety_instructions: string;
   safety_tags?: string[];
   sound_level?: SoundLevel;

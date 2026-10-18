@@ -11,7 +11,8 @@ import {
   Minimize2, 
   X, 
   Phone,
-  ArrowLeft
+  ArrowLeft,
+  Play
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { Link } from 'react-router-dom';
@@ -648,13 +649,8 @@ export const AntigravityCatalogPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Description */}
-            <p className="text-xs text-slate-300 leading-relaxed">
-              {activeModalProduct.description || 'Authentic Sivakasi Bunny Brand Green Cracker manufactured by Ayyan Fireworks under strict quality control.'}
-            </p>
-
             {/* Action Buttons */}
-            <div className="grid grid-cols-2 gap-3 pt-2">
+            <div className="grid grid-cols-2 gap-3 pt-3">
               <a
                 href={getWhatsAppUrl(`Hi! I am inquiring about ${activeModalProduct.name} (Code: #${activeModalProduct.code}, Rate: ₹${activeModalProduct.rate} / ${activeModalProduct.per}) from Ayyan Fireworks.`)}
                 target="_blank"
@@ -663,6 +659,16 @@ export const AntigravityCatalogPage: React.FC = () => {
               >
                 <Phone className="w-4 h-4" />
                 <span>WhatsApp Inquiry</span>
+              </a>
+
+              <a
+                href={`https://www.youtube.com/results?search_query=${encodeURIComponent(`Ayyan Fireworks ${activeModalProduct.name}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="py-3 px-4 rounded-xl bg-red-600/20 hover:bg-red-600/30 border border-red-500/40 text-red-300 font-bold text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all group"
+              >
+                <Play className="w-4 h-4 fill-current text-red-400 group-hover:scale-110 transition-transform" />
+                <span>YouTube Demo</span>
               </a>
             </div>
           </div>

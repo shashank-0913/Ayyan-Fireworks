@@ -12,7 +12,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Maroons",
     "price": 62,
     "piece_count": "1 Pkt",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -31,7 +31,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Maroons",
     "price": 35,
     "piece_count": "1 Pkt",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -50,7 +50,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Maroons",
     "price": 15.8,
     "piece_count": "1 Pkt",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -69,7 +69,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 19.6,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -88,7 +88,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 22.95,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -107,7 +107,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 35.65,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -126,7 +126,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 28.65,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -145,7 +145,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 38.75,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -164,7 +164,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 55.8,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -183,7 +183,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 72.85,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -202,7 +202,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 60.5,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -221,7 +221,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 66.65,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -240,7 +240,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 55.8,
     "piece_count": "1 Box / 5 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -259,7 +259,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 72.85,
     "piece_count": "1 Box / 5 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -278,7 +278,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 168.5,
     "piece_count": "1 Box / 5 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -297,7 +297,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 208.5,
     "piece_count": "1 Box / 5 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -316,7 +316,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 280.7,
     "piece_count": "1 Box / 5 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -335,7 +335,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 338.5,
     "piece_count": "1 Box / 5 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -354,7 +354,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Ground Chakkars",
     "price": 164.3,
     "piece_count": "25 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -373,7 +373,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Ground Chakkars",
     "price": 148.8,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -392,7 +392,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Ground Chakkars",
     "price": 263.5,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -411,7 +411,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Ground Chakkars",
     "price": 209.15,
     "piece_count": "25 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -430,7 +430,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Ground Chakkars",
     "price": 158.1,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -449,7 +449,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Wheels",
     "price": 189.1,
     "piece_count": "5 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -468,7 +468,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Wheels",
     "price": 189.1,
     "piece_count": "5 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -487,7 +487,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Wheels",
     "price": 167.4,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -506,7 +506,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Wheels",
     "price": 271.25,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -525,7 +525,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Wheels",
     "price": 192.2,
     "piece_count": "5 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -544,7 +544,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Wheels",
     "price": 189.1,
     "piece_count": "5 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -563,7 +563,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Wheels",
     "price": 176.4,
     "piece_count": "5 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -582,7 +582,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Wheels",
     "price": 176.4,
     "piece_count": "5 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -601,7 +601,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Wheels",
     "price": 127.1,
     "piece_count": "5 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -620,7 +620,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Wheels",
     "price": 53,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -639,7 +639,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Flower Pots",
     "price": 133.3,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -658,7 +658,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Flower Pots",
     "price": 213.9,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -677,7 +677,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Flower Pots",
     "price": 465,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -696,7 +696,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Flower Pots",
     "price": 226.1,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -715,7 +715,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Colourful Fountains",
     "price": 392.15,
     "piece_count": "1 Box / 5 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -734,7 +734,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Colourful Fountains",
     "price": 244.9,
     "piece_count": "1 Box / 5 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -753,7 +753,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Flower Pots",
     "price": 713,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -772,7 +772,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Colourful Fountains",
     "price": 275.9,
     "piece_count": "4 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -791,7 +791,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 275.9,
     "piece_count": "4 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -810,7 +810,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 463.45,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -829,7 +829,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 443.3,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -848,7 +848,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 178.25,
     "piece_count": "5 Pcs / 1 Pkt",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -867,7 +867,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 145,
     "piece_count": "1 Pkt",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -886,7 +886,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 180,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -905,7 +905,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 195,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -924,7 +924,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 367.35,
     "piece_count": "5 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -943,7 +943,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 161.2,
     "piece_count": "1 Pkt",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -962,7 +962,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 260.4,
     "piece_count": "1 Pkt",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -981,7 +981,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Colourful Fountains",
     "price": 380,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1000,7 +1000,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Colourful Fountains",
     "price": 511.5,
     "piece_count": "1 Box / 5 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1019,7 +1019,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Colourful Fountains",
     "price": 666.5,
     "piece_count": "1 Pce",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1038,7 +1038,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Colourful Fountains",
     "price": 666.5,
     "piece_count": "1 Piece",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1057,7 +1057,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Colourful Fountains",
     "price": 56.6,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1076,7 +1076,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Colourful Fountains",
     "price": 189.1,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1095,7 +1095,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Colourful Fountains",
     "price": 72,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1114,7 +1114,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Colourful Fountains",
     "price": 141.05,
     "piece_count": "20 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1133,7 +1133,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Colourful Fountains",
     "price": 137.95,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1152,7 +1152,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Colourful Fountains",
     "price": 168.1,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1171,7 +1171,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Colourful Fountains",
     "price": 217,
     "piece_count": "1 Box / 5 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1190,7 +1190,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Maroons",
     "price": 103.85,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1209,7 +1209,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Maroons",
     "price": 181.35,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1228,7 +1228,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Maroons",
     "price": 49,
     "piece_count": "1 Pkt / 5 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1247,7 +1247,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Maroons",
     "price": 66,
     "piece_count": "1 Pkt / 5 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1266,7 +1266,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Maroons",
     "price": 85.25,
     "piece_count": "1 Pkt / 5 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1285,7 +1285,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Maroons",
     "price": 272.8,
     "piece_count": "1 Box / 1 Pce",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1304,7 +1304,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 114.7,
     "piece_count": "1 Box / 3 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1323,7 +1323,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 158.1,
     "piece_count": "1 Box / 1 Pce",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1342,7 +1342,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Maroons",
     "price": 62,
     "piece_count": "1 Pkt / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1361,7 +1361,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Maroons",
     "price": 79.05,
     "piece_count": "1 Pkt / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1380,7 +1380,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sky Rockets",
     "price": 120.9,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1399,7 +1399,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sky Rockets",
     "price": 150.35,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1418,7 +1418,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sky Rockets",
     "price": 138.7,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1437,7 +1437,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sky Rockets",
     "price": 170.5,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1456,7 +1456,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sky Rockets",
     "price": 209.25,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1475,7 +1475,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sky Rockets",
     "price": 189.1,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1494,7 +1494,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sky Rockets",
     "price": 223.2,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1513,7 +1513,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sky Rockets",
     "price": 293.2,
     "piece_count": "1 Box / 4 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1532,7 +1532,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sky Rockets",
     "price": 251.1,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1551,7 +1551,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sky Rockets",
     "price": 399.5,
     "piece_count": "1 Box / 10 Pcs",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1570,7 +1570,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Novelties",
     "price": 49.6,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1589,7 +1589,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 192.2,
     "piece_count": "5 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1608,7 +1608,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 192.2,
     "piece_count": "5 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1627,7 +1627,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Novelties",
     "price": 260.4,
     "piece_count": "5 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1646,7 +1646,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Novelties",
     "price": 136.4,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1665,7 +1665,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Novelties",
     "price": 181.35,
     "piece_count": "5 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1684,7 +1684,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 217,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1703,7 +1703,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 217,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1722,7 +1722,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 217,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1741,7 +1741,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 217,
     "piece_count": "10 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1760,7 +1760,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Ground Chakkars",
     "price": 108.5,
     "piece_count": "2 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1779,7 +1779,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Novelties",
     "price": 69.7,
     "piece_count": "2 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1798,7 +1798,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Novelties",
     "price": 83.7,
     "piece_count": "5 Pcs / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1817,7 +1817,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 562.65,
     "piece_count": "1 Pkt (5 Pcs) / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1836,7 +1836,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 441.75,
     "piece_count": "1 Pkt (3 Pcs) / 1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1855,7 +1855,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 186,
     "piece_count": "1 Piece",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1874,7 +1874,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 455.7,
     "piece_count": "1 Piece",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1893,7 +1893,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 511.5,
     "piece_count": "1 Piece",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1912,7 +1912,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 214,
     "piece_count": "1 Piece",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1931,7 +1931,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 232.5,
     "piece_count": "1 Piece",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1950,7 +1950,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 232.5,
     "piece_count": "1 Piece",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1969,7 +1969,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 291.4,
     "piece_count": "1 Piece",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -1988,7 +1988,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 220,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2007,7 +2007,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 418.5,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2026,7 +2026,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 581.25,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2045,7 +2045,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 744,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2064,7 +2064,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 533.2,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2083,7 +2083,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 448,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2102,7 +2102,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 837,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2121,7 +2121,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 403,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2140,7 +2140,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 883.5,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2159,7 +2159,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 475.85,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2178,7 +2178,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 1542,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2197,7 +2197,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 1635,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2216,7 +2216,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Sparklers",
     "price": 2402,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2235,7 +2235,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 2852,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2254,7 +2254,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 2790,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2273,7 +2273,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 3069,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2292,7 +2292,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 5859,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2311,7 +2311,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 6587.5,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2330,7 +2330,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 13872.5,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2349,7 +2349,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 27977.5,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2368,7 +2368,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 3022.5,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2387,7 +2387,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 6045,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2406,7 +2406,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 6626.25,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2425,7 +2425,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 11315,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2444,7 +2444,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 7267.5,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2463,7 +2463,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 6192.35,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2482,7 +2482,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 6192,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2501,7 +2501,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 10493,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2520,7 +2520,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 5347.5,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2539,7 +2539,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 10472.5,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2558,7 +2558,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 3875,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2577,7 +2577,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Aerial Multi-Shots",
     "price": 6161.25,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2596,7 +2596,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Gift Boxes",
     "price": 790.5,
     "piece_count": "24 Items",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2615,7 +2615,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Gift Boxes",
     "price": 1085,
     "piece_count": "28 Items",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2634,7 +2634,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Gift Boxes",
     "price": 1581,
     "piece_count": "30 Items",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2653,7 +2653,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Gift Boxes",
     "price": 1813.5,
     "piece_count": "36 Items",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2672,7 +2672,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Gift Boxes",
     "price": 1821,
     "piece_count": "40 Items",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2691,7 +2691,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Colour Matches",
     "price": 25,
     "piece_count": "1 Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2710,7 +2710,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Colour Matches Pack",
     "price": 45,
     "piece_count": "Pack",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2729,7 +2729,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Combination Colour Matches",
     "price": 125,
     "piece_count": "5 Colour Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2748,7 +2748,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Combination Colour Matches",
     "price": 95,
     "piece_count": "Combination Pack",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2767,7 +2767,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Combination Colour Matches",
     "price": 110,
     "piece_count": "Combination Pack",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2786,7 +2786,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Combination Colour Matches",
     "price": 135,
     "piece_count": "5 Colour Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2805,7 +2805,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Colour Matches / Sparkler",
     "price": 150,
     "piece_count": "10 Colours Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2824,7 +2824,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Novelty Fireworks",
     "price": 180,
     "piece_count": "5 Colour Piece",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2843,7 +2843,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Novelty Fireworks",
     "price": 140,
     "piece_count": "3 Colour Piece",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2862,7 +2862,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Paper Roll Caps",
     "price": 90,
     "piece_count": "Roll Cap Box",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2881,7 +2881,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Toy Gun Caps",
     "price": 120,
     "piece_count": "Cap Pack",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",
@@ -2900,7 +2900,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "category": "Toy Cap Gun",
     "price": 180,
     "piece_count": "1 Piece",
-    "description": "Authentic Ayyan Fireworks (Bunny Brand) certified green cracker creation. Manufactured in Sivakasi with QR green emission compliance.",
+    "description": "",
     "safety_instructions": "Keep safe distance of 10m. Ignite using an agarbatti on an open clear hard surface. Keep water nearby.",
     "safety_tags": [
       "Bunny Brand",

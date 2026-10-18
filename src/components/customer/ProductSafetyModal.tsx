@@ -8,11 +8,11 @@ import {
   CheckCircle2, 
   Leaf, 
   Plus,
-  Check
+  Check,
+  Play
 } from 'lucide-react';
 import { Product } from '../../types';
 import { formatINR, getWhatsAppUrl } from '../../lib/utils';
-import { getTeluguSubtitle } from '../../lib/teluguSubtitles';
 import { useEstimate } from '../../context/EstimateContext';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
 
@@ -27,7 +27,6 @@ export const ProductSafetyModal: React.FC<ProductSafetyModalProps> = ({ product,
 
   if (!product) return null;
 
-  const teluguSubtitle = getTeluguSubtitle(product);
   const inEstimate = isInEstimate(product.id);
   const currentQty = getItemQuantity(product.id);
 
@@ -91,14 +90,20 @@ export const ProductSafetyModal: React.FC<ProductSafetyModalProps> = ({ product,
             <h3 className="text-xl sm:text-2xl font-display font-black text-slate-900 dark:text-white tracking-tight leading-snug">
               {product.name}
             </h3>
-            
-            <p className="text-xs sm:text-sm font-bold text-amber-700 dark:text-gold-400">
-              {teluguSubtitle}
-            </p>
 
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-              {product.description || "Authentic Sivakasi Green Cracker masterpiece crafted with premium Bunny Brand quality standards."}
-            </p>
+            {/* YouTube Demo Link */}
+            <div className="pt-0.5">
+              <a
+                href={product.video_url || `https://www.youtube.com/results?search_query=${encodeURIComponent(`Ayyan Fireworks ${product.name}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-red-600/10 hover:bg-red-600/20 border border-red-500/30 text-red-600 dark:text-red-400 text-xs font-bold transition-all cursor-pointer group"
+                title="Watch YouTube Demo Video"
+              >
+                <Play className="w-3.5 h-3.5 fill-current text-red-600 dark:text-red-400 group-hover:scale-110 transition-transform" />
+                <span>Watch YouTube Demo</span>
+              </a>
+            </div>
 
             {/* Price and Piece Specification */}
             <div className="flex flex-wrap items-center gap-3 pt-2">

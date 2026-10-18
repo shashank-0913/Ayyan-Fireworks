@@ -9,11 +9,11 @@ import {
   Plus,
   Check,
   Leaf,
-  Info
+  Info,
+  Play
 } from 'lucide-react';
 import { Product } from '../../types';
 import { formatINR, getWhatsAppUrl } from '../../lib/utils';
-import { getTeluguSubtitle } from '../../lib/teluguSubtitles';
 import { useEstimate } from '../../context/EstimateContext';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { ProductImageLightbox } from './ProductImageLightbox';
@@ -32,15 +32,10 @@ export const ProductRow: React.FC<ProductRowProps> = ({
 }) => {
   const { addToEstimate, isInEstimate, getItemQuantity } = useEstimate();
 
-  const [isExpandedDesc, setIsExpandedDesc] = useState(false);
   const [isSafetyOpen, setIsSafetyOpen] = useState(false);
   const [isInternalLightboxOpen, setIsInternalLightboxOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [addedAnimation, setAddedAnimation] = useState(false);
-
-  const teluguSubtitle = getTeluguSubtitle(product);
-  const descriptionText = product.description || "Authentic Sivakasi Green Cracker masterpiece crafted with premium Bunny Brand quality standards.";
-  const isLongDescription = descriptionText.length > 120;
 
   const inEstimate = isInEstimate(product.id);
   const currentQty = getItemQuantity(product.id);
@@ -141,14 +136,26 @@ export const ProductRow: React.FC<ProductRowProps> = ({
               >
                 {product.name}
               </h3>
-              <p className="text-xs font-semibold text-amber-700 dark:text-gold-400">
-                {teluguSubtitle}
-              </p>
+              
+              {/* Mobile YouTube Demo Action */}
+              <div className="pt-1 md:hidden">
+                <a
+                  href={product.video_url || `https://www.youtube.com/results?search_query=${encodeURIComponent(`Ayyan Fireworks ${product.name}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-red-600/10 hover:bg-red-600/20 border border-red-500/25 text-red-600 dark:text-red-400 text-[10px] font-bold transition-all cursor-pointer"
+                  title="Watch YouTube Demo"
+                >
+                  <Play className="w-3 h-3 fill-current text-red-600 dark:text-red-400" />
+                  <span>YouTube Demo</span>
+                </a>
+              </div>
             </div>
           </div>
 
           {/* ================================================================= */}
-          {/* 2. MIDDLE: PRODUCT NAME, TELUGU SUBTITLE, SPECS & BADGES         */}
+          {/* 2. MIDDLE: PRODUCT NAME, SPECS & BADGES                          */}
           {/* ================================================================= */}
           <div className="flex-1 min-w-0 space-y-2.5 w-full">
             
@@ -169,36 +176,29 @@ export const ProductRow: React.FC<ProductRowProps> = ({
                   <span>{product.sound_level}</span>
                 </span>
               )}
+
+              {/* Desktop YouTube Demo Action */}
+              <a
+                href={product.video_url || `https://www.youtube.com/results?search_query=${encodeURIComponent(`Ayyan Fireworks ${product.name}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-red-600/10 hover:bg-red-600/20 border border-red-500/30 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 text-[10px] font-bold transition-all shadow-xs cursor-pointer group/yt"
+                title="Watch YouTube Demo Video"
+              >
+                <Play className="w-3 h-3 fill-current text-red-600 dark:text-red-400 group-hover/yt:scale-110 transition-transform" />
+                <span>YouTube Demo</span>
+              </a>
             </div>
 
             {/* Product Name (Desktop) */}
-            <div className="hidden md:block space-y-0.5">
+            <div className="hidden md:block">
               <h3 
                 onClick={handleImageClick}
                 className="font-display font-bold text-slate-900 dark:text-white text-lg hover:text-amber-600 dark:hover:text-gold-300 transition-colors tracking-tight cursor-pointer"
               >
                 {product.name}
               </h3>
-              <p className="text-xs font-semibold text-amber-700 dark:text-gold-400">
-                {teluguSubtitle}
-              </p>
-            </div>
-
-            {/* Description with read more */}
-            <div className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
-              <p className={isExpandedDesc ? '' : 'line-clamp-2 md:line-clamp-2'}>
-                {descriptionText}
-              </p>
-              {isLongDescription && (
-                <button
-                  type="button"
-                  onClick={() => setIsExpandedDesc(prev => !prev)}
-                  className="mt-0.5 text-amber-600 dark:text-gold-400 hover:text-amber-700 dark:hover:text-gold-300 text-[11px] font-bold inline-flex items-center gap-1"
-                >
-                  <span>{isExpandedDesc ? 'Show less' : 'Read more...'}</span>
-                  {isExpandedDesc ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-                </button>
-              )}
             </div>
 
             {/* Spec & Safety Tags Bar */}

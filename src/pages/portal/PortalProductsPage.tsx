@@ -283,9 +283,6 @@ export const PortalProductsPage: React.FC = () => {
                           </div>
                           <div className="space-y-0.5">
                             <span className="font-bold text-slate-900 dark:text-white text-sm block">{product.name}</span>
-                            <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-1 max-w-xs">
-                              {product.description}
-                            </p>
                           </div>
                         </div>
                       </td>

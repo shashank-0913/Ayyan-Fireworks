@@ -43,7 +43,7 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
       setCategory(productToEdit.category);
       setPrice(productToEdit.price);
       setPieceCount(productToEdit.piece_count);
-      setDescription(productToEdit.description);
+      setDescription(productToEdit.description || '');
       setSafetyInstructions(productToEdit.safety_instructions);
       setImageUrl(
         productToEdit.image_url?.startsWith('data:') 
