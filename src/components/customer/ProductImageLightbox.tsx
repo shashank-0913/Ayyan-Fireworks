@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
 import { Product } from '../../types';
 import { formatINR } from '../../lib/utils';
+import { getCategoryFallbackImage, getProductImageUrl } from '../../lib/initialData';
 
 interface ProductImageLightboxProps {
   product: Product | null;
@@ -31,7 +32,7 @@ export const ProductImageLightbox: React.FC<ProductImageLightboxProps> = ({ prod
 
   if (!product) return null;
 
-  const imgSrc = product.image_url || product.image || product.imageUrl || "https://ayyansworld.com/wp-content/uploads/2024/02/Ganesh-Crackers-10-Pkt.png";
+  const imgSrc = product.image_url || getProductImageUrl(product.item_code || product.code || '001', product.category);
 
   return (
     <div
@@ -63,6 +64,15 @@ export const ProductImageLightbox: React.FC<ProductImageLightboxProps> = ({ prod
           src={imgSrc}
           alt={product.name}
           className="max-h-[75vh] sm:max-h-[80vh] max-w-[90vw] object-contain rounded-2xl shadow-2xl border border-white/10"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            const fallback = getCategoryFallbackImage(product.category);
+            if (target.src !== fallback && !target.src.endsWith(fallback)) {
+              target.src = fallback;
+            } else {
+              target.src = '/ayyan-emblem.png';
+            }
+          }}
         />
 
         {/* Product Title & Details Below Zoomed Image */}

@@ -11,15 +11,13 @@ interface ProductDrawerProps {
 }
 
 const PRESET_IMAGES = [
-  { label: 'Sparklers', url: 'https://ayyansworld.com/wp-content/uploads/2024/02/15cm-Coloured-Sparklers-10-box.png' },
-  { label: 'Ruby Sparklers', url: 'https://ayyansworld.com/wp-content/uploads/2024/02/10cm-Ruby-Sparklers-10-box.png' },
-  { label: 'Ground Chakkars', url: 'https://ayyansworld.com/wp-content/uploads/2024/02/Ground-Chakkar-Special-10-box.png' },
-  { label: 'Giant Wheel', url: 'https://ayyansworld.com/wp-content/uploads/2024/02/Giant-Wheel-5-box.png' },
-  { label: 'Flower Pots', url: 'https://ayyansworld.com/wp-content/uploads/2024/02/Flower-Pots-Special-10-box.png' },
-  { label: 'Colour Fountains', url: 'https://ayyansworld.com/wp-content/uploads/2024/02/tri-colour-fountain-ayyanfire-copy.png' },
-  { label: 'Sky Rockets', url: 'https://ayyansworld.com/wp-content/uploads/2024/02/Colour-Rockets-10-box.png' },
-  { label: 'Aerial Multi-Shots', url: 'https://ayyansworld.com/wp-content/uploads/2024/02/12-Star-Sky-Storms-1-Box.png' },
-  { label: 'Gift Boxes', url: 'https://ayyansworld.com/wp-content/uploads/2024/02/Gift-Box-Dino-40-items.png' },
+  { label: 'Sparklers', url: '/ayyan_images/categories/sparklers.png' },
+  { label: 'Ground Chakkars', url: '/ayyan_images/categories/chakkars.png' },
+  { label: 'Colourful Fountains', url: '/ayyan_images/categories/fountains.png' },
+  { label: 'Sky Rockets', url: '/ayyan_images/categories/rockets.png' },
+  { label: 'Aerial Multi-Shots', url: '/ayyan_images/categories/aerial_shots.png' },
+  { label: 'Gift Boxes', url: '/ayyan_images/categories/gift_boxes.png' },
+  { label: 'Novelties', url: '/ayyan_images/categories/novelties.png' },
 ];
 
 export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, productToEdit }) => {

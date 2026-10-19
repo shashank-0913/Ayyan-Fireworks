@@ -13,6 +13,7 @@ import {
   Play
 } from 'lucide-react';
 import { Product } from '../../types';
+import { getCategoryFallbackImage, getProductImageUrl } from '../../lib/initialData';
 import { formatINR, getWhatsAppUrl } from '../../lib/utils';
 import { useEstimate } from '../../context/EstimateContext';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
@@ -93,12 +94,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             }}
           >
             <img
-              src={product.image_url || product.image || product.imageUrl || "https://ayyansworld.com/wp-content/uploads/2024/02/Ganesh-Crackers-10-Pkt.png"}
+              src={product.image_url || getProductImageUrl(product.item_code || product.code || '001', product.category)}
               alt={product.name}
               className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
               loading="lazy"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = 'https://ayyansworld.com/wp-content/uploads/2024/02/Ganesh-Crackers-10-Pkt.png';
+                const target = e.target as HTMLImageElement;
+                const fallback = getCategoryFallbackImage(product.category);
+                if (target.src !== fallback && !target.src.endsWith(fallback)) {
+                  target.src = fallback;
+                } else {
+                  target.src = '/ayyan-emblem.png';
+                }
               }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 dark:from-obsidian-950/80 via-transparent to-transparent pointer-events-none" />

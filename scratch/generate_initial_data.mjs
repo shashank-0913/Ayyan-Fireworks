@@ -176,7 +176,27 @@ export interface ProductItem {
   original_price?: number;
   pieces_per_box?: string;
   video_url?: string;
+  image_url?: string;
 }
+
+export const CATEGORY_FALLBACK_IMAGES: Record<string, string> = {
+  'Sparklers': '/ayyan_images/categories/sparklers.png',
+  'Ground Chakkars': '/ayyan_images/categories/chakkars.png',
+  'Colourful Fountains': '/ayyan_images/categories/fountains.png',
+  'Sky Rockets': '/ayyan_images/categories/rockets.png',
+  'Aerial Multi-Shots': '/ayyan_images/categories/aerial_shots.png',
+  'Gift Boxes': '/ayyan_images/categories/gift_boxes.png',
+  'Novelties': '/ayyan_images/categories/novelties.png'
+};
+
+export const getCategoryFallbackImage = (category?: string): string => {
+  if (!category) return '/ayyan-emblem.png';
+  return CATEGORY_FALLBACK_IMAGES[category] || '/ayyan-emblem.png';
+};
+
+export const getProductImageUrl = (item_code: string, _category?: string): string => {
+  return \`/ayyan_images/products/\${item_code}.jpg\`;
+};
 
 export const initialProducts: Product[] = [
 `;
@@ -191,6 +211,7 @@ for (const it of userItems) {
     price: ${it.price.toFixed(2)},
     pieces_per_box: "${it.pieces_per_box}",
     piece_count: "${it.pieces_per_box}",
+    image_url: "/ayyan_images/products/${it.item_code}.jpg",
     is_active: true
   },\n`;
 }
@@ -259,4 +280,4 @@ export const generateInitialBookings = (_slots?: Slot[]): Booking[] => {
 `;
 
 fs.writeFileSync('src/lib/initialData.ts', out);
-console.log('Successfully wrote src/lib/initialData.ts!');
+console.log('Successfully wrote src/lib/initialData.ts with dynamic image URLs and fallbacks!');

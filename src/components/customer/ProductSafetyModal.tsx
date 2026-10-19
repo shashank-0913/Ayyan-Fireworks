@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { Product } from '../../types';
 import { formatINR, getWhatsAppUrl } from '../../lib/utils';
+import { getCategoryFallbackImage, getProductImageUrl } from '../../lib/initialData';
 import { useEstimate } from '../../context/EstimateContext';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
 
@@ -65,9 +66,18 @@ export const ProductSafetyModal: React.FC<ProductSafetyModalProps> = ({ product,
         <div className="flex flex-col sm:flex-row gap-5 items-start pb-5 border-b border-slate-200 dark:border-white/10">
           <div className="w-full sm:w-48 h-48 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/10 shrink-0 relative group">
             <img
-              src={product.image_url || product.image || product.imageUrl || "https://ayyansworld.com/wp-content/uploads/2024/02/Ganesh-Crackers-10-Pkt.png"}
+              src={product.image_url || getProductImageUrl(product.item_code || product.code || '001', product.category)}
               alt={product.name}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                const fallback = getCategoryFallbackImage(product.category);
+                if (target.src !== fallback && !target.src.endsWith(fallback)) {
+                  target.src = fallback;
+                } else {
+                  target.src = '/ayyan-emblem.png';
+                }
+              }}
             />
             <div className="absolute top-2 left-2 px-2.5 py-1 rounded-xl bg-black/80 backdrop-blur-md border border-white/20 text-gold-300 text-[10px] font-bold">
               {product.category}

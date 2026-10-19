@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useEstimate } from '../../context/EstimateContext';
 import { formatINR, getWhatsAppUrl, SHOWROOM_CONTACT } from '../../lib/utils';
+import { getCategoryFallbackImage, getProductImageUrl } from '../../lib/initialData';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { ReserveSlotModal } from './ReserveSlotModal';
 import { useStoreSettings } from '../../hooks/useStoreSettings';
@@ -133,9 +134,18 @@ export const EstimateDrawer: React.FC = () => {
                     {/* Thumbnail */}
                     <div className="w-14 h-14 rounded-xl overflow-hidden bg-slate-200 dark:bg-slate-800 shrink-0 border border-slate-200 dark:border-white/10">
                       <img 
-                        src={p.image_url || p.image || p.imageUrl || "https://ayyansworld.com/wp-content/uploads/2024/02/Ganesh-Crackers-10-Pkt.png"} 
+                        src={p.image_url || getProductImageUrl(p.item_code || p.code || '001', p.category)} 
                         alt={p.name}
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          const fallback = getCategoryFallbackImage(p.category);
+                          if (target.src !== fallback && !target.src.endsWith(fallback)) {
+                            target.src = fallback;
+                          } else {
+                            target.src = '/ayyan-emblem.png';
+                          }
+                        }}
                       />
                     </div>
 

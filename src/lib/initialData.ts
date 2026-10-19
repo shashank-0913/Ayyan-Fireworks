@@ -1,11 +1,11 @@
-import { Product, Slot, Booking } from '../types';
+import { Slot, Booking, SoundLevel } from '../types';
 
 // =============================================================================
 // AYYAN FIREWORKS FACTORY — STANDARDIZED SHOWROOM INVENTORY (153 SKUs)
 // Official Sivakasi Bunny Brand Green Crackers Catalogue
 // =============================================================================
 
-export interface ProductItem {
+export interface Product {
   id: string;
   item_code: string;
   name: string;
@@ -14,7 +14,45 @@ export interface ProductItem {
   original_price?: number;
   pieces_per_box?: string;
   video_url?: string;
+  image_url?: string;
+  code?: string;
+  piece_count?: string;
+  unit_price?: number;
+  unit_name?: string;
+  bundle_rate?: number;
+  bundle_unit?: string;
+  unit_breakdown?: string;
+  description?: string;
+  telugu_name?: string;
+  safety_instructions?: string;
+  safety_tags?: string[];
+  sound_level?: SoundLevel;
+  image?: string;
+  imageUrl?: string;
+  is_active?: boolean;
+  created_at?: string;
 }
+
+export type ProductItem = Product;
+
+export const CATEGORY_FALLBACK_IMAGES: Record<string, string> = {
+  'Sparklers': '/ayyan_images/categories/sparklers.png',
+  'Ground Chakkars': '/ayyan_images/categories/chakkars.png',
+  'Colourful Fountains': '/ayyan_images/categories/fountains.png',
+  'Sky Rockets': '/ayyan_images/categories/rockets.png',
+  'Aerial Multi-Shots': '/ayyan_images/categories/aerial_shots.png',
+  'Gift Boxes': '/ayyan_images/categories/gift_boxes.png',
+  'Novelties': '/ayyan_images/categories/novelties.png'
+};
+
+export const getCategoryFallbackImage = (category?: string): string => {
+  if (!category) return '/ayyan-emblem.png';
+  return CATEGORY_FALLBACK_IMAGES[category] || '/ayyan-emblem.png';
+};
+
+export const getProductImageUrl = (item_code: string, _category?: string): string => {
+  return `/ayyan_images/products/${item_code}.jpg`;
+};
 
 export const initialProducts: Product[] = [
   {
@@ -26,6 +64,7 @@ export const initialProducts: Product[] = [
     price: 62.00,
     pieces_per_box: "1 pkt",
     piece_count: "1 pkt",
+    image_url: "/ayyan_images/products/001.jpg",
     is_active: true
   },
   {
@@ -37,6 +76,7 @@ export const initialProducts: Product[] = [
     price: 35.00,
     pieces_per_box: "1 pkt",
     piece_count: "1 pkt",
+    image_url: "/ayyan_images/products/002.jpg",
     is_active: true
   },
   {
@@ -48,6 +88,7 @@ export const initialProducts: Product[] = [
     price: 15.80,
     pieces_per_box: "1 pkt",
     piece_count: "1 pkt",
+    image_url: "/ayyan_images/products/003.jpg",
     is_active: true
   },
   {
@@ -59,6 +100,7 @@ export const initialProducts: Product[] = [
     price: 19.60,
     pieces_per_box: "1 box/10 pcs",
     piece_count: "1 box/10 pcs",
+    image_url: "/ayyan_images/products/004.jpg",
     is_active: true
   },
   {
@@ -70,6 +112,7 @@ export const initialProducts: Product[] = [
     price: 22.95,
     pieces_per_box: "1 box/10 pcs",
     piece_count: "1 box/10 pcs",
+    image_url: "/ayyan_images/products/005.jpg",
     is_active: true
   },
   {
@@ -81,6 +124,7 @@ export const initialProducts: Product[] = [
     price: 35.65,
     pieces_per_box: "1 box/10 pcs",
     piece_count: "1 box/10 pcs",
+    image_url: "/ayyan_images/products/006.jpg",
     is_active: true
   },
   {
@@ -92,6 +136,7 @@ export const initialProducts: Product[] = [
     price: 28.65,
     pieces_per_box: "1 box/10 pcs",
     piece_count: "1 box/10 pcs",
+    image_url: "/ayyan_images/products/007.jpg",
     is_active: true
   },
   {
@@ -103,6 +148,7 @@ export const initialProducts: Product[] = [
     price: 38.75,
     pieces_per_box: "1 box/10 pcs",
     piece_count: "1 box/10 pcs",
+    image_url: "/ayyan_images/products/008.jpg",
     is_active: true
   },
   {
@@ -114,6 +160,7 @@ export const initialProducts: Product[] = [
     price: 55.80,
     pieces_per_box: "1 box/10 pcs",
     piece_count: "1 box/10 pcs",
+    image_url: "/ayyan_images/products/009.jpg",
     is_active: true
   },
   {
@@ -125,6 +172,7 @@ export const initialProducts: Product[] = [
     price: 72.85,
     pieces_per_box: "1 box/10 pcs",
     piece_count: "1 box/10 pcs",
+    image_url: "/ayyan_images/products/010.jpg",
     is_active: true
   },
   {
@@ -136,6 +184,7 @@ export const initialProducts: Product[] = [
     price: 60.50,
     pieces_per_box: "1 box/10 pcs",
     piece_count: "1 box/10 pcs",
+    image_url: "/ayyan_images/products/011.jpg",
     is_active: true
   },
   {
@@ -147,6 +196,7 @@ export const initialProducts: Product[] = [
     price: 66.65,
     pieces_per_box: "1 box/10 pcs",
     piece_count: "1 box/10 pcs",
+    image_url: "/ayyan_images/products/012.jpg",
     is_active: true
   },
   {
@@ -158,6 +208,7 @@ export const initialProducts: Product[] = [
     price: 55.80,
     pieces_per_box: "1 box/10 pcs",
     piece_count: "1 box/10 pcs",
+    image_url: "/ayyan_images/products/013.jpg",
     is_active: true
   },
   {
@@ -169,6 +220,7 @@ export const initialProducts: Product[] = [
     price: 72.85,
     pieces_per_box: "1 box/10 pcs",
     piece_count: "1 box/10 pcs",
+    image_url: "/ayyan_images/products/014.jpg",
     is_active: true
   },
   {
@@ -180,6 +232,7 @@ export const initialProducts: Product[] = [
     price: 168.50,
     pieces_per_box: "1 box/5 pcs",
     piece_count: "1 box/5 pcs",
+    image_url: "/ayyan_images/products/015.jpg",
     is_active: true
   },
   {
@@ -191,6 +244,7 @@ export const initialProducts: Product[] = [
     price: 208.30,
     pieces_per_box: "1 box/5 pcs",
     piece_count: "1 box/5 pcs",
+    image_url: "/ayyan_images/products/016.jpg",
     is_active: true
   },
   {
@@ -202,6 +256,7 @@ export const initialProducts: Product[] = [
     price: 280.70,
     pieces_per_box: "1 box/5 pcs",
     piece_count: "1 box/5 pcs",
+    image_url: "/ayyan_images/products/017.jpg",
     is_active: true
   },
   {
@@ -213,6 +268,7 @@ export const initialProducts: Product[] = [
     price: 338.50,
     pieces_per_box: "1 box/5 pcs",
     piece_count: "1 box/5 pcs",
+    image_url: "/ayyan_images/products/018.jpg",
     is_active: true
   },
   {
@@ -224,6 +280,7 @@ export const initialProducts: Product[] = [
     price: 164.30,
     pieces_per_box: "25 pcs/box",
     piece_count: "25 pcs/box",
+    image_url: "/ayyan_images/products/019.jpg",
     is_active: true
   },
   {
@@ -235,6 +292,7 @@ export const initialProducts: Product[] = [
     price: 148.80,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/020.jpg",
     is_active: true
   },
   {
@@ -246,6 +304,7 @@ export const initialProducts: Product[] = [
     price: 262.50,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/021.jpg",
     is_active: true
   },
   {
@@ -257,6 +316,7 @@ export const initialProducts: Product[] = [
     price: 209.25,
     pieces_per_box: "25 pcs/box",
     piece_count: "25 pcs/box",
+    image_url: "/ayyan_images/products/022.jpg",
     is_active: true
   },
   {
@@ -268,6 +328,7 @@ export const initialProducts: Product[] = [
     price: 158.10,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/023.jpg",
     is_active: true
   },
   {
@@ -279,6 +340,7 @@ export const initialProducts: Product[] = [
     price: 189.10,
     pieces_per_box: "5 pcs/box",
     piece_count: "5 pcs/box",
+    image_url: "/ayyan_images/products/024.jpg",
     is_active: true
   },
   {
@@ -290,6 +352,7 @@ export const initialProducts: Product[] = [
     price: 189.10,
     pieces_per_box: "5 pcs/box",
     piece_count: "5 pcs/box",
+    image_url: "/ayyan_images/products/025.jpg",
     is_active: true
   },
   {
@@ -301,6 +364,7 @@ export const initialProducts: Product[] = [
     price: 167.40,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/026.jpg",
     is_active: true
   },
   {
@@ -312,6 +376,7 @@ export const initialProducts: Product[] = [
     price: 271.25,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/027.jpg",
     is_active: true
   },
   {
@@ -323,6 +388,7 @@ export const initialProducts: Product[] = [
     price: 192.20,
     pieces_per_box: "5 pcs/box",
     piece_count: "5 pcs/box",
+    image_url: "/ayyan_images/products/028.jpg",
     is_active: true
   },
   {
@@ -334,6 +400,7 @@ export const initialProducts: Product[] = [
     price: 189.10,
     pieces_per_box: "5 pcs/box",
     piece_count: "5 pcs/box",
+    image_url: "/ayyan_images/products/029.jpg",
     is_active: true
   },
   {
@@ -345,6 +412,7 @@ export const initialProducts: Product[] = [
     price: 176.40,
     pieces_per_box: "5 pcs/box",
     piece_count: "5 pcs/box",
+    image_url: "/ayyan_images/products/030.jpg",
     is_active: true
   },
   {
@@ -356,6 +424,7 @@ export const initialProducts: Product[] = [
     price: 176.40,
     pieces_per_box: "5 pcs/box",
     piece_count: "5 pcs/box",
+    image_url: "/ayyan_images/products/031.jpg",
     is_active: true
   },
   {
@@ -367,6 +436,7 @@ export const initialProducts: Product[] = [
     price: 127.10,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/032.jpg",
     is_active: true
   },
   {
@@ -378,6 +448,7 @@ export const initialProducts: Product[] = [
     price: 153.00,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/033.jpg",
     is_active: true
   },
   {
@@ -389,6 +460,7 @@ export const initialProducts: Product[] = [
     price: 133.30,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/034.jpg",
     is_active: true
   },
   {
@@ -400,6 +472,7 @@ export const initialProducts: Product[] = [
     price: 213.90,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/035.jpg",
     is_active: true
   },
   {
@@ -411,6 +484,7 @@ export const initialProducts: Product[] = [
     price: 465.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/036.jpg",
     is_active: true
   },
   {
@@ -422,6 +496,7 @@ export const initialProducts: Product[] = [
     price: 226.10,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/037.jpg",
     is_active: true
   },
   {
@@ -433,6 +508,7 @@ export const initialProducts: Product[] = [
     price: 392.15,
     pieces_per_box: "5 pcs/box",
     piece_count: "5 pcs/box",
+    image_url: "/ayyan_images/products/038.jpg",
     is_active: true
   },
   {
@@ -444,6 +520,7 @@ export const initialProducts: Product[] = [
     price: 244.90,
     pieces_per_box: "5 pcs/box",
     piece_count: "5 pcs/box",
+    image_url: "/ayyan_images/products/039.jpg",
     is_active: true
   },
   {
@@ -455,6 +532,7 @@ export const initialProducts: Product[] = [
     price: 713.00,
     pieces_per_box: "1 pc/box",
     piece_count: "1 pc/box",
+    image_url: "/ayyan_images/products/040.jpg",
     is_active: true
   },
   {
@@ -466,6 +544,7 @@ export const initialProducts: Product[] = [
     price: 275.90,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/041.jpg",
     is_active: true
   },
   {
@@ -477,6 +556,7 @@ export const initialProducts: Product[] = [
     price: 275.90,
     pieces_per_box: "1 pc/box",
     piece_count: "1 pc/box",
+    image_url: "/ayyan_images/products/042.jpg",
     is_active: true
   },
   {
@@ -488,6 +568,7 @@ export const initialProducts: Product[] = [
     price: 463.45,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/043.jpg",
     is_active: true
   },
   {
@@ -499,6 +580,7 @@ export const initialProducts: Product[] = [
     price: 443.30,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/044.jpg",
     is_active: true
   },
   {
@@ -510,6 +592,7 @@ export const initialProducts: Product[] = [
     price: 178.25,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/045.jpg",
     is_active: true
   },
   {
@@ -521,6 +604,7 @@ export const initialProducts: Product[] = [
     price: 145.00,
     pieces_per_box: "1 pc/box",
     piece_count: "1 pc/box",
+    image_url: "/ayyan_images/products/046.jpg",
     is_active: true
   },
   {
@@ -532,6 +616,7 @@ export const initialProducts: Product[] = [
     price: 180.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/047.jpg",
     is_active: true
   },
   {
@@ -543,6 +628,7 @@ export const initialProducts: Product[] = [
     price: 195.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/048.jpg",
     is_active: true
   },
   {
@@ -554,6 +640,7 @@ export const initialProducts: Product[] = [
     price: 367.35,
     pieces_per_box: "5 pcs/box",
     piece_count: "5 pcs/box",
+    image_url: "/ayyan_images/products/049.jpg",
     is_active: true
   },
   {
@@ -565,6 +652,7 @@ export const initialProducts: Product[] = [
     price: 161.20,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/050.jpg",
     is_active: true
   },
   {
@@ -576,6 +664,7 @@ export const initialProducts: Product[] = [
     price: 260.40,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/051.jpg",
     is_active: true
   },
   {
@@ -587,6 +676,7 @@ export const initialProducts: Product[] = [
     price: 380.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/052.jpg",
     is_active: true
   },
   {
@@ -598,6 +688,7 @@ export const initialProducts: Product[] = [
     price: 511.50,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/053.jpg",
     is_active: true
   },
   {
@@ -609,6 +700,7 @@ export const initialProducts: Product[] = [
     price: 666.50,
     pieces_per_box: "1 pc",
     piece_count: "1 pc",
+    image_url: "/ayyan_images/products/054.jpg",
     is_active: true
   },
   {
@@ -620,6 +712,7 @@ export const initialProducts: Product[] = [
     price: 666.50,
     pieces_per_box: "1 pc",
     piece_count: "1 pc",
+    image_url: "/ayyan_images/products/055.jpg",
     is_active: true
   },
   {
@@ -631,6 +724,7 @@ export const initialProducts: Product[] = [
     price: 56.60,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/056.jpg",
     is_active: true
   },
   {
@@ -642,6 +736,7 @@ export const initialProducts: Product[] = [
     price: 189.10,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/057.jpg",
     is_active: true
   },
   {
@@ -653,6 +748,7 @@ export const initialProducts: Product[] = [
     price: 72.00,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/058.jpg",
     is_active: true
   },
   {
@@ -664,6 +760,7 @@ export const initialProducts: Product[] = [
     price: 141.05,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/059.jpg",
     is_active: true
   },
   {
@@ -675,6 +772,7 @@ export const initialProducts: Product[] = [
     price: 137.95,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/060.jpg",
     is_active: true
   },
   {
@@ -686,6 +784,7 @@ export const initialProducts: Product[] = [
     price: 168.10,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/061.jpg",
     is_active: true
   },
   {
@@ -697,6 +796,7 @@ export const initialProducts: Product[] = [
     price: 217.00,
     pieces_per_box: "5 pcs/box",
     piece_count: "5 pcs/box",
+    image_url: "/ayyan_images/products/062.jpg",
     is_active: true
   },
   {
@@ -708,6 +808,7 @@ export const initialProducts: Product[] = [
     price: 103.85,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/063.jpg",
     is_active: true
   },
   {
@@ -719,6 +820,7 @@ export const initialProducts: Product[] = [
     price: 181.35,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/064.jpg",
     is_active: true
   },
   {
@@ -730,6 +832,7 @@ export const initialProducts: Product[] = [
     price: 49.00,
     pieces_per_box: "5 pcs/pkt",
     piece_count: "5 pcs/pkt",
+    image_url: "/ayyan_images/products/065.jpg",
     is_active: true
   },
   {
@@ -741,6 +844,7 @@ export const initialProducts: Product[] = [
     price: 66.00,
     pieces_per_box: "5 pcs/pkt",
     piece_count: "5 pcs/pkt",
+    image_url: "/ayyan_images/products/066.jpg",
     is_active: true
   },
   {
@@ -752,6 +856,7 @@ export const initialProducts: Product[] = [
     price: 85.25,
     pieces_per_box: "5 pcs/pkt",
     piece_count: "5 pcs/pkt",
+    image_url: "/ayyan_images/products/067.jpg",
     is_active: true
   },
   {
@@ -763,6 +868,7 @@ export const initialProducts: Product[] = [
     price: 272.80,
     pieces_per_box: "1 pc/box",
     piece_count: "1 pc/box",
+    image_url: "/ayyan_images/products/068.jpg",
     is_active: true
   },
   {
@@ -774,6 +880,7 @@ export const initialProducts: Product[] = [
     price: 114.70,
     pieces_per_box: "2 pcs/box",
     piece_count: "2 pcs/box",
+    image_url: "/ayyan_images/products/069.jpg",
     is_active: true
   },
   {
@@ -785,6 +892,7 @@ export const initialProducts: Product[] = [
     price: 158.10,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/070.jpg",
     is_active: true
   },
   {
@@ -796,6 +904,7 @@ export const initialProducts: Product[] = [
     price: 62.00,
     pieces_per_box: "5 pcs/box",
     piece_count: "5 pcs/box",
+    image_url: "/ayyan_images/products/071.jpg",
     is_active: true
   },
   {
@@ -807,6 +916,7 @@ export const initialProducts: Product[] = [
     price: 79.05,
     pieces_per_box: "100 pcs/pkt",
     piece_count: "100 pcs/pkt",
+    image_url: "/ayyan_images/products/072.jpg",
     is_active: true
   },
   {
@@ -818,6 +928,7 @@ export const initialProducts: Product[] = [
     price: 120.90,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/073.jpg",
     is_active: true
   },
   {
@@ -829,6 +940,7 @@ export const initialProducts: Product[] = [
     price: 150.35,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/074.jpg",
     is_active: true
   },
   {
@@ -840,6 +952,7 @@ export const initialProducts: Product[] = [
     price: 138.70,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/075.jpg",
     is_active: true
   },
   {
@@ -851,6 +964,7 @@ export const initialProducts: Product[] = [
     price: 170.50,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/076.jpg",
     is_active: true
   },
   {
@@ -862,6 +976,7 @@ export const initialProducts: Product[] = [
     price: 209.25,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/077.jpg",
     is_active: true
   },
   {
@@ -873,6 +988,7 @@ export const initialProducts: Product[] = [
     price: 189.10,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/078.jpg",
     is_active: true
   },
   {
@@ -884,6 +1000,7 @@ export const initialProducts: Product[] = [
     price: 223.20,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/079.jpg",
     is_active: true
   },
   {
@@ -895,6 +1012,7 @@ export const initialProducts: Product[] = [
     price: 293.20,
     pieces_per_box: "1 pc/box",
     piece_count: "1 pc/box",
+    image_url: "/ayyan_images/products/080.jpg",
     is_active: true
   },
   {
@@ -906,6 +1024,7 @@ export const initialProducts: Product[] = [
     price: 251.10,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/081.jpg",
     is_active: true
   },
   {
@@ -917,6 +1036,7 @@ export const initialProducts: Product[] = [
     price: 399.50,
     pieces_per_box: "1 pc/box",
     piece_count: "1 pc/box",
+    image_url: "/ayyan_images/products/082.jpg",
     is_active: true
   },
   {
@@ -928,6 +1048,7 @@ export const initialProducts: Product[] = [
     price: 49.60,
     pieces_per_box: "10 pkts/box",
     piece_count: "10 pkts/box",
+    image_url: "/ayyan_images/products/083.jpg",
     is_active: true
   },
   {
@@ -939,6 +1060,7 @@ export const initialProducts: Product[] = [
     price: 192.20,
     pieces_per_box: "5 pcs/box",
     piece_count: "5 pcs/box",
+    image_url: "/ayyan_images/products/084.jpg",
     is_active: true
   },
   {
@@ -950,6 +1072,7 @@ export const initialProducts: Product[] = [
     price: 192.20,
     pieces_per_box: "5 pcs/box",
     piece_count: "5 pcs/box",
+    image_url: "/ayyan_images/products/085.jpg",
     is_active: true
   },
   {
@@ -961,6 +1084,7 @@ export const initialProducts: Product[] = [
     price: 260.40,
     pieces_per_box: "5 pcs/box",
     piece_count: "5 pcs/box",
+    image_url: "/ayyan_images/products/086.jpg",
     is_active: true
   },
   {
@@ -972,6 +1096,7 @@ export const initialProducts: Product[] = [
     price: 136.40,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/087.jpg",
     is_active: true
   },
   {
@@ -983,6 +1108,7 @@ export const initialProducts: Product[] = [
     price: 181.35,
     pieces_per_box: "5 pcs/box",
     piece_count: "5 pcs/box",
+    image_url: "/ayyan_images/products/088.jpg",
     is_active: true
   },
   {
@@ -994,6 +1120,7 @@ export const initialProducts: Product[] = [
     price: 217.00,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/089.jpg",
     is_active: true
   },
   {
@@ -1005,6 +1132,7 @@ export const initialProducts: Product[] = [
     price: 217.00,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/090.jpg",
     is_active: true
   },
   {
@@ -1016,6 +1144,7 @@ export const initialProducts: Product[] = [
     price: 217.00,
     pieces_per_box: "10 pcs/box",
     piece_count: "10 pcs/box",
+    image_url: "/ayyan_images/products/091.jpg",
     is_active: true
   },
   {
@@ -1027,6 +1156,7 @@ export const initialProducts: Product[] = [
     price: 217.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/092.jpg",
     is_active: true
   },
   {
@@ -1038,6 +1168,7 @@ export const initialProducts: Product[] = [
     price: 108.50,
     pieces_per_box: "2 pcs/box",
     piece_count: "2 pcs/box",
+    image_url: "/ayyan_images/products/093.jpg",
     is_active: true
   },
   {
@@ -1049,6 +1180,7 @@ export const initialProducts: Product[] = [
     price: 69.70,
     pieces_per_box: "2 pcs/box",
     piece_count: "2 pcs/box",
+    image_url: "/ayyan_images/products/094.jpg",
     is_active: true
   },
   {
@@ -1060,6 +1192,7 @@ export const initialProducts: Product[] = [
     price: 83.70,
     pieces_per_box: "5 pcs/box",
     piece_count: "5 pcs/box",
+    image_url: "/ayyan_images/products/095.jpg",
     is_active: true
   },
   {
@@ -1071,6 +1204,7 @@ export const initialProducts: Product[] = [
     price: 562.65,
     pieces_per_box: "5 pcs/box",
     piece_count: "5 pcs/box",
+    image_url: "/ayyan_images/products/096.jpg",
     is_active: true
   },
   {
@@ -1082,6 +1216,7 @@ export const initialProducts: Product[] = [
     price: 441.75,
     pieces_per_box: "3 pcs/box",
     piece_count: "3 pcs/box",
+    image_url: "/ayyan_images/products/097.jpg",
     is_active: true
   },
   {
@@ -1093,6 +1228,7 @@ export const initialProducts: Product[] = [
     price: 186.00,
     pieces_per_box: "1 pc",
     piece_count: "1 pc",
+    image_url: "/ayyan_images/products/098.jpg",
     is_active: true
   },
   {
@@ -1104,6 +1240,7 @@ export const initialProducts: Product[] = [
     price: 455.70,
     pieces_per_box: "1 pc",
     piece_count: "1 pc",
+    image_url: "/ayyan_images/products/099.jpg",
     is_active: true
   },
   {
@@ -1115,6 +1252,7 @@ export const initialProducts: Product[] = [
     price: 511.50,
     pieces_per_box: "1 pc",
     piece_count: "1 pc",
+    image_url: "/ayyan_images/products/100.jpg",
     is_active: true
   },
   {
@@ -1126,6 +1264,7 @@ export const initialProducts: Product[] = [
     price: 214.00,
     pieces_per_box: "1 pc",
     piece_count: "1 pc",
+    image_url: "/ayyan_images/products/101.jpg",
     is_active: true
   },
   {
@@ -1137,6 +1276,7 @@ export const initialProducts: Product[] = [
     price: 232.50,
     pieces_per_box: "1 pc",
     piece_count: "1 pc",
+    image_url: "/ayyan_images/products/102.jpg",
     is_active: true
   },
   {
@@ -1148,6 +1288,7 @@ export const initialProducts: Product[] = [
     price: 232.50,
     pieces_per_box: "1 pc",
     piece_count: "1 pc",
+    image_url: "/ayyan_images/products/103.jpg",
     is_active: true
   },
   {
@@ -1159,6 +1300,7 @@ export const initialProducts: Product[] = [
     price: 291.40,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/104.jpg",
     is_active: true
   },
   {
@@ -1170,6 +1312,7 @@ export const initialProducts: Product[] = [
     price: 220.00,
     pieces_per_box: "2 pcs/box",
     piece_count: "2 pcs/box",
+    image_url: "/ayyan_images/products/105.jpg",
     is_active: true
   },
   {
@@ -1181,6 +1324,7 @@ export const initialProducts: Product[] = [
     price: 418.50,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/106.jpg",
     is_active: true
   },
   {
@@ -1192,6 +1336,7 @@ export const initialProducts: Product[] = [
     price: 581.25,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/107.jpg",
     is_active: true
   },
   {
@@ -1203,6 +1348,7 @@ export const initialProducts: Product[] = [
     price: 744.00,
     pieces_per_box: "50 shots",
     piece_count: "50 shots",
+    image_url: "/ayyan_images/products/108.jpg",
     is_active: true
   },
   {
@@ -1214,6 +1360,7 @@ export const initialProducts: Product[] = [
     price: 533.20,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/109.jpg",
     is_active: true
   },
   {
@@ -1225,6 +1372,7 @@ export const initialProducts: Product[] = [
     price: 448.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/110.jpg",
     is_active: true
   },
   {
@@ -1236,6 +1384,7 @@ export const initialProducts: Product[] = [
     price: 837.00,
     pieces_per_box: "25 shots",
     piece_count: "25 shots",
+    image_url: "/ayyan_images/products/111.jpg",
     is_active: true
   },
   {
@@ -1247,6 +1396,7 @@ export const initialProducts: Product[] = [
     price: 403.00,
     pieces_per_box: "12 shots",
     piece_count: "12 shots",
+    image_url: "/ayyan_images/products/112.jpg",
     is_active: true
   },
   {
@@ -1258,6 +1408,7 @@ export const initialProducts: Product[] = [
     price: 883.50,
     pieces_per_box: "30 shots",
     piece_count: "30 shots",
+    image_url: "/ayyan_images/products/113.jpg",
     is_active: true
   },
   {
@@ -1269,6 +1420,7 @@ export const initialProducts: Product[] = [
     price: 475.85,
     pieces_per_box: "15 shots",
     piece_count: "15 shots",
+    image_url: "/ayyan_images/products/114.jpg",
     is_active: true
   },
   {
@@ -1280,6 +1432,7 @@ export const initialProducts: Product[] = [
     price: 1542.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/115.jpg",
     is_active: true
   },
   {
@@ -1291,6 +1444,7 @@ export const initialProducts: Product[] = [
     price: 1635.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/116.jpg",
     is_active: true
   },
   {
@@ -1302,6 +1456,7 @@ export const initialProducts: Product[] = [
     price: 2402.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/117.jpg",
     is_active: true
   },
   {
@@ -1313,6 +1468,7 @@ export const initialProducts: Product[] = [
     price: 2852.00,
     pieces_per_box: "120 colour",
     piece_count: "120 colour",
+    image_url: "/ayyan_images/products/118.jpg",
     is_active: true
   },
   {
@@ -1324,6 +1480,7 @@ export const initialProducts: Product[] = [
     price: 2790.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/119.jpg",
     is_active: true
   },
   {
@@ -1335,6 +1492,7 @@ export const initialProducts: Product[] = [
     price: 3069.00,
     pieces_per_box: "240 shots",
     piece_count: "240 shots",
+    image_url: "/ayyan_images/products/120.jpg",
     is_active: true
   },
   {
@@ -1346,6 +1504,7 @@ export const initialProducts: Product[] = [
     price: 5859.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/121.jpg",
     is_active: true
   },
   {
@@ -1357,6 +1516,7 @@ export const initialProducts: Product[] = [
     price: 6587.50,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/122.jpg",
     is_active: true
   },
   {
@@ -1368,6 +1528,7 @@ export const initialProducts: Product[] = [
     price: 13872.50,
     pieces_per_box: "500 shots",
     piece_count: "500 shots",
+    image_url: "/ayyan_images/products/123.jpg",
     is_active: true
   },
   {
@@ -1379,6 +1540,7 @@ export const initialProducts: Product[] = [
     price: 27977.50,
     pieces_per_box: "1000 shots",
     piece_count: "1000 shots",
+    image_url: "/ayyan_images/products/124.jpg",
     is_active: true
   },
   {
@@ -1390,6 +1552,7 @@ export const initialProducts: Product[] = [
     price: 3022.50,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/125.jpg",
     is_active: true
   },
   {
@@ -1401,6 +1564,7 @@ export const initialProducts: Product[] = [
     price: 6045.00,
     pieces_per_box: "100 shots",
     piece_count: "100 shots",
+    image_url: "/ayyan_images/products/126.jpg",
     is_active: true
   },
   {
@@ -1412,6 +1576,7 @@ export const initialProducts: Product[] = [
     price: 6626.25,
     pieces_per_box: "100 shots",
     piece_count: "100 shots",
+    image_url: "/ayyan_images/products/127.jpg",
     is_active: true
   },
   {
@@ -1423,6 +1588,7 @@ export const initialProducts: Product[] = [
     price: 11315.00,
     pieces_per_box: "180 shots",
     piece_count: "180 shots",
+    image_url: "/ayyan_images/products/128.jpg",
     is_active: true
   },
   {
@@ -1434,6 +1600,7 @@ export const initialProducts: Product[] = [
     price: 7267.50,
     pieces_per_box: "24 shots",
     piece_count: "24 shots",
+    image_url: "/ayyan_images/products/129.jpg",
     is_active: true
   },
   {
@@ -1445,6 +1612,7 @@ export const initialProducts: Product[] = [
     price: 6192.35,
     pieces_per_box: "24 shots",
     piece_count: "24 shots",
+    image_url: "/ayyan_images/products/130.jpg",
     is_active: true
   },
   {
@@ -1456,6 +1624,7 @@ export const initialProducts: Product[] = [
     price: 6192.00,
     pieces_per_box: "24 shots",
     piece_count: "24 shots",
+    image_url: "/ayyan_images/products/131.jpg",
     is_active: true
   },
   {
@@ -1467,6 +1636,7 @@ export const initialProducts: Product[] = [
     price: 10493.00,
     pieces_per_box: "16 shots",
     piece_count: "16 shots",
+    image_url: "/ayyan_images/products/132.jpg",
     is_active: true
   },
   {
@@ -1478,6 +1648,7 @@ export const initialProducts: Product[] = [
     price: 5347.50,
     pieces_per_box: "10 shots",
     piece_count: "10 shots",
+    image_url: "/ayyan_images/products/133.jpg",
     is_active: true
   },
   {
@@ -1489,6 +1660,7 @@ export const initialProducts: Product[] = [
     price: 10472.50,
     pieces_per_box: "20 shots",
     piece_count: "20 shots",
+    image_url: "/ayyan_images/products/134.jpg",
     is_active: true
   },
   {
@@ -1500,6 +1672,7 @@ export const initialProducts: Product[] = [
     price: 3875.00,
     pieces_per_box: "100 shots",
     piece_count: "100 shots",
+    image_url: "/ayyan_images/products/135.jpg",
     is_active: true
   },
   {
@@ -1511,6 +1684,7 @@ export const initialProducts: Product[] = [
     price: 6161.25,
     pieces_per_box: "100 shots",
     piece_count: "100 shots",
+    image_url: "/ayyan_images/products/136.jpg",
     is_active: true
   },
   {
@@ -1522,6 +1696,7 @@ export const initialProducts: Product[] = [
     price: 790.50,
     pieces_per_box: "24 pcs",
     piece_count: "24 pcs",
+    image_url: "/ayyan_images/products/137.jpg",
     is_active: true
   },
   {
@@ -1533,6 +1708,7 @@ export const initialProducts: Product[] = [
     price: 1085.00,
     pieces_per_box: "28 pcs",
     piece_count: "28 pcs",
+    image_url: "/ayyan_images/products/138.jpg",
     is_active: true
   },
   {
@@ -1544,6 +1720,7 @@ export const initialProducts: Product[] = [
     price: 1581.00,
     pieces_per_box: "30 pcs",
     piece_count: "30 pcs",
+    image_url: "/ayyan_images/products/139.jpg",
     is_active: true
   },
   {
@@ -1555,6 +1732,7 @@ export const initialProducts: Product[] = [
     price: 1813.50,
     pieces_per_box: "36 pcs",
     piece_count: "36 pcs",
+    image_url: "/ayyan_images/products/140.jpg",
     is_active: true
   },
   {
@@ -1566,6 +1744,7 @@ export const initialProducts: Product[] = [
     price: 1821.00,
     pieces_per_box: "40 pcs",
     piece_count: "40 pcs",
+    image_url: "/ayyan_images/products/141.jpg",
     is_active: true
   },
   {
@@ -1577,6 +1756,7 @@ export const initialProducts: Product[] = [
     price: 25.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/142.jpg",
     is_active: true
   },
   {
@@ -1588,6 +1768,7 @@ export const initialProducts: Product[] = [
     price: 45.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/143.jpg",
     is_active: true
   },
   {
@@ -1599,6 +1780,7 @@ export const initialProducts: Product[] = [
     price: 125.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/144.jpg",
     is_active: true
   },
   {
@@ -1610,6 +1792,7 @@ export const initialProducts: Product[] = [
     price: 95.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/145.jpg",
     is_active: true
   },
   {
@@ -1621,6 +1804,7 @@ export const initialProducts: Product[] = [
     price: 110.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/146.jpg",
     is_active: true
   },
   {
@@ -1632,6 +1816,7 @@ export const initialProducts: Product[] = [
     price: 135.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/147.jpg",
     is_active: true
   },
   {
@@ -1643,6 +1828,7 @@ export const initialProducts: Product[] = [
     price: 150.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/148.jpg",
     is_active: true
   },
   {
@@ -1654,6 +1840,7 @@ export const initialProducts: Product[] = [
     price: 180.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/149.jpg",
     is_active: true
   },
   {
@@ -1665,6 +1852,7 @@ export const initialProducts: Product[] = [
     price: 140.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/150.jpg",
     is_active: true
   },
   {
@@ -1676,6 +1864,7 @@ export const initialProducts: Product[] = [
     price: 90.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/151.jpg",
     is_active: true
   },
   {
@@ -1687,6 +1876,7 @@ export const initialProducts: Product[] = [
     price: 120.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/152.jpg",
     is_active: true
   },
   {
@@ -1698,6 +1888,7 @@ export const initialProducts: Product[] = [
     price: 180.00,
     pieces_per_box: "1 Box",
     piece_count: "1 Box",
+    image_url: "/ayyan_images/products/153.jpg",
     is_active: true
   },
 ];

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { Product, Slot, Booking, StaffUser, BookingRpcResponse, BookingStatus } from '../types';
-import { INITIAL_PRODUCTS, generateInitialSlots } from '../lib/initialData';
-import { supabase, isSupabaseConfigured, DEFAULT_PRODUCT_IMAGE } from '../lib/supabase';
+import { INITIAL_PRODUCTS, generateInitialSlots, getCategoryFallbackImage, getProductImageUrl } from '../lib/initialData';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { isAuthorizedAdminEmail, ADMIN_EMAIL, generateUUID, formatTime, formatDateReadable, validateSlotTiming, getSlotStartDateTime } from '../lib/utils';
 import { extractCleanQrPayload } from '../lib/cameraUtils';
 
@@ -90,9 +90,10 @@ export const safeRemoveItem = (key: string): void => {
 /**
  * Sanitizes product objects so that no raw Base64 data strings enter localStorage
  */
-const sanitizeProductImage = (url?: string): string => {
-  if (!url || url.startsWith('data:')) {
-    return DEFAULT_PRODUCT_IMAGE;
+const sanitizeProductImage = (url?: string, code?: string, category?: string): string => {
+  if (!url || url.startsWith('data:') || url.includes('placeholder') || url.includes('Ganesh-Crackers')) {
+    if (code) return getProductImageUrl(code);
+    return getCategoryFallbackImage(category);
   }
   return url;
 };
@@ -100,7 +101,7 @@ const sanitizeProductImage = (url?: string): string => {
 const sanitizeProductsForStorage = (prods: Product[]): Product[] => {
   return prods.map(p => ({
     ...p,
-    image_url: sanitizeProductImage(p.image_url)
+    image_url: sanitizeProductImage(p.image_url, p.item_code || p.code, p.category)
   }));
 };
 
@@ -266,7 +267,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               pieces_per_box: p.piece_count || p.pieces_per_box || '1 Box',
               piece_count: p.piece_count || p.pieces_per_box || '1 Box',
               video_url: p.video_url || '',
-              image_url: sanitizeProductImage(p.image_url || p.image || p.imageUrl),
+              image_url: sanitizeProductImage(p.image_url || p.image || p.imageUrl, codeNum, p.category),
               is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
               created_at: p.created_at || new Date().toISOString()
             };
@@ -825,7 +826,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             pieces_per_box: p.piece_count || p.pieces_per_box || '1 Box',
             piece_count: p.piece_count || p.pieces_per_box || '1 Box',
             video_url: p.video_url || '',
-            image_url: sanitizeProductImage(p.image_url || p.image || p.imageUrl),
+            image_url: sanitizeProductImage(p.image_url || p.image || p.imageUrl, codeNum, p.category),
             is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
             created_at: p.created_at || new Date().toISOString()
           };
