@@ -2,10 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Search, 
-  SlidersHorizontal, 
   Package, 
-  Volume2, 
-  ArrowUpDown, 
   X, 
   Flame,
   Tag,
@@ -22,7 +19,7 @@ import { ProductImageLightbox } from '../components/customer/ProductImageLightbo
 import { ProductSafetyModal } from '../components/customer/ProductSafetyModal';
 import { useEstimate } from '../context/EstimateContext';
 import { EstimateDrawer } from '../components/customer/EstimateDrawer';
-import { Product, SoundLevel } from '../types';
+import { Product } from '../types';
 import { formatINR } from '../lib/utils';
 
 // Official Standard Ayyan Category Pill Tabs
@@ -45,9 +42,6 @@ export const CataloguePage: React.FC = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryTab>('All');
-  const [selectedSound, setSelectedSound] = useState<'All' | SoundLevel>('All');
-  const [maxPrice, setMaxPrice] = useState<number>(30000);
-  const [sortBy, setSortBy] = useState<'default' | 'price_low' | 'price_high'>('default');
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
   const [lightboxProduct, setLightboxProduct] = useState<Product | null>(null);
   const [detailsProduct, setDetailsProduct] = useState<Product | null>(null);
@@ -63,49 +57,32 @@ export const CataloguePage: React.FC = () => {
     return product.category?.toLowerCase() === tab.toLowerCase();
   };
 
-  // Filter and Sort Logic
+  // Filter Logic: Search + Category Tab
   const filteredProducts = useMemo(() => {
-    return products
-      .filter((p: Product) => {
-        if (!p.is_active) return false;
+    return products.filter((p: Product) => {
+      if (!p.is_active) return false;
 
-        // 1. Live Search Bar matching: product name, category, description, piece count, safety tags
-        if (searchQuery.trim()) {
-          const q = searchQuery.toLowerCase().trim();
-          const matchName = p.name?.toLowerCase().includes(q);
-          const matchCategory = p.category?.toLowerCase().includes(q);
-          const matchDesc = p.description?.toLowerCase().includes(q);
-          const matchPieceCount = p.piece_count?.toLowerCase().includes(q);
-          const matchTags = p.safety_tags?.some((t: string) => t.toLowerCase().includes(q));
-          
-          if (!matchName && !matchCategory && !matchDesc && !matchPieceCount && !matchTags) {
-            return false;
-          }
-        }
-
-        // 2. Category Pill Tab Matching
-        if (!matchesCategoryTab(p, selectedCategory)) {
+      // 1. Live Search Bar matching: product name, category, item_code, packaging
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        const matchName = p.name?.toLowerCase().includes(q);
+        const matchCategory = p.category?.toLowerCase().includes(q);
+        const matchCode = (p.item_code || p.code)?.toLowerCase().includes(q);
+        const matchPack = (p.pieces_per_box || p.piece_count)?.toLowerCase().includes(q);
+        
+        if (!matchName && !matchCategory && !matchCode && !matchPack) {
           return false;
         }
+      }
 
-        // 3. Sound Level matching
-        if (selectedSound !== 'All' && p.sound_level !== selectedSound) {
-          return false;
-        }
+      // 2. Category Pill Tab Matching
+      if (!matchesCategoryTab(p, selectedCategory)) {
+        return false;
+      }
 
-        // 4. Maximum Price Slider
-        if (p.price > maxPrice) {
-          return false;
-        }
-
-        return true;
-      })
-      .sort((a: Product, b: Product) => {
-        if (sortBy === 'price_low') return a.price - b.price;
-        if (sortBy === 'price_high') return b.price - a.price;
-        return 0; // Default / Recommended
-      });
-  }, [products, searchQuery, selectedCategory, selectedSound, maxPrice, sortBy]);
+      return true;
+    });
+  }, [products, searchQuery, selectedCategory]);
 
   // Compute counts for each category tab
   const categoryCounts = useMemo(() => {
@@ -122,12 +99,9 @@ export const CataloguePage: React.FC = () => {
   const handleResetFilters = () => {
     setSearchQuery('');
     setSelectedCategory('All');
-    setSelectedSound('All');
-    setMaxPrice(15000);
-    setSortBy('default');
   };
 
-  const isFiltering = searchQuery || selectedCategory !== 'All' || selectedSound !== 'All' || maxPrice < 15000 || sortBy !== 'default';
+  const isFiltering = Boolean(searchQuery.trim()) || selectedCategory !== 'All';
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-6 sm:space-y-8 pb-24 sm:pb-12">
@@ -170,12 +144,12 @@ export const CataloguePage: React.FC = () => {
 
 
       {/* ========================================================================= */}
-      {/* 3. SEARCH & QUICK FILTERS CONTROL PANEL                                   */}
+      {/* 3. SEARCH & QUICK FILTERS CONTROL PANEL (COMPACT 2-ROW TOOLBAR)           */}
       {/* ========================================================================= */}
-      <div className="rounded-3xl p-5 sm:p-7 space-y-5 sm:space-y-6 border border-amber-300/80 dark:border-gold-500/30 bg-white dark:bg-obsidian-900/85 shadow-md dark:shadow-glass backdrop-blur-xl">
+      <div className="rounded-3xl p-4 sm:p-5 space-y-4 border border-amber-300/80 dark:border-gold-500/30 bg-white dark:bg-obsidian-900/85 shadow-md dark:shadow-glass backdrop-blur-xl">
         
-        {/* Top Row: Live Search Bar, Layout Toggle & Sort Options */}
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3 sm:gap-4">
+        {/* Top Row: Live Search Bar & View Switcher */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           
           {/* Live Search Bar */}
           <div className="relative flex-1 w-full">
@@ -184,14 +158,14 @@ export const CataloguePage: React.FC = () => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search Green Crackers by name (e.g., 'sparkler', 'pot', '12 shot', 'chakkars')..."
-              className="w-full bg-slate-50 dark:bg-obsidian-950/90 border border-slate-300 dark:border-white/10 rounded-2xl pl-11 pr-10 py-3.5 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-gold-400 focus:ring-2 focus:ring-amber-500/20 transition-all min-h-[48px]"
+              placeholder="Search Green Crackers by name..."
+              className="w-full bg-slate-50 dark:bg-obsidian-950/90 border border-slate-300 dark:border-white/10 rounded-2xl pl-11 pr-10 py-3 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-amber-500 dark:focus:border-gold-400 focus:ring-2 focus:ring-amber-500/20 transition-all min-h-[46px]"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3.5 top-3.5 p-1 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+                className="absolute right-3.5 top-3 p-1 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
                 aria-label="Clear Search Input"
               >
                 <X className="w-4 h-4" />
@@ -199,11 +173,10 @@ export const CataloguePage: React.FC = () => {
             )}
           </div>
 
-          {/* View Switcher Toggle & Sort Options */}
-          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 flex-wrap sm:flex-nowrap">
-            
-            {/* Layout Switcher (List / Row View vs Grid View) */}
-            <div className="flex items-center bg-slate-100 dark:bg-obsidian-950 border border-slate-300 dark:border-white/10 rounded-2xl p-1 min-h-[48px] shadow-xs">
+          {/* View Switcher Toggle & Quick Reset */}
+          <div className="flex items-center gap-2 shrink-0">
+            {/* Layout Switcher (Row View vs Grid View) */}
+            <div className="flex items-center bg-slate-100 dark:bg-obsidian-950 border border-slate-300 dark:border-white/10 rounded-2xl p-1 min-h-[46px] shadow-xs">
               <button
                 type="button"
                 onClick={() => setViewMode('list')}
@@ -235,50 +208,34 @@ export const CataloguePage: React.FC = () => {
               </button>
             </div>
 
-            {/* Sort Dropdown */}
-            <div className="flex items-center gap-2 bg-slate-50 dark:bg-obsidian-950 border border-slate-300 dark:border-white/10 rounded-2xl px-4 py-3 min-h-[48px] flex-1 sm:flex-none shadow-xs">
-              <ArrowUpDown className="w-4 h-4 text-amber-600 dark:text-gold-400 shrink-0" />
-              <div className="flex flex-col">
-                <span className="text-[9px] uppercase font-bold text-slate-500 dark:text-slate-400 tracking-wider">Sort by</span>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as any)}
-                  className="bg-transparent text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 focus:outline-none cursor-pointer pr-2"
-                >
-                  <option value="default" className="bg-white dark:bg-obsidian-900 text-slate-900 dark:text-white">Featured / Recommended</option>
-                  <option value="price_low" className="bg-white dark:bg-obsidian-900 text-slate-900 dark:text-white">Price: Low → High</option>
-                  <option value="price_high" className="bg-white dark:bg-obsidian-900 text-slate-900 dark:text-white">Price: High → Low</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Reset Filter Button */}
+            {/* Quick Reset Filter Button if active */}
             {isFiltering && (
               <button
                 type="button"
                 onClick={handleResetFilters}
-                className="px-4 py-3 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 dark:bg-gold-500/15 dark:hover:bg-gold-500/25 border border-amber-500/30 dark:border-gold-500/30 text-xs font-bold text-amber-800 dark:text-gold-300 flex items-center gap-1.5 whitespace-nowrap transition-colors min-h-[48px] shadow-xs cursor-pointer"
+                className="px-3.5 py-2.5 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 dark:bg-gold-500/15 dark:hover:bg-gold-500/25 border border-amber-500/30 dark:border-gold-500/30 text-xs font-bold text-amber-800 dark:text-gold-300 flex items-center gap-1.5 whitespace-nowrap transition-colors min-h-[46px] shadow-xs cursor-pointer"
+                title="Reset filters"
               >
-                <X className="w-4 h-4" />
+                <X className="w-3.5 h-3.5" />
                 <span>Reset</span>
               </button>
             )}
           </div>
         </div>
 
-        {/* Category Pill Tabs Row */}
-        <div className="space-y-2.5 pt-1">
+        {/* Bottom Row: Category Selector Pill Buttons */}
+        <div className="space-y-2.5 pt-1 border-t border-slate-200/60 dark:border-white/5">
           <div className="flex items-center justify-between">
             <span className="text-[11px] uppercase font-bold text-slate-600 dark:text-slate-300 tracking-wider flex items-center gap-1.5">
               <Tag className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400" />
-              <span>Sivakasi Sparklers &amp; Novelty Categories:</span>
+              <span>SIVAKASI SPARKLERS &amp; NOVELTY CATEGORIES:</span>
             </span>
             <span className="text-[11px] text-slate-500 dark:text-slate-400">
               Showing <strong className="text-slate-900 dark:text-white">{filteredProducts.length}</strong> items
             </span>
           </div>
 
-          <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar scroll-smooth">
+          <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar scroll-smooth">
             {CATEGORY_PILL_TABS.map((tab) => {
               const active = selectedCategory === tab;
               const count = categoryCounts[tab] || 0;
@@ -287,7 +244,7 @@ export const CataloguePage: React.FC = () => {
                   key={tab}
                   type="button"
                   onClick={() => setSelectedCategory(tab)}
-                  className={`px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 min-h-[44px] flex items-center gap-2 shrink-0 active:scale-95 shadow-xs cursor-pointer ${
+                  className={`px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 min-h-[42px] flex items-center gap-2 shrink-0 active:scale-95 shadow-xs cursor-pointer ${
                     active
                       ? 'bg-gradient-to-r from-amber-500 via-amber-400 to-gold-500 text-slate-950 font-extrabold shadow-md dark:shadow-glow-gold ring-2 ring-amber-400/50'
                       : 'bg-slate-100 hover:bg-slate-200/80 dark:bg-obsidian-950/80 dark:hover:bg-slate-800 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
@@ -304,61 +261,6 @@ export const CataloguePage: React.FC = () => {
                 </button>
               );
             })}
-          </div>
-        </div>
-
-        {/* Secondary Filter Controls: Price Slider & Sound Decibels */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-3 border-t border-slate-200/80 dark:border-white/10">
-          
-          {/* Price Range Slider */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                <SlidersHorizontal className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400" />
-                <span>Max Price Filter:</span>
-              </span>
-              <span className="font-mono font-bold text-amber-700 dark:text-gold-300 text-sm">
-                Up to {formatINR(maxPrice)}
-              </span>
-            </div>
-            <input
-              type="range"
-              min="20"
-              max="15000"
-              step="25"
-              value={maxPrice}
-              onChange={(e) => setMaxPrice(Number(e.target.value))}
-              className="w-full accent-amber-500 dark:accent-gold-500 bg-slate-200 dark:bg-obsidian-950 h-2 rounded-lg cursor-pointer"
-            />
-            <div className="flex justify-between text-[10px] text-slate-500 font-mono">
-              <span>₹ 20</span>
-              <span>₹ 7,500</span>
-              <span>₹ 15,000+</span>
-            </div>
-          </div>
-
-          {/* Sound Decibels Filter */}
-          <div className="space-y-2">
-            <span className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider text-xs flex items-center gap-1.5">
-              <Volume2 className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400" />
-              <span>Sound &amp; Spectacle Level:</span>
-            </span>
-            <div className="flex flex-wrap gap-2">
-              {(['All', 'Low / Silent', 'Medium', 'High Spectacle'] as const).map((sound) => (
-                <button
-                  key={sound}
-                  type="button"
-                  onClick={() => setSelectedSound(sound)}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-all min-h-[40px] flex items-center active:scale-95 cursor-pointer ${
-                    selectedSound === sound
-                      ? 'bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/50 font-bold shadow-xs'
-                      : 'bg-slate-100 dark:bg-obsidian-950 border border-slate-200 dark:border-white/5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-                  }`}
-                >
-                  {sound}
-                </button>
-              ))}
-            </div>
           </div>
         </div>
       </div>
