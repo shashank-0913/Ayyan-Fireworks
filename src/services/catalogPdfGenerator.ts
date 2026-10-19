@@ -457,8 +457,8 @@ export async function generateCompleteCatalogPdf(supabaseClient?: any): Promise<
     rawProducts = INITIAL_PRODUCTS;
   } else if (rawProducts.length < INITIAL_PRODUCTS.length) {
     // Merge to preserve full inventory count without omissions
-    const existingCodes = new Set(rawProducts.map(p => String(p.code || p.item_code || '').trim()));
-    const missing = INITIAL_PRODUCTS.filter(p => !existingCodes.has(String(p.code).trim()));
+    const existingCodes = new Set(rawProducts.map(p => String(p.item_code || p.code || '').trim()));
+    const missing = INITIAL_PRODUCTS.filter(p => !existingCodes.has(String(p.item_code || p.code || '').trim()));
     rawProducts = rawProducts.concat(missing);
   }
 

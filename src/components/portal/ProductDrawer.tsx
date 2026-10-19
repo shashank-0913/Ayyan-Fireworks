@@ -42,9 +42,9 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
       setName(productToEdit.name);
       setCategory(productToEdit.category);
       setPrice(productToEdit.price);
-      setPieceCount(productToEdit.piece_count);
+      setPieceCount(productToEdit.piece_count || productToEdit.pieces_per_box || '1 Box');
       setDescription(productToEdit.description || '');
-      setSafetyInstructions(productToEdit.safety_instructions);
+      setSafetyInstructions(productToEdit.safety_instructions || '');
       setImageUrl(
         productToEdit.image_url?.startsWith('data:') 
           ? PRESET_IMAGES[0].url 
@@ -105,7 +105,8 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
           category,
           price: Number(price) || 0,
           piece_count: pieceCount.trim() || '1 Box',
-          description: description.trim() || 'Authentic Sivakasi fireworks creation.',
+          pieces_per_box: pieceCount.trim() || '1 Box',
+          description: description.trim(),
           safety_instructions: safetyInstructions.trim() || 'Keep safe clearance. Place on hard flat ground.',
           image_url: cleanImageUrl,
           is_active: isActive
@@ -113,11 +114,14 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
         setToastMessage({ type: 'success', text: 'Product updated successfully!' });
       } else {
         await addProduct({
+          item_code: String(Date.now()).slice(-3),
+          code: String(Date.now()).slice(-3),
           name: name.trim(),
           category,
           price: Number(price) || 0,
+          pieces_per_box: pieceCount.trim() || '1 Box',
           piece_count: pieceCount.trim() || '1 Box',
-          description: description.trim() || 'Authentic Sivakasi fireworks creation.',
+          description: description.trim(),
           safety_instructions: safetyInstructions.trim() || 'Keep safe clearance. Place on hard flat ground.',
           image_url: cleanImageUrl
         });

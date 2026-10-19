@@ -194,14 +194,19 @@ export const PortalProductsPage: React.FC = () => {
                       </button>
                     </div>
 
-                    <h4 className="font-bold text-slate-900 dark:text-white text-sm truncate">{product.name}</h4>
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-[10px] font-bold text-amber-600 dark:text-amber-400">
+                        #{product.item_code || product.code || product.id}
+                      </span>
+                      <h4 className="font-bold text-slate-900 dark:text-white text-sm truncate">{product.name}</h4>
+                    </div>
                     
                     <div className="flex items-baseline justify-between pt-0.5">
                       <span className="text-base font-extrabold text-amber-600 dark:text-amber-400 font-mono">
                         {formatINR(product.price)}
                       </span>
                       <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
-                        {product.piece_count}
+                        {product.pieces_per_box || product.piece_count}
                       </span>
                     </div>
                   </div>
@@ -283,6 +288,9 @@ export const PortalProductsPage: React.FC = () => {
                           </div>
                           <div className="space-y-0.5">
                             <span className="font-bold text-slate-900 dark:text-white text-sm block">{product.name}</span>
+                            <span className="font-mono text-[10px] font-bold text-amber-600 dark:text-amber-400">
+                              SKU #{product.item_code || product.code || product.id}
+                            </span>
                           </div>
                         </div>
                       </td>
@@ -301,7 +309,7 @@ export const PortalProductsPage: React.FC = () => {
 
                       {/* Pack Count */}
                       <td className="px-4 py-4 text-slate-700 dark:text-slate-300 font-medium">
-                        {product.piece_count}
+                        {product.pieces_per_box || product.piece_count}
                       </td>
 
                       {/* Status Toggle */}

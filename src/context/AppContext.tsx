@@ -110,7 +110,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
+        if (Array.isArray(parsed) && parsed.length === INITIAL_PRODUCTS.length && parsed[0]?.item_code) {
           return sanitizeProductsForStorage(parsed);
         }
       } catch (e) {
@@ -251,30 +251,32 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         const { data: dbProducts, error: prodErr } = await client
           .from('products')
           .select('*')
-          .order('id', { ascending: false });
+          .order('id', { ascending: true });
 
-        if (!prodErr && Array.isArray(dbProducts)) {
-          const mapped: Product[] = dbProducts.map(p => ({
-            id: String(p.id),
-            code: p.code || undefined,
-            name: p.name || 'Firework SKU',
-            category: p.category || 'Sparklers',
-            price: Number(p.price) || 0,
-            piece_count: p.piece_count || '1 Box',
-            description: p.description || '',
-            safety_instructions: p.safety_instructions || 'Keep 10m clearance. Light with agarbatti.',
-            safety_tags: p.safety_tags || ['Bunny Certified'],
-            sound_level: p.sound_level || 'Medium',
-            video_url: p.video_url || '',
-            image_url: sanitizeProductImage(p.image_url || p.image || p.imageUrl),
-            is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
-            created_at: p.created_at || new Date().toISOString()
-          }));
+        if (!prodErr && Array.isArray(dbProducts) && dbProducts.length > 0) {
+          const mapped: Product[] = dbProducts.map(p => {
+            const codeNum = String(p.id).replace(/\D/g, '').padStart(3, '0');
+            return {
+              id: `item_${codeNum}`,
+              item_code: codeNum,
+              code: codeNum,
+              name: p.name || 'Firework SKU',
+              category: p.category || 'Sparklers',
+              price: Number(p.price) || 0,
+              pieces_per_box: p.piece_count || p.pieces_per_box || '1 Box',
+              piece_count: p.piece_count || p.pieces_per_box || '1 Box',
+              video_url: p.video_url || '',
+              image_url: sanitizeProductImage(p.image_url || p.image || p.imageUrl),
+              is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
+              created_at: p.created_at || new Date().toISOString()
+            };
+          });
 
           setProducts(mapped);
           safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(mapped)));
         } else if (prodErr) {
           console.error('Supabase fetch products error on initial load:', prodErr.message);
+          setProducts(INITIAL_PRODUCTS);
         }
 
         // Query bookings directly from Supabase 'bookings' table
@@ -803,30 +805,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const { data: dbProducts, error: prodErr } = await supabase
         .from('products')
         .select('*')
-        .order('id', { ascending: false });
+        .order('id', { ascending: true });
 
       if (prodErr) {
         console.error('Supabase fetch products error:', prodErr.message);
         return products;
       }
 
-      if (Array.isArray(dbProducts)) {
-        const mapped: Product[] = dbProducts.map(p => ({
-          id: String(p.id),
-          code: p.code || undefined,
-          name: p.name || 'Firework SKU',
-          category: p.category || 'Sparklers',
-          price: Number(p.price) || 0,
-          piece_count: p.piece_count || '1 Box',
-          description: p.description || '',
-          safety_instructions: p.safety_instructions || 'Keep 10m clearance. Light with agarbatti.',
-          safety_tags: p.safety_tags || ['Bunny Certified'],
-          sound_level: p.sound_level || 'Medium',
-          video_url: p.video_url || '',
-          image_url: sanitizeProductImage(p.image_url || p.image || p.imageUrl),
-          is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
-          created_at: p.created_at || new Date().toISOString()
-        }));
+      if (Array.isArray(dbProducts) && dbProducts.length > 0) {
+        const mapped: Product[] = dbProducts.map(p => {
+          const codeNum = String(p.id).replace(/\D/g, '').padStart(3, '0');
+          return {
+            id: `item_${codeNum}`,
+            item_code: codeNum,
+            code: codeNum,
+            name: p.name || 'Firework SKU',
+            category: p.category || 'Sparklers',
+            price: Number(p.price) || 0,
+            pieces_per_box: p.piece_count || p.pieces_per_box || '1 Box',
+            piece_count: p.piece_count || p.pieces_per_box || '1 Box',
+            video_url: p.video_url || '',
+            image_url: sanitizeProductImage(p.image_url || p.image || p.imageUrl),
+            is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
+            created_at: p.created_at || new Date().toISOString()
+          };
+        });
 
         setProducts(mapped);
         safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(mapped)));

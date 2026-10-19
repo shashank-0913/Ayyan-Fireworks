@@ -33,68 +33,52 @@ export interface AyyanCatalogItem {
 
 const getProductCategoryGroup = (category: string): string => {
   const cat = category.toLowerCase();
-  if (cat.includes('novelty') || cat.includes('novelties')) return 'Novelties';
-  if (cat.includes('shell')) return 'Shells';
-  if (cat.includes('mega') || cat.includes('display')) return 'Mega Displays';
-  if (cat.includes('cake') || cat.includes('shot') || cat.includes('repeater') || cat.includes('multi-shot')) return 'Cakes';
-  if (cat.includes('maroon') || cat.includes('cracker')) return 'Maroons';
   if (cat.includes('sparkler')) return 'Sparklers';
-  if (cat.includes('chakkar')) return 'Chakkars';
-  if (cat.includes('wheel')) return 'Wheels';
-  if (cat.includes('fountain') || cat.includes('flower pot') || cat.includes('rangoli')) return 'Fountains';
-  if (cat.includes('rocket') || cat.includes('missile')) return 'Rockets';
-  if (cat.includes('match')) return 'Matches';
-  if (cat.includes('gift') || cat.includes('assorted')) return 'Gift Boxes';
+  if (cat.includes('chakkar') || cat.includes('wheel')) return 'Ground Chakkars';
+  if (cat.includes('fountain') || cat.includes('pot') || cat.includes('flower')) return 'Colourful Fountains';
+  if (cat.includes('rocket') || cat.includes('missile') || cat.includes('bomb') || cat.includes('candle')) return 'Sky Rockets';
+  if (cat.includes('aerial') || cat.includes('shot') || cat.includes('cell') || cat.includes('night')) return 'Aerial Multi-Shots';
+  if (cat.includes('gift') || cat.includes('box')) return 'Gift Boxes';
+  if (cat.includes('novelty') || cat.includes('novelties') || cat.includes('match') || cat.includes('cap') || cat.includes('gun') || cat.includes('toy')) return 'Novelties';
   return category;
 };
 
-const getCategoryIcon = (category: string, name: string): string => {
+const getCategoryIcon = (category: string, name?: string): string => {
   const cat = category.toLowerCase();
-  const n = name.toLowerCase();
-  if (cat.includes('maroon') || n.includes('cracker')) return '🧨';
-  if (cat.includes('sparkler')) return '✨';
-  if (cat.includes('chakkar')) return '🌀';
-  if (cat.includes('wheel')) return '🎡';
-  if (cat.includes('fountain') || cat.includes('flower pot') || cat.includes('rangoli')) return '🌋';
-  if (cat.includes('rocket') || cat.includes('missile')) return '🚀';
-  if (cat.includes('mega') || cat.includes('display')) return '🌟';
-  if (cat.includes('cake') || cat.includes('shots') || cat.includes('repeater')) return '🎆';
-  if (cat.includes('shell')) return '💥';
-  if (cat.includes('novel') || n.includes('shot') || n.includes('drone') || n.includes('helicopter') || n.includes('spinner') || n.includes('mini')) return '🛸';
-  if (cat.includes('match')) return '🔥';
-  if (cat.includes('gift') || cat.includes('assorted')) return '🎁';
-  return '✨';
+  const n = (name || '').toLowerCase();
+  if (cat.includes('sparkler') || n.includes('sparkler')) return '✨';
+  if (cat.includes('chakkar') || cat.includes('wheel') || n.includes('wheel') || n.includes('chakkar')) return '🌀';
+  if (cat.includes('fountain') || cat.includes('flower') || cat.includes('pot') || n.includes('fountain')) return '🌋';
+  if (cat.includes('rocket') || cat.includes('missile') || cat.includes('bomb') || n.includes('rocket')) return '🚀';
+  if (cat.includes('aerial') || cat.includes('shot') || cat.includes('cell') || n.includes('shot')) return '🎆';
+  if (cat.includes('gift') || n.includes('gift')) return '🎁';
+  return '🎉';
 };
 
-// FULL 120+ MASTER INVENTORY LOADED DYNAMICALLY
+// FULL 153 STANDARDIZED SHOWROOM INVENTORY
 export const OFFICIAL_AYYAN_CATALOG: AyyanCatalogItem[] = INITIAL_PRODUCTS.map((prod, idx) => {
-  const code = prod.code || (prod.id.startsWith('ayyan-') ? prod.id.replace('ayyan-', '').slice(0, 10).toUpperCase() : `AY-${idx + 1}`);
+  const code = prod.item_code || prod.code || String(idx + 1).padStart(3, '0');
   return {
     code,
     name: prod.name,
     category: getProductCategoryGroup(prod.category),
     icon: getCategoryIcon(prod.category, prod.name),
     rate: prod.price,
-    per: prod.piece_count || 'piece',
-    description: prod.description,
+    per: prod.pieces_per_box || prod.piece_count || '1 Box',
+    description: '',
     soundLevel: prod.sound_level as any,
   };
 });
 
 export const CATEGORIES_LIST = [
   'ALL',
-  'Novelties',
-  'Shells',
-  'Cakes',
-  'Mega Displays',
-  'Maroons',
   'Sparklers',
-  'Chakkars',
-  'Wheels',
-  'Fountains',
-  'Rockets',
-  'Matches',
-  'Gift Boxes'
+  'Ground Chakkars',
+  'Colourful Fountains',
+  'Sky Rockets',
+  'Aerial Multi-Shots',
+  'Gift Boxes',
+  'Novelties'
 ] as const;
 
 
