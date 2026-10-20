@@ -19,12 +19,10 @@ import {
 import { ThemeToggle } from '../common/ThemeToggle';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { useEstimate } from '../../context/EstimateContext';
-import { useStoreSettings } from '../../hooks/useStoreSettings';
 import { SHOWROOM_CONTACT, WHATSAPP_CONTACT } from '../../lib/utils';
 
 export const CustomerNavbar: React.FC = () => {
   const { totalItemsCount, setIsEstimateDrawerOpen } = useEstimate();
-  const { vip_booking_enabled } = useStoreSettings();
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const location = useLocation();
 
@@ -34,9 +32,7 @@ export const CustomerNavbar: React.FC = () => {
     { name: 'Home', path: '/', icon: Flame },
     { name: 'Catalogue', path: '/catalogue', icon: BookOpen },
     { name: 'Showroom Visit', path: '/showroom', icon: MapPin },
-    ...(vip_booking_enabled
-      ? [{ name: 'Book VIP Slot', path: '/book-slot', icon: Ticket }]
-      : []),
+    { name: 'Book VIP Slot', path: '/book-slot', icon: Ticket },
     { name: 'My Bookings', path: '/my-bookings', icon: Ticket },
   ];
 
@@ -117,17 +113,15 @@ export const CustomerNavbar: React.FC = () => {
 
             {/* Right Quick Actions */}
             <div className="flex items-center gap-2 sm:gap-2.5">
-              {/* Book VIP Slot CTA Button in Header (Desktop) - Only when enabled */}
-              {vip_booking_enabled && (
-                <Link
-                  to="/book-slot"
-                  id="header-book-vip-slot-btn"
-                  className="hidden lg:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-gold-400 hover:from-amber-400 hover:to-gold-300 text-slate-950 text-xs font-black shadow-sm transition-all transform active:scale-95"
-                >
-                  <Ticket className="w-3.5 h-3.5 text-slate-950" />
-                  <span>Book VIP Slot</span>
-                </Link>
-              )}
+              {/* Book VIP Slot CTA Button in Header (Desktop) - Always visible */}
+              <Link
+                to="/book-slot"
+                id="header-book-vip-slot-btn"
+                className="hidden lg:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-gold-400 hover:from-amber-400 hover:to-gold-300 text-slate-950 text-xs font-black shadow-sm transition-all transform active:scale-95"
+              >
+                <Ticket className="w-3.5 h-3.5 text-slate-950" />
+                <span>Book VIP Slot</span>
+              </Link>
 
               {/* Showroom Estimate Inquiry Trigger */}
               <button

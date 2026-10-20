@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { SlotBookingFlow } from '../components/customer/SlotBookingFlow';
 import { useStoreSettings } from '../hooks/useStoreSettings';
-import { Calendar, Clock, ShieldCheck, MapPin, CalendarX, BookOpen, ArrowLeft, Sparkles } from 'lucide-react';
+import { Calendar, Clock, ShieldCheck, MapPin, CalendarX, BookOpen, ArrowLeft, Sparkles, Ticket } from 'lucide-react';
 import { SHOWROOM_CONTACT } from '../lib/utils';
 
 export const BookSlotPage: React.FC = () => {
@@ -56,6 +56,14 @@ export const BookSlotPage: React.FC = () => {
 
         {/* Action Buttons */}
         <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+          <Link
+            to="/my-bookings"
+            className="flex items-center gap-2 px-6 py-3.5 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-800 dark:text-gold-300 font-bold text-xs sm:text-sm rounded-2xl active:scale-95 transition-all"
+          >
+            <Ticket className="w-4 h-4" />
+            <span>View My Bookings</span>
+          </Link>
+
           <Link
             to="/catalogue"
             className="flex items-center gap-2 px-6 py-3.5 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 font-black text-xs sm:text-sm tracking-wider uppercase rounded-2xl shadow-lg hover:shadow-amber-500/25 active:scale-95 transition-all"

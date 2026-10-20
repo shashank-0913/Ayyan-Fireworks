@@ -6,6 +6,7 @@ const SETTINGS_EVENT = 'ayyan-store-settings-changed';
 
 export interface StoreSettings {
   vip_booking_enabled: boolean;
+  isVipBookingEnabled: boolean;
   isLoading: boolean;
   error: string | null;
   updateVipBookingEnabled: (enabled: boolean) => Promise<boolean>;
@@ -191,6 +192,7 @@ export function useStoreSettings(): StoreSettings {
 
   return {
     vip_booking_enabled: isVipBookingEnabled,
+    isVipBookingEnabled,
     isLoading,
     error,
     updateVipBookingEnabled,

@@ -13,10 +13,8 @@ import { formatINR, getWhatsAppUrl, SHOWROOM_CONTACT } from '../../lib/utils';
 import { getCategoryFallbackImage } from '../../lib/initialData';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { ReserveSlotModal } from './ReserveSlotModal';
-import { useStoreSettings } from '../../hooks/useStoreSettings';
 
 export const EstimateDrawer: React.FC = () => {
-  const { vip_booking_enabled } = useStoreSettings();
   const { 
     estimateItems, 
     removeFromEstimate, 
@@ -239,20 +237,18 @@ export const EstimateDrawer: React.FC = () => {
                   <span>Send Estimate to Showroom on WhatsApp</span>
                 </button>
 
-                {/* 2. Book Visiting Slot (Only when enabled) */}
-                {vip_booking_enabled && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsEstimateDrawerOpen(false);
-                      setIsSlotModalOpen(true);
-                    }}
-                    className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-gold-500 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 shadow-md dark:shadow-glow-gold transition-all cursor-pointer min-h-[44px] active:scale-95"
-                  >
-                    <Ticket className="w-4 h-4" />
-                    <span>Book VIP Visiting Slot to Purchase</span>
-                  </button>
-                )}
+                {/* 2. Book Visiting Slot - Always visible */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsEstimateDrawerOpen(false);
+                    setIsSlotModalOpen(true);
+                  }}
+                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-gold-500 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 shadow-md dark:shadow-glow-gold transition-all cursor-pointer min-h-[44px] active:scale-95"
+                >
+                  <Ticket className="w-4 h-4" />
+                  <span>Book VIP Visiting Slot to Purchase</span>
+                </button>
 
                 {/* 3. Clear List */}
                 <button

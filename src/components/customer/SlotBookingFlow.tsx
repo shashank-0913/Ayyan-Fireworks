@@ -340,6 +340,47 @@ export const SlotBookingFlow: React.FC = () => {
       try {
         localStorage.setItem('ayyan_active_visiting_pass', JSON.stringify(passPayload));
         localStorage.setItem('ayyan_confirmed_booking_id', dummyBooking.id);
+
+        // Store in ayyan_user_bookings array for pass history
+        const existingStr = localStorage.getItem('ayyan_user_bookings');
+        let existingList: any[] = [];
+        if (existingStr) {
+          try {
+            const parsed = JSON.parse(existingStr);
+            if (Array.isArray(parsed)) existingList = parsed;
+          } catch (e) {}
+        }
+
+        const userBookingRecord = {
+          id: dummyBooking.id,
+          booking_code: dummyBooking.booking_code,
+          ticket_code: dummyBooking.booking_code,
+          customer_name: dummyBooking.customer_name,
+          customer_phone: dummyBooking.customer_phone,
+          phone: dummyBooking.phone,
+          slot_date: dummyBooking.slot_date,
+          slot_time: dummyBooking.slot_time,
+          qr_token: dummyBooking.qr_token || dummyBooking.id,
+          created_at: dummyBooking.created_at,
+          status: dummyBooking.status,
+          booking: dummyBooking,
+          slot: passPayload.slot
+        };
+
+        const updatedList = [
+          userBookingRecord,
+          ...existingList.filter((item: any) => {
+            const itemId = item.id || item.booking?.id;
+            const itemCode = item.booking_code || item.booking?.booking_code;
+            return itemId !== dummyBooking.id && itemCode !== dummyBooking.booking_code;
+          })
+        ];
+
+        localStorage.setItem('ayyan_user_bookings', JSON.stringify(updatedList));
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new Event('ayyan_bookings_updated'));
+          window.dispatchEvent(new Event('storage'));
+        }
       } catch (storageErr) {
         console.warn('LocalStorage save error:', storageErr);
       }
