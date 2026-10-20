@@ -473,6 +473,18 @@ export const SlotBookingFlow: React.FC = () => {
                   )}
                 </div>
 
+                {/* Showroom Timings Notice Badge */}
+                <div className="p-3 rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-500/15 to-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs">
+                  <div className="flex items-center gap-2 font-bold text-slate-900 dark:text-white">
+                    <Clock className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                    <span>Regular Hours: 8:00 AM – 10:00 PM</span>
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-800 dark:text-amber-300 font-bold text-[11px]">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                    Special Diwali Season Hours: 5:00 AM – 10:00 PM
+                  </span>
+                </div>
+
                 {/* Fully Booked Date Alert Notice */}
                 {isAllDateSlotsBooked && (
                   <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-500/40 text-amber-950 dark:text-amber-200 text-xs sm:text-sm flex items-start gap-3 shadow-xs">
@@ -482,7 +494,7 @@ export const SlotBookingFlow: React.FC = () => {
                         All slots are fully booked for this date. Please select another date or visit during general showroom hours.
                       </p>
                       <p className="text-[11px] text-amber-800 dark:text-amber-300/80">
-                        General showroom operating hours are 05:00 AM – 10:00 PM IST (All 7 Days during Festive Season).
+                        Showroom Operating Hours: Regular Hours: <strong>8:00 AM – 10:00 PM</strong> | Special Diwali Season Hours: <strong>5:00 AM – 10:00 PM</strong> (All 7 Days).
                       </p>
                     </div>
                   </div>

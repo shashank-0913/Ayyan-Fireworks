@@ -1914,9 +1914,6 @@ export const generateInitialSlots = (): Slot[] => {
     const dateStr = slotDate.toISOString().split('T')[0];
 
     const hours = [
-      { start: '05:00:00', end: '06:00:00', cap: 120 },
-      { start: '06:00:00', end: '07:00:00', cap: 120 },
-      { start: '07:00:00', end: '08:00:00', cap: 120 },
       { start: '08:00:00', end: '09:00:00', cap: 120 },
       { start: '09:00:00', end: '10:00:00', cap: 120 },
       { start: '10:00:00', end: '11:00:00', cap: 120 },

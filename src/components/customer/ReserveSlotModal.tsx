@@ -82,8 +82,15 @@ export const ReserveSlotModal: React.FC<ReserveSlotModalProps> = ({ isOpen, onCl
               <Clock className="w-4 h-4 text-amber-500" />
               <span>Showroom Operational Hours:</span>
             </div>
-            <p className="text-slate-600 dark:text-slate-300 pl-6 text-[11px] leading-relaxed">
-              {SHOWROOM_CONTACT.operationalHours}
+            <p className="text-slate-900 dark:text-white font-bold pl-6 text-xs">
+              Regular Hours: 8:00 AM – 10:00 PM
+            </p>
+            <div className="ml-6 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-800 dark:text-gold-300 font-bold text-[10px]">
+              <Sparkles className="w-3 h-3 text-amber-500 shrink-0" />
+              Special Diwali Season Hours: 5:00 AM – 10:00 PM
+            </div>
+            <p className="text-slate-500 dark:text-slate-400 pl-6 text-[11px] pt-1 border-t border-slate-200/50 dark:border-white/5">
+              📍 {SHOWROOM_CONTACT.shortAddress}
             </p>
           </div>
 

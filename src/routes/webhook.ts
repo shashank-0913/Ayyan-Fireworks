@@ -160,7 +160,7 @@ export async function handleWebhookMessage(parsed: WebhookMessageContext): Promi
     if (actionId === 'slot_morning') {
       await sendTextMessage(
         from,
-        `🌅 *Morning Slot Reserved (09:00 AM – 01:00 PM)*\n\nTo lock your VIP gate pass and avoid queue wait times, please complete your reservation details:\n👉 https://vizagayyan.com/book-slot?window=morning`
+        `🌅 *Morning Slot Reserved (08:00 AM – 01:00 PM)*\n_Note: Special Diwali Season starts at 5:00 AM_\n\nTo lock your VIP gate pass and avoid queue wait times, please complete your reservation details:\n👉 https://vizagayyan.com/book-slot?window=morning`
       );
       return { success: true, handledAction: 'slot_morning' };
     }

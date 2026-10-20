@@ -126,7 +126,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const hasPre8AmSlots = parsed.some((s: any) => s.start_time < '08:00:00');
+          if (hasPre8AmSlots) {
+            const filtered = parsed.filter((s: any) => s.start_time >= '08:00:00');
+            if (filtered.length > 0) return filtered;
+            return generateInitialSlots();
+          }
+          return parsed;
+        }
       } catch (e) {
         console.warn('Failed to parse saved slots:', e);
       }

@@ -266,7 +266,7 @@ export function buildSlotSelectionListPayload(toPhone: string, dateStr?: string)
               {
                 id: 'slot_morning',
                 title: 'Morning Slot 🌅',
-                description: '09:00 AM – 01:00 PM (Quick entrance & fresh stock)'
+                description: '08:00 AM – 01:00 PM (From 5:00 AM in Diwali season)'
               },
               {
                 id: 'slot_afternoon',

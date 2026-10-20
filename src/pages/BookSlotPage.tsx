@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { SlotBookingFlow } from '../components/customer/SlotBookingFlow';
 import { useStoreSettings } from '../hooks/useStoreSettings';
-import { Calendar, Clock, ShieldCheck, MapPin, CalendarX, BookOpen, ArrowLeft } from 'lucide-react';
+import { Calendar, Clock, ShieldCheck, MapPin, CalendarX, BookOpen, ArrowLeft, Sparkles } from 'lucide-react';
 import { SHOWROOM_CONTACT } from '../lib/utils';
 
 export const BookSlotPage: React.FC = () => {
@@ -39,13 +39,17 @@ export const BookSlotPage: React.FC = () => {
               <p className="text-xs text-slate-500 dark:text-slate-400">{SHOWROOM_CONTACT.address}</p>
             </div>
           </div>
-          <div className="flex items-center gap-3 pt-3 border-t border-slate-100 dark:border-white/5">
+          <div className="flex items-start gap-3 pt-3 border-t border-slate-100 dark:border-white/5">
             <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 shrink-0">
               <Clock className="w-5 h-5" />
             </div>
-            <div>
-              <h3 className="font-bold text-slate-900 dark:text-white text-sm">Extended Showroom Hours</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">{SHOWROOM_CONTACT.operationalHours}</p>
+            <div className="space-y-1">
+              <h3 className="font-bold text-slate-900 dark:text-white text-sm">Showroom Operating Hours</h3>
+              <p className="text-xs font-bold text-slate-800 dark:text-slate-200">Regular Hours: 8:00 AM – 10:00 PM</p>
+              <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-800 dark:text-gold-300 font-bold text-[10px]">
+                <Sparkles className="w-3 h-3 text-amber-500 shrink-0" />
+                Special Diwali Season Hours: 5:00 AM – 10:00 PM
+              </div>
             </div>
           </div>
         </div>

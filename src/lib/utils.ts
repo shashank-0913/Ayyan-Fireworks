@@ -409,7 +409,7 @@ export const SHOWROOM_CONTACT = {
   city: 'Visakhapatnam, Andhra Pradesh',
   pincode: '530012',
   googleMapsUrl: 'https://maps.app.goo.gl/agWQFufKjWkwFbVs7',
-  operationalHours: 'Mon - Sun: 05:00 AM – 10:00 PM IST (All 7 Days during Festive Season)'
+  operationalHours: 'Regular Hours: 8:00 AM – 10:00 PM | Special Diwali Season Hours: 5:00 AM – 10:00 PM (All 7 Days)'
 };
 
 export function getWhatsAppUrl(customMessage?: string, phoneNumber?: string | number | null): string {

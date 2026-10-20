@@ -8,7 +8,8 @@ import {
   Building, 
   MapPin, 
   Clock, 
-  Phone 
+  Phone,
+  Sparkles
 } from 'lucide-react';
 import { SHOWROOM_CONTACT, WHATSAPP_CONTACT } from '../lib/utils';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
@@ -68,12 +69,19 @@ export const ShowroomPage: React.FC = () => {
                 <p className="text-slate-700 dark:text-slate-200">Main Road / NH-16 (near Natayyapalem), Sheela Nagar</p>
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
                   <Clock className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400" />
-                  <span>Operational Hours</span>
+                  <span>Showroom Operating Hours</span>
                 </span>
-                <p className="text-slate-800 dark:text-slate-100 font-medium">{SHOWROOM_CONTACT.operationalHours}</p>
+                <p className="text-slate-900 dark:text-white font-bold text-sm">
+                  Regular Hours: 8:00 AM – 10:00 PM
+                </p>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-800 dark:text-gold-300 font-bold text-xs mt-1">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                  Special Diwali Season Hours: 5:00 AM – 10:00 PM
+                </div>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">Open All 7 Days • Direct Showroom Purchases</p>
               </div>
 
               <div className="space-y-1">

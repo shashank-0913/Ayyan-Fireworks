@@ -291,9 +291,16 @@ export const HomePage: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600 dark:text-gold-400 shrink-0">
                 <Clock className="w-5 h-5" />
               </div>
-              <div>
-                <h4 className="font-bold text-slate-900 dark:text-white text-sm mb-1">Extended Showroom Hours</h4>
-                <p className="leading-relaxed">{SHOWROOM_CONTACT.operationalHours}</p>
+              <div className="space-y-1.5">
+                <h4 className="font-bold text-slate-900 dark:text-white text-sm">Showroom Timings</h4>
+                <p className="font-bold text-slate-800 dark:text-slate-200 text-xs">
+                  Regular Hours: 8:00 AM – 10:00 PM
+                </p>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-800 dark:text-gold-300 font-bold text-[11px]">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                  Special Diwali Season Hours: 5:00 AM – 10:00 PM
+                </div>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">Open All 7 Days • Direct Showroom Purchases</p>
               </div>
             </div>
 

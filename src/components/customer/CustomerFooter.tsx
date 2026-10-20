@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Clock } from 'lucide-react';
+import { MapPin, Clock, Sparkles } from 'lucide-react';
 import { SHOWROOM_CONTACT } from '../../lib/utils';
 
 export const CustomerFooter: React.FC = () => {
@@ -29,16 +29,22 @@ export const CustomerFooter: React.FC = () => {
           </div>
 
           {/* Address & Hours */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 max-w-xl text-slate-700 dark:text-slate-300 text-xs">
-            <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-amber-600 dark:text-gold-400 shrink-0" />
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 max-w-xl text-slate-700 dark:text-slate-300 text-xs">
+            <div className="flex items-start gap-2 text-left">
+              <MapPin className="w-4 h-4 text-amber-600 dark:text-gold-400 shrink-0 mt-0.5" />
               <span className="leading-relaxed text-xs">
                 {SHOWROOM_CONTACT.address}
               </span>
             </div>
-            <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 shrink-0">
-              <Clock className="w-3.5 h-3.5 text-amber-500" />
-              <span>{SHOWROOM_CONTACT.operationalHours}</span>
+            <div className="flex flex-col items-center sm:items-start gap-1.5 shrink-0 text-left">
+              <div className="flex items-center gap-1.5 font-bold text-slate-900 dark:text-white">
+                <Clock className="w-4 h-4 text-amber-500" />
+                <span>Regular Hours: <strong>8:00 AM – 10:00 PM</strong></span>
+              </div>
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-800 dark:text-gold-300 font-bold text-[10px] tracking-tight">
+                <Sparkles className="w-3 h-3 text-amber-500" />
+                Special Diwali Season Hours: 5:00 AM – 10:00 PM
+              </span>
             </div>
           </div>
         </div>

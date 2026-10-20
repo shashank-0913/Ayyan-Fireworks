@@ -13,7 +13,8 @@ import {
   Clock, 
   ChevronRight,
   Ticket,
-  FileText
+  FileText,
+  Sparkles
 } from 'lucide-react';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
@@ -51,6 +52,14 @@ export const CustomerNavbar: React.FC = () => {
       {/* 1. TOP STICKY HEADER (DESKTOP & MOBILE COMPACT)                           */}
       {/* ========================================================================= */}
       <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-white/95 dark:bg-obsidian-950/90 border-b border-slate-200/80 dark:border-white/[0.08] transition-colors duration-200">
+        {/* Top Announcement Banner: Showroom Operating Hours */}
+        <div className="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 dark:from-amber-700 dark:via-amber-600 dark:to-amber-700 text-slate-950 dark:text-white px-3 py-1.5 text-center text-[11px] sm:text-xs font-bold border-b border-amber-600/30 flex items-center justify-center gap-2 shadow-xs">
+          <Sparkles className="w-3.5 h-3.5 text-amber-950 dark:text-amber-200 animate-pulse shrink-0" />
+          <span className="tracking-tight">
+            Regular Hours: <strong>8:00 AM – 10:00 PM</strong> <span className="opacity-75">|</span> Special Diwali Season Hours: <strong>5:00 AM – 10:00 PM</strong>
+          </span>
+        </div>
+
         {/* Top Bar Container */}
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20">
@@ -333,9 +342,15 @@ export const CustomerNavbar: React.FC = () => {
                 <p className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-300">
                   {SHOWROOM_CONTACT.shortAddress}
                 </p>
-                <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-[11px]">
-                  <Clock className="w-3.5 h-3.5 text-amber-500 dark:text-gold-400 shrink-0" />
-                  <span>05:00 AM – 10:00 PM (All 7 Days)</span>
+                <div className="space-y-1 text-[11px]">
+                  <div className="flex items-center gap-2 text-slate-700 dark:text-slate-200 font-bold">
+                    <Clock className="w-3.5 h-3.5 text-amber-500 dark:text-gold-400 shrink-0" />
+                    <span>Regular Hours: 8:00 AM – 10:00 PM</span>
+                  </div>
+                  <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-800 dark:text-gold-300 font-bold text-[10px]">
+                    <Sparkles className="w-3 h-3 text-amber-500 shrink-0" />
+                    Special Diwali Season: 5:00 AM – 10:00 PM
+                  </div>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-2 pt-1">
                   <a

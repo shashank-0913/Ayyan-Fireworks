@@ -210,7 +210,7 @@ export function buildSlotTimeOfDayButtonMessage(toPhone: string, dateStr: string
         text: '🕒 Showroom Time Window'
       },
       body: {
-        text: `Please choose your visiting time window for *${dateStr}*.\n\nAll time slots include exclusive air-conditioned parking, priority cashier counters, and safe demonstration areas:`
+        text: `Please choose your visiting time window for *${dateStr}*.\n\n⏰ *Regular Hours:* 8:00 AM – 10:00 PM\n✨ *Special Diwali Season Hours:* 5:00 AM – 10:00 PM\n\nAll time slots include exclusive air-conditioned parking, priority cashier counters, and safe demonstration areas:`
       },
       footer: {
         text: DEFAULT_FOOTER
@@ -221,7 +221,7 @@ export function buildSlotTimeOfDayButtonMessage(toPhone: string, dateStr: string
             type: 'reply',
             reply: {
               id: 'slot_morning',
-              title: '🌅 Morning (9AM-1PM)'
+              title: '🌅 Morning (8AM-1PM)'
             }
           },
           {
@@ -275,7 +275,7 @@ export function buildBranchLocationsListMessage(toPhone: string): WhatsAppMessag
               {
                 id: 'loc_branch_main',
                 title: 'Sheela Nagar Flagship',
-                description: 'NH-16 near Natayyapalem, Vizag (5AM–10PM)'
+                description: 'NH-16 near Natayyapalem | 8AM-10PM (Diwali 5AM-10PM)'
               }
             ]
           },
@@ -801,14 +801,18 @@ export async function handleWhatsAppWebhookEvent(
         messages: [
           buildTextMessage(
             from,
-            `📍 Visit our Ayyan Fireworks Showroom in Visakhapatnam:\n👉 ${SHOWROOM_CONTACT.googleMapsUrl || 'https://maps.app.goo.gl/agWQFufKjWkwFbVs7'}`
+            `📍 *Ayyan Fireworks — Flagship Showroom*\n\n` +
+            `🏢 *Address:* ${SHOWROOM_CONTACT.address}\n\n` +
+            `⏰ *Showroom Timings:*\n` +
+            `• *Regular Hours:* 8:00 AM – 10:00 PM\n` +
+            `• *Special Diwali Season Hours:* 5:00 AM – 10:00 PM (All 7 Days)\n\n` +
+            `🗺️ *Google Maps Navigation:*\n👉 ${SHOWROOM_CONTACT.googleMapsUrl || 'https://maps.app.goo.gl/agWQFufKjWkwFbVs7'}\n\n` +
+            `📞 *Showroom Helpline:* ${SHOWROOM_CONTACT.phone}`
           )
         ],
         metadata: { action: 'showroom_visit_sent' }
       };
     }
-
-
 
     // 4. Time-of-Day Quick Reply Buttons
     if (actionId === 'slot_morning') {
@@ -816,7 +820,7 @@ export async function handleWhatsAppWebhookEvent(
         messages: [
           buildTextMessage(
             from,
-            '🌅 *Morning Window Selected (09:00 AM – 01:00 PM)*\n\nTo complete your reservation and generate your VIP QR Pass, please confirm online or enter your name:'
+            '🌅 *Morning Window Selected (08:00 AM – 01:00 PM)*\n_Note: Special Diwali Season starts at 5:00 AM_\n\nTo complete your reservation and generate your VIP QR Pass, please confirm online or enter your name:'
           ),
           buildWebBookingCtaMessage(from, `${webUrl}/book-slot?window=morning`)
         ],
@@ -879,7 +883,7 @@ export async function handleWhatsAppWebhookEvent(
           },
           buildTextMessage(
             from,
-            `📍 *Ayyan Fireworks Flagship Showroom*\n\n🏢 *Address:* ${SHOWROOM_CONTACT.address}\n\n⏰ *Operating Hours:* ${SHOWROOM_CONTACT.operationalHours}\n\n🗺️ *Google Maps:* ${SHOWROOM_CONTACT.googleMapsUrl}\n\n📞 *Call / Desk:* ${SHOWROOM_CONTACT.phone}`
+            `📍 *Ayyan Fireworks Flagship Showroom*\n\n🏢 *Address:* ${SHOWROOM_CONTACT.address}\n\n⏰ *Showroom Timings:*\n• *Regular Hours:* 8:00 AM – 10:00 PM\n• *Special Diwali Season Hours:* 5:00 AM – 10:00 PM (All 7 Days)\n\n🗺️ *Google Maps:* ${SHOWROOM_CONTACT.googleMapsUrl}\n\n📞 *Call / Desk:* ${SHOWROOM_CONTACT.phone}`
           )
         ],
         metadata: { branch: 'main' }
@@ -1088,7 +1092,34 @@ export async function handleWhatsAppWebhookEvent(
     };
   }
 
-  // Reply 3: Showroom Visit
+  // Reply: Showroom Timings & Hours Query
+  if (
+    normalizedText.includes('timing') ||
+    normalizedText.includes('timings') ||
+    normalizedText.includes('hours') ||
+    normalizedText.includes('time') ||
+    normalizedText.includes('open') ||
+    normalizedText.includes('close') ||
+    normalizedText.includes('schedule')
+  ) {
+    return {
+      messages: [
+        buildTextMessage(
+          from,
+          `⏰ *Ayyan Fireworks Showroom Timings*\n\n` +
+          `🕒 *Regular Hours:* 8:00 AM – 10:00 PM\n` +
+          `✨ *Special Diwali Season Hours:* 5:00 AM – 10:00 PM\n` +
+          `(Open All 7 Days)\n\n` +
+          `📍 *Showroom Location:* ${SHOWROOM_CONTACT.shortAddress}\n` +
+          `👉 ${SHOWROOM_CONTACT.googleMapsUrl}\n` +
+          `📞 *Helpline:* ${SHOWROOM_CONTACT.phone}`
+        )
+      ],
+      metadata: { fallbackTrigger: 'showroom_timings' }
+    };
+  }
+
+  // Reply 3: Showroom Visit & Location
   if (
     normalizedText === '3' ||
     normalizedText.includes('showroom') ||
@@ -1105,7 +1136,13 @@ export async function handleWhatsAppWebhookEvent(
       messages: [
         buildTextMessage(
           from,
-          `📍 Visit our Ayyan Fireworks Showroom in Visakhapatnam:\n👉 ${SHOWROOM_CONTACT.googleMapsUrl || 'https://maps.app.goo.gl/agWQFufKjWkwFbVs7'}`
+          `📍 *Ayyan Fireworks — Flagship Showroom*\n\n` +
+          `🏢 *Address:* ${SHOWROOM_CONTACT.address}\n\n` +
+          `⏰ *Showroom Timings:*\n` +
+          `• *Regular Hours:* 8:00 AM – 10:00 PM\n` +
+          `• *Special Diwali Season Hours:* 5:00 AM – 10:00 PM (All 7 Days)\n\n` +
+          `🗺️ *Google Maps Navigation:*\n👉 ${SHOWROOM_CONTACT.googleMapsUrl}\n\n` +
+          `📞 *Helpline:* ${SHOWROOM_CONTACT.phone}`
         )
       ],
       metadata: { fallbackTrigger: '3_showroom_visit' }
