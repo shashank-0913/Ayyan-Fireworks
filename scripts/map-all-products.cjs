@@ -1,0 +1,124 @@
+const fs = require('fs');
+const path = require('path');
+
+const localProducts = fs.readdirSync(path.resolve(__dirname, '../public/products'));
+const initialDataContent = fs.readFileSync(path.resolve(__dirname, '../src/lib/initialData.ts'), 'utf8');
+
+// Parse items from initialDataContent
+const blocks = initialDataContent.split(/{\s*id:\s*["']/);
+blocks.shift(); // remove header
+
+const products = blocks.map(b => {
+  const codeMatch = b.match(/item_code:\s*["']([^"']+)["']/);
+  const nameMatch = b.match(/name:\s*["']([^"']+)["']/);
+  const catMatch = b.match(/category:\s*["']([^"']+)["']/);
+  return {
+    code: codeMatch ? codeMatch[1] : null,
+    name: nameMatch ? nameMatch[1] : null,
+    category: catMatch ? catMatch[1] : null
+  };
+}).filter(p => p.code);
+
+console.log(`Parsed ${products.length} products.`);
+
+const unused = new Set(localProducts);
+const assignments = {};
+
+// Specific hand-tuned mappings for exact factory match
+const specificOverrides = {
+  '001': 'Ganesh-Crackers-10-Pkt.png',
+  '002': 'Lakshmi-or-King-Carckers-10-Pkt.png',
+  '003': 'Bird-Crackers-10-Pkt.png',
+  '015': 'Twinkling-Star-45-Cms.png',
+  '016': 'Twinkling-Star-60-cms.png',
+  '017': 'Twinkling-Star-120-cms.png',
+  '018': 'Twinkling-Star-120-cms.png',
+  '021': 'Zodiac-Spinners-5-Pcs.png',
+  '024': 'Giant-Wheel-5-box.png',
+  '025': 'Zodiac-Spinners-5-Pcs.png',
+  '028': 'Ninja-Chakkar.png',
+  '040': 'tri-colour-fountain-ayyanfire-copy.png',
+  '050': 'Chota-Bhai-Mini-Siren-5-Pcs.png',
+  '054': 'Mega-Peacock.png',
+  '055': 'Mega-Peacock.png',
+  '058': 'Electric-Diamond.png',
+  '059': 'Pencil.png',
+  '060': 'Pencil.png',
+  '063': 'Hydrogen-bomb-Foils.png',
+  '065': 'Double-Sound-Crackers-10-Pkt.png',
+  '066': 'Double-Sound-Crackers-10-Pkt.png',
+  '067': 'Three-Sound-with-Colour-10-Pkt.png',
+  '068': 'Ulta-Pulta-Flower-Bomb-5-Pcs.png',
+  '070': 'Ulta-Pulta-Flower-Bomb-5-Pcs.png',
+  '072': 'Loose-Crackers-Red-Bijili.png',
+  '073': 'Multi-colour-Rocket-or-Flower-Missle.png',
+  '074': 'Rocket-Bomb.png',
+  '075': 'Multi-colour-Rocket-or-Flower-Missle.png',
+  '079': '40116629_1-ayyan-fireworks-crackers-classic-rocket-sound.jpg',
+  '080': 'Parachute-Rocket.png',
+  '083': 'Pop-Pop.png',
+  '084': '7-shots-red.jpg',
+  '085': 'Seven-Shot-Gold-5-Pcs.png',
+  '086': 'Sparkling-Thunder-5Pcs.png',
+  '087': 'BuzzJayKumi-5-Pcs-1.png',
+  '088': 'Super-Drone.png',
+  '089': 'Funny-Bunny-10-Pcs.png',
+  '090': 'Magic-Mystery-10-Pcs.png',
+  '093': 'Ninja-Chakkar.png',
+  '094': 'Pogo-Silvergoldredviolet-2Pcs.png',
+  '095': 'pogo-gold.jpg',
+  '101': 'Dekhe-Man-12-stars.png',
+  '102': 'Daisy-Bees-12-shot-yellow.png',
+  '103': 'Pink-Panther-12-shot-pink.png',
+  '106': 'Chal-Mere-Sath-25-shot.png',
+  '107': 'Thor-Multi-Colour-Cracklings.png',
+  '108': 'Dil-Maange-More-50-shot.png',
+  '109': 'Balle-balle-soneri-barsath-25-shots-cracklin.png',
+  '111': 'Daisy-Bees-12-shot-yellow.png',
+  '112': 'Sky-Storm-12-shot-crackling.png',
+  '118': 'Classic-Night-120-shot-four-colour.png',
+  '120': 'Classic-Night-240-shot-four-colour.png',
+  '121': 'War-Zone-Glitter-Crackling.png',
+  '122': 'Wonder-night-60-shot-four-colour.png',
+  '131': 'Ayyans-Power-60-shot-crackling.png',
+  '133': 'Paris-Paris-3-inch-10-shots.png',
+  '137': 'Gift-Box-A-24-items-by-customer.png',
+  '138': 'Gift-Box-B-28-items.png',
+  '139': '40117583_1-ayyan-fireworks-crackers-assorted-box-c.jpg',
+  '141': 'Gift-Box-Dino-40-items.png',
+  '142': 'Camel-Dasara-10-colors-10-box.png',
+  '143': 'Camel-Dasara-10-colors-10-box.png',
+  '151': 'amorces-roll-caps-ayyanfire-copy.png',
+  '152': 'ayyan-ring-acp-with-gun-copy.png',
+  '153': 'ayyan-ring-acp-with-gun-copy.png',
+};
+
+// Check which overrides exist
+for (const [code, file] of Object.entries(specificOverrides)) {
+  if (localProducts.includes(file)) {
+    assignments[code] = file;
+    unused.delete(file);
+  }
+}
+
+// Next pass: fuzzy match name against remaining unused local products
+products.forEach(p => {
+  if (assignments[p.code]) return;
+
+  const cleanName = p.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+  for (const f of unused) {
+    const cleanFile = f.toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (cleanFile.includes(cleanName) || cleanName.includes(cleanFile.replace(/\.(png|jpg|webp)$/, ''))) {
+      assignments[p.code] = f;
+      unused.delete(f);
+      break;
+    }
+  }
+});
+
+console.log(`Assigned: ${Object.keys(assignments).length} items`);
+console.log(`Unassigned: ${products.length - Object.keys(assignments).length} items`);
+console.log(`Unused local images remaining: ${unused.size}`);
+
+// Write assignment map to JSON
+fs.writeFileSync(path.resolve(__dirname, 'assignments.json'), JSON.stringify(assignments, null, 2));
