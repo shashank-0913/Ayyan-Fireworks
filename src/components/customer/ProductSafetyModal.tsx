@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { Product } from '../../types';
 import { formatINR, getWhatsAppUrl } from '../../lib/utils';
-import { getCategoryFallbackImage, getProductImageUrl } from '../../lib/initialData';
+import { getCategoryFallbackImage } from '../../lib/initialData';
 import { useEstimate } from '../../context/EstimateContext';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
 
@@ -66,7 +66,7 @@ export const ProductSafetyModal: React.FC<ProductSafetyModalProps> = ({ product,
         <div className="flex flex-col sm:flex-row gap-5 items-start pb-5 border-b border-slate-200 dark:border-white/10">
           <div className="w-full sm:w-48 h-48 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/10 shrink-0 relative group">
             <img
-              src={product.image_url || getProductImageUrl(product.item_code || product.code || '001', product.category)}
+              src={product.image_url || `/ayyan_images/products/${product.item_code || '001'}.jpg`}
               alt={product.name}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               onError={(e) => {

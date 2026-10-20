@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
 import { Product } from '../../types';
 import { formatINR } from '../../lib/utils';
-import { getCategoryFallbackImage, getProductImageUrl } from '../../lib/initialData';
+import { getCategoryFallbackImage } from '../../lib/initialData';
 
 interface ProductImageLightboxProps {
   product: Product | null;
@@ -32,7 +32,7 @@ export const ProductImageLightbox: React.FC<ProductImageLightboxProps> = ({ prod
 
   if (!product) return null;
 
-  const imgSrc = product.image_url || getProductImageUrl(product.item_code || product.code || '001', product.category);
+  const imgSrc = product.image_url || `/ayyan_images/products/${product.item_code || '001'}.jpg`;
 
   return (
     <div

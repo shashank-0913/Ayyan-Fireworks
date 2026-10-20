@@ -13,7 +13,7 @@ import {
   Play
 } from 'lucide-react';
 import { Product } from '../../types';
-import { getCategoryFallbackImage, getProductImageUrl } from '../../lib/initialData';
+import { getCategoryFallbackImage } from '../../lib/initialData';
 import { formatINR, getWhatsAppUrl } from '../../lib/utils';
 import { useEstimate } from '../../context/EstimateContext';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
@@ -94,7 +94,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             }}
           >
             <img
-              src={product.image_url || getProductImageUrl(product.item_code || product.code || '001', product.category)}
+              src={product.image_url || `/ayyan_images/products/${product.item_code || '001'}.jpg`}
               alt={product.name}
               className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
               loading="lazy"
