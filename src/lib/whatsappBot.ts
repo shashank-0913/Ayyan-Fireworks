@@ -201,7 +201,7 @@ export function buildMainMenuMessage(toPhone: string): WhatsAppMessageEnvelope {
     to: formatWhatsAppPhone(toPhone),
     type: 'template',
     template: {
-      name: 'ayyan_welcome_menu',
+      name: 'ayyan_menu_v2',
       language: {
         code: 'en'
       },
@@ -549,11 +549,11 @@ export function buildTextMessage(toPhone: string, text: string): WhatsAppMessage
 
 /**
  * 3.10 Approved Meta WhatsApp Welcome Greeting Template Message
- * Sends approved "ayyan_welcome_v2" utility template (no components/image header required)
+ * Sends approved "ayyan_menu_v2" template with image header and buttons
  */
 export function buildWelcomeTemplateMessage(
   toPhone: string,
-  templateName: string = 'ayyan_welcome_v2'
+  templateName: string = 'ayyan_menu_v2'
 ): WhatsAppMessageEnvelope {
   return {
     messaging_product: 'whatsapp',
@@ -564,7 +564,20 @@ export function buildWelcomeTemplateMessage(
       name: templateName,
       language: {
         code: 'en'
-      }
+      },
+      components: [
+        {
+          type: 'header',
+          parameters: [
+            {
+              type: 'image',
+              image: {
+                link: 'https://vizagayyan.com/ayyan_images/bunny_brand_logo.png'
+              }
+            }
+          ]
+        }
+      ]
     }
   };
 }
@@ -1013,7 +1026,7 @@ export async function handleWhatsAppWebhookEvent(
   const normalizedText = (textBody || '').trim().toLowerCase();
 
   // 1. Direct Greetings & Conversation Starters ("hi", "hello", "hey", etc.)
-  // Sends fallback greeting text message with options and showroom timings
+  // Sends primary welcome template menu ("ayyan_menu_v2") with header image and buttons
   if (
     normalizedText === 'hi' ||
     normalizedText === 'hello' ||
@@ -1028,9 +1041,9 @@ export async function handleWhatsAppWebhookEvent(
   ) {
     return {
       messages: [
-        buildFallbackGreetingTextMessage(from)
+        buildMainMenuMessage(from)
       ],
-      metadata: { action: 'fallback_greeting_text' }
+      metadata: { action: 'welcome_template_sent' }
     };
   }
 
