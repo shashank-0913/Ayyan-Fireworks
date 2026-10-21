@@ -13,10 +13,9 @@
 
 import {
   sendStoreLocation,
-  sendTextMessage,
-  sendWelcomeTemplate
+  sendTextMessage
 } from '../services/whatsapp';
-import { formatWhatsAppPhone } from '../lib/utils';
+import { formatWhatsAppPhone, SHOWROOM_CONTACT } from '../lib/utils';
 
 export interface WebhookQuery {
   'hub.mode'?: string;
@@ -204,7 +203,7 @@ export async function handleWebhookMessage(parsed: WebhookMessageContext): Promi
   // ==========================================================================
   const text = (textBody || '').trim().toLowerCase();
 
-  // 1. Direct Greetings ("hi", "hello", "hey", etc.) -> Send Approved Meta Template
+  // 1. Direct Greetings ("hi", "hello", "hey", etc.) -> Send greeting text message
   if (
     text === 'hi' ||
     text === 'hello' ||
@@ -216,11 +215,20 @@ export async function handleWebhookMessage(parsed: WebhookMessageContext): Promi
     text === 'welcome' ||
     text === ''
   ) {
-    await sendWelcomeTemplate(from);
-    return { success: true, handledAction: 'welcome_template_ayyan_welcome_v2' };
+    await sendTextMessage(
+      from,
+      `🎆 *Welcome to Ayyan Fireworks (Bunny Brand, Sivakasi)*\n\n` +
+      `⏰ Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
+      `Please select an option below:\n` +
+      `1️⃣ Click 1 for Slot Booking\n` +
+      `2️⃣ Click 2 for Location of the Store\n` +
+      `3️⃣ Click 3 for Website\n\n` +
+      `_Reply with 1, 2, or 3 to continue._`
+    );
+    return { success: true, handledAction: 'fallback_greeting_text' };
   }
 
-  // 2. Text number "1" or keyword "slot" / "book" / "vip" / "pass"
+  // 2. Text number "1" or keyword "slot" / "book" / "vip" / "pass" -> 1️⃣ Click 1 for Slot Booking
   if (text === '1' || text.includes('slot') || text.includes('book') || text.includes('ticket') || text.includes('pass') || text.includes('vip')) {
     await sendTextMessage(
       from,
@@ -229,8 +237,21 @@ export async function handleWebhookMessage(parsed: WebhookMessageContext): Promi
     return { success: true, handledAction: 'fallback_text_slot' };
   }
 
-  // 3. Text number "2" or keyword "website" / "catalogue" / "price" / "online"
-  if (text === '2' || text.includes('website') || text.includes('catalogue') || text.includes('catalog') || text.includes('price') || text.includes('online')) {
+  // 3. Text number "2" or keyword "location" / "store" / "showroom" / "address" / "map" / "where" / "visit" -> 2️⃣ Click 2 for Location of the Store
+  if (text === '2' || text.includes('location') || text.includes('store') || text.includes('showroom') || text.includes('address') || text.includes('map') || text.includes('where') || text.includes('visit')) {
+    await sendTextMessage(
+      from,
+      `📍 *Ayyan Fireworks — Flagship Showroom*\n\n` +
+      `🏢 *Address:* ${SHOWROOM_CONTACT.address}\n\n` +
+      `⏰ *Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)*\n\n` +
+      `🗺️ *Google Maps Navigation:*\n👉 ${SHOWROOM_CONTACT.googleMapsUrl || 'https://maps.app.goo.gl/agWQFufKjWkwFbVs7'}\n\n` +
+      `📞 *Helpline:* ${SHOWROOM_CONTACT.phone}`
+    );
+    return { success: true, handledAction: 'fallback_text_location' };
+  }
+
+  // 4. Text number "3" or keyword "website" / "catalogue" / "catalog" / "price" / "online" -> 3️⃣ Click 3 for Website
+  if (text === '3' || text.includes('website') || text.includes('catalogue') || text.includes('catalog') || text.includes('price') || text.includes('online') || text.includes('cracker')) {
     await sendTextMessage(
       from,
       `🎆 Explore our full Sivakasi cracker collection and price list:\n👉 https://vizagayyan.com`
@@ -238,18 +259,18 @@ export async function handleWebhookMessage(parsed: WebhookMessageContext): Promi
     return { success: true, handledAction: 'fallback_text_website' };
   }
 
-  // 4. Text number "3" or keyword "showroom" / "location" / "address" / "map" / "where" / "visit"
-  if (text === '3' || text.includes('showroom') || text.includes('visit') || text.includes('location') || text.includes('address') || text.includes('map') || text.includes('where')) {
-    await sendTextMessage(
-      from,
-      `📍 Visit our Ayyan Fireworks Showroom in Visakhapatnam:\n👉 https://maps.app.goo.gl/agWQFufKjWkwFbVs7`
-    );
-    return { success: true, handledAction: 'fallback_text_location' };
-  }
-
-  // 5. Fallback -> Send Approved Meta Template directly
-  await sendWelcomeTemplate(from);
-  return { success: true, handledAction: 'fallback_welcome_template' };
+  // 5. Fallback -> Send greeting text message directly
+  await sendTextMessage(
+    from,
+    `🎆 *Welcome to Ayyan Fireworks (Bunny Brand, Sivakasi)*\n\n` +
+    `⏰ Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
+    `Please select an option below:\n` +
+    `1️⃣ Click 1 for Slot Booking\n` +
+    `2️⃣ Click 2 for Location of the Store\n` +
+    `3️⃣ Click 3 for Website\n\n` +
+    `_Reply with 1, 2, or 3 to continue._`
+  );
+  return { success: true, handledAction: 'fallback_greeting_text' };
 }
 
 /**

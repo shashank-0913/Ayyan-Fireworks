@@ -92,7 +92,7 @@ async function test() {
   });
   console.log('Reply "View Catalogue":\n' + tCat.messages[0]?.text?.body);
 
-  // Text: "Hi" (triggers welcome greeting template)
+  // Text: "Hi" (triggers welcome greeting text message)
   const tGreeting = await handleWhatsAppWebhookEvent({
     from: '917729992125',
     messageId: 'm_hi',
@@ -101,29 +101,40 @@ async function test() {
     textBody: 'Hi',
     rawPayload: {}
   });
-  console.log('\nReply "Hi" (Welcome Greeting Template Response):\n' + JSON.stringify(tGreeting.messages[0], null, 2));
+  console.log('\nReply "Hi" (Fallback Greeting Text Response):\n' + tGreeting.messages[0]?.text?.body);
 
-  // Text: "hello"
-  const tHello = await handleWhatsAppWebhookEvent({
+  // Text "1" (Slot Booking)
+  const t1 = await handleWhatsAppWebhookEvent({
     from: '917729992125',
-    messageId: 'm_hello',
-    timestamp: '7',
+    messageId: 'm_t1',
+    timestamp: '9',
     type: 'text',
-    textBody: 'hello',
+    textBody: '1',
     rawPayload: {}
   });
-  console.log('\nReply "hello" (Welcome Greeting Template Response):\n' + JSON.stringify(tHello.messages[0], null, 2));
+  console.log('\nReply "1" (Slot Booking):\n' + t1.messages[0]?.text?.body);
 
-  // Text: Generic greeting / starter
-  const tStarter = await handleWhatsAppWebhookEvent({
+  // Text "2" (Location of the Store)
+  const t2 = await handleWhatsAppWebhookEvent({
     from: '917729992125',
-    messageId: 'm_start',
-    timestamp: '8',
+    messageId: 'm_t2',
+    timestamp: '10',
     type: 'text',
-    textBody: 'start',
+    textBody: '2',
     rawPayload: {}
   });
-  console.log('\nReply "start" (Welcome Greeting Template Response):\n' + JSON.stringify(tStarter.messages[0], null, 2));
+  console.log('\nReply "2" (Location of the Store):\n' + t2.messages[0]?.text?.body);
+
+  // Text "3" (Website)
+  const t3 = await handleWhatsAppWebhookEvent({
+    from: '917729992125',
+    messageId: 'm_t3',
+    timestamp: '11',
+    type: 'text',
+    textBody: '3',
+    rawPayload: {}
+  });
+  console.log('\nReply "3" (Website):\n' + t3.messages[0]?.text?.body);
 }
 
 test().catch(console.error);

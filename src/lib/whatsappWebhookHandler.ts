@@ -10,6 +10,7 @@ import {
   handleWhatsAppWebhookEvent,
   sendWhatsAppCloudMessage,
   buildMainMenuMessage,
+  buildFallbackGreetingTextMessage,
   buildSlotTimeOfDayButtonMessage,
   buildBranchLocationsListMessage,
   buildDateSelectionListMessage,
@@ -31,6 +32,7 @@ export {
   handleWhatsAppWebhookEvent,
   sendWhatsAppCloudMessage,
   buildMainMenuMessage,
+  buildFallbackGreetingTextMessage,
   buildSlotTimeOfDayButtonMessage,
   buildBranchLocationsListMessage,
   buildDateSelectionListMessage,
@@ -87,42 +89,53 @@ export function buildWelcomeGreetingPayload(
  * Immediate reply text responses for button taps:
  * - View Catalogue: Full online catalogue link
  * - btn_book_slot: VIP Slot reservation link
+ * - btn_showroom_visit: Showroom address, timings, and Google Maps link
  * - btn_visit_website: Full collection & price list link
- * - btn_showroom_visit: Google Maps showroom link
  */
 export const BOT_RESPONSES = {
   VIEW_CATALOGUE: CATALOGUE_REPLY_TEXT,
   BOOK_SLOT: `✨ Reserve your VIP Showroom visiting slot here:\n👉 https://vizagayyan.com/#booking`,
-  VISIT_WEBSITE: `🎆 Explore our full Sivakasi cracker collection and price list:\n👉 https://vizagayyan.com`,
-  SHOWROOM_VISIT: `📍 Visit our Ayyan Fireworks Showroom in Visakhapatnam:\n👉 https://maps.app.goo.gl/agWQFufKjWkwFbVs7`
+  LOCATION_STORE: `📍 *Ayyan Fireworks — Flagship Showroom*\n\n🏢 *Address:* Main Road / NH-16 (near Natayyapalem), Sheela Nagar, Visakhapatnam, Andhra Pradesh 530012, India.\n\n⏰ *Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)*\n\n🗺️ *Google Maps Navigation:*\n👉 https://maps.app.goo.gl/agWQFufKjWkwFbVs7\n\n📞 *Helpline:* +91 77299 92125`,
+  SHOWROOM_VISIT: `📍 *Ayyan Fireworks — Flagship Showroom*\n\n🏢 *Address:* Main Road / NH-16 (near Natayyapalem), Sheela Nagar, Visakhapatnam, Andhra Pradesh 530012, India.\n\n⏰ *Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)*\n\n🗺️ *Google Maps Navigation:*\n👉 https://maps.app.goo.gl/agWQFufKjWkwFbVs7\n\n📞 *Helpline:* +91 77299 92125`,
+  VISIT_WEBSITE: `🎆 Explore our full Sivakasi cracker collection and price list:\n👉 https://vizagayyan.com`
 } as const;
 
 /**
- * 3 Interactive Main Menu Reply Buttons Setup:
- * 1. Book VIP Slot (id: "btn_book_slot")
- * 2. Visit Website (id: "btn_visit_website")
- * 3. Showroom Visit (id: "btn_showroom_visit")
+ * 3 Interactive Main Menu Reply Options Setup:
+ * 1. Slot Booking (id: "btn_book_slot")
+ * 2. Location of the Store (id: "btn_showroom_visit")
+ * 3. Website (id: "btn_visit_website")
  */
 export const WHATSAPP_INTERACTIVE_OPTIONS = [
   {
     replyNumber: '1',
     id: 'btn_book_slot',
-    title: 'Book VIP Slot',
+    title: 'Slot Booking',
     description: 'Reserve your VIP Showroom visiting slot'
   },
   {
     replyNumber: '2',
-    id: 'btn_visit_website',
-    title: 'Visit Website',
-    description: 'Explore our full Sivakasi cracker collection and price list'
+    id: 'btn_showroom_visit',
+    title: 'Location of the Store',
+    description: 'Ayyan Fireworks Showroom address, directions & store timings'
   },
   {
     replyNumber: '3',
-    id: 'btn_showroom_visit',
-    title: 'Showroom Visit',
-    description: 'Ayyan Fireworks Showroom address & Google Maps navigation'
+    id: 'btn_visit_website',
+    title: 'Website',
+    description: 'Explore our full Sivakasi cracker collection and price list'
   }
 ] as const;
+
+/** Fallback greeting text message */
+export const FALLBACK_GREETING_TEXT =
+  `🎆 *Welcome to Ayyan Fireworks (Bunny Brand, Sivakasi)*\n\n` +
+  `⏰ Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
+  `Please select an option below:\n` +
+  `1️⃣ Click 1 for Slot Booking\n` +
+  `2️⃣ Click 2 for Location of the Store\n` +
+  `3️⃣ Click 3 for Website\n\n` +
+  `_Reply with 1, 2, or 3 to continue._`;
 
 export interface WebhookHttpRequest {
   method: string;

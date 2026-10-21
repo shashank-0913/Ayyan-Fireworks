@@ -160,11 +160,39 @@ const DEFAULT_FOOTER = 'Ayyan Fireworks • Bunny Brand Official';
 const WEBSITE_BASE_URL = 'https://vizagayyan.com';
 
 /**
- * 3.1 Main Menu Interactive Message (Quick Reply Buttons)
+ * 3.0 Fallback Greeting Text Message
+ * Formats numbered choices:
+ * 1️⃣ Click 1 for Slot Booking
+ * 2️⃣ Click 2 for Location of the Store
+ * 3️⃣ Click 3 for Website
+ * Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)
+ */
+export function buildFallbackGreetingTextMessage(toPhone: string): WhatsAppMessageEnvelope {
+  return {
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    to: formatWhatsAppPhone(toPhone),
+    type: 'text',
+    text: {
+      preview_url: true,
+      body:
+        `🎆 *Welcome to Ayyan Fireworks (Bunny Brand, Sivakasi)*\n\n` +
+        `⏰ Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
+        `Please select an option below:\n` +
+        `1️⃣ Click 1 for Slot Booking\n` +
+        `2️⃣ Click 2 for Location of the Store\n` +
+        `3️⃣ Click 3 for Website\n\n` +
+        `_Reply with 1, 2, or 3 to continue._`
+    }
+  };
+}
+
+/**
+ * 3.1 Main Menu Interactive Message (Quick Reply Buttons / Template)
  * 3 Options in order:
- * 1. Book VIP Slot (id: "btn_book_slot")
- * 2. Visit Website (id: "btn_visit_website")
- * 3. Showroom Visit (id: "btn_showroom_visit")
+ * 1. Slot Booking (id: "btn_book_slot")
+ * 2. Location of the Store (id: "btn_showroom_visit")
+ * 3. Website (id: "btn_visit_website")
  */
 export function buildMainMenuMessage(toPhone: string): WhatsAppMessageEnvelope {
   return {
@@ -772,24 +800,7 @@ export async function handleWhatsAppWebhookEvent(
       };
     }
 
-    // 2. Main Menu Navigation: Option 2 - Visit Website
-    if (
-      actionId === 'btn_visit_website' ||
-      actionId === 'btn_website' ||
-      actionId === 'menu_website'
-    ) {
-      return {
-        messages: [
-          buildTextMessage(
-            from,
-            `🎆 Explore our full Sivakasi cracker collection and price list:\n👉 https://vizagayyan.com`
-          )
-        ],
-        metadata: { action: 'visit_website_sent' }
-      };
-    }
-
-    // 3. Main Menu Navigation: Option 3 - Showroom Visit
+    // 2. Main Menu Navigation: Option 2 - Location of the Store
     if (
       actionId === 'btn_showroom_visit' ||
       actionId === 'btn_showroom' ||
@@ -803,14 +814,29 @@ export async function handleWhatsAppWebhookEvent(
             from,
             `📍 *Ayyan Fireworks — Flagship Showroom*\n\n` +
             `🏢 *Address:* ${SHOWROOM_CONTACT.address}\n\n` +
-            `⏰ *Showroom Timings:*\n` +
-            `• *Regular Hours:* 8:00 AM – 10:00 PM\n` +
-            `• *Special Diwali Season Hours:* 5:00 AM – 10:00 PM (All 7 Days)\n\n` +
+            `⏰ *Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)*\n\n` +
             `🗺️ *Google Maps Navigation:*\n👉 ${SHOWROOM_CONTACT.googleMapsUrl || 'https://maps.app.goo.gl/agWQFufKjWkwFbVs7'}\n\n` +
             `📞 *Showroom Helpline:* ${SHOWROOM_CONTACT.phone}`
           )
         ],
         metadata: { action: 'showroom_visit_sent' }
+      };
+    }
+
+    // 3. Main Menu Navigation: Option 3 - Website
+    if (
+      actionId === 'btn_visit_website' ||
+      actionId === 'btn_website' ||
+      actionId === 'menu_website'
+    ) {
+      return {
+        messages: [
+          buildTextMessage(
+            from,
+            `🎆 Explore our full Sivakasi cracker collection and price list:\n👉 https://vizagayyan.com`
+          )
+        ],
+        metadata: { action: 'visit_website_sent' }
       };
     }
 
@@ -987,7 +1013,7 @@ export async function handleWhatsAppWebhookEvent(
   const normalizedText = (textBody || '').trim().toLowerCase();
 
   // 1. Direct Greetings & Conversation Starters ("hi", "hello", "hey", etc.)
-  // Send approved Meta template "ayyan_welcome_v2" directly
+  // Sends fallback greeting text message with options and showroom timings
   if (
     normalizedText === 'hi' ||
     normalizedText === 'hello' ||
@@ -1002,9 +1028,9 @@ export async function handleWhatsAppWebhookEvent(
   ) {
     return {
       messages: [
-        buildWelcomeTemplateMessage(from, 'ayyan_welcome_v2')
+        buildFallbackGreetingTextMessage(from)
       ],
-      metadata: { action: 'welcome_template_ayyan_welcome_v2' }
+      metadata: { action: 'fallback_greeting_text' }
     };
   }
 
@@ -1049,7 +1075,7 @@ export async function handleWhatsAppWebhookEvent(
     };
   }
 
-  // Reply 1: Book VIP Slot
+  // 1️⃣ Click 1 for Slot Booking
   if (
     normalizedText === '1' ||
     normalizedText.includes('slot') ||
@@ -1070,25 +1096,31 @@ export async function handleWhatsAppWebhookEvent(
     };
   }
 
-  // Reply 2: Visit Website
+  // 2️⃣ Click 2 for Location of the Store
   if (
     normalizedText === '2' ||
-    normalizedText.includes('website') ||
-    normalizedText.includes('web') ||
-    normalizedText.includes('site') ||
-    normalizedText.includes('online') ||
-    normalizedText.includes('price') ||
-    normalizedText.includes('rate') ||
-    normalizedText.includes('cracker')
+    normalizedText.includes('location') ||
+    normalizedText.includes('address') ||
+    normalizedText.includes('map') ||
+    normalizedText.includes('directions') ||
+    normalizedText.includes('where') ||
+    normalizedText.includes('store') ||
+    normalizedText.includes('branch') ||
+    normalizedText.includes('showroom') ||
+    normalizedText.includes('visit')
   ) {
     return {
       messages: [
         buildTextMessage(
           from,
-          `🎆 Explore our full Sivakasi cracker collection and price list:\n👉 https://vizagayyan.com`
+          `📍 *Ayyan Fireworks — Flagship Showroom*\n\n` +
+          `🏢 *Address:* ${SHOWROOM_CONTACT.address}\n\n` +
+          `⏰ *Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)*\n\n` +
+          `🗺️ *Google Maps Navigation:*\n👉 ${SHOWROOM_CONTACT.googleMapsUrl || 'https://maps.app.goo.gl/agWQFufKjWkwFbVs7'}\n\n` +
+          `📞 *Helpline:* ${SHOWROOM_CONTACT.phone}`
         )
       ],
-      metadata: { fallbackTrigger: '2_visit_website' }
+      metadata: { fallbackTrigger: '2_location_store' }
     };
   }
 
@@ -1107,9 +1139,7 @@ export async function handleWhatsAppWebhookEvent(
         buildTextMessage(
           from,
           `⏰ *Ayyan Fireworks Showroom Timings*\n\n` +
-          `🕒 *Regular Hours:* 8:00 AM – 10:00 PM\n` +
-          `✨ *Special Diwali Season Hours:* 5:00 AM – 10:00 PM\n` +
-          `(Open All 7 Days)\n\n` +
+          `Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
           `📍 *Showroom Location:* ${SHOWROOM_CONTACT.shortAddress}\n` +
           `👉 ${SHOWROOM_CONTACT.googleMapsUrl}\n` +
           `📞 *Helpline:* ${SHOWROOM_CONTACT.phone}`
@@ -1119,42 +1149,34 @@ export async function handleWhatsAppWebhookEvent(
     };
   }
 
-  // Reply 3: Showroom Visit & Location
+  // 3️⃣ Click 3 for Website
   if (
     normalizedText === '3' ||
-    normalizedText.includes('showroom') ||
-    normalizedText.includes('visit') ||
-    normalizedText.includes('location') ||
-    normalizedText.includes('address') ||
-    normalizedText.includes('map') ||
-    normalizedText.includes('directions') ||
-    normalizedText.includes('where') ||
-    normalizedText.includes('store') ||
-    normalizedText.includes('branch')
+    normalizedText.includes('website') ||
+    normalizedText.includes('web') ||
+    normalizedText.includes('site') ||
+    normalizedText.includes('online') ||
+    normalizedText.includes('price') ||
+    normalizedText.includes('rate') ||
+    normalizedText.includes('cracker')
   ) {
     return {
       messages: [
         buildTextMessage(
           from,
-          `📍 *Ayyan Fireworks — Flagship Showroom*\n\n` +
-          `🏢 *Address:* ${SHOWROOM_CONTACT.address}\n\n` +
-          `⏰ *Showroom Timings:*\n` +
-          `• *Regular Hours:* 8:00 AM – 10:00 PM\n` +
-          `• *Special Diwali Season Hours:* 5:00 AM – 10:00 PM (All 7 Days)\n\n` +
-          `🗺️ *Google Maps Navigation:*\n👉 ${SHOWROOM_CONTACT.googleMapsUrl}\n\n` +
-          `📞 *Helpline:* ${SHOWROOM_CONTACT.phone}`
+          `🎆 Explore our full Sivakasi cracker collection and price list:\n👉 https://vizagayyan.com`
         )
       ],
-      metadata: { fallbackTrigger: '3_showroom_visit' }
+      metadata: { fallbackTrigger: '3_visit_website' }
     };
   }
 
-  // Welcome Greeting Handler Fallback -> Approved WhatsApp Template: ayyan_welcome_v2
+  // Welcome Greeting Handler Fallback -> Fallback Greeting Text Message
   return {
     messages: [
-      buildWelcomeTemplateMessage(from, 'ayyan_welcome_v2')
+      buildFallbackGreetingTextMessage(from)
     ],
-    metadata: { fallbackTrigger: 'welcome_template_ayyan_welcome_v2' }
+    metadata: { fallbackTrigger: 'fallback_greeting_text' }
   };
 }
 
