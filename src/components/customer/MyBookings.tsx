@@ -18,6 +18,7 @@ import { useAyyanStore } from '../../context/AppContext';
 import { Booking } from '../../types';
 import { formatDateReadable, SHOWROOM_CONTACT, clean10DigitPhone, formatWhatsAppUrl } from '../../lib/utils';
 import { VIPVisitingPass } from './VIPVisitingPass';
+import { SHOW_SLOT_BOOKING_UI } from '../../config/features';
 
 export default function MyBookings() {
   const { bookings: localBookings } = useAyyanStore();
@@ -185,15 +186,17 @@ export default function MyBookings() {
           <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
             We couldn't find any visiting passes registered under <span className="font-semibold text-slate-700 dark:text-slate-300">"{phone}"</span>.
           </p>
-          <div className="pt-2">
-            <Link
-              to="/book-slot"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs uppercase tracking-wider shadow-sm transition"
-            >
-              <span>Reserve a Visiting Slot Now</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
+          {SHOW_SLOT_BOOKING_UI && (
+            <div className="pt-2">
+              <Link
+                to="/book-slot"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs uppercase tracking-wider shadow-sm transition"
+              >
+                <span>Reserve a Visiting Slot Now</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          )}
         </div>
       )}
 

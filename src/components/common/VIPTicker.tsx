@@ -3,9 +3,14 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ShieldAlert } from 'lucide-react';
 import { useAyyanStore } from '../../context/AppContext';
 import { formatTime, formatDateReadable } from '../../lib/utils';
+import { SHOW_SLOT_BOOKING_UI } from '../../config/features';
 
 export const VIPTicker: React.FC = () => {
   const { slots, isEmergencyBlocked } = useAyyanStore();
+
+  if (!SHOW_SLOT_BOOKING_UI) {
+    return null;
+  }
 
   if (isEmergencyBlocked) {
     return (

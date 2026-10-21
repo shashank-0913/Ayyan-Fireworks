@@ -2,6 +2,8 @@ import React from 'react';
 import MyBookings from '../components/customer/MyBookings';
 import { Ticket, MapPin, Clock, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { SHOW_SLOT_BOOKING_UI } from '../config/features';
+
 
 export const MyBookingsPage: React.FC = () => {
   return (
@@ -16,12 +18,14 @@ export const MyBookingsPage: React.FC = () => {
           <span>Back to Home</span>
         </Link>
 
-        <Link
-          to="/book-slot"
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-600 dark:text-gold-400 hover:underline"
-        >
-          <span>New Reservation</span>
-        </Link>
+        {SHOW_SLOT_BOOKING_UI && (
+          <Link
+            to="/book-slot"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-600 dark:text-gold-400 hover:underline"
+          >
+            <span>New Reservation</span>
+          </Link>
+        )}
       </div>
 
       {/* Main Component */}
