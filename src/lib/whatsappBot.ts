@@ -162,9 +162,9 @@ const WEBSITE_BASE_URL = 'https://vizagayyan.com';
 /**
  * 3.0 Fallback Greeting Text Message
  * Formats numbered choices:
- * 1️⃣ Click 1 for Slot Booking
- * 2️⃣ Click 2 for Location of the Store
- * 3️⃣ Click 3 for Website
+ * 1️⃣ *Click 1 for Website*
+ * 2️⃣ *Click 2 for Location of the Store*
+ * 3️⃣ *Click 3 for Slot Booking*
  * Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)
  */
 export function buildFallbackGreetingTextMessage(toPhone: string): WhatsAppMessageEnvelope {
@@ -176,13 +176,13 @@ export function buildFallbackGreetingTextMessage(toPhone: string): WhatsAppMessa
     text: {
       preview_url: true,
       body:
-        `🎆 *Welcome to Ayyan Fireworks (Bunny Brand, Sivakasi)*\n\n` +
-        `⏰ Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
-        `Please select an option below:\n` +
-        `1️⃣ Click 1 for Slot Booking\n` +
-        `2️⃣ Click 2 for Location of the Store\n` +
-        `3️⃣ Click 3 for Website\n\n` +
-        `_Reply with 1, 2, or 3 to continue._`
+        `🎆 *Welcome to Ayyan Fireworks!* 🎆\n` +
+        `Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
+        `Please select the number of your choice:\n` +
+        `1️⃣ *Click 1 for Website*\n` +
+        `2️⃣ *Click 2 for Location of the Store*\n` +
+        `3️⃣ *Click 3 for Slot Booking*\n\n` +
+        `Tell me your queries! You can also ask any question about our crackers, pricing, and offers.`
     }
   };
 }
@@ -757,7 +757,7 @@ export async function handleWhatsAppWebhookEvent(
   if (actionId) {
     console.log(`[WhatsApp Bot] Processing Interactive Action ID: "${actionId}" from ${from}`);
 
-    // 1. Main Menu Navigation: Option 1 - Book VIP Slot
+    // 1. Main Menu Navigation: Option 3 / btn_book_slot - Book VIP Slot
     if (
       actionId === 'btn_book_slot' ||
       actionId === 'btn_slot_booking' ||
@@ -767,7 +767,7 @@ export async function handleWhatsAppWebhookEvent(
         messages: [
           buildTextMessage(
             from,
-            `✨ Reserve your VIP Showroom visiting slot here:\n👉 https://vizagayyan.com/#booking`
+            "🎟️ *VIP Showroom Slot Booking:*\nReserve your entry pass online: https://vizagayyan.com"
           )
         ],
         metadata: { action: 'book_vip_slot_sent' }
@@ -825,18 +825,14 @@ export async function handleWhatsAppWebhookEvent(
         messages: [
           buildTextMessage(
             from,
-            `📍 *Ayyan Fireworks — Flagship Showroom*\n\n` +
-            `🏢 *Address:* ${SHOWROOM_CONTACT.address}\n\n` +
-            `⏰ *Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)*\n\n` +
-            `🗺️ *Google Maps Navigation:*\n👉 ${SHOWROOM_CONTACT.googleMapsUrl || 'https://maps.app.goo.gl/agWQFufKjWkwFbVs7'}\n\n` +
-            `📞 *Showroom Helpline:* ${SHOWROOM_CONTACT.phone}`
+            "📍 *Ayyan Fireworks — Visakhapatnam Showroom*\nMain Road/NH-16, Sheela Nagar, Visakhapatnam\n🗺️ Directions: https://maps.google.com/?q=Ayyan+Fireworks+Visakhapatnam"
           )
         ],
         metadata: { action: 'showroom_visit_sent' }
       };
     }
 
-    // 3. Main Menu Navigation: Option 3 - Website
+    // 3. Main Menu Navigation: Option 1 - Website
     if (
       actionId === 'btn_visit_website' ||
       actionId === 'btn_website' ||
@@ -846,7 +842,7 @@ export async function handleWhatsAppWebhookEvent(
         messages: [
           buildTextMessage(
             from,
-            `🎆 Explore our full Sivakasi cracker collection and price list:\n👉 https://vizagayyan.com`
+            "🌐 *Visit our official website & live catalog:*\nhttps://vizagayyan.com"
           )
         ],
         metadata: { action: 'visit_website_sent' }
@@ -1088,30 +1084,85 @@ export async function handleWhatsAppWebhookEvent(
     };
   }
 
-  // 1️⃣ Click 1 for Slot Booking
+  // Handling user text selection:
+  switch (normalizedText) {
+    case '1':
+      // Swapped to Option 1: Send Website details
+      return {
+        messages: [
+          buildTextMessage(
+            from,
+            "🌐 *Visit our official website & live catalog:*\nhttps://vizagayyan.com"
+          )
+        ],
+        metadata: { fallbackTrigger: '1_visit_website' }
+      };
+
+    case '2':
+      // Option 2: Send Store Location
+      return {
+        messages: [
+          buildTextMessage(
+            from,
+            "📍 *Ayyan Fireworks — Visakhapatnam Showroom*\nMain Road/NH-16, Sheela Nagar, Visakhapatnam\n🗺️ Directions: https://maps.google.com/?q=Ayyan+Fireworks+Visakhapatnam"
+          )
+        ],
+        metadata: { fallbackTrigger: '2_location_store' }
+      };
+
+    case '3':
+      // Swapped to Option 3: Send Slot Booking details
+      return {
+        messages: [
+          buildTextMessage(
+            from,
+            "🎟️ *VIP Showroom Slot Booking:*\nReserve your entry pass online: https://vizagayyan.com"
+          )
+        ],
+        metadata: { fallbackTrigger: '3_book_vip_slot' }
+      };
+
+    default:
+      // Fallback AI query response or show main menu
+      break;
+  }
+
+  // 1️⃣ Option 1: Website & Crackers / Pricing Queries
   if (
-    normalizedText === '1' ||
-    normalizedText.includes('slot') ||
-    normalizedText.includes('book') ||
-    normalizedText.includes('ticket') ||
-    normalizedText.includes('pass') ||
-    normalizedText.includes('reservation') ||
-    normalizedText.includes('vip')
+    normalizedText.includes('website') ||
+    normalizedText.includes('web') ||
+    normalizedText.includes('site') ||
+    normalizedText.includes('online') ||
+    normalizedText.includes('price') ||
+    normalizedText.includes('pricing') ||
+    normalizedText.includes('rate') ||
+    normalizedText.includes('rates') ||
+    normalizedText.includes('cracker') ||
+    normalizedText.includes('crackers') ||
+    normalizedText.includes('offer') ||
+    normalizedText.includes('offers') ||
+    normalizedText.includes('discount') ||
+    normalizedText.includes('discounts') ||
+    normalizedText.includes('deal') ||
+    normalizedText.includes('deals') ||
+    normalizedText.includes('query') ||
+    normalizedText.includes('queries') ||
+    normalizedText.includes('question') ||
+    normalizedText.includes('questions')
   ) {
     return {
       messages: [
         buildTextMessage(
           from,
-          `✨ Reserve your VIP Showroom visiting slot here:\n👉 https://vizagayyan.com/#booking`
+          "🌐 *Visit our official website & live catalog:*\nhttps://vizagayyan.com"
         )
       ],
-      metadata: { fallbackTrigger: '1_book_vip_slot' }
+      metadata: { fallbackTrigger: '1_visit_website' }
     };
   }
 
-  // 2️⃣ Click 2 for Location of the Store
+  // 2️⃣ Option 2: Location of the Store
   if (
-    normalizedText === '2' ||
     normalizedText.includes('location') ||
     normalizedText.includes('address') ||
     normalizedText.includes('map') ||
@@ -1126,11 +1177,7 @@ export async function handleWhatsAppWebhookEvent(
       messages: [
         buildTextMessage(
           from,
-          `📍 *Ayyan Fireworks — Flagship Showroom*\n\n` +
-          `🏢 *Address:* ${SHOWROOM_CONTACT.address}\n\n` +
-          `⏰ *Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)*\n\n` +
-          `🗺️ *Google Maps Navigation:*\n👉 ${SHOWROOM_CONTACT.googleMapsUrl || 'https://maps.app.goo.gl/agWQFufKjWkwFbVs7'}\n\n` +
-          `📞 *Helpline:* ${SHOWROOM_CONTACT.phone}`
+          "📍 *Ayyan Fireworks — Visakhapatnam Showroom*\nMain Road/NH-16, Sheela Nagar, Visakhapatnam\n🗺️ Directions: https://maps.google.com/?q=Ayyan+Fireworks+Visakhapatnam"
         )
       ],
       metadata: { fallbackTrigger: '2_location_store' }
@@ -1153,34 +1200,32 @@ export async function handleWhatsAppWebhookEvent(
           from,
           `⏰ *Ayyan Fireworks Showroom Timings*\n\n` +
           `Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
-          `📍 *Showroom Location:* ${SHOWROOM_CONTACT.shortAddress}\n` +
-          `👉 ${SHOWROOM_CONTACT.googleMapsUrl}\n` +
-          `📞 *Helpline:* ${SHOWROOM_CONTACT.phone}`
+          `📍 *Showroom Location:* Sheela Nagar (NH-16), Visakhapatnam\n` +
+          `🗺️ *Directions:* https://maps.google.com/?q=Ayyan+Fireworks+Visakhapatnam\n` +
+          `📞 *Helpline:* +91 77299 92125`
         )
       ],
       metadata: { fallbackTrigger: 'showroom_timings' }
     };
   }
 
-  // 3️⃣ Click 3 for Website
+  // 3️⃣ Option 3: Slot Booking
   if (
-    normalizedText === '3' ||
-    normalizedText.includes('website') ||
-    normalizedText.includes('web') ||
-    normalizedText.includes('site') ||
-    normalizedText.includes('online') ||
-    normalizedText.includes('price') ||
-    normalizedText.includes('rate') ||
-    normalizedText.includes('cracker')
+    normalizedText.includes('slot') ||
+    normalizedText.includes('book') ||
+    normalizedText.includes('ticket') ||
+    normalizedText.includes('pass') ||
+    normalizedText.includes('reservation') ||
+    normalizedText.includes('vip')
   ) {
     return {
       messages: [
         buildTextMessage(
           from,
-          `🎆 Explore our full Sivakasi cracker collection and price list:\n👉 https://vizagayyan.com`
+          "🎟️ *VIP Showroom Slot Booking:*\nReserve your entry pass online: https://vizagayyan.com"
         )
       ],
-      metadata: { fallbackTrigger: '3_visit_website' }
+      metadata: { fallbackTrigger: '3_book_vip_slot' }
     };
   }
 
