@@ -1024,7 +1024,7 @@ export async function handleWhatsAppWebhookEvent(
   const normalizedText = (textBody || '').trim().toLowerCase();
 
   // 1. Direct Greetings & Conversation Starters ("hi", "hello", "hey", etc.)
-  // Sends primary welcome template menu ("ayyan_menu_v2") with header image and buttons
+  // Directly dispatches fallback greeting text menu envelope
   if (
     normalizedText === 'hi' ||
     normalizedText === 'hello' ||
@@ -1037,11 +1037,10 @@ export async function handleWhatsAppWebhookEvent(
     normalizedText === 'welcome' ||
     normalizedText === ''
   ) {
+    const envelope = buildFallbackGreetingTextMessage(from);
     return {
-      messages: [
-        buildMainMenuMessage(from)
-      ],
-      metadata: { action: 'welcome_template_sent' }
+      messages: [envelope],
+      metadata: { action: 'fallback_greeting_sent' }
     };
   }
 
@@ -1310,6 +1309,19 @@ export async function sendWhatsAppCloudMessage(
     console.error('[WhatsApp Cloud API Exception] FULL ERROR RESPONSE BODY / DETAILS:', err);
     return { success: false, error: err?.message || 'Network exception' };
   }
+}
+
+/**
+ * Direct incoming greeting dispatch helper:
+ * const envelope = buildFallbackGreetingTextMessage(senderPhone);
+ * await sendWhatsAppCloudMessage(envelope);
+ */
+export async function sendFallbackGreetingMessage(
+  senderPhone: string,
+  config?: WhatsAppApiConfig
+): Promise<{ success: boolean; data?: any; error?: string }> {
+  const envelope = buildFallbackGreetingTextMessage(senderPhone);
+  return sendWhatsAppCloudMessage(envelope, config);
 }
 
 // ============================================================================
