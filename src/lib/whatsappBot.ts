@@ -761,13 +761,14 @@ export async function handleWhatsAppWebhookEvent(
     if (
       actionId === 'btn_book_slot' ||
       actionId === 'btn_slot_booking' ||
-      actionId === 'menu_book_slot'
+      actionId === 'menu_book_slot' ||
+      actionId === '3'
     ) {
       return {
         messages: [
           buildTextMessage(
             from,
-            "🎟️ *VIP Showroom Slot Booking:*\nReserve your entry pass online: https://vizagayyan.com"
+            "🎟️ *Showroom Slot Booking:*\nhttps://vizagayyan.com"
           )
         ],
         metadata: { action: 'book_vip_slot_sent' }
@@ -836,13 +837,14 @@ export async function handleWhatsAppWebhookEvent(
     if (
       actionId === 'btn_visit_website' ||
       actionId === 'btn_website' ||
-      actionId === 'menu_website'
+      actionId === 'menu_website' ||
+      actionId === '1'
     ) {
       return {
         messages: [
           buildTextMessage(
             from,
-            "🌐 *Visit our official website & live catalog:*\nhttps://vizagayyan.com"
+            "🌐 *Visit our official website & catalog:*\nhttps://vizagayyan.com"
           )
         ],
         metadata: { action: 'visit_website_sent' }
@@ -1087,19 +1089,21 @@ export async function handleWhatsAppWebhookEvent(
   // Handling user text selection:
   switch (normalizedText) {
     case '1':
-      // Swapped to Option 1: Send Website details
+    case 'btn_visit_website':
+      // Option 1 -> Website
       return {
         messages: [
           buildTextMessage(
             from,
-            "🌐 *Visit our official website & live catalog:*\nhttps://vizagayyan.com"
+            "🌐 *Visit our official website & catalog:*\nhttps://vizagayyan.com"
           )
         ],
         metadata: { fallbackTrigger: '1_visit_website' }
       };
 
     case '2':
-      // Option 2: Send Store Location
+    case 'btn_showroom_visit':
+      // Option 2 -> Location
       return {
         messages: [
           buildTextMessage(
@@ -1111,12 +1115,13 @@ export async function handleWhatsAppWebhookEvent(
       };
 
     case '3':
-      // Swapped to Option 3: Send Slot Booking details
+    case 'btn_book_slot':
+      // Option 3 -> Slot Booking
       return {
         messages: [
           buildTextMessage(
             from,
-            "🎟️ *VIP Showroom Slot Booking:*\nReserve your entry pass online: https://vizagayyan.com"
+            "🎟️ *Showroom Slot Booking:*\nhttps://vizagayyan.com"
           )
         ],
         metadata: { fallbackTrigger: '3_book_vip_slot' }
@@ -1154,7 +1159,7 @@ export async function handleWhatsAppWebhookEvent(
       messages: [
         buildTextMessage(
           from,
-          "🌐 *Visit our official website & live catalog:*\nhttps://vizagayyan.com"
+          "🌐 *Visit our official website & catalog:*\nhttps://vizagayyan.com"
         )
       ],
       metadata: { fallbackTrigger: '1_visit_website' }
@@ -1222,7 +1227,7 @@ export async function handleWhatsAppWebhookEvent(
       messages: [
         buildTextMessage(
           from,
-          "🎟️ *VIP Showroom Slot Booking:*\nReserve your entry pass online: https://vizagayyan.com"
+          "🎟️ *Showroom Slot Booking:*\nhttps://vizagayyan.com"
         )
       ],
       metadata: { fallbackTrigger: '3_book_vip_slot' }
