@@ -6,6 +6,7 @@ import {
   Building2, 
   Info
 } from 'lucide-react';
+import { SHOW_SLOT_BOOKING_UI } from '../../config/features';
 
 interface StatutoryComplianceBannerProps {
   variant?: 'prominent' | 'compact' | 'footer' | 'modal';
@@ -16,7 +17,7 @@ export const StatutoryComplianceBanner: React.FC<StatutoryComplianceBannerProps>
   variant = 'prominent',
   className = ''
 }) => {
-  const complianceText = "In accordance with the directives of the Hon'ble Supreme Court of India, online sale, direct e-commerce purchase, and shipping of fireworks are strictly prohibited. This website serves strictly as an informational digital catalog and showroom appointment booking portal. We only sell 100% CSIR-NEERI approved Green Crackers across our authorized physical showrooms in Visakhapatnam.";
+  const complianceText = `In accordance with the directives of the Hon'ble Supreme Court of India, online sale, direct e-commerce purchase, and shipping of fireworks are strictly prohibited. This website serves strictly as an informational digital catalog${SHOW_SLOT_BOOKING_UI ? ' and showroom appointment booking portal' : ' and product reference guide'}. We only sell 100% CSIR-NEERI approved Green Crackers across our authorized physical showrooms in Visakhapatnam.`;
 
   // Variant: Modal Header / Body Banner
   if (variant === 'modal') {
@@ -119,7 +120,7 @@ export const StatutoryComplianceBanner: React.FC<StatutoryComplianceBannerProps>
         <div className="rounded-2xl bg-white/80 dark:bg-obsidian-900/80 p-4 border border-amber-200/80 dark:border-white/5 shadow-inner space-y-2">
           <p className="text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-200 leading-relaxed">
             <strong className="text-amber-800 dark:text-gold-300 font-bold">⚠️ Statutory Compliance: </strong>
-            In accordance with the directives of the Hon&apos;ble Supreme Court of India, online sale, direct e-commerce purchase, and shipping of fireworks are strictly prohibited. This website serves strictly as an informational digital catalog and showroom appointment booking portal. We only sell 100% CSIR-NEERI approved Green Crackers across our authorized physical showrooms in Visakhapatnam.
+            {complianceText}
           </p>
         </div>
       </div>

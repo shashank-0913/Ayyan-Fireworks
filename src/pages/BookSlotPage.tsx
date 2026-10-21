@@ -4,12 +4,14 @@ import { SlotBookingFlow } from '../components/customer/SlotBookingFlow';
 import { useStoreSettings } from '../hooks/useStoreSettings';
 import { Calendar, Clock, ShieldCheck, MapPin, CalendarX, BookOpen, ArrowLeft, Sparkles, Ticket } from 'lucide-react';
 import { SHOWROOM_CONTACT } from '../lib/utils';
+import { SHOW_SLOT_BOOKING_UI } from '../config/features';
 
 export const BookSlotPage: React.FC = () => {
   const { vip_booking_enabled, isLoading } = useStoreSettings();
+  const isBookingAllowed = SHOW_SLOT_BOOKING_UI && vip_booking_enabled;
 
   // If slot booking is disabled, show a clear message stating bookings are currently closed
-  if (!isLoading && !vip_booking_enabled) {
+  if (!isLoading && !isBookingAllowed) {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 text-center space-y-8 animate-in fade-in duration-300">
         <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center mx-auto text-amber-500 shadow-lg">

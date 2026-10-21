@@ -24,6 +24,7 @@ import { VIPVisitingPass } from './VIPVisitingPass';
 import { useStoreSettings } from '../../hooks/useStoreSettings';
 import { SHOWROOM_CONTACT, formatDateReadable, formatWhatsAppUrl } from '../../lib/utils';
 import { Booking, Slot } from '../../types';
+import { SHOW_SLOT_BOOKING_UI } from '../../config/features';
 
 export interface ReserveSlotModalProps {
   isOpen: boolean;
@@ -92,7 +93,7 @@ export const ReserveSlotModal: React.FC<ReserveSlotModalProps> = ({
   defaultTab = 'new'
 }) => {
   const { vip_booking_enabled, isVipBookingEnabled, isLoading, refreshSettings } = useStoreSettings();
-  const effectiveVipEnabled = typeof isVipBookingEnabled === 'boolean' ? isVipBookingEnabled : vip_booking_enabled;
+  const effectiveVipEnabled = SHOW_SLOT_BOOKING_UI && (typeof isVipBookingEnabled === 'boolean' ? isVipBookingEnabled : vip_booking_enabled);
 
   const [activeTab, setActiveTab] = useState<'new' | 'my-bookings'>(defaultTab);
   const [userBookings, setUserBookings] = useState<UserPassItem[]>([]);
@@ -198,7 +199,7 @@ export const ReserveSlotModal: React.FC<ReserveSlotModalProps> = ({
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !SHOW_SLOT_BOOKING_UI) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-200">

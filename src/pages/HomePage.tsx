@@ -98,7 +98,7 @@ export const HomePage: React.FC = () => {
               </span>
             </h1>
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
-              Explore authentic Sivakasi Green Crackers &amp; Novelties, direct factory pricing, and priority showroom visiting passes at our Visakhapatnam flagship store.
+              Explore authentic Sivakasi Green Crackers &amp; Novelties, direct factory pricing, and {SHOW_SLOT_BOOKING_UI ? 'priority showroom visiting passes' : 'direct in-store showroom purchases'} at our Visakhapatnam flagship store.
             </p>
           </div>
 
@@ -328,7 +328,7 @@ export const HomePage: React.FC = () => {
       <section className="w-full border-t border-neutral-800 bg-neutral-950 py-6 px-4 text-center">
         <div className="mx-auto max-w-4xl">
           <p className="text-[11px] leading-relaxed text-neutral-400">
-            <span className="font-semibold text-neutral-300">Disclaimer:</span> As per Supreme Court directives and local regulations, fireworks are sold strictly within permissible festive retail guidelines. Online ordering is for inquiry, catalog reference, and slot reservation only. Delivery and collection follow standard safety compliances at our Visakhapatnam showroom.
+            <span className="font-semibold text-neutral-300">Disclaimer:</span> As per Supreme Court directives and local regulations, fireworks are sold strictly within permissible festive retail guidelines. Online ordering is for inquiry and catalog reference{SHOW_SLOT_BOOKING_UI ? ', and slot reservation' : ''} only. Delivery and collection follow standard safety compliances at our Visakhapatnam showroom.
           </p>
         </div>
       </section>

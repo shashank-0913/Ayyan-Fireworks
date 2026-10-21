@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { SHOWROOM_CONTACT, WHATSAPP_CONTACT } from '../lib/utils';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
+import { SHOW_SLOT_BOOKING_UI } from '../config/features';
 
 export const ShowroomPage: React.FC = () => {
   return (
@@ -236,8 +237,17 @@ export const ShowroomPage: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-700 dark:text-slate-300">
               <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-obsidian-950 border border-slate-200 dark:border-white/5 space-y-1">
-                <strong className="text-amber-700 dark:text-gold-300 block">1. Priority Entry with VIP Pass ID</strong>
-                <p className="text-slate-600 dark:text-slate-400">Present your Unique Pass Code at the security desk to bypass general waiting queues.</p>
+                {SHOW_SLOT_BOOKING_UI ? (
+                  <>
+                    <strong className="text-amber-700 dark:text-gold-300 block">1. Priority Entry with VIP Pass ID</strong>
+                    <p className="text-slate-600 dark:text-slate-400">Present your Unique Pass Code at the security desk to bypass general waiting queues.</p>
+                  </>
+                ) : (
+                  <>
+                    <strong className="text-amber-700 dark:text-gold-300 block">1. Direct Walk-in In-Store Entry</strong>
+                    <p className="text-slate-600 dark:text-slate-400">Walk directly in during regular operational hours without prior reservation needed.</p>
+                  </>
+                )}
               </div>
 
               <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-obsidian-950 border border-slate-200 dark:border-white/5 space-y-1">
