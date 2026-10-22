@@ -714,13 +714,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Product Actions
   const addProduct = async (productData: Omit<Product, 'id' | 'created_at'>): Promise<Product> => {
-    const sanitizedImage = sanitizeProductImage(productData.image_url);
+    const sanitizedImage = sanitizeProductImage(productData.image_url || productData.image);
+    const packingVal = productData.packing || productData.piece_count || (productData as any).pieces_per_box || '1 Box';
+
+    // Strictly clean payload with only valid columns (no pieces_per_box)
     const dbPayload: Record<string, any> = {
       name: productData.name.trim(),
       category: productData.category.trim(),
       price: Number(productData.price) || 0,
       discount_price: productData.mrp ? Number(productData.mrp) : (productData.original_price ? Number(productData.original_price) : null),
-      piece_count: productData.packing || productData.piece_count || productData.pieces_per_box || '1 Box',
+      piece_count: packingVal,
+      packing: packingVal,
       description: productData.description || '',
       safety_instructions: productData.safety_instructions || 'Keep safe clearance. Light with agarbatti on an open clear hard surface.',
       sound_level: productData.sound_level || 'Medium',
@@ -731,11 +735,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     if (isSupabaseConfigured && supabase) {
-      const { data, error } = await supabase
+      let { data, error } = await supabase
         .from('products')
         .insert([dbPayload])
         .select()
         .single();
+
+      // Guard against any schema cache column mismatch
+      if (error && error.message && error.message.includes("Could not find the '") && error.message.includes("' column of 'products'")) {
+        const colMatch = error.message.match(/Could not find the '([^']+)' column/);
+        if (colMatch && colMatch[1]) {
+          const badCol = colMatch[1];
+          console.warn(`[Supabase] Column "${badCol}" not in table schema, retrying insert without it.`);
+          delete dbPayload[badCol];
+          const retry = await supabase
+            .from('products')
+            .insert([dbPayload])
+            .select()
+            .single();
+          data = retry.data;
+          error = retry.error;
+        }
+      }
 
       if (error) {
         console.error('Supabase product insert error:', error);
@@ -754,9 +775,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           price: Number(data.price) || 0,
           mrp: data.discount_price ? Number(data.discount_price) : undefined,
           original_price: data.discount_price ? Number(data.discount_price) : undefined,
-          packing: data.piece_count || '1 Box',
-          piece_count: data.piece_count || '1 Box',
-          pieces_per_box: data.piece_count || '1 Box',
+          packing: data.packing || data.piece_count || '1 Box',
+          piece_count: data.piece_count || data.packing || '1 Box',
+          pieces_per_box: data.piece_count || data.packing || '1 Box',
           image_url: sanitizedImage,
           image: sanitizedImage,
           is_active: data.is_active !== undefined ? Boolean(data.is_active) : true,
@@ -779,9 +800,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       code: localCode,
       price: Number(productData.price) || 0,
       mrp: productData.mrp ? Number(productData.mrp) : undefined,
-      packing: productData.packing || productData.piece_count || '1 Box',
-      piece_count: productData.packing || productData.piece_count || '1 Box',
-      pieces_per_box: productData.packing || productData.piece_count || '1 Box',
+      packing: packingVal,
+      piece_count: packingVal,
+      pieces_per_box: packingVal,
       image_url: sanitizedImage,
       image: sanitizedImage,
       created_at: new Date().toISOString()
@@ -800,6 +821,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const numericId = rawNumeric ? parseInt(rawNumeric, 10) : (typeof updates.code === 'number' ? updates.code : null);
 
     // 2. Prepare database payload strictly containing existing columns on the remote 'products' table
+    // Guard against pieces_per_box - do NOT add pieces_per_box to the remote dbPayload!
     const dbPayload: Record<string, any> = {};
     if (updates.name !== undefined) {
       dbPayload.name = updates.name.trim();
@@ -815,13 +837,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     } else if (updates.original_price !== undefined) {
       dbPayload.discount_price = updates.original_price !== null && !isNaN(Number(updates.original_price)) ? Number(updates.original_price) : null;
     }
-    if (updates.piece_count !== undefined) {
-      dbPayload.piece_count = updates.piece_count;
-    } else if (updates.packing !== undefined) {
-      dbPayload.piece_count = updates.packing;
-    } else if (updates.pieces_per_box !== undefined) {
-      dbPayload.piece_count = updates.pieces_per_box;
+    
+    // Safely map packing without sending unverified pieces_per_box
+    const packingVal = updates.packing || updates.piece_count || (updates as any).pieces_per_box;
+    if (packingVal !== undefined) {
+      dbPayload.piece_count = packingVal;
+      dbPayload.packing = packingVal;
     }
+
     if (updates.description !== undefined) {
       dbPayload.description = updates.description;
     }
@@ -834,8 +857,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (updates.sound_level !== undefined) {
       dbPayload.sound_level = updates.sound_level;
     }
-    if (updates.image_url !== undefined) {
-      dbPayload.image_url = sanitizeProductImage(updates.image_url);
+    if (updates.image_url !== undefined || updates.image !== undefined) {
+      dbPayload.image_url = sanitizeProductImage(updates.image_url || updates.image);
     }
     if (updates.is_active !== undefined) {
       dbPayload.is_active = Boolean(updates.is_active);
@@ -846,10 +869,25 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     // 3. If Supabase is configured and we have a valid numeric ID, execute update directly
     if (isSupabaseConfigured && supabase && numericId !== null && !isNaN(numericId)) {
-      const { error } = await supabase
+      let { error } = await supabase
         .from('products')
         .update(dbPayload)
         .eq('id', numericId);
+
+      // Guard: if error mentions a missing column, strip it and retry once
+      if (error && error.message && error.message.includes("Could not find the '") && error.message.includes("' column of 'products'")) {
+        const colMatch = error.message.match(/Could not find the '([^']+)' column/);
+        if (colMatch && colMatch[1]) {
+          const badCol = colMatch[1];
+          console.warn(`[Supabase] Column "${badCol}" not in table schema, retrying update without it.`);
+          delete dbPayload[badCol];
+          const retry = await supabase
+            .from('products')
+            .update(dbPayload)
+            .eq('id', numericId);
+          error = retry.error;
+        }
+      }
 
       if (error) {
         console.error('Supabase product update error:', error);

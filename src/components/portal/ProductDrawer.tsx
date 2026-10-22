@@ -112,7 +112,6 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
           original_price: parsedMrp,
           packing: safePacking,
           piece_count: safePacking,
-          pieces_per_box: safePacking,
           description: description.trim(),
           safety_instructions: safetyInstructions.trim() || 'Keep safe clearance. Place on hard flat ground.',
           image_url: cleanImageUrl,
@@ -130,7 +129,6 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
           mrp: parsedMrp,
           original_price: parsedMrp,
           packing: safePacking,
-          pieces_per_box: safePacking,
           piece_count: safePacking,
           description: description.trim(),
           safety_instructions: safetyInstructions.trim() || 'Keep safe clearance. Place on hard flat ground.',
@@ -260,10 +258,10 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
                   </div>
 
                   <input
-                    type="url"
+                    type="text"
                     value={imageUrl}
                     onChange={(e) => setImageUrl(e.target.value)}
-                    placeholder="Or paste direct image URL (https://...)"
+                    placeholder="Or enter image path / URL (e.g. /products/21-ground-chakkar-deluxe.jpg)"
                     className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-800 dark:text-slate-300 font-mono focus:outline-none focus:border-amber-500 min-h-[38px]"
                   />
                 </div>
