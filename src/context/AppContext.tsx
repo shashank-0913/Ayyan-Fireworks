@@ -55,7 +55,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const LOCAL_STORAGE_KEYS = {
-  PRODUCTS: 'ayyan_products_141_verified_v2',
+  PRODUCTS: 'ayyan_products_141_official_2026',
   SLOTS: 'ayyan_slots_clean_v8_cdn',
   BOOKINGS: 'ayyan_bookings_clean_v8_cdn',
   STAFF_USER: 'ayyan_staff_user_clean_v8_cdn',
@@ -112,7 +112,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length === INITIAL_PRODUCTS.length && parsed[0]?.item_code) {
+        if (
+          Array.isArray(parsed) && 
+          parsed.length === INITIAL_PRODUCTS.length && 
+          parsed[0]?.item_code &&
+          parsed[0]?.category === 'Crackers'
+        ) {
           return sanitizeProductsForStorage(parsed);
         }
       } catch (e) {
@@ -266,19 +271,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         if (!prodErr && Array.isArray(dbProducts) && dbProducts.length > 0) {
           const mapped: Product[] = dbProducts.map(p => {
             const codeNum = String(p.id).replace(/\D/g, '').padStart(3, '0');
+            const official = PRODUCTS_LIST.find(item => item.code === Number(codeNum));
             return {
               id: `item_${codeNum}`,
               item_code: codeNum,
               code: codeNum,
-              name: p.name || 'Firework SKU',
-              category: p.category || 'Sparklers',
-              price: Number(p.price) || 0,
-              original_price: p.discount_price ? Number(p.discount_price) : Math.round(Number(p.price) * 1.3),
-              pieces_per_box: p.piece_count || p.pieces_per_box || '1 Box',
-              piece_count: p.piece_count || p.pieces_per_box || '1 Box',
-              packing: p.piece_count || p.pieces_per_box || '1 Box',
+              name: official?.name || p.name || 'Firework SKU',
+              category: official?.category || p.category || 'Sparklers',
+              price: Number(p.price) || official?.price || 0,
+              original_price: p.discount_price ? Number(p.discount_price) : Math.round((Number(p.price) || official?.price || 0) * 1.3),
+              pieces_per_box: official?.packing || p.piece_count || p.pieces_per_box || '1 Box',
+              piece_count: official?.packing || p.piece_count || p.pieces_per_box || '1 Box',
+              packing: official?.packing || p.piece_count || p.pieces_per_box || '1 Box',
               video_url: p.video_url || '',
-              image_url: sanitizeProductImage(p.image_url || p.image || p.imageUrl, codeNum, p.category),
+              image: official?.image || p.image,
+              image_url: official?.image || sanitizeProductImage(p.image_url || p.image || p.imageUrl, codeNum, official?.category || p.category),
               sound_level: p.sound_level || 'Low',
               safety_instructions: p.safety_instructions || 'Keep safe distance. Light with agarbatti on an open clear hard surface.',
               is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
@@ -830,19 +837,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (Array.isArray(dbProducts) && dbProducts.length > 0) {
         const mapped: Product[] = dbProducts.map(p => {
           const codeNum = String(p.id).replace(/\D/g, '').padStart(3, '0');
+          const official = PRODUCTS_LIST.find(item => item.code === Number(codeNum));
           return {
             id: `item_${codeNum}`,
             item_code: codeNum,
             code: codeNum,
-            name: p.name || 'Firework SKU',
-            category: p.category || 'Sparklers',
-            price: Number(p.price) || 0,
-            original_price: p.discount_price ? Number(p.discount_price) : Math.round(Number(p.price) * 1.3),
-            pieces_per_box: p.piece_count || p.pieces_per_box || '1 Box',
-            piece_count: p.piece_count || p.pieces_per_box || '1 Box',
-            packing: p.piece_count || p.pieces_per_box || '1 Box',
+            name: official?.name || p.name || 'Firework SKU',
+            category: official?.category || p.category || 'Sparklers',
+            price: Number(p.price) || official?.price || 0,
+            original_price: p.discount_price ? Number(p.discount_price) : Math.round((Number(p.price) || official?.price || 0) * 1.3),
+            pieces_per_box: official?.packing || p.piece_count || p.pieces_per_box || '1 Box',
+            piece_count: official?.packing || p.piece_count || p.pieces_per_box || '1 Box',
+            packing: official?.packing || p.piece_count || p.pieces_per_box || '1 Box',
             video_url: p.video_url || '',
-            image_url: sanitizeProductImage(p.image_url || p.image || p.imageUrl, codeNum, p.category),
+            image: official?.image || p.image,
+            image_url: official?.image || sanitizeProductImage(p.image_url || p.image || p.imageUrl, codeNum, official?.category || p.category),
             sound_level: p.sound_level || 'Low',
             safety_instructions: p.safety_instructions || 'Keep safe distance. Light with agarbatti on an open clear hard surface.',
             is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
