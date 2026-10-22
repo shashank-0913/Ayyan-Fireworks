@@ -55,7 +55,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const LOCAL_STORAGE_KEYS = {
-  PRODUCTS: 'ayyan_products_141_official_2026',
+  PRODUCTS: 'ayyan_products_catalog',
   SLOTS: 'ayyan_slots_clean_v8_cdn',
   BOOKINGS: 'ayyan_bookings_clean_v8_cdn',
   STAFF_USER: 'ayyan_staff_user_clean_v8_cdn',
@@ -108,16 +108,16 @@ const sanitizeProductsForStorage = (prods: Product[]): Product[] => {
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [products, setProducts] = useState<Product[]>(() => {
-    const saved = safeGetItem(LOCAL_STORAGE_KEYS.PRODUCTS);
+    // 1. Check primary persistent key
+    let saved = safeGetItem(LOCAL_STORAGE_KEYS.PRODUCTS);
+    // 2. Migration fallback from previous key
+    if (!saved) {
+      saved = safeGetItem('ayyan_products_141_official_2026');
+    }
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (
-          Array.isArray(parsed) && 
-          parsed.length === INITIAL_PRODUCTS.length && 
-          parsed[0]?.item_code &&
-          parsed[0]?.category === 'Crackers'
-        ) {
+        if (Array.isArray(parsed) && parsed.length > 0 && parsed[0]?.name) {
           return sanitizeProductsForStorage(parsed);
         }
       } catch (e) {
@@ -270,22 +270,35 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
         if (!prodErr && Array.isArray(dbProducts) && dbProducts.length > 0) {
           const mapped: Product[] = dbProducts.map(p => {
-            const codeNum = String(p.id).replace(/\D/g, '').padStart(3, '0');
-            const official = PRODUCTS_LIST.find(item => item.code === Number(codeNum));
+            const rawNumeric = String(p.id).replace(/\D/g, '');
+            const codeNum = rawNumeric ? rawNumeric.padStart(3, '0') : '001';
+            const codeInt = parseInt(rawNumeric, 10) || 1;
+            const official = PRODUCTS_LIST.find(item => item.code === codeInt);
+
+            // Database values ALWAYS take precedence over static defaults
+            const productName = (p.name && p.name.trim()) ? p.name.trim() : (official?.name || 'Firework SKU');
+            const productCategory = (p.category && p.category.trim()) ? p.category.trim() : (official?.category || 'Sparklers');
+            const productPrice = (p.price !== undefined && p.price !== null) ? Number(p.price) : (official?.price || 0);
+            const productMrp = (p.discount_price !== undefined && p.discount_price !== null) 
+              ? Number(p.discount_price) 
+              : (official?.mrp || undefined);
+            const productPacking = p.piece_count || official?.packing || '1 Box';
+
             return {
               id: `item_${codeNum}`,
               item_code: codeNum,
-              code: codeNum,
-              name: official?.name || p.name || 'Firework SKU',
-              category: official?.category || p.category || 'Sparklers',
-              price: Number(p.price) || official?.price || 0,
-              original_price: p.discount_price ? Number(p.discount_price) : Math.round((Number(p.price) || official?.price || 0) * 1.3),
-              pieces_per_box: official?.packing || p.piece_count || p.pieces_per_box || '1 Box',
-              piece_count: official?.packing || p.piece_count || p.pieces_per_box || '1 Box',
-              packing: official?.packing || p.piece_count || p.pieces_per_box || '1 Box',
+              code: codeInt,
+              name: productName,
+              category: productCategory,
+              price: productPrice,
+              mrp: productMrp,
+              original_price: productMrp,
+              packing: productPacking,
+              pieces_per_box: productPacking,
+              piece_count: productPacking,
               video_url: p.video_url || '',
-              image: official?.image || p.image,
-              image_url: official?.image || sanitizeProductImage(p.image_url || p.image || p.imageUrl, codeNum, official?.category || p.category),
+              image: p.image_url || official?.image || getProductImageUrl(codeNum),
+              image_url: p.image_url || official?.image || getProductImageUrl(codeNum),
               sound_level: p.sound_level || 'Low',
               safety_instructions: p.safety_instructions || 'Keep safe distance. Light with agarbatti on an open clear hard surface.',
               is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
@@ -297,8 +310,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           setProducts(mapped);
           safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(mapped)));
         } else if (prodErr) {
-          console.error('Supabase fetch products error on initial load:', prodErr.message);
-          setProducts(INITIAL_PRODUCTS);
+          console.warn('Supabase fetch products error on initial load (preserving persisted catalog):', prodErr.message);
         }
 
         // Query bookings directly from Supabase 'bookings' table
@@ -703,18 +715,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Product Actions
   const addProduct = async (productData: Omit<Product, 'id' | 'created_at'>): Promise<Product> => {
     const sanitizedImage = sanitizeProductImage(productData.image_url);
-    // Insert payload strictly omitting is_active to match database columns
-    const dbPayload = {
+    const dbPayload: Record<string, any> = {
       name: productData.name.trim(),
-      category: productData.category,
+      category: productData.category.trim(),
       price: Number(productData.price) || 0,
-      piece_count: productData.piece_count || '1 Box',
+      discount_price: productData.mrp ? Number(productData.mrp) : (productData.original_price ? Number(productData.original_price) : null),
+      piece_count: productData.packing || productData.piece_count || productData.pieces_per_box || '1 Box',
       description: productData.description || '',
-      safety_instructions: productData.safety_instructions || 'Keep 10m clearance. Light with agarbatti.',
-      safety_tags: productData.safety_tags || ['Bunny Certified'],
+      safety_instructions: productData.safety_instructions || 'Keep safe clearance. Light with agarbatti on an open clear hard surface.',
       sound_level: productData.sound_level || 'Medium',
       video_url: productData.video_url || '',
-      image_url: sanitizedImage
+      image_url: sanitizedImage,
+      is_active: productData.is_active !== undefined ? Boolean(productData.is_active) : true,
+      in_stock: true
     };
 
     if (isSupabaseConfigured && supabase) {
@@ -726,98 +739,189 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       if (error) {
         console.error('Supabase product insert error:', error);
-        alert('Error adding product: ' + error.message);
-        throw new Error(error.message);
+        throw new Error(error.message || 'Remote database insert failed');
       }
 
       if (data) {
+        const codeNum = String(data.id).padStart(3, '0');
         const createdFromDb: Product = {
           ...data,
-          id: String(data.id),
+          id: `item_${codeNum}`,
+          item_code: codeNum,
+          code: Number(data.id),
+          name: data.name,
+          category: data.category,
           price: Number(data.price) || 0,
+          mrp: data.discount_price ? Number(data.discount_price) : undefined,
+          original_price: data.discount_price ? Number(data.discount_price) : undefined,
+          packing: data.piece_count || '1 Box',
+          piece_count: data.piece_count || '1 Box',
+          pieces_per_box: data.piece_count || '1 Box',
+          image_url: sanitizedImage,
+          image: sanitizedImage,
           is_active: data.is_active !== undefined ? Boolean(data.is_active) : true,
           created_at: data.created_at || new Date().toISOString()
         };
-        setProducts(prev => [createdFromDb, ...prev.filter(p => p.id !== createdFromDb.id)]);
+        setProducts(prev => {
+          const next = [createdFromDb, ...prev.filter(p => p.id !== createdFromDb.id)];
+          safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(next)));
+          return next;
+        });
         return createdFromDb;
       }
     }
 
+    const localCode = Date.now();
     const localNewProduct: Product = {
       ...productData,
-      id: `prod-${Date.now()}`,
+      id: `item_${String(localCode).slice(-3)}`,
+      item_code: String(localCode).slice(-3),
+      code: localCode,
+      price: Number(productData.price) || 0,
+      mrp: productData.mrp ? Number(productData.mrp) : undefined,
+      packing: productData.packing || productData.piece_count || '1 Box',
+      piece_count: productData.packing || productData.piece_count || '1 Box',
+      pieces_per_box: productData.packing || productData.piece_count || '1 Box',
       image_url: sanitizedImage,
+      image: sanitizedImage,
       created_at: new Date().toISOString()
     };
-    setProducts(prev => [localNewProduct, ...prev]);
+    setProducts(prev => {
+      const next = [localNewProduct, ...prev];
+      safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(next)));
+      return next;
+    });
     return localNewProduct;
   };
 
   const updateProduct = async (id: string, updates: Partial<Product>): Promise<Product> => {
-    const sanitizedUpdates: any = { ...updates };
-    if (sanitizedUpdates.image_url !== undefined) {
-      sanitizedUpdates.image_url = sanitizeProductImage(sanitizedUpdates.image_url);
+    // 1. Resolve numeric ID for Supabase bigint/integer column
+    const rawNumeric = String(id).replace(/\D/g, '');
+    const numericId = rawNumeric ? parseInt(rawNumeric, 10) : (typeof updates.code === 'number' ? updates.code : null);
+
+    // 2. Prepare database payload strictly containing existing columns on the remote 'products' table
+    const dbPayload: Record<string, any> = {};
+    if (updates.name !== undefined) {
+      dbPayload.name = updates.name.trim();
     }
-    if (sanitizedUpdates.price !== undefined) {
-      sanitizedUpdates.price = Number(sanitizedUpdates.price);
+    if (updates.category !== undefined) {
+      dbPayload.category = updates.category.trim();
+    }
+    if (updates.price !== undefined) {
+      dbPayload.price = Number(updates.price) || 0;
+    }
+    if (updates.mrp !== undefined) {
+      dbPayload.discount_price = updates.mrp !== null && !isNaN(Number(updates.mrp)) ? Number(updates.mrp) : null;
+    } else if (updates.original_price !== undefined) {
+      dbPayload.discount_price = updates.original_price !== null && !isNaN(Number(updates.original_price)) ? Number(updates.original_price) : null;
+    }
+    if (updates.piece_count !== undefined) {
+      dbPayload.piece_count = updates.piece_count;
+    } else if (updates.packing !== undefined) {
+      dbPayload.piece_count = updates.packing;
+    } else if (updates.pieces_per_box !== undefined) {
+      dbPayload.piece_count = updates.pieces_per_box;
+    }
+    if (updates.description !== undefined) {
+      dbPayload.description = updates.description;
+    }
+    if (updates.safety_instructions !== undefined) {
+      dbPayload.safety_instructions = updates.safety_instructions;
+    }
+    if (updates.video_url !== undefined) {
+      dbPayload.video_url = updates.video_url;
+    }
+    if (updates.sound_level !== undefined) {
+      dbPayload.sound_level = updates.sound_level;
+    }
+    if (updates.image_url !== undefined) {
+      dbPayload.image_url = sanitizeProductImage(updates.image_url);
+    }
+    if (updates.is_active !== undefined) {
+      dbPayload.is_active = Boolean(updates.is_active);
+    }
+    if (updates.inStock !== undefined) {
+      dbPayload.in_stock = Boolean(updates.inStock);
     }
 
-    if (isSupabaseConfigured && supabase) {
-      const { data, error } = await supabase
+    // 3. If Supabase is configured and we have a valid numeric ID, execute update directly
+    if (isSupabaseConfigured && supabase && numericId !== null && !isNaN(numericId)) {
+      const { error } = await supabase
         .from('products')
-        .update(sanitizedUpdates)
-        .eq('id', id)
-        .select()
-        .single();
+        .update(dbPayload)
+        .eq('id', numericId);
 
       if (error) {
         console.error('Supabase product update error:', error);
-        alert('Error updating product: ' + error.message);
-        throw new Error(error.message);
-      }
-
-      if (data) {
-        const updatedDbProd: Product = {
-          ...data,
-          id: String(data.id),
-          price: Number(data.price) || 0,
-          is_active: data.is_active !== undefined ? Boolean(data.is_active) : true
-        };
-        setProducts(prev => prev.map(p => p.id === id ? updatedDbProd : p));
-        return updatedDbProd;
+        throw new Error(error.message || 'Remote database update failed');
       }
     }
 
+    // 4. Update local state and synchronize immediately with localStorage
     let updatedProduct: Product | null = null;
-    setProducts(prev => prev.map(p => {
-      if (p.id === id) {
-        const item: Product = { ...p, ...sanitizedUpdates };
-        updatedProduct = item;
-        return item;
-      }
-      return p;
-    }));
+    setProducts(prev => {
+      const next = prev.map(p => {
+        const matches = p.id === id || 
+          (numericId !== null && (p.code === numericId || Number(p.item_code) === numericId || p.id === `item_${String(numericId).padStart(3, '0')}`));
+        
+        if (matches) {
+          const merged: Product = {
+            ...p,
+            ...updates,
+            name: updates.name !== undefined ? updates.name.trim() : p.name,
+            category: updates.category !== undefined ? updates.category.trim() : p.category,
+            price: updates.price !== undefined ? Number(updates.price) : p.price,
+            mrp: updates.mrp !== undefined 
+              ? (updates.mrp ? Number(updates.mrp) : undefined) 
+              : (updates.original_price !== undefined ? (updates.original_price ? Number(updates.original_price) : undefined) : p.mrp),
+            original_price: updates.mrp !== undefined 
+              ? (updates.mrp ? Number(updates.mrp) : undefined) 
+              : (updates.original_price !== undefined ? (updates.original_price ? Number(updates.original_price) : undefined) : p.original_price),
+            packing: updates.packing || updates.piece_count || updates.pieces_per_box || p.packing,
+            piece_count: updates.piece_count || updates.packing || updates.pieces_per_box || p.piece_count,
+            pieces_per_box: updates.pieces_per_box || updates.piece_count || updates.packing || p.pieces_per_box,
+            image_url: updates.image_url ? sanitizeProductImage(updates.image_url) : p.image_url,
+            image: updates.image || updates.image_url || p.image,
+            is_active: updates.is_active !== undefined ? Boolean(updates.is_active) : p.is_active
+          };
+          updatedProduct = merged;
+          return merged;
+        }
+        return p;
+      });
 
-    if (!updatedProduct) throw new Error('Product not found');
+      safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(next)));
+      return next;
+    });
+
+    if (!updatedProduct) {
+      throw new Error(`Product ${id} not found in catalog`);
+    }
+
     return updatedProduct;
   };
 
   const deleteProduct = async (id: string): Promise<void> => {
-    if (isSupabaseConfigured && supabase) {
+    const rawNumeric = String(id).replace(/\D/g, '');
+    const numericId = rawNumeric ? parseInt(rawNumeric, 10) : null;
+
+    if (isSupabaseConfigured && supabase && numericId !== null && !isNaN(numericId)) {
       const { error } = await supabase
         .from('products')
         .delete()
-        .eq('id', id);
+        .eq('id', numericId);
 
       if (error) {
         console.error('Supabase product delete error:', error);
-        alert('Error deleting product: ' + error.message);
-        throw new Error(error.message);
+        throw new Error(error.message || 'Remote database delete failed');
       }
     }
 
-    // Await the database response before removing it from UI state
-    setProducts(prev => prev.filter(p => p.id !== id));
+    setProducts(prev => {
+      const next = prev.filter(p => p.id !== id && (numericId === null || (p.code !== numericId && Number(p.item_code) !== numericId)));
+      safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(next)));
+      return next;
+    });
   };
 
   const refreshProducts = useCallback(async (): Promise<Product[]> => {
@@ -836,22 +940,35 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       if (Array.isArray(dbProducts) && dbProducts.length > 0) {
         const mapped: Product[] = dbProducts.map(p => {
-          const codeNum = String(p.id).replace(/\D/g, '').padStart(3, '0');
-          const official = PRODUCTS_LIST.find(item => item.code === Number(codeNum));
+          const rawNumeric = String(p.id).replace(/\D/g, '');
+          const codeNum = rawNumeric ? rawNumeric.padStart(3, '0') : '001';
+          const codeInt = parseInt(rawNumeric, 10) || 1;
+          const official = PRODUCTS_LIST.find(item => item.code === codeInt);
+
+          // Database values ALWAYS take precedence over static defaults
+          const productName = (p.name && p.name.trim()) ? p.name.trim() : (official?.name || 'Firework SKU');
+          const productCategory = (p.category && p.category.trim()) ? p.category.trim() : (official?.category || 'Sparklers');
+          const productPrice = (p.price !== undefined && p.price !== null) ? Number(p.price) : (official?.price || 0);
+          const productMrp = (p.discount_price !== undefined && p.discount_price !== null) 
+            ? Number(p.discount_price) 
+            : (official?.mrp || undefined);
+          const productPacking = p.piece_count || official?.packing || '1 Box';
+
           return {
             id: `item_${codeNum}`,
             item_code: codeNum,
-            code: codeNum,
-            name: official?.name || p.name || 'Firework SKU',
-            category: official?.category || p.category || 'Sparklers',
-            price: Number(p.price) || official?.price || 0,
-            original_price: p.discount_price ? Number(p.discount_price) : Math.round((Number(p.price) || official?.price || 0) * 1.3),
-            pieces_per_box: official?.packing || p.piece_count || p.pieces_per_box || '1 Box',
-            piece_count: official?.packing || p.piece_count || p.pieces_per_box || '1 Box',
-            packing: official?.packing || p.piece_count || p.pieces_per_box || '1 Box',
+            code: codeInt,
+            name: productName,
+            category: productCategory,
+            price: productPrice,
+            mrp: productMrp,
+            original_price: productMrp,
+            packing: productPacking,
+            pieces_per_box: productPacking,
+            piece_count: productPacking,
             video_url: p.video_url || '',
-            image: official?.image || p.image,
-            image_url: official?.image || sanitizeProductImage(p.image_url || p.image || p.imageUrl, codeNum, official?.category || p.category),
+            image: p.image_url || official?.image || getProductImageUrl(codeNum),
+            image_url: p.image_url || official?.image || getProductImageUrl(codeNum),
             sound_level: p.sound_level || 'Low',
             safety_instructions: p.safety_instructions || 'Keep safe distance. Light with agarbatti on an open clear hard surface.',
             is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,

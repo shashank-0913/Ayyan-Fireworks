@@ -4,6 +4,7 @@ export interface Product {
   category: string;
   packing: string;
   price: number;
+  mrp?: number;
   image: string;
 }
 

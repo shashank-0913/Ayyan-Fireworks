@@ -255,11 +255,18 @@ export const PortalProductsPage: React.FC = () => {
                     </div>
                     
                     <div className="flex items-baseline justify-between pt-0.5">
-                      <span className="text-base font-extrabold text-amber-600 dark:text-amber-400 font-mono">
-                        {formatINR(product.price)}
-                      </span>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-base font-extrabold text-amber-600 dark:text-amber-400 font-mono">
+                          {formatINR(product.price)}
+                        </span>
+                        {((product.mrp !== undefined && product.mrp !== null) || (product.original_price !== undefined && product.original_price !== null)) && (
+                          <span className="text-[10px] text-slate-400 line-through font-mono">
+                            MRP ₹{product.mrp?.toFixed ? product.mrp.toFixed(2) : (product.original_price?.toFixed ? product.original_price.toFixed(2) : (product.mrp ?? product.original_price))}
+                          </span>
+                        )}
+                      </div>
                       <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
-                        {product.pieces_per_box || product.piece_count}
+                        {product.packing || product.pieces_per_box || product.piece_count}
                       </span>
                     </div>
                   </div>
@@ -356,13 +363,20 @@ export const PortalProductsPage: React.FC = () => {
                       </td>
 
                       {/* Price */}
-                      <td className="px-4 py-4 font-mono font-bold text-slate-900 dark:text-white text-sm">
-                        {formatINR(product.price)}
+                      <td className="px-4 py-4 font-mono">
+                        <span className="font-bold text-slate-900 dark:text-white text-sm block">
+                          {formatINR(product.price)}
+                        </span>
+                        {((product.mrp !== undefined && product.mrp !== null) || (product.original_price !== undefined && product.original_price !== null)) && (
+                          <span className="text-[11px] text-slate-400 dark:text-slate-500 line-through block">
+                            MRP ₹{product.mrp?.toFixed ? product.mrp.toFixed(2) : (product.original_price?.toFixed ? product.original_price.toFixed(2) : (product.mrp ?? product.original_price))}
+                          </span>
+                        )}
                       </td>
 
                       {/* Pack Count */}
                       <td className="px-4 py-4 text-slate-700 dark:text-slate-300 font-medium">
-                        {product.pieces_per_box || product.piece_count}
+                        {product.packing || product.pieces_per_box || product.piece_count}
                       </td>
 
                       {/* Status Toggle */}

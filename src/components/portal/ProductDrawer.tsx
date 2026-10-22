@@ -26,6 +26,7 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
   const [name, setName] = useState('');
   const [category, setCategory] = useState<ProductCategory>('Sparklers');
   const [price, setPrice] = useState<number | string>(250);
+  const [mrp, setMrp] = useState<number | string>('');
   const [pieceCount, setPieceCount] = useState('Box of 10 Pieces');
   const [description, setDescription] = useState('');
   const [safetyInstructions, setSafetyInstructions] = useState('');
@@ -40,19 +41,21 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
       setName(productToEdit.name);
       setCategory(productToEdit.category);
       setPrice(productToEdit.price);
-      setPieceCount(productToEdit.piece_count || productToEdit.pieces_per_box || '1 Box');
+      setMrp(productToEdit.mrp !== undefined && productToEdit.mrp !== null ? productToEdit.mrp : (productToEdit.original_price || ''));
+      setPieceCount(productToEdit.piece_count || productToEdit.pieces_per_box || productToEdit.packing || '1 Box');
       setDescription(productToEdit.description || '');
       setSafetyInstructions(productToEdit.safety_instructions || '');
       setImageUrl(
         productToEdit.image_url?.startsWith('data:') 
           ? PRESET_IMAGES[0].url 
-          : (productToEdit.image_url || PRESET_IMAGES[0].url)
+          : (productToEdit.image_url || productToEdit.image || PRESET_IMAGES[0].url)
       );
       setIsActive(productToEdit.is_active !== undefined ? Boolean(productToEdit.is_active) : true);
     } else {
       setName('');
       setCategory('Sparklers');
       setPrice(250);
+      setMrp('');
       setPieceCount('Box of 10 Pieces');
       setDescription('');
       setSafetyInstructions('');
@@ -96,40 +99,52 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
     try {
       // Ensure image URL is clean and safe
       const cleanImageUrl = (imageUrl && !imageUrl.startsWith('data:')) ? imageUrl : DEFAULT_PRODUCT_IMAGE;
+      const parsedMrp = (mrp !== '' && mrp !== null && !isNaN(Number(mrp))) ? Number(mrp) : undefined;
+      const parsedPrice = Number(price) || 0;
+      const safePacking = pieceCount.trim() || '1 Box';
 
       if (productToEdit) {
         await updateProduct(productToEdit.id, {
           name: name.trim(),
           category,
-          price: Number(price) || 0,
-          piece_count: pieceCount.trim() || '1 Box',
-          pieces_per_box: pieceCount.trim() || '1 Box',
+          price: parsedPrice,
+          mrp: parsedMrp,
+          original_price: parsedMrp,
+          packing: safePacking,
+          piece_count: safePacking,
+          pieces_per_box: safePacking,
           description: description.trim(),
           safety_instructions: safetyInstructions.trim() || 'Keep safe clearance. Place on hard flat ground.',
           image_url: cleanImageUrl,
+          image: cleanImageUrl,
           is_active: isActive
         });
-        setToastMessage({ type: 'success', text: 'Product updated successfully!' });
+        setToastMessage({ type: 'success', text: 'Product updated and permanently saved!' });
       } else {
         await addProduct({
           item_code: String(Date.now()).slice(-3),
           code: String(Date.now()).slice(-3),
           name: name.trim(),
           category,
-          price: Number(price) || 0,
-          pieces_per_box: pieceCount.trim() || '1 Box',
-          piece_count: pieceCount.trim() || '1 Box',
+          price: parsedPrice,
+          mrp: parsedMrp,
+          original_price: parsedMrp,
+          packing: safePacking,
+          pieces_per_box: safePacking,
+          piece_count: safePacking,
           description: description.trim(),
           safety_instructions: safetyInstructions.trim() || 'Keep safe clearance. Place on hard flat ground.',
-          image_url: cleanImageUrl
+          image_url: cleanImageUrl,
+          image: cleanImageUrl,
+          is_active: isActive
         });
-        setToastMessage({ type: 'success', text: 'Product published to catalogue!' });
+        setToastMessage({ type: 'success', text: 'Product published and saved to catalogue!' });
       }
 
       setTimeout(() => {
         setToastMessage(null);
         onClose();
-      }, 800);
+      }, 900);
     } catch (err: any) {
       console.error('Failed to save product:', err);
       setToastMessage({
@@ -321,7 +336,7 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
           </div>
 
           {/* ========================================================================= */}
-          {/* SECTION 2: PRICING (Numeric Keypad inputMode="numeric")                    */}
+          {/* SECTION 2: PRICING (Numeric Keypad inputMode="decimal")                    */}
           {/* ========================================================================= */}
           <div className="space-y-3 p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800">
             <h4 className="font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
@@ -329,22 +344,42 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
               <span>2. Factory Direct Pricing</span>
             </h4>
 
-            <div className="space-y-1.5">
-              <label className="font-bold text-slate-700 dark:text-slate-300 block">Price in ₹ INR *</label>
-              <div className="relative">
-                <span className="absolute left-4 top-2.5 text-lg font-bold text-amber-600 dark:text-amber-400">₹</span>
-                <input
-                  type="number"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  min="0"
-                  step="1"
-                  required
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value === '' ? '' : Number(e.target.value))}
-                  placeholder="250"
-                  className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl pl-9 pr-4 py-2.5 text-xl text-slate-900 dark:text-white font-mono font-bold focus:outline-none focus:border-amber-500 min-h-[48px]"
-                />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <label className="font-bold text-slate-700 dark:text-slate-300 block">Offer / Sale Price in ₹ INR *</label>
+                <div className="relative">
+                  <span className="absolute left-4 top-2.5 text-lg font-bold text-amber-600 dark:text-amber-400">₹</span>
+                  <input
+                    type="number"
+                    inputMode="decimal"
+                    min="0"
+                    step="0.01"
+                    required
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value === '' ? '' : Number(e.target.value))}
+                    placeholder="250"
+                    className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl pl-9 pr-4 py-2.5 text-lg text-slate-900 dark:text-white font-mono font-bold focus:outline-none focus:border-amber-500 min-h-[48px]"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="font-bold text-slate-700 dark:text-slate-300 block">
+                  MRP in ₹ INR <span className="text-slate-400 font-normal">(Optional)</span>
+                </label>
+                <div className="relative">
+                  <span className="absolute left-4 top-2.5 text-lg font-bold text-slate-400">₹</span>
+                  <input
+                    type="number"
+                    inputMode="decimal"
+                    min="0"
+                    step="0.01"
+                    value={mrp}
+                    onChange={(e) => setMrp(e.target.value === '' ? '' : Number(e.target.value))}
+                    placeholder="e.g. 320"
+                    className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl pl-9 pr-4 py-2.5 text-lg text-slate-900 dark:text-white font-mono font-bold focus:outline-none focus:border-amber-500 min-h-[48px]"
+                  />
+                </div>
               </div>
             </div>
           </div>

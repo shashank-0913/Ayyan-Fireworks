@@ -23,13 +23,15 @@ export type SoundLevel = 'Low / Silent' | 'Medium' | 'High Spectacle';
 
 export interface Product {
   id: string;
-  item_code: string;
-  code?: string | number;
+  item_code?: string;
+  code?: number | string;
   name: string;
   category: string;
-  price: number;
-  original_price?: number;
   packing?: string;
+  price: number;
+  mrp?: number;
+  image?: string;
+  original_price?: number;
   pieces_per_box?: string;
   piece_count?: string;
   video_url?: string;
@@ -44,7 +46,6 @@ export interface Product {
   safety_tags?: string[];
   sound_level?: SoundLevel;
   image_url?: string;
-  image?: string;
   imageUrl?: string;
   is_active?: boolean;
   inStock?: boolean;

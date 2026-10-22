@@ -12,6 +12,7 @@ export interface Product {
   name: string;
   category: string;
   price: number;
+  mrp?: number;
   original_price?: number;
   packing?: string;
   pieces_per_box?: string;

@@ -251,12 +251,19 @@ export const ProductRow: React.FC<ProductRowProps> = ({
           <div className="w-full md:w-56 shrink-0 flex flex-col items-stretch md:items-end justify-between gap-3 pt-3 md:pt-0 border-t md:border-t-0 border-slate-200 dark:border-white/10">
             
             {/* Price block */}
-            <div className="text-left md:text-right w-full flex md:flex-col items-baseline md:items-end justify-between md:justify-start gap-2">
+            <div className="text-left md:text-right w-full flex md:flex-col items-baseline md:items-end justify-between md:justify-start gap-1">
               <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 dark:text-slate-400 block">
                 Showroom Price
               </span>
-              <div className="text-2xl sm:text-3xl font-extrabold text-amber-700 dark:text-gold-300 font-mono tracking-tight drop-shadow-xs">
-                {formatINR(product.price)}
+              <div className="flex items-baseline gap-2 flex-wrap">
+                <div className="text-2xl sm:text-3xl font-extrabold text-amber-700 dark:text-gold-300 font-mono tracking-tight drop-shadow-xs">
+                  {formatINR(product.price)}
+                </div>
+                {((product.mrp !== undefined && product.mrp !== null) || (product.original_price !== undefined && product.original_price !== null)) && (
+                  <span className="text-xs font-mono text-slate-400 dark:text-slate-500 line-through">
+                    MRP ₹{product.mrp?.toFixed ? product.mrp.toFixed(2) : (product.original_price?.toFixed ? product.original_price.toFixed(2) : (product.mrp ?? product.original_price))}
+                  </span>
+                )}
               </div>
             </div>
 
