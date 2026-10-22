@@ -120,11 +120,6 @@ export const ProductSafetyModal: React.FC<ProductSafetyModalProps> = ({ product,
               <div className="px-3.5 py-1.5 rounded-xl bg-amber-500/15 dark:bg-gold-500/10 border border-amber-500/30 text-amber-800 dark:text-gold-300 font-black text-base sm:text-lg font-mono">
                 {formatINR(product.price)}
               </div>
-              {((product.mrp !== undefined && product.mrp !== null) || (product.original_price !== undefined && product.original_price !== null)) && (
-                <div className="text-xs font-mono text-slate-400 dark:text-slate-500 line-through">
-                  MRP ₹{product.mrp?.toFixed ? product.mrp.toFixed(2) : (product.original_price?.toFixed ? product.original_price.toFixed(2) : (product.mrp ?? product.original_price))}
-                </div>
-              )}
               <div className="flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-obsidian-900 border border-slate-200 dark:border-white/10 font-medium">
                 <Package className="w-4 h-4 text-amber-600 dark:text-gold-400" />
                 <span>{product.pieces_per_box || product.piece_count || '1 Box'}</span>

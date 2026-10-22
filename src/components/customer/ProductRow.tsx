@@ -259,11 +259,6 @@ export const ProductRow: React.FC<ProductRowProps> = ({
                 <div className="text-2xl sm:text-3xl font-extrabold text-amber-700 dark:text-gold-300 font-mono tracking-tight drop-shadow-xs">
                   {formatINR(product.price)}
                 </div>
-                {((product.mrp !== undefined && product.mrp !== null) || (product.original_price !== undefined && product.original_price !== null)) && (
-                  <span className="text-xs font-mono text-slate-400 dark:text-slate-500 line-through">
-                    MRP ₹{product.mrp?.toFixed ? product.mrp.toFixed(2) : (product.original_price?.toFixed ? product.original_price.toFixed(2) : (product.mrp ?? product.original_price))}
-                  </span>
-                )}
               </div>
             </div>
 
