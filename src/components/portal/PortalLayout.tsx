@@ -17,6 +17,8 @@ import {
 } from 'lucide-react';
 import { useAyyanStore } from '../../context/AppContext';
 import { ThemeToggle } from '../common/ThemeToggle';
+import { WhatsAppIcon } from '../common/WhatsAppIcon';
+import { PortalWhatsAppQRWidget } from './PortalWhatsAppQRWidget';
 
 export const PortalLayout: React.FC = () => {
   const { currentUser, staffLogout, isEmergencyBlocked, toggleEmergencyBlock, resetToDefaultSeed } = useAyyanStore();
@@ -24,6 +26,7 @@ export const PortalLayout: React.FC = () => {
   const location = useLocation();
   const [timeStr, setTimeStr] = useState<string>('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isWhatsAppModalOpen, setIsWhatsAppModalOpen] = useState(false);
 
   useEffect(() => {
     const updateTime = () => {
@@ -134,6 +137,18 @@ export const PortalLayout: React.FC = () => {
 
               {/* Theme Toggle Button in Workstation Bar */}
               <ThemeToggle />
+
+              {/* Customer WhatsApp Desk QR Modal Trigger */}
+              <button
+                type="button"
+                id="header-admin-whatsapp-qr-btn"
+                onClick={() => setIsWhatsAppModalOpen(true)}
+                className="px-2.5 sm:px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center gap-1.5 transition-all border border-emerald-500/30 min-h-[38px]"
+                title="Open WhatsApp Inquiry QR Code"
+              >
+                <WhatsAppIcon className="w-4 h-4 text-[#25D366]" />
+                <span className="hidden sm:inline">WhatsApp QR</span>
+              </button>
 
               {/* View Public Site Door */}
               <Link
@@ -286,8 +301,20 @@ export const PortalLayout: React.FC = () => {
               </div>
             </div>
 
-            {/* Bottom Sign Out */}
+            {/* Bottom Actions */}
             <div className="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  setIsWhatsAppModalOpen(true);
+                }}
+                className="w-full py-2.5 px-3 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center justify-center gap-2 border border-emerald-500/30 min-h-[44px]"
+              >
+                <WhatsAppIcon className="w-4 h-4 text-[#25D366]" />
+                <span>Customer WhatsApp QR</span>
+              </button>
+
               <Link
                 to="/"
                 target="_blank"
@@ -338,6 +365,43 @@ export const PortalLayout: React.FC = () => {
           </div>
         </div>
       </footer>
+
+      {/* Admin Desk Customer WhatsApp QR Modal */}
+      {isWhatsAppModalOpen && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
+          onClick={() => setIsWhatsAppModalOpen(false)}
+        >
+          <div 
+            className="relative w-full max-w-xl bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center">
+                  <WhatsAppIcon className="w-4 h-4 text-[#25D366]" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white leading-tight">
+                    Customer WhatsApp QR Code
+                  </h3>
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">Visakhapatnam Desk Terminal</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsWhatsAppModalOpen(false)}
+                className="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-4 sm:p-6">
+              <PortalWhatsAppQRWidget />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
