@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { Product, Slot, Booking, StaffUser, BookingRpcResponse, BookingStatus } from '../types';
 import { INITIAL_PRODUCTS, generateInitialSlots, getCategoryFallbackImage, getProductImageUrl } from '../lib/initialData';
+import { PRODUCTS_LIST } from '../data/products';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { isAuthorizedAdminEmail, ADMIN_EMAIL, generateUUID, formatTime, formatDateReadable, validateSlotTiming, getSlotStartDateTime } from '../lib/utils';
 import { extractCleanQrPayload } from '../lib/cameraUtils';
