@@ -164,7 +164,6 @@ const WEBSITE_BASE_URL = 'https://vizagayyan.com';
  * Formats numbered choices:
  * 1️⃣ *Click 1 for Website*
  * 2️⃣ *Click 2 for Location of the Store*
- * 3️⃣ *Click 3 for Slot Booking*
  * Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)
  */
 export function buildFallbackGreetingTextMessage(toPhone: string): WhatsAppMessageEnvelope {
@@ -178,12 +177,11 @@ export function buildFallbackGreetingTextMessage(toPhone: string): WhatsAppMessa
       body:
         `🎆 *Welcome to Ayyan Fireworks!* 🎆\n` +
         `Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
-        `Please select the number of your choice:\n` +
+        `Please select an option below:\n` +
         `1️⃣ *Click 1 for Website*\n` +
-        `2️⃣ *Click 2 for Location of the Store*\n` +
-        `3️⃣ *Click 3 for Slot Booking*\n\n` +
-        `Tell me your queries! You can also ask any question about our crackers, pricing, and offers.`
-    }
+        `2️⃣ *Click 2 for Location of the Store*\n\n` +
+        `Tell me your queries! You can also ask any question about our crackers, pricing, and offers.`,
+    },
   };
 }
 
@@ -757,7 +755,8 @@ export async function handleWhatsAppWebhookEvent(
   if (actionId) {
     console.log(`[WhatsApp Bot] Processing Interactive Action ID: "${actionId}" from ${from}`);
 
-    // 1. Main Menu Navigation: Option 3 / btn_book_slot - Book VIP Slot
+    /*
+    // 1. Main Menu Navigation: Option 3 / btn_book_slot - Book VIP Slot (Temporarily Hidden)
     if (
       actionId === 'btn_book_slot' ||
       actionId === 'btn_slot_booking' ||
@@ -774,6 +773,7 @@ export async function handleWhatsAppWebhookEvent(
         metadata: { action: 'book_vip_slot_sent' }
       };
     }
+    */
 
     // View Catalogue Button Callback (from template button or interactive button)
     if (
@@ -1107,24 +1107,23 @@ export async function handleWhatsAppWebhookEvent(
         messages: [
           buildTextMessage(
             from,
-            "📍 *Ayyan Fireworks — Visakhapatnam Showroom*\nMain Road/NH-16, Sheela Nagar, Visakhapatnam\n🗺️ Directions: https://maps.google.com/?q=Ayyan+Fireworks+Visakhapatnam"
+            "📍 *Ayyan Fireworks – Visakhapatnam Showroom*\nMain Road/NH-16, Sheela Nagar, Visakhapatnam\n🗺️ Directions: https://maps.google.com/?q=Ayyan+Fireworks+Visakhapatnam"
           )
         ],
         metadata: { fallbackTrigger: '2_location_store' }
       };
 
+    // Keep slot booking hidden:
+    /*
     case '3':
     case 'btn_book_slot':
-      // Option 3 -> Slot Booking
       return {
         messages: [
-          buildTextMessage(
-            from,
-            "🎟️ *Showroom Slot Booking:*\nhttps://vizagayyan.com"
-          )
+          buildTextMessage(from, "🎟️ *Showroom Slot Booking:*\nhttps://vizagayyan.com")
         ],
         metadata: { fallbackTrigger: '3_book_vip_slot' }
       };
+    */
 
     default:
       // Fallback AI query response or show main menu
@@ -1213,7 +1212,8 @@ export async function handleWhatsAppWebhookEvent(
     };
   }
 
-  // 3️⃣ Option 3: Slot Booking
+  /*
+  // Option 3: Slot Booking (Temporarily Hidden)
   if (
     normalizedText.includes('slot') ||
     normalizedText.includes('book') ||
@@ -1224,14 +1224,12 @@ export async function handleWhatsAppWebhookEvent(
   ) {
     return {
       messages: [
-        buildTextMessage(
-          from,
-          "🎟️ *Showroom Slot Booking:*\nhttps://vizagayyan.com"
-        )
+        buildTextMessage(from, "🎟️ *Showroom Slot Booking:*\nhttps://vizagayyan.com")
       ],
       metadata: { fallbackTrigger: '3_book_vip_slot' }
     };
   }
+  */
 
   // Welcome Greeting Handler Fallback -> Fallback Greeting Text Message
   return {
