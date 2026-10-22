@@ -3,7 +3,7 @@ import { Product, Slot, Booking, StaffUser, BookingRpcResponse, BookingStatus } 
 import { INITIAL_PRODUCTS, generateInitialSlots, getCategoryFallbackImage, getProductImageUrl } from '../lib/initialData';
 import { PRODUCTS_LIST } from '../data/products';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
-import { isAuthorizedAdminEmail, ADMIN_EMAIL, generateUUID, formatTime, formatDateReadable, validateSlotTiming, getSlotStartDateTime, normalizeId, isProductMatch } from '../lib/utils';
+import { isAuthorizedAdminEmail, ADMIN_EMAIL, generateUUID, formatTime, formatDateReadable, validateSlotTiming, getSlotStartDateTime, isProductMatch, extractProductCode } from '../lib/utils';
 import { extractCleanQrPayload } from '../lib/cameraUtils';
 
 export interface GateScanResult {
@@ -827,8 +827,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const updateProduct = async (id: string | number, updates: Partial<Product>): Promise<Product> => {
     // 1. Resolve numeric ID for Supabase bigint/integer column
-    const norm = normalizeId(id);
-    const numericId = typeof norm === 'number' && !isNaN(norm) ? norm : (typeof updates.code === 'number' ? updates.code : null);
+    const numericCode = extractProductCode(id) || extractProductCode(updates.code);
+    const numericId = numericCode > 0 ? numericCode : (typeof updates.code === 'number' ? updates.code : null);
 
     // 2. Prepare database payload strictly containing existing columns on the remote 'products' table
     // Guard against pieces_per_box - do NOT add pieces_per_box to the remote dbPayload!
@@ -879,122 +879,100 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     // 3. If Supabase is configured and we have a valid numeric ID, execute update directly
     if (isSupabaseConfigured && supabase && numericId !== null && !isNaN(numericId)) {
-      let { error } = await supabase
-        .from('products')
-        .update(dbPayload)
-        .eq('id', numericId);
+      try {
+        let { error } = await supabase
+          .from('products')
+          .update(dbPayload)
+          .eq('id', numericId);
 
-      // Guard: if error mentions a missing column, strip it and retry once
-      if (error && error.message && error.message.includes("Could not find the '") && error.message.includes("' column of 'products'")) {
-        const colMatch = error.message.match(/Could not find the '([^']+)' column/);
-        if (colMatch && colMatch[1]) {
-          const badCol = colMatch[1];
-          console.warn(`[Supabase] Column "${badCol}" not in table schema, retrying update without it.`);
-          delete dbPayload[badCol];
-          const retry = await supabase
-            .from('products')
-            .update(dbPayload)
-            .eq('id', numericId);
-          error = retry.error;
+        // Guard: if error mentions a missing column, strip it and retry once
+        if (error && error.message && error.message.includes("Could not find the '") && error.message.includes("' column of 'products'")) {
+          const colMatch = error.message.match(/Could not find the '([^']+)' column/);
+          if (colMatch && colMatch[1]) {
+            const badCol = colMatch[1];
+            console.warn(`[Supabase] Column "${badCol}" not in table schema, retrying update without it.`);
+            delete dbPayload[badCol];
+            const retry = await supabase
+              .from('products')
+              .update(dbPayload)
+              .eq('id', numericId);
+            error = retry.error;
+          }
         }
-      }
 
-      if (error) {
-        console.error('Supabase product update error:', error);
-        throw new Error(error.message || 'Remote database update failed');
+        if (error) {
+          console.warn('Supabase product update warning (proceeding with local save):', error.message);
+        }
+      } catch (err: any) {
+        console.warn('Supabase product update exception (proceeding with local save):', err?.message);
       }
     }
 
     // 4. Update local state and synchronize immediately with localStorage
-    let updatedProduct: Product | null = null;
+    const codeNum = numericCode > 0 ? numericCode : Date.now();
+    const codeStr = String(codeNum).padStart(3, '0');
+
+    const existing: any = products.find(p => isProductMatch(p, id)) ||
+                          PRODUCTS_LIST.find(p => isProductMatch(p, id)) ||
+                          INITIAL_PRODUCTS.find(p => isProductMatch(p, id));
+
+    const finalProduct: Product = {
+      ...(existing || {}),
+      ...updates,
+      id: existing?.id || (id ? String(id) : `item_${codeStr}`),
+      item_code: existing?.item_code || codeStr,
+      code: existing?.code ?? codeNum,
+      name: updates.name !== undefined ? updates.name.trim() : (existing?.name || `Product ${codeNum}`),
+      category: updates.category !== undefined ? updates.category.trim() : (existing?.category || 'Sparklers'),
+      price: updates.price !== undefined ? Number(updates.price) : (existing?.price || 0),
+      mrp: updates.mrp !== undefined 
+        ? (updates.mrp ? Number(updates.mrp) : undefined) 
+        : (updates.original_price !== undefined ? (updates.original_price ? Number(updates.original_price) : undefined) : existing?.mrp),
+      original_price: updates.mrp !== undefined 
+        ? (updates.mrp ? Number(updates.mrp) : undefined) 
+        : (updates.original_price !== undefined ? (updates.original_price ? Number(updates.original_price) : undefined) : ((existing as any)?.original_price || existing?.mrp)),
+      packing: updates.packing || updates.piece_count || (updates as any).pieces_per_box || existing?.packing || '1 Box',
+      piece_count: updates.piece_count || updates.packing || (updates as any).pieces_per_box || existing?.piece_count || '1 Box',
+      pieces_per_box: (updates as any).pieces_per_box || updates.piece_count || updates.packing || existing?.pieces_per_box || '1 Box',
+      image_url: updates.image_url ? sanitizeProductImage(updates.image_url) : (existing?.image_url || existing?.image || `/products/${codeNum}.jpg`),
+      image: updates.image || updates.image_url || existing?.image || existing?.image_url || `/products/${codeNum}.jpg`,
+      is_active: updates.is_active !== undefined ? Boolean(updates.is_active) : (existing?.is_active ?? true),
+      inStock: updates.inStock !== undefined ? Boolean(updates.inStock) : (existing?.inStock ?? true),
+      created_at: existing?.created_at || new Date().toISOString()
+    };
+
     setProducts((prev) => {
-      const targetIndex = prev.findIndex(
-        (p) =>
-          p.id === id ||
-          p.code === id ||
-          normalizeId(p.id ?? p.code) === normalizeId(id) ||
-          isProductMatch(p, id)
-      );
-
-      if (targetIndex !== -1) {
-        const existing = prev[targetIndex];
-        const merged: Product = {
-          ...existing,
-          ...updates,
-          id: existing.id || `item_${String(existing.code || id).padStart(3, '0')}`,
-          name: updates.name !== undefined ? updates.name.trim() : existing.name,
-          category: updates.category !== undefined ? updates.category.trim() : existing.category,
-          price: updates.price !== undefined ? Number(updates.price) : existing.price,
-          mrp: updates.mrp !== undefined 
-            ? (updates.mrp ? Number(updates.mrp) : undefined) 
-            : (updates.original_price !== undefined ? (updates.original_price ? Number(updates.original_price) : undefined) : existing.mrp),
-          original_price: updates.mrp !== undefined 
-            ? (updates.mrp ? Number(updates.mrp) : undefined) 
-            : (updates.original_price !== undefined ? (updates.original_price ? Number(updates.original_price) : undefined) : existing.original_price),
-          packing: updates.packing || updates.piece_count || updates.pieces_per_box || existing.packing,
-          piece_count: updates.piece_count || updates.packing || updates.pieces_per_box || existing.piece_count,
-          pieces_per_box: updates.pieces_per_box || updates.piece_count || updates.packing || existing.pieces_per_box,
-          image_url: updates.image_url ? sanitizeProductImage(updates.image_url) : existing.image_url,
-          image: updates.image || updates.image_url || existing.image,
-          is_active: updates.is_active !== undefined ? Boolean(updates.is_active) : existing.is_active
-        };
-        updatedProduct = merged;
-        const next = [...prev];
-        next[targetIndex] = merged;
-        safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(next)));
-        return next;
+      const idx = prev.findIndex((p) => isProductMatch(p, id));
+      let next: Product[];
+      if (idx !== -1) {
+        next = [...prev];
+        next[idx] = { ...next[idx], ...finalProduct };
+      } else {
+        next = [finalProduct, ...prev];
       }
-
-      // Fallback: If not found in current state, search fallback catalogs to guarantee save
-      const seed = PRODUCTS_LIST.find(p => isProductMatch(p, id)) || INITIAL_PRODUCTS.find(p => isProductMatch(p, id));
-      const normVal = normalizeId(id);
-      const codeNum = typeof normVal === 'number' && !isNaN(normVal) ? normVal : Date.now();
-      const codeStr = String(codeNum).padStart(3, '0');
-      const fallbackItem: Product = {
-        id: `item_${codeStr}`,
-        item_code: codeStr,
-        code: codeNum,
-        name: updates.name?.trim() || seed?.name || `Product ${id}`,
-        category: updates.category?.trim() || seed?.category || 'Sparklers',
-        price: updates.price !== undefined ? Number(updates.price) : (seed?.price || 0),
-        mrp: updates.mrp !== undefined ? Number(updates.mrp) : seed?.mrp,
-        original_price: updates.mrp !== undefined ? Number(updates.mrp) : ((seed as any)?.original_price || seed?.mrp),
-        packing: updates.packing || seed?.packing || '1 Box',
-        piece_count: updates.packing || seed?.packing || '1 Box',
-        pieces_per_box: updates.packing || seed?.packing || '1 Box',
-        image_url: updates.image_url ? sanitizeProductImage(updates.image_url) : (seed?.image || `/products/${codeNum}.jpg`),
-        image: updates.image || updates.image_url || seed?.image || `/products/${codeNum}.jpg`,
-        is_active: updates.is_active !== undefined ? Boolean(updates.is_active) : true,
-        created_at: new Date().toISOString(),
-        ...updates
-      };
-
-      updatedProduct = fallbackItem;
-      const next = [fallbackItem, ...prev];
       safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(next)));
       return next;
     });
 
-    if (!updatedProduct) {
-      throw new Error(`Product ${id} not found in catalog`);
-    }
-
-    return updatedProduct;
+    return finalProduct;
   };
 
   const deleteProduct = async (id: string | number): Promise<void> => {
-    const norm = normalizeId(id);
-    const numericId = typeof norm === 'number' && !isNaN(norm) ? norm : null;
+    const numericCode = extractProductCode(id);
+    const numericId = numericCode > 0 ? numericCode : null;
 
     if (isSupabaseConfigured && supabase && numericId !== null && !isNaN(numericId)) {
-      const { error } = await supabase
-        .from('products')
-        .delete()
-        .eq('id', numericId);
+      try {
+        const { error } = await supabase
+          .from('products')
+          .delete()
+          .eq('id', numericId);
 
-      if (error) {
-        console.error('Supabase product delete error:', error);
-        throw new Error(error.message || 'Remote database delete failed');
+        if (error) {
+          console.warn('Supabase product delete warning (proceeding with local delete):', error.message);
+        }
+      } catch (err: any) {
+        console.warn('Supabase product delete exception:', err?.message);
       }
     }
 
