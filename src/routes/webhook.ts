@@ -43,7 +43,10 @@ export interface WebhookMessageContext {
 }
 
 const VERIFY_TOKEN =
-  (typeof process !== 'undefined' && (process.env?.WHATSAPP_WEBHOOK_VERIFY_TOKEN || process.env?.WEBHOOK_VERIFY_TOKEN)) ||
+  (typeof process !== 'undefined' &&
+    (process.env?.WHATSAPP_WEBHOOK_VERIFY_TOKEN ||
+      process.env?.WHATSAPP_VERIFY_TOKEN ||
+      process.env?.WEBHOOK_VERIFY_TOKEN)) ||
   'ayyan_fireworks_secure_token_2026';
 
 /**

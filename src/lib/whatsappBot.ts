@@ -617,8 +617,8 @@ export function buildWelcomeTemplateMessage(
   };
 }
 
-/** Default public URL to 2025-26 Price List PDF */
-export const DEFAULT_PRICE_LIST_PDF_URL = `${WEBSITE_BASE_URL}/Ayyan_Fireworks_Price_List_2025-26.pdf`;
+/** Default public URL to 2026 Price List PDF */
+export const DEFAULT_PRICE_LIST_PDF_URL = `${WEBSITE_BASE_URL}/Ayyan_Fireworks_PriceList_2026.pdf?v=20261022`;
 
 /**
  * 3.11 WhatsApp Document Attachment Message (Price List Catalog PDF)
@@ -626,8 +626,8 @@ export const DEFAULT_PRICE_LIST_PDF_URL = `${WEBSITE_BASE_URL}/Ayyan_Fireworks_P
 export function buildCatalogPdfDocumentMessage(
   toPhone: string,
   pdfUrl: string = DEFAULT_PRICE_LIST_PDF_URL,
-  filename: string = 'Ayyan_Fireworks_Price_List_2025-26.pdf',
-  caption: string = '📄 Ayyan Fireworks Sivakasi 2025-26 Wholesale & Retail Price List'
+  filename: string = 'Ayyan_Fireworks_Official_PriceList_2026.pdf',
+  caption: string = '📄 Ayyan Fireworks Sivakasi Official 2026 Wholesale & Retail Price List'
 ): WhatsAppMessageEnvelope {
   return {
     messaging_product: 'whatsapp',
@@ -844,7 +844,7 @@ export async function handleWhatsAppWebhookEvent(
           buildCatalogPdfDocumentMessage(from),
           buildTextMessage(
             from,
-            `📄 Here is the official Ayyan Fireworks 2025-26 Price List PDF.\n👉 Download direct: ${DEFAULT_PRICE_LIST_PDF_URL}`
+            `📄 Here is the official Ayyan Fireworks 2026 Price List PDF.\n👉 Download direct: ${DEFAULT_PRICE_LIST_PDF_URL}`
           )
         ],
         metadata: { action: 'pricelist_pdf_document_sent' }
@@ -1115,7 +1115,7 @@ export async function handleWhatsAppWebhookEvent(
         buildCatalogPdfDocumentMessage(from),
         buildTextMessage(
           from,
-          `📄 Here is our official 2025-26 Ayyan Fireworks Price List PDF with 100% verified Sivakasi rates.\n\nDirect Download Link:\n👉 ${DEFAULT_PRICE_LIST_PDF_URL}\n\nBrowse live inventory online:\n👉 https://vizagayyan.com`
+          `📄 Here is our official 2026 Ayyan Fireworks Price List PDF with 100% verified Sivakasi rates.\n\nDirect Download Link:\n👉 ${DEFAULT_PRICE_LIST_PDF_URL}\n\nBrowse live inventory online:\n👉 https://vizagayyan.com`
         )
       ],
       metadata: { fallbackTrigger: 'pdf_pricelist_document' }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, BookOpen, ArrowRight, Ticket } from 'lucide-react';
+import { Sparkles, BookOpen, ArrowRight, Ticket, Download } from 'lucide-react';
 import { SHOW_SLOT_BOOKING_UI } from '../config/features';
 
 export interface HeroProps {
@@ -51,6 +51,20 @@ export const Hero: React.FC<HeroProps> = ({ onOpenSlotModal }) => {
             <span>View Full Catalogue</span>
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>
+
+          {/* Download Official Price List PDF */}
+          <a
+            href="/Ayyan_Fireworks_PriceList_2026.pdf?v=20261022"
+            download="Ayyan_Fireworks_Official_PriceList_2026.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            id="hero-download-pricelist-btn"
+            className="flex items-center gap-2 px-7 py-4 bg-white/80 dark:bg-obsidian-900/80 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-900 dark:text-amber-300 font-bold text-xs md:text-sm tracking-wide rounded-2xl border border-slate-300 dark:border-amber-500/30 hover:border-amber-500 backdrop-blur-sm active:scale-95 transition-all cursor-pointer shadow-md"
+            title="Download Official 2026 Price List PDF"
+          >
+            <Download className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+            <span>Download Price List (PDF)</span>
+          </a>
 
           {/* Secondary Button: Reserve Visiting Slot */}
           {SHOW_SLOT_BOOKING_UI && onOpenSlotModal && (

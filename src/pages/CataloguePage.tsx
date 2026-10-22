@@ -175,13 +175,13 @@ export const CataloguePage: React.FC = () => {
         <div className="flex items-center gap-3 self-center md:self-auto flex-wrap justify-center">
           {/* Official Price List PDF Download Button */}
           <a
-            href="/Ayyan_Fireworks_Price_List_2025-26.pdf"
-            download="Ayyan_Fireworks_Price_List_2025-26.pdf"
+            href="/Ayyan_Fireworks_PriceList_2026.pdf?v=20261022"
+            download="Ayyan_Fireworks_Official_PriceList_2026.pdf"
             target="_blank"
             rel="noopener noreferrer"
             id="catalogue-download-pricelist-btn"
             className="flex items-center gap-2 px-4 py-3 rounded-2xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-800 dark:text-gold-300 border border-amber-500/40 text-xs font-black transition-all shadow-xs active:scale-95"
-            title="Download Official 2025-26 Price List PDF"
+            title="Download Official 2026 Price List PDF"
           >
             <Download className="w-4 h-4 text-amber-600 dark:text-gold-400" />
             <span>Download Price List (PDF)</span>
