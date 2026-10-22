@@ -152,14 +152,14 @@ export const CustomerNavbar: React.FC = () => {
 
               {/* Official Price List PDF Download Button */}
               <a
-                href="/Ayyan_Fireworks_PriceList_2026.pdf?v=20261022"
-                download="Ayyan_Fireworks_Official_PriceList_2026.pdf"
+                href="/Ayyan_Fireworks_PriceList_2025_26.pdf?v=202526"
+                download="Ayyan_Fireworks_PriceList_2025_26.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 id="header-download-pricelist-btn"
                 className="hidden sm:inline-flex items-center gap-1.5 p-2 sm:px-3 sm:py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-gold-300 border border-amber-500/30 text-xs font-bold transition-all min-touch"
-                title="Download Official 2026 Price List PDF"
-                aria-label="Download Official 2026 Price List (PDF)"
+                title="Download Official 2025-26 Price List PDF"
+                aria-label="Download Official 2025-26 Price List (PDF)"
               >
                 <Download className="w-4 h-4 text-amber-600 dark:text-gold-400" />
                 <span className="hidden md:inline text-[11px]">Download PDF</span>
@@ -352,20 +352,20 @@ export const CustomerNavbar: React.FC = () => {
 
                 {/* Download Price List PDF in Mobile Drawer */}
                 <a
-                  href="/Ayyan_Fireworks_PriceList_2026.pdf?v=20261022"
-                  download="Ayyan_Fireworks_Official_PriceList_2026.pdf"
+                  href="/Ayyan_Fireworks_PriceList_2025_26.pdf?v=202526"
+                  download="Ayyan_Fireworks_PriceList_2025_26.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   id="mobile-drawer-download-pricelist-btn"
                   className="w-full flex items-center justify-between p-3.5 rounded-2xl text-sm font-bold transition-all bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-gold-300 border border-amber-500/30 min-touch"
-                  title="Download Official 2026 Price List PDF"
+                  title="Download Official 2025-26 Price List PDF"
                 >
                   <div className="flex items-center gap-3">
                     <Download className="w-4 h-4 text-amber-600 dark:text-gold-400" />
                     <span>Download Price List (PDF)</span>
                   </div>
                   <span className="px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 font-mono text-[10px] font-black uppercase">
-                    2026
+                    2025-26
                   </span>
                 </a>
               </nav>

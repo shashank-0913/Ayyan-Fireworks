@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Clock, Sparkles } from 'lucide-react';
+import { MapPin, Clock, Sparkles, Download } from 'lucide-react';
 import { SHOWROOM_CONTACT } from '../../lib/utils';
 
 export const CustomerFooter: React.FC = () => {
@@ -25,6 +25,18 @@ export const CustomerFooter: React.FC = () => {
               <span className="text-[10px] text-amber-700 dark:text-amber-400 font-semibold tracking-wider uppercase block">
                 Bunny Brand • Since 1987 • Visakhapatnam
               </span>
+              <a
+                href="/Ayyan_Fireworks_PriceList_2025_26.pdf?v=202526"
+                download="Ayyan_Fireworks_PriceList_2025_26.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                id="footer-download-pricelist-btn"
+                className="mt-1.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-gold-300 border border-amber-500/30 text-[10px] font-bold transition-all shadow-xs"
+                title="Download Official 2025-26 Price List PDF"
+              >
+                <Download className="w-3 h-3 text-amber-600 dark:text-gold-400" />
+                <span>Price List 2025-26 (PDF)</span>
+              </a>
             </div>
           </div>
 

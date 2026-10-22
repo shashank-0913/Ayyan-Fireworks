@@ -617,8 +617,8 @@ export function buildWelcomeTemplateMessage(
   };
 }
 
-/** Default public URL to 2026 Price List PDF */
-export const DEFAULT_PRICE_LIST_PDF_URL = `${WEBSITE_BASE_URL}/Ayyan_Fireworks_PriceList_2026.pdf?v=20261022`;
+/** Default public URL to 2025-26 Price List PDF */
+export const DEFAULT_PRICE_LIST_PDF_URL = `${WEBSITE_BASE_URL}/Ayyan_Fireworks_PriceList_2025_26.pdf?v=202526`;
 
 /**
  * 3.11 WhatsApp Document Attachment Message (Price List Catalog PDF)
@@ -626,8 +626,8 @@ export const DEFAULT_PRICE_LIST_PDF_URL = `${WEBSITE_BASE_URL}/Ayyan_Fireworks_P
 export function buildCatalogPdfDocumentMessage(
   toPhone: string,
   pdfUrl: string = DEFAULT_PRICE_LIST_PDF_URL,
-  filename: string = 'Ayyan_Fireworks_Official_PriceList_2026.pdf',
-  caption: string = '📄 Ayyan Fireworks Sivakasi Official 2026 Wholesale & Retail Price List'
+  filename: string = 'Ayyan_Fireworks_PriceList_2025_26.pdf',
+  caption: string = '📄 Ayyan Fireworks Natayyapalem Official 2025-26 Wholesale & Retail Price List'
 ): WhatsAppMessageEnvelope {
   return {
     messaging_product: 'whatsapp',
