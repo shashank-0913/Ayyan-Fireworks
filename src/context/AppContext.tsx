@@ -54,7 +54,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const LOCAL_STORAGE_KEYS = {
-  PRODUCTS: 'ayyan_products_141_verified_v1',
+  PRODUCTS: 'ayyan_products_141_verified_v2',
   SLOTS: 'ayyan_slots_clean_v8_cdn',
   BOOKINGS: 'ayyan_bookings_clean_v8_cdn',
   STAFF_USER: 'ayyan_staff_user_clean_v8_cdn',
@@ -272,11 +272,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               name: p.name || 'Firework SKU',
               category: p.category || 'Sparklers',
               price: Number(p.price) || 0,
+              original_price: p.discount_price ? Number(p.discount_price) : Math.round(Number(p.price) * 1.3),
               pieces_per_box: p.piece_count || p.pieces_per_box || '1 Box',
               piece_count: p.piece_count || p.pieces_per_box || '1 Box',
+              packing: p.piece_count || p.pieces_per_box || '1 Box',
               video_url: p.video_url || '',
               image_url: sanitizeProductImage(p.image_url || p.image || p.imageUrl, codeNum, p.category),
+              sound_level: p.sound_level || 'Low',
+              safety_instructions: p.safety_instructions || 'Keep safe distance. Light with agarbatti on an open clear hard surface.',
               is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
+              inStock: p.in_stock !== undefined ? Boolean(p.in_stock) : true,
               created_at: p.created_at || new Date().toISOString()
             };
           });
@@ -831,11 +836,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             name: p.name || 'Firework SKU',
             category: p.category || 'Sparklers',
             price: Number(p.price) || 0,
+            original_price: p.discount_price ? Number(p.discount_price) : Math.round(Number(p.price) * 1.3),
             pieces_per_box: p.piece_count || p.pieces_per_box || '1 Box',
             piece_count: p.piece_count || p.pieces_per_box || '1 Box',
+            packing: p.piece_count || p.pieces_per_box || '1 Box',
             video_url: p.video_url || '',
             image_url: sanitizeProductImage(p.image_url || p.image || p.imageUrl, codeNum, p.category),
+            sound_level: p.sound_level || 'Low',
+            safety_instructions: p.safety_instructions || 'Keep safe distance. Light with agarbatti on an open clear hard surface.',
             is_active: p.is_active !== undefined ? Boolean(p.is_active) : true,
+            inStock: p.in_stock !== undefined ? Boolean(p.in_stock) : true,
             created_at: p.created_at || new Date().toISOString()
           };
         });
