@@ -1,9 +1,9 @@
 import React from 'react';
-import { PortalWhatsAppQRWidget } from './portal/PortalWhatsAppQRWidget';
+import { PortalWebsiteQRWidget } from './portal/PortalWebsiteQRWidget';
 
-export const WhatsAppChatWidget: React.FC<React.ComponentProps<typeof PortalWhatsAppQRWidget>> = (props) => {
-  return <PortalWhatsAppQRWidget {...props} />;
+export const WhatsAppChatWidget: React.FC<React.ComponentProps<typeof PortalWebsiteQRWidget>> = (props) => {
+  return <PortalWebsiteQRWidget {...props} />;
 };
 
-export { PortalWhatsAppQRWidget };
+export { PortalWebsiteQRWidget };
 export default WhatsAppChatWidget;

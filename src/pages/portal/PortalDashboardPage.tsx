@@ -19,7 +19,7 @@ import { useStoreSettings } from '../../hooks/useStoreSettings';
 import { KPICards } from '../../components/portal/KPICards';
 import { ProductDrawer } from '../../components/portal/ProductDrawer';
 import { BatchSlotGeneratorModal } from '../../components/portal/BatchSlotGeneratorModal';
-import { PortalWhatsAppQRWidget } from '../../components/portal/PortalWhatsAppQRWidget';
+import { PortalWebsiteQRWidget } from '../../components/portal/PortalWebsiteQRWidget';
 import { formatTime, formatDateReadable, exportToCSV } from '../../lib/utils';
 import { getFormattedDateOffset } from '../../lib/initialData';
 
@@ -228,8 +228,8 @@ export const PortalDashboardPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Verified Admin Desk WhatsApp Inquiry Redirect QR Code Widget */}
-      <PortalWhatsAppQRWidget />
+      {/* Verified Admin Desk Website Redirect QR Code Widget (vizagayyan.com) */}
+      <PortalWebsiteQRWidget />
 
       {/* Grid: Slot Utilization Visualizer + Today's Incoming Manifest */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
