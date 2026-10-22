@@ -58,9 +58,9 @@ const getCategoryIcon = (category: string, name?: string): string => {
   return '🎉';
 };
 
-// FULL 153 STANDARDIZED SHOWROOM INVENTORY
+// FULL 141 STANDARDIZED SHOWROOM INVENTORY
 export const OFFICIAL_AYYAN_CATALOG: AyyanCatalogItem[] = INITIAL_PRODUCTS.map((prod, idx) => {
-  const code = prod.item_code || prod.code || String(idx + 1).padStart(3, '0');
+  const code = String(prod.item_code || prod.code || (idx + 1)).padStart(3, '0');
   return {
     code,
     name: prod.name,

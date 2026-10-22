@@ -13,7 +13,7 @@ import {
   Play
 } from 'lucide-react';
 import { Product } from '../../types';
-import { getCategoryFallbackImage, getCategoryBadgeStyle } from '../../lib/initialData';
+import { getCategoryBadgeStyle } from '../../lib/initialData';
 import { formatINR, getWhatsAppUrl } from '../../lib/utils';
 import { useEstimate } from '../../context/EstimateContext';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
@@ -94,17 +94,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             }}
           >
             <img
-              src={product.image_url || `/ayyan_images/products/${product.item_code || '001'}.jpg`}
+              src={product.image || product.image_url || product.imageUrl || `/products/${product.code || product.item_code}.jpg`}
               alt={product.name}
               className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
               loading="lazy"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
-                const fallback = getCategoryFallbackImage(product.category);
-                if (target.src !== fallback && !target.src.endsWith(fallback)) {
+                const fallback = 'https://products.ayyanfireworks.in/image/cache/catalog/logo-500x500.png';
+                if (target.src !== fallback) {
                   target.src = fallback;
-                } else {
-                  target.src = '/ayyan-emblem.png';
                 }
               }}
             />
@@ -123,9 +121,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               <span className={`px-2.5 py-1 rounded-xl backdrop-blur-md border font-bold text-[10px] sm:text-[11px] uppercase tracking-wider shadow-md max-w-[150px] sm:max-w-[190px] truncate ${getCategoryBadgeStyle(product.category)}`}>
                 {product.category}
               </span>
-              {(product.item_code || product.code) && (
+              {(product.code !== undefined || product.item_code) && (
                 <span className="px-2 py-1 rounded-xl bg-black/80 backdrop-blur-md border border-white/20 text-slate-200 font-mono font-bold text-[10px] shadow-md">
-                  #{product.item_code || product.code}
+                  #{product.code !== undefined ? product.code : product.item_code}
                 </span>
               )}
             </div>
@@ -192,7 +190,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   </span>
                   <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-white/5 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-white/10 shadow-xs">
                     <Package className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400 shrink-0" />
-                    <span>{product.pieces_per_box || product.piece_count || '1 Box'}</span>
+                    <span>{product.packing || product.pieces_per_box || product.piece_count || '1 Box'}</span>
                   </span>
                 </div>
               </div>
@@ -319,3 +317,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     </>
   );
 };
+
+export default ProductCard;
+

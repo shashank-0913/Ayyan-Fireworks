@@ -23,20 +23,23 @@ import { EstimateDrawer } from '../components/customer/EstimateDrawer';
 import { Product } from '../types';
 import { formatINR } from '../lib/utils';
 
-// Official Standard Ayyan Category Pill Tabs (Clean 153 SKU Inventory)
+// Official Standard Ayyan Category Pill Tabs (Clean 141 Natayyapalem Inventory)
 export const CATEGORY_PILL_TABS = [
   'All',
-  'Marrons',
+  'Crackers',
   'Sparklers',
   'Chakkars',
   'Fountains',
-  'Novelty Fireworks',
+  'Novelties',
+  'Sirens',
+  'Candles',
   'Atom Bombs',
-  'Chorsa Fireworks',
+  'Sound Crackers',
   'Rockets',
-  'Fancy Novelties',
-  'Aerial Shells',
-  'Combination Fireworks',
+  'Missiles',
+  'Whistles',
+  'Multi-Shots',
+  'Shells',
   'Cake Items',
   'Assorted Gift Packs'
 ] as const;
@@ -67,40 +70,38 @@ export const CataloguePage: React.FC = () => {
     if (cat === t) return true;
 
     switch (t) {
-      case 'marrons':
-        return cat.includes('marron');
+      case 'crackers':
+        return cat.includes('cracker') || cat.includes('marron');
       case 'sparklers':
         return cat.includes('sparkler');
       case 'chakkars':
-      case 'ground chakkars':
         return cat.includes('chakkar') || cat.includes('wheel');
       case 'fountains':
-      case 'colourful fountains':
-        return cat.includes('fountain') || cat.includes('pot');
-      case 'novelty fireworks':
-        return cat === 'novelty fireworks';
-      case 'atom bombs':
-        return cat === 'atom bombs' || cat.includes('bomb');
-      case 'chorsa fireworks':
-        return cat === 'chorsa fireworks' || cat.includes('chorsa');
-      case 'rockets':
-      case 'sky rockets':
-        return cat === 'rockets' || cat.includes('rocket');
-      case 'fancy novelties':
-        return cat === 'fancy novelties';
-      case 'aerial shells':
-      case 'shells':
-        return cat.includes('shell') || cat.includes('cell') || cat === 'all new 2';
-      case 'combination fireworks':
-        return cat === 'combination fireworks' || cat.includes('combination');
-      case 'cake items':
-      case 'aerial multi-shots':
-        return cat === 'cake items' || cat.includes('cake');
-      case 'assorted gift packs':
-      case 'gift boxes':
-        return cat === 'assorted gift packs' || cat.includes('gift');
+        return cat.includes('fountain') || cat.includes('pot') || cat.includes('koti');
       case 'novelties':
-        return cat.includes('novelty');
+        return cat.includes('novelty') || cat === 'novelties';
+      case 'sirens':
+        return cat.includes('siren');
+      case 'candles':
+        return cat.includes('candle') || cat.includes('pencil');
+      case 'atom bombs':
+        return cat.includes('bomb');
+      case 'sound crackers':
+        return cat.includes('sound');
+      case 'rockets':
+        return cat.includes('rocket');
+      case 'missiles':
+        return cat.includes('missile');
+      case 'whistles':
+        return cat.includes('whistle');
+      case 'multi-shots':
+        return cat.includes('shot') || cat.includes('multi');
+      case 'shells':
+        return cat.includes('shell') || cat.includes('cell');
+      case 'cake items':
+        return cat.includes('cake');
+      case 'assorted gift packs':
+        return cat.includes('gift') || cat.includes('pack');
       default:
         return cat === t || cat.includes(t);
     }
@@ -116,8 +117,8 @@ export const CataloguePage: React.FC = () => {
         const q = searchQuery.toLowerCase().trim();
         const matchName = p.name?.toLowerCase().includes(q);
         const matchCategory = p.category?.toLowerCase().includes(q);
-        const matchCode = (p.item_code || p.code)?.toLowerCase().includes(q);
-        const matchPack = (p.pieces_per_box || p.piece_count)?.toLowerCase().includes(q);
+        const matchCode = String(p.item_code || p.code || '').toLowerCase().includes(q);
+        const matchPack = (p.packing || p.pieces_per_box || p.piece_count || '').toLowerCase().includes(q);
         
         if (!matchName && !matchCategory && !matchCode && !matchPack) {
           return false;

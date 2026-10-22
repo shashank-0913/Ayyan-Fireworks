@@ -101,7 +101,7 @@ const sanitizeProductImage = (url?: string, code?: string, category?: string): s
 const sanitizeProductsForStorage = (prods: Product[]): Product[] => {
   return prods.map(p => ({
     ...p,
-    image_url: sanitizeProductImage(p.image_url, p.item_code || p.code, p.category)
+    image_url: sanitizeProductImage(p.image_url, p.item_code || (p.code !== undefined ? String(p.code) : undefined), p.category)
   }));
 };
 

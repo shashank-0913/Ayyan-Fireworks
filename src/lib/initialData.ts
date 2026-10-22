@@ -1,4 +1,5 @@
 import { Slot, Booking, SoundLevel } from '../types';
+import { PRODUCTS_LIST } from '../data/products';
 
 // =============================================================================
 // AYYAN FIREWORKS FACTORY — VERIFIED 141-ITEM SHOWROOM INVENTORY & PRICELIST
@@ -2649,8 +2650,31 @@ export const initialProducts: Product[] = [
   }
 ];
 
-// Alias for codebase compatibility
-export const INITIAL_PRODUCTS: Product[] = initialProducts;
+// Alias for codebase compatibility - mapped to official 141-item PRODUCTS_LIST
+export const INITIAL_PRODUCTS: Product[] = PRODUCTS_LIST.map((item) => {
+  const codeStr = String(item.code).padStart(3, '0');
+  return {
+    id: `item_${codeStr}`,
+    item_code: codeStr,
+    code: String(item.code),
+    name: item.name,
+    category: item.category,
+    price: item.price,
+    original_price: Math.round(item.price * 1.25),
+    packing: item.packing,
+    pieces_per_box: item.packing,
+    piece_count: item.packing,
+    image: item.image,
+    image_url: item.image,
+    imageUrl: item.image,
+    is_active: true,
+    inStock: true,
+    safety_instructions: 'Keep safe distance. Light with agarbatti on an open clear hard surface.',
+    safety_tags: ['Green Cracker', 'Certified', 'Safe Handling'],
+    sound_level: item.category === 'Atom Bombs' || item.category === 'Sound Crackers' ? 'High Spectacle' : 'Low / Silent',
+    created_at: new Date().toISOString()
+  };
+});
 
 // Helper date offset function
 export const getFormattedDateOffset = (offsetDays: number = 0): string => {

@@ -41,6 +41,7 @@ export type SoundLevel = 'Low / Silent' | 'Medium' | 'High Spectacle';
 export interface Product {
   id: string;
   item_code: string;
+  code?: string | number;
   name: string;
   category: string;
   price: number;
@@ -49,7 +50,6 @@ export interface Product {
   pieces_per_box?: string;
   piece_count?: string;
   video_url?: string;
-  code?: string;
   unit_price?: number;
   unit_name?: string;
   bundle_rate?: number;

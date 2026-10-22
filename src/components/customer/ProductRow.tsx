@@ -13,7 +13,7 @@ import {
   Play
 } from 'lucide-react';
 import { Product } from '../../types';
-import { getCategoryFallbackImage, getCategoryBadgeStyle } from '../../lib/initialData';
+import { getCategoryBadgeStyle } from '../../lib/initialData';
 import { formatINR, getWhatsAppUrl } from '../../lib/utils';
 import { useEstimate } from '../../context/EstimateContext';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
@@ -96,17 +96,15 @@ export const ProductRow: React.FC<ProductRowProps> = ({
               }}
             >
               <img
-                src={product.image_url || `/ayyan_images/products/${product.item_code || '001'}.jpg`}
+                src={product.image || product.image_url || product.imageUrl || `/products/${product.code || product.item_code}.jpg`}
                 alt={product.name}
                 className="h-full w-full object-cover object-center transition-transform duration-300 group-hover/img:scale-105"
                 loading="lazy"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  const fallback = getCategoryFallbackImage(product.category);
-                  if (target.src !== fallback && !target.src.endsWith(fallback)) {
+                  const fallback = 'https://products.ayyanfireworks.in/image/cache/catalog/logo-500x500.png';
+                  if (target.src !== fallback) {
                     target.src = fallback;
-                  } else {
-                    target.src = '/ayyan-emblem.png';
                   }
                 }}
               />
@@ -117,9 +115,9 @@ export const ProductRow: React.FC<ProductRowProps> = ({
               </div>
 
               {/* Code Pill on Image */}
-              {(product.item_code || product.code) && (
+              {(product.code !== undefined || product.item_code) && (
                 <div className="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-lg bg-black/80 backdrop-blur-md border border-white/20 text-slate-200 font-mono font-bold text-[9px] shadow-sm">
-                  #{product.item_code || product.code}
+                  #{product.code !== undefined ? product.code : product.item_code}
                 </div>
               )}
             </div>
@@ -212,7 +210,7 @@ export const ProductRow: React.FC<ProductRowProps> = ({
             <div className="flex flex-wrap items-center gap-2 pt-1">
               <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-white/5 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-white/10">
                 <Package className="w-3.5 h-3.5 text-amber-600 dark:text-gold-400 shrink-0" />
-                <span>Pack: <strong>{product.pieces_per_box || product.piece_count || '1 Box'}</strong></span>
+                <span>Pack: <strong>{product.packing || product.pieces_per_box || product.piece_count || '1 Box'}</strong></span>
               </span>
 
               {(product.unit_breakdown || (product.unit_price && product.unit_name)) && (
