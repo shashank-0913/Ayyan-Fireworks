@@ -178,8 +178,8 @@ export function buildFallbackGreetingTextMessage(toPhone: string): WhatsAppMessa
         `Welcome to Ayyan Fireworks, Visakhapatnam! 🎆\n\n` +
         `Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
         `Please select an option below:\n` +
-        `1️⃣ Click 1 for Website\n` +
-        `2️⃣ Click 2 for Location of the Store\n\n` +
+        `1️⃣ Click 1 for Website: https://vizagayyan.com\n` +
+        `2️⃣ Click 2 for Location of the Store: https://maps.google.com/?q=Ayyan+Fireworks+Visakhapatnam\n\n` +
         `Tell me your queries! You can also ask any question about our crackers, pricing, and offers.`,
     },
   };
