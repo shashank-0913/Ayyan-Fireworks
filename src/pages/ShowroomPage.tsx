@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { SHOWROOM_CONTACT, WHATSAPP_CONTACT } from '../lib/utils';
 import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
+import { WhatsAppChatWidget } from '../components/WhatsAppChatWidget';
 import { SHOW_SLOT_BOOKING_UI } from '../config/features';
 
 export const ShowroomPage: React.FC = () => {
@@ -257,6 +258,11 @@ export const ShowroomPage: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Verified WhatsApp Redirect & QR Code Support Banner */}
+      <div className="pt-2">
+        <WhatsAppChatWidget className="border-2 border-emerald-500/40 dark:border-emerald-500/30" />
       </div>
     </div>
   );
