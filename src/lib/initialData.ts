@@ -19,7 +19,7 @@ export interface Product {
   piece_count?: string;
   video_url?: string;
   image_url?: string;
-  code?: string;
+  code?: number | string;
   unit_price?: number;
   unit_name?: string;
   bundle_rate?: number;
@@ -2657,7 +2657,7 @@ export const INITIAL_PRODUCTS: Product[] = PRODUCTS_LIST.map((item) => {
   return {
     id: `item_${codeStr}`,
     item_code: codeStr,
-    code: String(item.code),
+    code: item.code,
     name: item.name,
     category: item.category,
     price: item.price,

@@ -442,3 +442,42 @@ export function generateUUID(): string {
     return v.toString(16);
   });
 }
+
+/**
+ * Normalizes product IDs and codes to support matching across:
+ * - Numeric codes: e.g. 21
+ * - Numeric strings: e.g. '21', '021'
+ * - Prefixed strings: e.g. 'item_021', 'item_21', 'ayyan-21', 'ayyan-021', 'sku-21'
+ */
+export function normalizeId(id: string | number | undefined | null): number | string {
+  if (id === undefined || id === null) return '';
+  const str = String(id)
+    .replace(/^item_0*/i, '')
+    .replace(/^item_/i, '')
+    .replace(/^ayyan[-_]0*/i, '')
+    .replace(/^ayyan[-_]/i, '')
+    .replace(/^sku[-_]0*/i, '')
+    .replace(/^sku[-_]/i, '')
+    .trim();
+  const num = Number(str);
+  return !isNaN(num) && str !== '' ? num : (Number(id) || id);
+}
+
+/**
+ * Checks if a product matches a target ID or code using exact and normalized rules.
+ */
+export function isProductMatch(
+  p: { id?: string | number; code?: string | number; item_code?: string },
+  targetId: string | number | undefined | null
+): boolean {
+  if (targetId === undefined || targetId === null) return false;
+  if (p.id === targetId || p.code === targetId || (p.item_code !== undefined && p.item_code === targetId)) {
+    return true;
+  }
+  const normTarget = normalizeId(targetId);
+  if (normTarget === '' || normTarget === undefined) return false;
+  if (p.id !== undefined && normalizeId(p.id) === normTarget) return true;
+  if (p.code !== undefined && normalizeId(p.code) === normTarget) return true;
+  if (p.item_code !== undefined && normalizeId(p.item_code) === normTarget) return true;
+  return false;
+}

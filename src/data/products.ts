@@ -1,14 +1,17 @@
 export interface Product {
+  id: string;
   code: number;
+  item_code?: string;
   name: string;
   category: string;
   packing: string;
   price: number;
   mrp?: number;
+  original_price?: number;
   image: string;
 }
 
-export const PRODUCTS_LIST: Product[] = [
+const RAW_PRODUCTS_LIST: Omit<Product, 'id'>[] = [
   // 1 to 55: Crackers, Sparklers, Wheels, Pots & Novelties
   { code: 1, name: "Ganesh Crackers", category: "Crackers", packing: "1 pkt", price: 62.00, image: "/products/1-ganesh-crackers.jpg" },
   { code: 2, name: "Lakshmi Crackers", category: "Crackers", packing: "1 pkt", price: 35.00, image: "/products/2-lakshmi-crackers.jpg" },
@@ -156,3 +159,9 @@ export const PRODUCTS_LIST: Product[] = [
   { code: 140, name: "Assorted Pack (Gift) D – 36 items", category: "Assorted Gift Packs", packing: "1 BOX", price: 1813.40, image: "/products/140-assorted-pack-d-36-items.jpg" },
   { code: 141, name: "Gift Bix Dino – 40 Items", category: "Assorted Gift Packs", packing: "1 BOX", price: 1821.00, image: "/products/141-gift-box-dino-40-items.jpg" }
 ];
+
+export const PRODUCTS_LIST: Product[] = RAW_PRODUCTS_LIST.map((p) => ({
+  ...p,
+  id: `item_${String(p.code).padStart(3, '0')}`,
+  item_code: String(p.code).padStart(3, '0'),
+}));

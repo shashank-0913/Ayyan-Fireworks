@@ -105,6 +105,8 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, p
 
       if (productToEdit) {
         await updateProduct(productToEdit.id, {
+          id: productToEdit.id,
+          code: productToEdit.code,
           name: name.trim(),
           category,
           price: parsedPrice,

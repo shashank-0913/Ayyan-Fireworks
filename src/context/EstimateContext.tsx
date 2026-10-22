@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { Product } from '../types';
+import { isProductMatch } from '../lib/utils';
 
 export interface EstimateItem {
   product: Product;
@@ -50,7 +51,7 @@ export const EstimateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const addToEstimate = useCallback((product: Product, quantity: number = 1) => {
     setEstimateItems(prev => {
-      const existingIdx = prev.findIndex(item => item.product.id === product.id);
+      const existingIdx = prev.findIndex(item => isProductMatch(item.product, product.id) || (product.code !== undefined && isProductMatch(item.product, product.code)));
       if (existingIdx >= 0) {
         const updated = [...prev];
         updated[existingIdx].quantity += quantity;
@@ -61,7 +62,7 @@ export const EstimateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, []);
 
   const removeFromEstimate = useCallback((productId: string) => {
-    setEstimateItems(prev => prev.filter(item => item.product.id !== productId));
+    setEstimateItems(prev => prev.filter(item => !isProductMatch(item.product, productId)));
   }, []);
 
   const updateQuantity = useCallback((productId: string, quantity: number) => {
@@ -70,7 +71,7 @@ export const EstimateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       return;
     }
     setEstimateItems(prev => 
-      prev.map(item => item.product.id === productId ? { ...item, quantity } : item)
+      prev.map(item => isProductMatch(item.product, productId) ? { ...item, quantity } : item)
     );
   }, [removeFromEstimate]);
 
@@ -79,11 +80,11 @@ export const EstimateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, []);
 
   const isInEstimate = useCallback((productId: string) => {
-    return estimateItems.some(item => item.product.id === productId);
+    return estimateItems.some(item => isProductMatch(item.product, productId));
   }, [estimateItems]);
 
   const getItemQuantity = useCallback((productId: string) => {
-    const item = estimateItems.find(i => i.product.id === productId);
+    const item = estimateItems.find(i => isProductMatch(i.product, productId));
     return item ? item.quantity : 0;
   }, [estimateItems]);
 

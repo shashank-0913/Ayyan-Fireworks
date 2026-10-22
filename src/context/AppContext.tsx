@@ -3,7 +3,7 @@ import { Product, Slot, Booking, StaffUser, BookingRpcResponse, BookingStatus } 
 import { INITIAL_PRODUCTS, generateInitialSlots, getCategoryFallbackImage, getProductImageUrl } from '../lib/initialData';
 import { PRODUCTS_LIST } from '../data/products';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
-import { isAuthorizedAdminEmail, ADMIN_EMAIL, generateUUID, formatTime, formatDateReadable, validateSlotTiming, getSlotStartDateTime } from '../lib/utils';
+import { isAuthorizedAdminEmail, ADMIN_EMAIL, generateUUID, formatTime, formatDateReadable, validateSlotTiming, getSlotStartDateTime, normalizeId, isProductMatch } from '../lib/utils';
 import { extractCleanQrPayload } from '../lib/cameraUtils';
 
 export interface GateScanResult {
@@ -30,9 +30,9 @@ interface AppContextType {
   
   // Products Management
   addProduct: (product: Omit<Product, 'id' | 'created_at'>) => Promise<Product>;
-  updateProduct: (id: string, updates: Partial<Product>) => Promise<Product>;
-  deleteProduct: (id: string) => Promise<void>;
-  toggleProductActive: (id: string) => Promise<void>;
+  updateProduct: (id: string | number, updates: Partial<Product>) => Promise<Product>;
+  deleteProduct: (id: string | number) => Promise<void>;
+  toggleProductActive: (id: string | number) => Promise<void>;
   refreshProducts: () => Promise<Product[]>;
   
   // Slots & Capacity Management
@@ -100,10 +100,20 @@ const sanitizeProductImage = (url?: string, code?: string, category?: string): s
 };
 
 const sanitizeProductsForStorage = (prods: Product[]): Product[] => {
-  return prods.map(p => ({
-    ...p,
-    image_url: sanitizeProductImage(p.image_url, p.item_code || (p.code !== undefined ? String(p.code) : undefined), p.category)
-  }));
+  return prods.map(p => {
+    const rawNum = String(p.id || p.code || p.item_code || '').replace(/\D/g, '');
+    const num = rawNum ? parseInt(rawNum, 10) : undefined;
+    const codeStr = num ? String(num).padStart(3, '0') : (p.item_code || '001');
+    const normalizedId = p.id && !p.id.startsWith('ayyan-') ? p.id : `item_${codeStr}`;
+    const codeVal = typeof p.code === 'number' ? p.code : (num !== undefined ? num : (p.code || codeStr));
+    return {
+      ...p,
+      id: normalizedId,
+      code: codeVal,
+      item_code: p.item_code || codeStr,
+      image_url: sanitizeProductImage(p.image_url, p.item_code || (p.code !== undefined ? String(p.code) : undefined), p.category)
+    };
+  });
 };
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -815,10 +825,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return localNewProduct;
   };
 
-  const updateProduct = async (id: string, updates: Partial<Product>): Promise<Product> => {
+  const updateProduct = async (id: string | number, updates: Partial<Product>): Promise<Product> => {
     // 1. Resolve numeric ID for Supabase bigint/integer column
-    const rawNumeric = String(id).replace(/\D/g, '');
-    const numericId = rawNumeric ? parseInt(rawNumeric, 10) : (typeof updates.code === 'number' ? updates.code : null);
+    const norm = normalizeId(id);
+    const numericId = typeof norm === 'number' && !isNaN(norm) ? norm : (typeof updates.code === 'number' ? updates.code : null);
 
     // 2. Prepare database payload strictly containing existing columns on the remote 'products' table
     // Guard against pieces_per_box - do NOT add pieces_per_box to the remote dbPayload!
@@ -897,37 +907,70 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     // 4. Update local state and synchronize immediately with localStorage
     let updatedProduct: Product | null = null;
-    setProducts(prev => {
-      const next = prev.map(p => {
-        const matches = p.id === id || 
-          (numericId !== null && (p.code === numericId || Number(p.item_code) === numericId || p.id === `item_${String(numericId).padStart(3, '0')}`));
-        
-        if (matches) {
-          const merged: Product = {
-            ...p,
-            ...updates,
-            name: updates.name !== undefined ? updates.name.trim() : p.name,
-            category: updates.category !== undefined ? updates.category.trim() : p.category,
-            price: updates.price !== undefined ? Number(updates.price) : p.price,
-            mrp: updates.mrp !== undefined 
-              ? (updates.mrp ? Number(updates.mrp) : undefined) 
-              : (updates.original_price !== undefined ? (updates.original_price ? Number(updates.original_price) : undefined) : p.mrp),
-            original_price: updates.mrp !== undefined 
-              ? (updates.mrp ? Number(updates.mrp) : undefined) 
-              : (updates.original_price !== undefined ? (updates.original_price ? Number(updates.original_price) : undefined) : p.original_price),
-            packing: updates.packing || updates.piece_count || updates.pieces_per_box || p.packing,
-            piece_count: updates.piece_count || updates.packing || updates.pieces_per_box || p.piece_count,
-            pieces_per_box: updates.pieces_per_box || updates.piece_count || updates.packing || p.pieces_per_box,
-            image_url: updates.image_url ? sanitizeProductImage(updates.image_url) : p.image_url,
-            image: updates.image || updates.image_url || p.image,
-            is_active: updates.is_active !== undefined ? Boolean(updates.is_active) : p.is_active
-          };
-          updatedProduct = merged;
-          return merged;
-        }
-        return p;
-      });
+    setProducts((prev) => {
+      const targetIndex = prev.findIndex(
+        (p) =>
+          p.id === id ||
+          p.code === id ||
+          normalizeId(p.id ?? p.code) === normalizeId(id) ||
+          isProductMatch(p, id)
+      );
 
+      if (targetIndex !== -1) {
+        const existing = prev[targetIndex];
+        const merged: Product = {
+          ...existing,
+          ...updates,
+          id: existing.id || `item_${String(existing.code || id).padStart(3, '0')}`,
+          name: updates.name !== undefined ? updates.name.trim() : existing.name,
+          category: updates.category !== undefined ? updates.category.trim() : existing.category,
+          price: updates.price !== undefined ? Number(updates.price) : existing.price,
+          mrp: updates.mrp !== undefined 
+            ? (updates.mrp ? Number(updates.mrp) : undefined) 
+            : (updates.original_price !== undefined ? (updates.original_price ? Number(updates.original_price) : undefined) : existing.mrp),
+          original_price: updates.mrp !== undefined 
+            ? (updates.mrp ? Number(updates.mrp) : undefined) 
+            : (updates.original_price !== undefined ? (updates.original_price ? Number(updates.original_price) : undefined) : existing.original_price),
+          packing: updates.packing || updates.piece_count || updates.pieces_per_box || existing.packing,
+          piece_count: updates.piece_count || updates.packing || updates.pieces_per_box || existing.piece_count,
+          pieces_per_box: updates.pieces_per_box || updates.piece_count || updates.packing || existing.pieces_per_box,
+          image_url: updates.image_url ? sanitizeProductImage(updates.image_url) : existing.image_url,
+          image: updates.image || updates.image_url || existing.image,
+          is_active: updates.is_active !== undefined ? Boolean(updates.is_active) : existing.is_active
+        };
+        updatedProduct = merged;
+        const next = [...prev];
+        next[targetIndex] = merged;
+        safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(next)));
+        return next;
+      }
+
+      // Fallback: If not found in current state, search fallback catalogs to guarantee save
+      const seed = PRODUCTS_LIST.find(p => isProductMatch(p, id)) || INITIAL_PRODUCTS.find(p => isProductMatch(p, id));
+      const normVal = normalizeId(id);
+      const codeNum = typeof normVal === 'number' && !isNaN(normVal) ? normVal : Date.now();
+      const codeStr = String(codeNum).padStart(3, '0');
+      const fallbackItem: Product = {
+        id: `item_${codeStr}`,
+        item_code: codeStr,
+        code: codeNum,
+        name: updates.name?.trim() || seed?.name || `Product ${id}`,
+        category: updates.category?.trim() || seed?.category || 'Sparklers',
+        price: updates.price !== undefined ? Number(updates.price) : (seed?.price || 0),
+        mrp: updates.mrp !== undefined ? Number(updates.mrp) : seed?.mrp,
+        original_price: updates.mrp !== undefined ? Number(updates.mrp) : ((seed as any)?.original_price || seed?.mrp),
+        packing: updates.packing || seed?.packing || '1 Box',
+        piece_count: updates.packing || seed?.packing || '1 Box',
+        pieces_per_box: updates.packing || seed?.packing || '1 Box',
+        image_url: updates.image_url ? sanitizeProductImage(updates.image_url) : (seed?.image || `/products/${codeNum}.jpg`),
+        image: updates.image || updates.image_url || seed?.image || `/products/${codeNum}.jpg`,
+        is_active: updates.is_active !== undefined ? Boolean(updates.is_active) : true,
+        created_at: new Date().toISOString(),
+        ...updates
+      };
+
+      updatedProduct = fallbackItem;
+      const next = [fallbackItem, ...prev];
       safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(next)));
       return next;
     });
@@ -939,9 +982,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return updatedProduct;
   };
 
-  const deleteProduct = async (id: string): Promise<void> => {
-    const rawNumeric = String(id).replace(/\D/g, '');
-    const numericId = rawNumeric ? parseInt(rawNumeric, 10) : null;
+  const deleteProduct = async (id: string | number): Promise<void> => {
+    const norm = normalizeId(id);
+    const numericId = typeof norm === 'number' && !isNaN(norm) ? norm : null;
 
     if (isSupabaseConfigured && supabase && numericId !== null && !isNaN(numericId)) {
       const { error } = await supabase
@@ -956,7 +999,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     setProducts(prev => {
-      const next = prev.filter(p => p.id !== id && (numericId === null || (p.code !== numericId && Number(p.item_code) !== numericId)));
+      const next = prev.filter(p => !isProductMatch(p, id));
       safeSetItem(LOCAL_STORAGE_KEYS.PRODUCTS, JSON.stringify(sanitizeProductsForStorage(next)));
       return next;
     });
@@ -1027,8 +1070,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return products;
   }, [products]);
 
-  const toggleProductActive = async (id: string): Promise<void> => {
-    const product = products.find(p => p.id === id);
+  const toggleProductActive = async (id: string | number): Promise<void> => {
+    const product = products.find(p => isProductMatch(p, id));
     if (!product) return;
     await updateProduct(id, { is_active: !product.is_active });
   };
