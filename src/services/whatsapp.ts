@@ -142,13 +142,11 @@ export async function sendWhatsAppMessage(
 
 /**
  * 1. Main Menu Message (Interactive Buttons)
- * 3 Interactive Options:
- * - Button 1: "Slot Booking" (ID: btn_book_slot)
- * - Button 2: "Location of Store" (ID: btn_showroom_visit)
- * - Button 3: "Website" (ID: btn_visit_website)
+ * 2 Interactive Options:
+ * - Button 1: "Visit Website" (ID: btn_visit_website)
+ * - Button 2: "Store Location" (ID: btn_showroom_visit)
  */
-export function buildMainMenuPayload(toPhone: string, customerName?: string): WhatsAppMessagePayload {
-  const greeting = customerName ? `Hello ${customerName}! ` : 'Namaste! ';
+export function buildMainMenuPayload(toPhone: string, _customerName?: string): WhatsAppMessagePayload {
   return {
     messaging_product: 'whatsapp',
     recipient_type: 'individual',
@@ -158,15 +156,16 @@ export function buildMainMenuPayload(toPhone: string, customerName?: string): Wh
       type: 'button',
       header: {
         type: 'text',
-        text: '🎆 Ayyan Fireworks (Bunny Brand)'
+        text: '🎆 Ayyan Fireworks Visakhapatnam'
       },
       body: {
         text:
-          `${greeting}Welcome to Ayyan Fireworks (Bunny Brand, Sivakasi).\n\n` +
-          `⏰ Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
-          `1️⃣ Click 1 for Slot Booking\n` +
-          `2️⃣ Click 2 for Location of the Store\n` +
-          `3️⃣ Click 3 for Website`
+          `Welcome to Ayyan Fireworks, Visakhapatnam! 🎆\n\n` +
+          `Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
+          `Please select an option below:\n` +
+          `1️⃣ Click 1 for Website\n` +
+          `2️⃣ Click 2 for Location of the Store\n\n` +
+          `Tell me your queries! You can also ask any question about our crackers, pricing, and offers.`
       },
       footer: {
         text: DEFAULT_FOOTER
@@ -176,22 +175,15 @@ export function buildMainMenuPayload(toPhone: string, customerName?: string): Wh
           {
             type: 'reply',
             reply: {
-              id: 'btn_book_slot',
-              title: 'Slot Booking'
+              id: 'btn_visit_website',
+              title: 'Visit Website'
             }
           },
           {
             type: 'reply',
             reply: {
               id: 'btn_showroom_visit',
-              title: 'Location of Store'
-            }
-          },
-          {
-            type: 'reply',
-            reply: {
-              id: 'btn_visit_website',
-              title: 'Website'
+              title: 'Store Location'
             }
           }
         ]
@@ -212,13 +204,12 @@ export function buildFallbackGreetingTextPayload(toPhone: string): WhatsAppMessa
     text: {
       preview_url: true,
       body:
-        `🎆 *Welcome to Ayyan Fireworks (Bunny Brand, Sivakasi)*\n\n` +
-        `⏰ Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
+        `Welcome to Ayyan Fireworks, Visakhapatnam! 🎆\n\n` +
+        `Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
         `Please select an option below:\n` +
-        `1️⃣ Click 1 for Slot Booking\n` +
-        `2️⃣ Click 2 for Location of the Store\n` +
-        `3️⃣ Click 3 for Website\n\n` +
-        `_Reply with 1, 2, or 3 to continue._`
+        `1️⃣ Click 1 for Website\n` +
+        `2️⃣ Click 2 for Location of the Store\n\n` +
+        `Tell me your queries! You can also ask any question about our crackers, pricing, and offers.`
     }
   };
 }

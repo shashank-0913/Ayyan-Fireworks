@@ -33,12 +33,13 @@ export interface AyyanCatalogItem {
 
 const getProductCategoryGroup = (category: string): string => {
   const cat = category.toLowerCase();
-  if (cat.includes('sparkler')) return 'Sparklers';
-  if (cat.includes('chakkar') || cat.includes('wheel')) return 'Ground Chakkars';
-  if (cat.includes('fountain') || cat.includes('pot') || cat.includes('flower')) return 'Colourful Fountains';
-  if (cat.includes('rocket') || cat.includes('missile') || cat.includes('bomb') || cat.includes('candle')) return 'Sky Rockets';
-  if (cat.includes('aerial') || cat.includes('shot') || cat.includes('cell') || cat.includes('night')) return 'Aerial Multi-Shots';
-  if (cat.includes('gift') || cat.includes('box')) return 'Gift Boxes';
+  if (cat.includes('marron')) return 'Marrons';
+  if (cat.includes('sparkler') || cat.includes('chorsa')) return 'Sparklers';
+  if (cat.includes('chakkar') || cat.includes('wheel')) return 'Chakkars';
+  if (cat.includes('fountain') || cat.includes('pot') || cat.includes('flower')) return 'Fountains';
+  if (cat.includes('rocket') || cat.includes('missile') || cat.includes('bomb')) return 'Rockets & Bombs';
+  if (cat.includes('aerial') || cat.includes('shot') || cat.includes('cell') || cat.includes('shell') || cat.includes('cake') || cat.includes('combination') || cat.includes('night')) return 'Aerial Displays & Cakes';
+  if (cat.includes('gift') || cat.includes('box')) return 'Assorted Gift Packs';
   if (cat.includes('novelty') || cat.includes('novelties') || cat.includes('match') || cat.includes('cap') || cat.includes('gun') || cat.includes('toy')) return 'Novelties';
   return category;
 };
@@ -46,11 +47,13 @@ const getProductCategoryGroup = (category: string): string => {
 const getCategoryIcon = (category: string, name?: string): string => {
   const cat = category.toLowerCase();
   const n = (name || '').toLowerCase();
+  if (cat.includes('marron') || n.includes('marron') || n.includes('cracker')) return '💥';
   if (cat.includes('sparkler') || n.includes('sparkler')) return '✨';
   if (cat.includes('chakkar') || cat.includes('wheel') || n.includes('wheel') || n.includes('chakkar')) return '🌀';
   if (cat.includes('fountain') || cat.includes('flower') || cat.includes('pot') || n.includes('fountain')) return '🌋';
-  if (cat.includes('rocket') || cat.includes('missile') || cat.includes('bomb') || n.includes('rocket')) return '🚀';
-  if (cat.includes('aerial') || cat.includes('shot') || cat.includes('cell') || n.includes('shot')) return '🎆';
+  if (cat.includes('rocket') || cat.includes('missile') || n.includes('rocket')) return '🚀';
+  if (cat.includes('bomb') || n.includes('bomb')) return '💣';
+  if (cat.includes('aerial') || cat.includes('shot') || cat.includes('cell') || cat.includes('shell') || cat.includes('cake') || n.includes('shot')) return '🎆';
   if (cat.includes('gift') || n.includes('gift')) return '🎁';
   return '🎉';
 };
@@ -72,12 +75,13 @@ export const OFFICIAL_AYYAN_CATALOG: AyyanCatalogItem[] = INITIAL_PRODUCTS.map((
 
 export const CATEGORIES_LIST = [
   'ALL',
+  'Marrons',
   'Sparklers',
-  'Ground Chakkars',
-  'Colourful Fountains',
-  'Sky Rockets',
-  'Aerial Multi-Shots',
-  'Gift Boxes',
+  'Chakkars',
+  'Fountains',
+  'Rockets & Bombs',
+  'Aerial Displays & Cakes',
+  'Assorted Gift Packs',
   'Novelties'
 ] as const;
 

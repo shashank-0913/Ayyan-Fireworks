@@ -20,6 +20,7 @@ import {
   buildBookingConfirmationInteractiveMessage,
   buildTextMessage,
   buildWelcomeTemplateMessage,
+  sendFallbackGreetingMessage,
   ParsedIncomingWhatsAppMessage,
   WhatsAppBotResponse,
   WhatsAppMessageEnvelope,
@@ -31,6 +32,7 @@ export {
   parseWhatsAppWebhookPayload,
   handleWhatsAppWebhookEvent,
   sendWhatsAppCloudMessage,
+  sendFallbackGreetingMessage,
   buildMainMenuMessage,
   buildFallbackGreetingTextMessage,
   buildSlotTimeOfDayButtonMessage,
@@ -58,7 +60,7 @@ export const SLOT_BOOKING_URL = 'https://vizagayyan.com/#booking';
 export const PASS_MANAGEMENT_URL = 'https://vizagayyan.com/my-bookings';
 
 /** Approved Meta WhatsApp Template name for welcome greeting menu */
-export const WELCOME_TEMPLATE_NAME = 'ayyan_welcome_v2';
+export const WELCOME_TEMPLATE_NAME = 'ayyan_menu_v2';
 
 /** Reply text when user clicks "View Catalogue" or sends catalogue enquiry */
 export const CATALOGUE_REPLY_TEXT = 'Explore our full catalogue here: https://vizagayyan.com';
@@ -71,7 +73,7 @@ export const CATALOGUE_REPLY_TEXT = 'Explore our full catalogue here: https://vi
  *   "to": recipientPhone,
  *   "type": "template",
  *   "template": {
- *     "name": "ayyan_welcome_v2",
+ *     "name": "ayyan_menu_v2",
  *     "language": {
  *       "code": "en"
  *     }
@@ -94,48 +96,40 @@ export function buildWelcomeGreetingPayload(
  */
 export const BOT_RESPONSES = {
   VIEW_CATALOGUE: CATALOGUE_REPLY_TEXT,
-  BOOK_SLOT: `✨ Reserve your VIP Showroom visiting slot here:\n👉 https://vizagayyan.com/#booking`,
-  LOCATION_STORE: `📍 *Ayyan Fireworks — Flagship Showroom*\n\n🏢 *Address:* Main Road / NH-16 (near Natayyapalem), Sheela Nagar, Visakhapatnam, Andhra Pradesh 530012, India.\n\n⏰ *Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)*\n\n🗺️ *Google Maps Navigation:*\n👉 https://maps.app.goo.gl/agWQFufKjWkwFbVs7\n\n📞 *Helpline:* +91 77299 92125`,
-  SHOWROOM_VISIT: `📍 *Ayyan Fireworks — Flagship Showroom*\n\n🏢 *Address:* Main Road / NH-16 (near Natayyapalem), Sheela Nagar, Visakhapatnam, Andhra Pradesh 530012, India.\n\n⏰ *Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)*\n\n🗺️ *Google Maps Navigation:*\n👉 https://maps.app.goo.gl/agWQFufKjWkwFbVs7\n\n📞 *Helpline:* +91 77299 92125`,
-  VISIT_WEBSITE: `🎆 Explore our full Sivakasi cracker collection and price list:\n👉 https://vizagayyan.com`
+  BOOK_SLOT: `🎟️ *Showroom Slot Booking:*\nhttps://vizagayyan.com`,
+  LOCATION_STORE: `📍 *Ayyan Fireworks – Visakhapatnam Showroom*\nMain Road/NH-16, Sheela Nagar, Visakhapatnam\n🗺️ Directions: https://maps.google.com/?q=Ayyan+Fireworks+Visakhapatnam`,
+  SHOWROOM_VISIT: `📍 *Ayyan Fireworks – Visakhapatnam Showroom*\nMain Road/NH-16, Sheela Nagar, Visakhapatnam\n🗺️ Directions: https://maps.google.com/?q=Ayyan+Fireworks+Visakhapatnam`,
+  VISIT_WEBSITE: `🌐 *Visit our official website & catalog:*\nhttps://vizagayyan.com`
 } as const;
 
 /**
- * 3 Interactive Main Menu Reply Options Setup:
- * 1. Slot Booking (id: "btn_book_slot")
- * 2. Location of the Store (id: "btn_showroom_visit")
- * 3. Website (id: "btn_visit_website")
+ * 2 Interactive Main Menu Reply Options Setup:
+ * 1. Visit Website (id: "btn_visit_website")
+ * 2. Store Location (id: "btn_showroom_visit")
  */
 export const WHATSAPP_INTERACTIVE_OPTIONS = [
   {
     replyNumber: '1',
-    id: 'btn_book_slot',
-    title: 'Slot Booking',
-    description: 'Reserve your VIP Showroom visiting slot'
+    id: 'btn_visit_website',
+    title: 'Visit Website',
+    description: 'Explore our full Sivakasi cracker collection, pricing, and offers'
   },
   {
     replyNumber: '2',
     id: 'btn_showroom_visit',
-    title: 'Location of the Store',
+    title: 'Store Location',
     description: 'Ayyan Fireworks Showroom address, directions & store timings'
-  },
-  {
-    replyNumber: '3',
-    id: 'btn_visit_website',
-    title: 'Website',
-    description: 'Explore our full Sivakasi cracker collection and price list'
   }
 ] as const;
 
 /** Fallback greeting text message */
 export const FALLBACK_GREETING_TEXT =
-  `🎆 *Welcome to Ayyan Fireworks (Bunny Brand, Sivakasi)*\n\n` +
-  `⏰ Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
+  `Welcome to Ayyan Fireworks, Visakhapatnam! 🎆\n\n` +
+  `Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
   `Please select an option below:\n` +
-  `1️⃣ Click 1 for Slot Booking\n` +
-  `2️⃣ Click 2 for Location of the Store\n` +
-  `3️⃣ Click 3 for Website\n\n` +
-  `_Reply with 1, 2, or 3 to continue._`;
+  `1️⃣ Click 1 for Website\n` +
+  `2️⃣ Click 2 for Location of the Store\n\n` +
+  `Tell me your queries! You can also ask any question about our crackers, pricing, and offers.`;
 
 export interface WebhookHttpRequest {
   method: string;

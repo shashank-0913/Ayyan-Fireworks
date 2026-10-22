@@ -1,21 +1,39 @@
 export type ProductCategory = 
+  | 'Marrons'
   | 'Sparklers'
-  | 'Ground Chakkars'
-  | 'Colourful Fountains'
-  | 'Sky Rockets'
-  | 'Aerial Multi-Shots'
-  | 'Gift Boxes'
-  | 'Novelties'
+  | 'Chakkars'
+  | 'Fountains'
+  | 'NOVELTY FIREWORKS'
+  | 'ATOM BOMBS'
+  | 'CHORSA FIREWORKS'
+  | 'ROCKETS'
+  | 'FANCY NOVELTIES'
+  | 'ALL NEW 1 3/4" SHELLS'
+  | 'ALL NEW 2'
+  | '3 SHELLS ROCKING'
+  | '3 SHELLS PREMIUM'
+  | 'COMBINATION FIREWORKS'
+  | 'CAKE ITEMS'
+  | 'ASSORTED GIFT PACKS'
   | string;
 
 export const PRODUCT_CATEGORIES: ProductCategory[] = [
+  'Marrons',
   'Sparklers',
-  'Ground Chakkars',
-  'Colourful Fountains',
-  'Sky Rockets',
-  'Aerial Multi-Shots',
-  'Gift Boxes',
-  'Novelties'
+  'Chakkars',
+  'Fountains',
+  'NOVELTY FIREWORKS',
+  'ATOM BOMBS',
+  'CHORSA FIREWORKS',
+  'ROCKETS',
+  'FANCY NOVELTIES',
+  'ALL NEW 1 3/4" SHELLS',
+  'ALL NEW 2',
+  '3 SHELLS ROCKING',
+  '3 SHELLS PREMIUM',
+  'COMBINATION FIREWORKS',
+  'CAKE ITEMS',
+  'ASSORTED GIFT PACKS'
 ];
 
 export type SoundLevel = 'Low / Silent' | 'Medium' | 'High Spectacle';

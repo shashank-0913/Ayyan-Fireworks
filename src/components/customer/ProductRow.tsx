@@ -13,7 +13,7 @@ import {
   Play
 } from 'lucide-react';
 import { Product } from '../../types';
-import { getCategoryFallbackImage } from '../../lib/initialData';
+import { getCategoryFallbackImage, getCategoryBadgeStyle } from '../../lib/initialData';
 import { formatINR, getWhatsAppUrl } from '../../lib/utils';
 import { useEstimate } from '../../context/EstimateContext';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
@@ -127,7 +127,7 @@ export const ProductRow: React.FC<ProductRowProps> = ({
             {/* Mobile-only visible quick details beside image */}
             <div className="md:hidden flex-1 min-w-0 space-y-1">
               <div className="flex items-center gap-1.5 flex-wrap">
-                <span className="px-2.5 py-0.5 rounded-lg bg-amber-500/15 text-amber-800 dark:text-gold-300 font-bold text-[10px] uppercase tracking-wider">
+                <span className={`px-2.5 py-0.5 rounded-lg border font-bold text-[10px] uppercase tracking-wider ${getCategoryBadgeStyle(product.category)}`}>
                   {product.category}
                 </span>
                 {product.sound_level && (
@@ -168,7 +168,7 @@ export const ProductRow: React.FC<ProductRowProps> = ({
             
             {/* Desktop Title & Badges */}
             <div className="hidden md:flex flex-wrap items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-lg bg-amber-500/15 dark:bg-gold-500/10 border border-amber-500/30 dark:border-gold-500/30 text-amber-800 dark:text-gold-300 font-bold text-[11px] uppercase tracking-wider">
+              <span className={`px-2.5 py-0.5 rounded-lg border font-bold text-[11px] uppercase tracking-wider ${getCategoryBadgeStyle(product.category)}`}>
                 {product.category}
               </span>
               

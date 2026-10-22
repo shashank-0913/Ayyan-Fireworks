@@ -54,7 +54,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const LOCAL_STORAGE_KEYS = {
-  PRODUCTS: 'ayyan_products_clean_v8_cdn',
+  PRODUCTS: 'ayyan_products_clean_v9_mod',
   SLOTS: 'ayyan_slots_clean_v8_cdn',
   BOOKINGS: 'ayyan_bookings_clean_v8_cdn',
   STAFF_USER: 'ayyan_staff_user_clean_v8_cdn',

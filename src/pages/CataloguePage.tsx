@@ -22,16 +22,22 @@ import { EstimateDrawer } from '../components/customer/EstimateDrawer';
 import { Product } from '../types';
 import { formatINR } from '../lib/utils';
 
-// Official Standard Ayyan Category Pill Tabs
+// Official Standard Ayyan Category Pill Tabs (Clean 153 SKU Inventory)
 export const CATEGORY_PILL_TABS = [
   'All',
+  'Marrons',
   'Sparklers',
-  'Ground Chakkars',
-  'Colourful Fountains',
-  'Sky Rockets',
-  'Aerial Multi-Shots',
-  'Gift Boxes',
-  'Novelties'
+  'Chakkars',
+  'Fountains',
+  'Novelty Fireworks',
+  'Atom Bombs',
+  'Chorsa Fireworks',
+  'Rockets',
+  'Fancy Novelties',
+  'Aerial Shells',
+  'Combination Fireworks',
+  'Cake Items',
+  'Assorted Gift Packs'
 ] as const;
 
 export type CategoryTab = typeof CATEGORY_PILL_TABS[number];
@@ -54,7 +60,49 @@ export const CataloguePage: React.FC = () => {
   // Category Matching Helper
   const matchesCategoryTab = (product: Product, tab: CategoryTab): boolean => {
     if (tab === 'All') return true;
-    return product.category?.toLowerCase() === tab.toLowerCase();
+    const cat = (product.category || '').toLowerCase().trim();
+    const t = (tab as string).toLowerCase().trim();
+
+    if (cat === t) return true;
+
+    switch (t) {
+      case 'marrons':
+        return cat.includes('marron');
+      case 'sparklers':
+        return cat.includes('sparkler');
+      case 'chakkars':
+      case 'ground chakkars':
+        return cat.includes('chakkar') || cat.includes('wheel');
+      case 'fountains':
+      case 'colourful fountains':
+        return cat.includes('fountain') || cat.includes('pot');
+      case 'novelty fireworks':
+        return cat === 'novelty fireworks';
+      case 'atom bombs':
+        return cat === 'atom bombs' || cat.includes('bomb');
+      case 'chorsa fireworks':
+        return cat === 'chorsa fireworks' || cat.includes('chorsa');
+      case 'rockets':
+      case 'sky rockets':
+        return cat === 'rockets' || cat.includes('rocket');
+      case 'fancy novelties':
+        return cat === 'fancy novelties';
+      case 'aerial shells':
+      case 'shells':
+        return cat.includes('shell') || cat.includes('cell') || cat === 'all new 2';
+      case 'combination fireworks':
+        return cat === 'combination fireworks' || cat.includes('combination');
+      case 'cake items':
+      case 'aerial multi-shots':
+        return cat === 'cake items' || cat.includes('cake');
+      case 'assorted gift packs':
+      case 'gift boxes':
+        return cat === 'assorted gift packs' || cat.includes('gift');
+      case 'novelties':
+        return cat.includes('novelty');
+      default:
+        return cat === t || cat.includes(t);
+    }
   };
 
   // Filter Logic: Search + Category Tab

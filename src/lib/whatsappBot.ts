@@ -162,8 +162,8 @@ const WEBSITE_BASE_URL = 'https://vizagayyan.com';
 /**
  * 3.0 Fallback Greeting Text Message
  * Formats numbered choices:
- * 1️⃣ *Click 1 for Website*
- * 2️⃣ *Click 2 for Location of the Store*
+ * 1️⃣ Click 1 for Website
+ * 2️⃣ Click 2 for Location of the Store
  * Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)
  */
 export function buildFallbackGreetingTextMessage(toPhone: string): WhatsAppMessageEnvelope {
@@ -175,22 +175,70 @@ export function buildFallbackGreetingTextMessage(toPhone: string): WhatsAppMessa
     text: {
       preview_url: true,
       body:
-        `🎆 *Welcome to Ayyan Fireworks!* 🎆\n` +
+        `Welcome to Ayyan Fireworks, Visakhapatnam! 🎆\n\n` +
         `Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
         `Please select an option below:\n` +
-        `1️⃣ *Click 1 for Website*\n` +
-        `2️⃣ *Click 2 for Location of the Store*\n\n` +
+        `1️⃣ Click 1 for Website\n` +
+        `2️⃣ Click 2 for Location of the Store\n\n` +
         `Tell me your queries! You can also ask any question about our crackers, pricing, and offers.`,
     },
   };
 }
 
 /**
- * 3.1 Main Menu Interactive Message (Quick Reply Buttons / Template)
- * 3 Options in order:
- * 1. Slot Booking (id: "btn_book_slot")
- * 2. Location of the Store (id: "btn_showroom_visit")
- * 3. Website (id: "btn_visit_website")
+ * 3.1 Main Menu Interactive Quick-Reply Buttons Message
+ * 2 Options:
+ * Button 1: Visit Website (id: "btn_visit_website") -> https://vizagayyan.com
+ * Button 2: Store Location (id: "btn_showroom_visit") -> https://maps.google.com/?q=Ayyan+Fireworks+Visakhapatnam
+ */
+export function buildMainMenuButtonMessage(toPhone: string): WhatsAppMessageEnvelope {
+  return {
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    to: formatWhatsAppPhone(toPhone),
+    type: 'interactive',
+    interactive: {
+      type: 'button',
+      header: {
+        type: 'text',
+        text: '🎆 Ayyan Fireworks Visakhapatnam'
+      },
+      body: {
+        text:
+          `Welcome to Ayyan Fireworks, Visakhapatnam! 🎆\n\n` +
+          `Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
+          `Please select an option below:\n` +
+          `1️⃣ Click 1 for Website\n` +
+          `2️⃣ Click 2 for Location of the Store\n\n` +
+          `Tell me your queries! You can also ask any question about our crackers, pricing, and offers.`
+      },
+      footer: {
+        text: DEFAULT_FOOTER
+      },
+      action: {
+        buttons: [
+          {
+            type: 'reply',
+            reply: {
+              id: 'btn_visit_website',
+              title: 'Visit Website'
+            }
+          },
+          {
+            type: 'reply',
+            reply: {
+              id: 'btn_showroom_visit',
+              title: 'Store Location'
+            }
+          }
+        ]
+      }
+    }
+  };
+}
+
+/**
+ * 3.2 Main Menu Template Message (Meta Approved Template fallback)
  */
 export function buildMainMenuMessage(toPhone: string): WhatsAppMessageEnvelope {
   return {
@@ -826,7 +874,7 @@ export async function handleWhatsAppWebhookEvent(
         messages: [
           buildTextMessage(
             from,
-            "📍 *Ayyan Fireworks — Visakhapatnam Showroom*\nMain Road/NH-16, Sheela Nagar, Visakhapatnam\n🗺️ Directions: https://maps.google.com/?q=Ayyan+Fireworks+Visakhapatnam"
+            "📍 *Ayyan Fireworks – Visakhapatnam Showroom*\nMain Road/NH-16, Sheela Nagar, Visakhapatnam\n🗺️ Directions: https://maps.google.com/?q=Ayyan+Fireworks+Visakhapatnam"
           )
         ],
         metadata: { action: 'showroom_visit_sent' }
@@ -1180,7 +1228,7 @@ export async function handleWhatsAppWebhookEvent(
       messages: [
         buildTextMessage(
           from,
-          "📍 *Ayyan Fireworks — Visakhapatnam Showroom*\nMain Road/NH-16, Sheela Nagar, Visakhapatnam\n🗺️ Directions: https://maps.google.com/?q=Ayyan+Fireworks+Visakhapatnam"
+          "📍 *Ayyan Fireworks – Visakhapatnam Showroom*\nMain Road/NH-16, Sheela Nagar, Visakhapatnam\n🗺️ Directions: https://maps.google.com/?q=Ayyan+Fireworks+Visakhapatnam"
         )
       ],
       metadata: { fallbackTrigger: '2_location_store' }

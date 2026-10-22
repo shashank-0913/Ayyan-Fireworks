@@ -13,7 +13,7 @@ import {
   Play
 } from 'lucide-react';
 import { Product } from '../../types';
-import { getCategoryFallbackImage } from '../../lib/initialData';
+import { getCategoryFallbackImage, getCategoryBadgeStyle } from '../../lib/initialData';
 import { formatINR, getWhatsAppUrl } from '../../lib/utils';
 import { useEstimate } from '../../context/EstimateContext';
 import { WhatsAppIcon } from '../common/WhatsAppIcon';
@@ -120,7 +120,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
             {/* Category & Item Code Badge pinned to top-left corner */}
             <div className="absolute top-3 left-3 flex items-center gap-1.5 z-10 pointer-events-none">
-              <span className="px-3 py-1 rounded-xl bg-white/95 dark:bg-obsidian-950/90 backdrop-blur-md border border-amber-400/50 dark:border-gold-500/40 text-amber-700 dark:text-gold-300 font-bold text-[11px] uppercase tracking-wider shadow-md">
+              <span className={`px-2.5 py-1 rounded-xl backdrop-blur-md border font-bold text-[10px] sm:text-[11px] uppercase tracking-wider shadow-md max-w-[150px] sm:max-w-[190px] truncate ${getCategoryBadgeStyle(product.category)}`}>
                 {product.category}
               </span>
               {(product.item_code || product.code) && (
