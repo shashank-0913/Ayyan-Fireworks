@@ -199,21 +199,11 @@ export function buildMainMenuButtonMessage(toPhone: string): WhatsAppMessageEnve
     type: 'interactive',
     interactive: {
       type: 'button',
-      header: {
-        type: 'text',
-        text: '🎆 Ayyan Fireworks Visakhapatnam'
-      },
       body: {
         text:
           `Welcome to Ayyan Fireworks, Visakhapatnam! 🎆\n\n` +
           `Showroom Timings: 8:00 AM – 10:00 PM (5:00 AM – 10:00 PM during Diwali Season)\n\n` +
-          `Please select an option below:\n` +
-          `1️⃣ Click 1 for Website\n` +
-          `2️⃣ Click 2 for Location of the Store\n\n` +
-          `Tell me your queries! You can also ask any question about our crackers, pricing, and offers.`
-      },
-      footer: {
-        text: DEFAULT_FOOTER
+          `Please select an option below:`,
       },
       action: {
         buttons: [
@@ -221,22 +211,21 @@ export function buildMainMenuButtonMessage(toPhone: string): WhatsAppMessageEnve
             type: 'reply',
             reply: {
               id: 'btn_visit_website',
-              title: 'Visit Website'
-            }
+              title: 'Visit Website',
+            },
           },
           {
             type: 'reply',
             reply: {
               id: 'btn_showroom_visit',
-              title: 'Store Location'
-            }
-          }
-        ]
-      }
-    }
+              title: 'Store Location',
+            },
+          },
+        ],
+      },
+    },
   };
 }
-
 /**
  * 3.2 Main Menu Template Message (Meta Approved Template fallback)
  */

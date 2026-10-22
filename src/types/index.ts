@@ -45,10 +45,11 @@ export interface Product {
   category: string;
   price: number;
   original_price?: number;
+  packing?: string;
   pieces_per_box?: string;
+  piece_count?: string;
   video_url?: string;
   code?: string;
-  piece_count?: string;
   unit_price?: number;
   unit_name?: string;
   bundle_rate?: number;
@@ -63,6 +64,7 @@ export interface Product {
   image?: string;
   imageUrl?: string;
   is_active?: boolean;
+  inStock?: boolean;
   created_at?: string;
 }
 
