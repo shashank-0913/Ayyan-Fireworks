@@ -64,7 +64,7 @@ export const OFFICIAL_AYYAN_CATALOG: AyyanCatalogItem[] = INITIAL_PRODUCTS.map((
   return {
     code,
     name: prod.name,
-    category: getProductCategoryGroup(prod.category),
+    category: prod.category || getProductCategoryGroup(prod.category),
     icon: getCategoryIcon(prod.category, prod.name),
     rate: prod.price,
     per: prod.pieces_per_box || prod.piece_count || '1 Box',
@@ -148,6 +148,40 @@ export const AntigravityCatalogPage: React.FC = () => {
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [activeModalProduct, setActiveModalProduct] = useState<AyyanCatalogItem | null>(null);
+
+  // Dynamic Category Extraction: Discovered from OFFICIAL_AYYAN_CATALOG
+  // Filter out and permanently hide any category with count === 0
+  // Only categories with count >= 1 render in the DOM
+  const { dynamicCategories, categoryCounts } = useMemo(() => {
+    const counts: Record<string, number> = {
+      'ALL': OFFICIAL_AYYAN_CATALOG.length
+    };
+
+    const discovered = new Set<string>();
+    OFFICIAL_AYYAN_CATALOG.forEach(item => {
+      if (item.category && item.category.trim()) {
+        const cat = item.category.trim();
+        discovered.add(cat);
+        counts[cat] = (counts[cat] || 0) + 1;
+      }
+    });
+
+    const validCategories = Array.from(discovered)
+      .filter(cat => (counts[cat] || 0) >= 1)
+      .sort((a, b) => a.localeCompare(b));
+
+    return {
+      dynamicCategories: ['ALL', ...validCategories],
+      categoryCounts: counts
+    };
+  }, []);
+
+  // Reset to 'ALL' if selected category is missing or has count === 0
+  useEffect(() => {
+    if (selectedCategory !== 'ALL' && !dynamicCategories.includes(selectedCategory)) {
+      setSelectedCategory('ALL');
+    }
+  }, [dynamicCategories, selectedCategory]);
 
   // Matter.js Refs
   const engineRef = useRef<Matter.Engine | null>(null);
@@ -440,20 +474,31 @@ export const AntigravityCatalogPage: React.FC = () => {
 
         {/* Category Filter Pills */}
         <div className="flex items-center gap-1.5 overflow-x-auto max-w-full pb-1 sm:pb-0 no-scrollbar">
-          {CATEGORIES_LIST.map((cat) => (
-            <button
-              key={cat}
-              type="button"
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1.5 rounded-full text-xs transition-all whitespace-nowrap ${
-                selectedCategory === cat
-                  ? 'bg-amber-500 text-slate-950 font-bold shadow-md'
-                  : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
-              }`}
-            >
-              {cat === 'ALL' ? 'All Items' : cat}
-            </button>
-          ))}
+          {dynamicCategories.map((cat) => {
+            const count = categoryCounts[cat] || 0;
+            if (cat !== 'ALL' && count < 1) return null;
+            return (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-3 py-1.5 rounded-full text-xs transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer ${
+                  selectedCategory === cat
+                    ? 'bg-amber-500 text-slate-950 font-bold shadow-md'
+                    : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
+                }`}
+              >
+                <span>{cat === 'ALL' ? 'All Items' : cat}</span>
+                <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${
+                  selectedCategory === cat
+                    ? 'bg-slate-950/20 text-slate-950 font-bold'
+                    : 'bg-white/10 text-slate-300'
+                }`}>
+                  {count}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Right Tools: Shockwave, Reset, Sound & Fullscreen */}

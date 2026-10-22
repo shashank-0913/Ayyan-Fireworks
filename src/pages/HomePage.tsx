@@ -26,6 +26,7 @@ export const HomePage: React.FC = () => {
       title: 'Grand Aerial Display Cakes',
       subtitle: 'Multi-shot sky spectacles with vivid aerial breaks',
       tag: 'Festive Bestseller',
+      category: 'Cake Items',
       icon: Flame,
       color: 'from-amber-500/20 to-orange-500/10'
     },
@@ -33,6 +34,7 @@ export const HomePage: React.FC = () => {
       title: 'Electric & Colour Sparklers',
       subtitle: 'Low-smoke, extra-long duration family favourites',
       tag: 'Certified Safe',
+      category: 'Sparklers',
       icon: Sparkles,
       color: 'from-yellow-500/20 to-amber-500/10'
     },
@@ -40,6 +42,7 @@ export const HomePage: React.FC = () => {
       title: 'Flower Pots & Fountains',
       subtitle: 'High-altitude multi-colour sprays and glitter showers',
       tag: 'Classic Glow',
+      category: 'Fountains',
       icon: Award,
       color: 'from-emerald-500/20 to-teal-500/10'
     },
@@ -47,6 +50,7 @@ export const HomePage: React.FC = () => {
       title: 'Chakkars & Ground Spinners',
       subtitle: 'High-velocity spinning wheels with lotus effects',
       tag: 'Kids Friendly',
+      category: 'Chakkars',
       icon: Package,
       color: 'from-blue-500/20 to-indigo-500/10'
     },
@@ -54,6 +58,7 @@ export const HomePage: React.FC = () => {
       title: 'Sound Maroons & Crackers',
       subtitle: 'Crisp, rhythmic traditional Sivakasi festive sound',
       tag: 'Green Cracker Certified',
+      category: 'Crackers',
       icon: ShieldCheck,
       color: 'from-red-500/20 to-rose-500/10'
     },
@@ -61,6 +66,7 @@ export const HomePage: React.FC = () => {
       title: 'Curated Gift Boxes & Hampers',
       subtitle: 'All-in-one assorted festive packs for family celebrations',
       tag: 'Best Value',
+      category: 'Assorted Gift Packs',
       icon: Package,
       color: 'from-purple-500/20 to-pink-500/10'
     }
@@ -209,7 +215,7 @@ export const HomePage: React.FC = () => {
             return (
               <Link
                 key={idx}
-                to="/catalogue"
+                to={`/catalogue?category=${encodeURIComponent(cat.category)}`}
                 className="group relative p-6 rounded-3xl bg-white dark:bg-obsidian-900/80 border border-slate-200 dark:border-white/10 hover:border-amber-500/50 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden"
               >
                 <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl ${cat.color} rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-500`} />

@@ -1,40 +1,23 @@
-export type ProductCategory = 
-  | 'Marrons'
-  | 'Sparklers'
-  | 'Chakkars'
-  | 'Fountains'
-  | 'NOVELTY FIREWORKS'
-  | 'ATOM BOMBS'
-  | 'CHORSA FIREWORKS'
-  | 'ROCKETS'
-  | 'FANCY NOVELTIES'
-  | 'ALL NEW 1 3/4" SHELLS'
-  | 'ALL NEW 2'
-  | '3 SHELLS ROCKING'
-  | '3 SHELLS PREMIUM'
-  | 'COMBINATION FIREWORKS'
-  | 'CAKE ITEMS'
-  | 'ASSORTED GIFT PACKS'
-  | string;
-
-export const PRODUCT_CATEGORIES: ProductCategory[] = [
-  'Marrons',
+export const PRODUCT_CATEGORIES = [
+  'Crackers',
   'Sparklers',
   'Chakkars',
   'Fountains',
-  'NOVELTY FIREWORKS',
-  'ATOM BOMBS',
-  'CHORSA FIREWORKS',
-  'ROCKETS',
-  'FANCY NOVELTIES',
-  'ALL NEW 1 3/4" SHELLS',
-  'ALL NEW 2',
-  '3 SHELLS ROCKING',
-  '3 SHELLS PREMIUM',
-  'COMBINATION FIREWORKS',
-  'CAKE ITEMS',
-  'ASSORTED GIFT PACKS'
-];
+  'Novelties',
+  'Sirens',
+  'Candles',
+  'Atom Bombs',
+  'Sound Crackers',
+  'Rockets',
+  'Missiles',
+  'Whistles',
+  'Multi-Shots',
+  'Shells',
+  'Cake Items',
+  'Assorted Gift Packs'
+] as const;
+
+export type ProductCategory = (typeof PRODUCT_CATEGORIES)[number] | string;
 
 export type SoundLevel = 'Low / Silent' | 'Medium' | 'High Spectacle';
 

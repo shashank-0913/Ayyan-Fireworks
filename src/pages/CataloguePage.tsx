@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { 
   Search, 
   Package, 
@@ -22,8 +22,9 @@ import { useEstimate } from '../context/EstimateContext';
 import { EstimateDrawer } from '../components/customer/EstimateDrawer';
 import { Product } from '../types';
 import { formatINR } from '../lib/utils';
+import { PRODUCTS_LIST } from '../data/products';
 
-// Official Standard Ayyan Category Pill Tabs (Clean 141 Natayyapalem Inventory)
+// Standard 16 Showroom Category Order for reference
 export const CATEGORY_PILL_TABS = [
   'All',
   'Crackers',
@@ -44,74 +45,149 @@ export const CATEGORY_PILL_TABS = [
   'Assorted Gift Packs'
 ] as const;
 
-export type CategoryTab = typeof CATEGORY_PILL_TABS[number];
+export type CategoryTab = string;
+
+// Helper to match product to category dynamically
+export const matchesCategoryTab = (product: Product, tab: string): boolean => {
+  if (tab === 'All' || tab === 'ALL') return true;
+  const prodCat = (product.category || '').toLowerCase().trim();
+  const targetCat = tab.toLowerCase().trim();
+
+  if (prodCat === targetCat) return true;
+
+  // Standard alias fallbacks
+  if (targetCat === 'crackers') {
+    return prodCat === 'crackers' || prodCat === 'marron' || prodCat === 'marrons';
+  }
+  if (targetCat === 'sound crackers') {
+    return prodCat === 'sound crackers' || prodCat === 'sound';
+  }
+  if (targetCat === 'chakkars') {
+    return prodCat === 'chakkars' || prodCat === 'ground chakkars' || prodCat === 'wheels';
+  }
+  if (targetCat === 'fountains') {
+    return prodCat === 'fountains' || prodCat === 'flower pots' || prodCat === 'colourful fountains';
+  }
+  if (targetCat === 'atom bombs') {
+    return prodCat === 'atom bombs' || prodCat === 'bombs';
+  }
+  if (targetCat === 'multi-shots') {
+    return prodCat === 'multi-shots' || prodCat === 'multishots' || prodCat === 'multi shots';
+  }
+  if (targetCat === 'assorted gift packs') {
+    return prodCat === 'assorted gift packs' || prodCat === 'gift boxes' || prodCat === 'gift packs';
+  }
+
+  return prodCat === targetCat;
+};
 
 export const CataloguePage: React.FC = () => {
   const { products, refreshProducts, isLoading } = useAyyanStore();
   const { totalItemsCount, totalEstimatePrice, setIsEstimateDrawerOpen } = useEstimate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
+  const initialCategoryParam = searchParams.get('category');
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<CategoryTab>('All');
+  const [selectedCategory, setSelectedCategory] = useState<string>(initialCategoryParam || 'All');
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
   const [lightboxProduct, setLightboxProduct] = useState<Product | null>(null);
   const [detailsProduct, setDetailsProduct] = useState<Product | null>(null);
+
+  // Sync with search parameter if changed externally
+  useEffect(() => {
+    const cat = searchParams.get('category');
+    if (cat && cat !== selectedCategory) {
+      setSelectedCategory(cat);
+    }
+  }, [searchParams]);
 
   // Fetch fresh products directly on mount with Supabase
   useEffect(() => {
     refreshProducts();
   }, [refreshProducts]);
 
-  // Category Matching Helper
-  const matchesCategoryTab = (product: Product, tab: CategoryTab): boolean => {
-    if (tab === 'All') return true;
-    const cat = (product.category || '').toLowerCase().trim();
-    const t = (tab as string).toLowerCase().trim();
+  // Active catalog products
+  const activeProducts = useMemo(() => {
+    const list = products && products.length > 0 ? products : (PRODUCTS_LIST as unknown as Product[]);
+    return list.filter((p: Product) => p.is_active !== false);
+  }, [products]);
 
-    if (cat === t) return true;
+  // Dynamic Category Extraction: Discovered from PRODUCTS_LIST / activeProducts
+  // 1. Maintain ordering based on appearance in PRODUCTS_LIST
+  // 2. Compute exact item counts
+  // 3. Filter out and permanently hide any category with count === 0
+  // 4. Only categories with count >= 1 render in the DOM
+  const { dynamicCategories, categoryCounts } = useMemo(() => {
+    const counts: Record<string, number> = {
+      'All': activeProducts.length
+    };
 
-    switch (t) {
-      case 'crackers':
-        return cat.includes('cracker') || cat.includes('marron');
-      case 'sparklers':
-        return cat.includes('sparkler');
-      case 'chakkars':
-        return cat.includes('chakkar') || cat.includes('wheel');
-      case 'fountains':
-        return cat.includes('fountain') || cat.includes('pot') || cat.includes('koti');
-      case 'novelties':
-        return cat.includes('novelty') || cat === 'novelties';
-      case 'sirens':
-        return cat.includes('siren');
-      case 'candles':
-        return cat.includes('candle') || cat.includes('pencil');
-      case 'atom bombs':
-        return cat.includes('bomb');
-      case 'sound crackers':
-        return cat.includes('sound');
-      case 'rockets':
-        return cat.includes('rocket');
-      case 'missiles':
-        return cat.includes('missile');
-      case 'whistles':
-        return cat.includes('whistle');
-      case 'multi-shots':
-        return cat.includes('shot') || cat.includes('multi');
-      case 'shells':
-        return cat.includes('shell') || cat.includes('cell');
-      case 'cake items':
-        return cat.includes('cake');
-      case 'assorted gift packs':
-        return cat.includes('gift') || cat.includes('pack');
-      default:
-        return cat === t || cat.includes(t);
+    // Index ordering by appearance in PRODUCTS_LIST
+    const categoryOrderMap: Record<string, number> = {};
+    PRODUCTS_LIST.forEach((p, idx) => {
+      if (p.category && categoryOrderMap[p.category] === undefined) {
+        categoryOrderMap[p.category] = idx;
+      }
+    });
+
+    // Discover all unique categories present in active products
+    const discovered = new Set<string>();
+    activeProducts.forEach((p) => {
+      if (p.category && p.category.trim()) {
+        discovered.add(p.category.trim());
+      }
+    });
+
+    // Compute exact counts for each discovered category
+    discovered.forEach((cat) => {
+      const count = activeProducts.filter(p => matchesCategoryTab(p, cat)).length;
+      counts[cat] = count;
+    });
+
+    // Filter out categories where count === 0 (only count >= 1 allowed)
+    const validCategories = Array.from(discovered)
+      .filter(cat => (counts[cat] || 0) >= 1)
+      .sort((a, b) => {
+        const orderA = categoryOrderMap[a] ?? 999;
+        const orderB = categoryOrderMap[b] ?? 999;
+        return orderA - orderB;
+      });
+
+    const tabs = activeProducts.length > 0 ? ['All', ...validCategories] : [];
+
+    return {
+      dynamicCategories: tabs,
+      categoryCounts: counts
+    };
+  }, [activeProducts]);
+
+  // Ensure current category selection is valid and has count >= 1; otherwise reset to 'All'
+  useEffect(() => {
+    if (selectedCategory !== 'All' && !dynamicCategories.includes(selectedCategory)) {
+      setSelectedCategory('All');
+      if (searchParams.has('category')) {
+        searchParams.delete('category');
+        setSearchParams(searchParams, { replace: true });
+      }
+    }
+  }, [dynamicCategories, selectedCategory, searchParams, setSearchParams]);
+
+  const handleSelectCategory = (tab: string) => {
+    setSelectedCategory(tab);
+    if (tab === 'All') {
+      if (searchParams.has('category')) {
+        searchParams.delete('category');
+        setSearchParams(searchParams, { replace: true });
+      }
+    } else {
+      searchParams.set('category', tab);
+      setSearchParams(searchParams, { replace: true });
     }
   };
 
   // Filter Logic: Search + Category Tab
   const filteredProducts = useMemo(() => {
-    return products.filter((p: Product) => {
-      if (!p.is_active) return false;
-
+    return activeProducts.filter((p: Product) => {
       // 1. Live Search Bar matching: product name, category, item_code, packaging
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
@@ -132,23 +208,11 @@ export const CataloguePage: React.FC = () => {
 
       return true;
     });
-  }, [products, searchQuery, selectedCategory]);
-
-  // Compute counts for each category tab
-  const categoryCounts = useMemo(() => {
-    const counts: Record<string, number> = {};
-    CATEGORY_PILL_TABS.forEach(tab => {
-      counts[tab] = tab === 'All' 
-        ? products.filter(p => p.is_active).length 
-        : products.filter(p => p.is_active && matchesCategoryTab(p, tab)).length;
-    });
-
-    return counts as Record<CategoryTab, number>;
-  }, [products]);
+  }, [activeProducts, searchQuery, selectedCategory]);
 
   const handleResetFilters = () => {
     setSearchQuery('');
-    setSelectedCategory('All');
+    handleSelectCategory('All');
   };
 
   const isFiltering = Boolean(searchQuery.trim()) || selectedCategory !== 'All';
@@ -302,14 +366,17 @@ export const CataloguePage: React.FC = () => {
           </div>
 
           <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar scroll-smooth">
-            {CATEGORY_PILL_TABS.map((tab) => {
+            {dynamicCategories.map((tab) => {
               const active = selectedCategory === tab;
               const count = categoryCounts[tab] || 0;
+              // Guard: Only categories with count >= 1 should render in the DOM
+              if (tab !== 'All' && count < 1) return null;
+
               return (
                 <button
                   key={tab}
                   type="button"
-                  onClick={() => setSelectedCategory(tab)}
+                  onClick={() => handleSelectCategory(tab)}
                   className={`px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 min-h-[42px] flex items-center gap-2 shrink-0 active:scale-95 shadow-xs cursor-pointer ${
                     active
                       ? 'bg-gradient-to-r from-amber-500 via-amber-400 to-gold-500 text-slate-950 font-extrabold shadow-md dark:shadow-glow-gold ring-2 ring-amber-400/50'

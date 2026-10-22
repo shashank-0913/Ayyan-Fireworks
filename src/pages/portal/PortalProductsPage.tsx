@@ -12,7 +12,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { useAyyanStore } from '../../context/AppContext';
-import { Product, ProductCategory, PRODUCT_CATEGORIES } from '../../types';
+import { Product, PRODUCT_CATEGORIES } from '../../types';
 import { formatINR } from '../../lib/utils';
 import { ProductDrawer } from '../../components/portal/ProductDrawer';
 
@@ -21,13 +21,54 @@ export const PortalProductsPage: React.FC = () => {
 
   // Search & Filter state for table
   const [search, setSearch] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<'All' | ProductCategory>('All');
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
   
   // Fetch fresh products directly on mount with Supabase
   useEffect(() => {
     refreshProducts();
   }, [refreshProducts]);
-  
+
+  // Dynamic Category Extraction: Discovered from products list
+  // Filter out and permanently hide any category with count === 0
+  // Only categories with count >= 1 render in the DOM
+  const { dynamicCategories, categoryCounts } = useMemo(() => {
+    const counts: Record<string, number> = {
+      'All': products.length
+    };
+
+    const discovered = new Set<string>();
+    products.forEach((p) => {
+      if (p.category && p.category.trim()) {
+        const cat = p.category.trim();
+        discovered.add(cat);
+        counts[cat] = (counts[cat] || 0) + 1;
+      }
+    });
+
+    const validCategories = Array.from(discovered)
+      .filter(cat => (counts[cat] || 0) >= 1)
+      .sort((a, b) => {
+        const idxA = (PRODUCT_CATEGORIES as readonly string[]).indexOf(a);
+        const idxB = (PRODUCT_CATEGORIES as readonly string[]).indexOf(b);
+        if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+        if (idxA !== -1) return -1;
+        if (idxB !== -1) return 1;
+        return a.localeCompare(b);
+      });
+
+    return {
+      dynamicCategories: ['All', ...validCategories],
+      categoryCounts: counts
+    };
+  }, [products]);
+
+  // If selected category is no longer in dynamic categories, reset to 'All'
+  useEffect(() => {
+    if (selectedCategory !== 'All' && !dynamicCategories.includes(selectedCategory)) {
+      setSelectedCategory('All');
+    }
+  }, [dynamicCategories, selectedCategory]);
+
   // Drawer editing state
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -39,7 +80,8 @@ export const PortalProductsPage: React.FC = () => {
         const q = search.toLowerCase();
         const matchName = p.name?.toLowerCase().includes(q);
         const matchCat = p.category?.toLowerCase().includes(q);
-        if (!matchName && !matchCat) return false;
+        const matchCode = String(p.item_code || p.code || '').toLowerCase().includes(q);
+        if (!matchName && !matchCat && !matchCode) return false;
       }
       if (selectedCategory !== 'All' && p.category !== selectedCategory) {
         return false;
@@ -139,19 +181,30 @@ export const PortalProductsPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0 no-scrollbar">
-            {(['All', ...PRODUCT_CATEGORIES] as const).map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all min-h-[36px] ${
-                  selectedCategory === cat
-                    ? 'bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/40 font-bold'
-                    : 'bg-slate-100 dark:bg-slate-950 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+            {dynamicCategories.map((cat) => {
+              const count = categoryCounts[cat] || 0;
+              if (cat !== 'All' && count < 1) return null;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all min-h-[36px] flex items-center gap-1.5 cursor-pointer ${
+                    selectedCategory === cat
+                      ? 'bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/40 font-bold'
+                      : 'bg-slate-100 dark:bg-slate-950 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  <span>{cat}</span>
+                  <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${
+                    selectedCategory === cat
+                      ? 'bg-amber-500/30 text-amber-950 dark:text-amber-200'
+                      : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                  }`}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
