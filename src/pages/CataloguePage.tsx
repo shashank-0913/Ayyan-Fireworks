@@ -10,7 +10,8 @@ import {
   Loader2,
   List,
   LayoutGrid,
-  FileText
+  FileText,
+  Download
 } from 'lucide-react';
 import { useAyyanStore } from '../context/AppContext';
 import { ProductCard } from '../components/customer/ProductCard';
@@ -171,23 +172,39 @@ export const CataloguePage: React.FC = () => {
           </p>
         </div>
 
-        {/* Floating / Sticky Estimate Cart Badge Trigger */}
-        {totalItemsCount > 0 && (
-          <button
-            type="button"
-            onClick={() => setIsEstimateDrawerOpen(true)}
-            className="self-center md:self-auto flex items-center gap-3 px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-gold-500 text-slate-950 font-black text-xs sm:text-sm shadow-lg dark:shadow-glow-gold active:scale-95 transition-all cursor-pointer border border-amber-300 animate-bounce"
+        <div className="flex items-center gap-3 self-center md:self-auto flex-wrap justify-center">
+          {/* Official Price List PDF Download Button */}
+          <a
+            href="/Ayyan_Fireworks_Price_List_2025-26.pdf"
+            download="Ayyan_Fireworks_Price_List_2025-26.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            id="catalogue-download-pricelist-btn"
+            className="flex items-center gap-2 px-4 py-3 rounded-2xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-800 dark:text-gold-300 border border-amber-500/40 text-xs font-black transition-all shadow-xs active:scale-95"
+            title="Download Official 2025-26 Price List PDF"
           >
-            <div className="w-7 h-7 rounded-xl bg-slate-950 text-gold-300 flex items-center justify-center font-mono text-xs font-bold">
-              {totalItemsCount}
-            </div>
-            <div className="text-left">
-              <span className="block text-[10px] uppercase font-bold text-slate-900 leading-none">Showroom Estimate</span>
-              <span className="text-sm font-mono font-black">{formatINR(totalEstimatePrice)}</span>
-            </div>
-            <FileText className="w-4 h-4 ml-1 text-slate-950" />
-          </button>
-        )}
+            <Download className="w-4 h-4 text-amber-600 dark:text-gold-400" />
+            <span>Download Price List (PDF)</span>
+          </a>
+
+          {/* Floating / Sticky Estimate Cart Badge Trigger */}
+          {totalItemsCount > 0 && (
+            <button
+              type="button"
+              onClick={() => setIsEstimateDrawerOpen(true)}
+              className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-gold-500 text-slate-950 font-black text-xs sm:text-sm shadow-lg dark:shadow-glow-gold active:scale-95 transition-all cursor-pointer border border-amber-300 animate-bounce"
+            >
+              <div className="w-7 h-7 rounded-xl bg-slate-950 text-gold-300 flex items-center justify-center font-mono text-xs font-bold">
+                {totalItemsCount}
+              </div>
+              <div className="text-left">
+                <span className="block text-[10px] uppercase font-bold text-slate-900 leading-none">Showroom Estimate</span>
+                <span className="text-sm font-mono font-black">{formatINR(totalEstimatePrice)}</span>
+              </div>
+              <FileText className="w-4 h-4 ml-1 text-slate-950" />
+            </button>
+          )}
+        </div>
       </div>
 
 
